@@ -1,14 +1,33 @@
+import { PathToRegexps } from "polar-shared/src/url/PathToRegexps";
+import {IDStr} from "polar-shared/src/util/Strings";
+
 export class GroupHighlightURLs {
 
     public static parse(url: string): GroupHighlightURL {
-        const parts = url.split("/");
-        const id = parts[parts.length - 1];
-        return {id};
+
+        // TODO: this pulls in a huge dependency graph just for this simple API call.
+        const re = PathToRegexps.pathToRegexp('/group/:group/highlight/:id');
+
+        const parsedURL = new URL(url);
+
+        const {pathname} = parsedURL;
+
+        const matches = pathname.match(re);
+
+        if (matches) {
+            return {
+                name: matches[1],
+                id: matches[2],
+            };
+        }
+
+        throw new Error("Could not parse URL");
     }
 
 }
 
 
 export interface GroupHighlightURL {
-    readonly id: string;
+    readonly id: IDStr;
+    readonly name: string;
 }
