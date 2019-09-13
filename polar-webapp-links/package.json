@@ -16,5 +16,8 @@
     "mocha": "^6.2.0",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "polar-shared": "^1.32.19"
   }
 }
