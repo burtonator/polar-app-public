@@ -1,6 +1,6 @@
 {
   "name": "polar-webapp-links",
-  "version": "1.32.16",
+  "version": "1.32.17",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,5 +13,4 @@
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   }
-
 }
