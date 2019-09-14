@@ -1,5 +1,6 @@
 import { PathToRegexps } from "polar-shared/src/url/PathToRegexps";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {URLs} from "polar-shared/src/util/URLs";
 
 export class GroupHighlightURLs {
 
@@ -8,9 +9,7 @@ export class GroupHighlightURLs {
         // TODO: this pulls in a huge dependency graph just for this simple API call.
         const re = PathToRegexps.pathToRegexp('/group/:group/highlight/:id');
 
-        const parsedURL = new URL(url);
-
-        const {pathname} = parsedURL;
+        const pathname = URLs.pathname(url);
 
         const matches = pathname.match(re);
 
