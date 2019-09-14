@@ -1,5 +1,5 @@
 {
-  "name": "polar-webapp-links",
+  "name": "polar-test",
   "version": "1.32.20",
   "description": "",
   "main": "index.js",
@@ -11,13 +11,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/mocha": "^5.2.7",
-    "mocha": "^6.2.0",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.3",
-    "polar-test": "^1.32.20"
+    "typescript": "^3.6.3"
   },
   "dependencies": {
-    "polar-shared": "^1.32.20"
+    "@types/chai": "^4.2.1",
+    "chai": "^4.2.0"
   }
 }

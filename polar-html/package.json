@@ -1,21 +1,19 @@
 {
   "name": "polar-html",
-  "version": "1.32.19",
+  "version": "1.32.20",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/chai": "^4.2.1",
-    "@types/mocha": "^5.2.7",
-    "chai": "^4.2.0",
-    "mocha": "^6.2.0",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "polar-test": "^1.32.20"
   },
   "dependencies": {
     "@types/sanitize-html": "^1.20.1",

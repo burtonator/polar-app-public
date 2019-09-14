@@ -1,6 +1,5 @@
-import {assert} from "chai";
 import {GroupURLs} from "./GroupURLs";
-import {assertJSON} from "../../../../web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('GroupURLs', function() {
 

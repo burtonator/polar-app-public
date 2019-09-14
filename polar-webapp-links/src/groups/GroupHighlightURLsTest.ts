@@ -1,5 +1,5 @@
-import {assertJSON} from "../../../../polar-bookshelf/web/js/test/Assertions";
 import {GroupHighlightURLs} from "./GroupHighlightURLs";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('GroupHighlightURLs', function() {
 
