@@ -1,6 +1,6 @@
 {
   "name": "polar-firebase",
-  "version": "1.32.26",
+  "version": "1.32.27",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,11 +10,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "polar-test": "^1.32.26",
+    "polar-test": "^1.32.27",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "polar-shared": "^1.32.26"
+    "polar-shared": "^1.32.27"
   }
 }
