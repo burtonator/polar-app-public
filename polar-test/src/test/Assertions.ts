@@ -29,6 +29,30 @@ export function assertJSON(actual: any,
 
 }
 
+/**
+ * Testing function to compare two objects for equality.
+ */
+export function equalsJSON(actual: any,
+                           expected: any,
+                           message?: string,
+                           unsorted?: boolean): boolean {
+
+    // first convert both to JSON if necessary.
+    actual = toJSON(actual, unsorted);
+    expected = toJSON(expected, unsorted);
+
+    if ( actual !== expected) {
+        console.error("BEGIN ACTUAL ==========");
+        console.error(actual);
+        console.error("END ACTUAL   ==========");
+        return false;
+    }
+
+    return true;
+
+}
+
+
 export function toJSON(obj: any, unsorted: boolean = false): string {
 
     if (typeof obj === "string") {
@@ -88,7 +112,7 @@ function sorted(dict: any): any {
         const result: any[] = [];
 
         for (let idx = 0; idx < dict.length; ++idx) {
-            result[idx] = this.sorted(dict[idx]);
+            result[idx] = sorted(dict[idx]);
         }
 
         return result;
@@ -98,7 +122,7 @@ function sorted(dict: any): any {
         const result: any = {};
 
         Object.keys(dict).sort().forEach(key => {
-            result[key] = this.sorted(dict[key]);
+            result[key] = sorted(dict[key]);
         });
 
         return result;
