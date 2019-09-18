@@ -1,8 +1,8 @@
 import {PDFMetadata} from './PDFMetadata';
 import {Files} from '../../../../polar-bookshelf/web/js/util/Files';
 import {HitMap, SampledHitMap} from '../../../../polar-bookshelf/web/js/util/HitMap';
-import {Strings} from '../../../../polar-bookshelf/web/js/util/Strings';
 import {DOIs} from './DOIs';
+import {Strings} from "polar-shared/src/util/Strings";
 
 describe('PDF Metadata', function() {
     this.timeout(999999);
