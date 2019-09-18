@@ -1,7 +1,7 @@
 {
   "name": "polar-pdf",
   "version": "1.32.29",
-  "description": "",
+  "description": "Provides support for parsing and working with PDFs.",
   "main": "index.js",
   "scripts": {
     "_test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
@@ -12,10 +12,14 @@
   "license": "ISC",
   "devDependencies": {
     "tslint": "^5.20.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "@types/mocha": "^5.2.7",
+    "mocha": "^6.2.0"
   },
   "dependencies": {
     "@types/pdfjs-dist": "~2.1.1",
-    "pdfjs-dist": "~ 2.1.266"
+    "pdfjs-dist": "~ 2.1.266",
+    "polar-shared": "^1.32.29",
+    "polar-test": "^1.32.29"
   }
 }
