@@ -1,5 +1,4 @@
 import {assert} from 'chai';
-import {PDFMetadata} from './PDFMetadata';
 import {DOIs} from './DOIs';
 
 describe('DOIs', function() {

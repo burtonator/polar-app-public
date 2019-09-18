@@ -1,26 +1,22 @@
 {
-  "name": "polar-pdf",
+  "name": "polar-search",
   "version": "1.32.30",
-  "description": "Provides support for parsing and working with PDFs.",
+  "description": "Provides an API for searching 3rd party APIs",
   "main": "index.js",
   "scripts": {
-    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "_test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
     "compile": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/chai": "^4.2.1",
-    "chai": "^4.2.0",
     "@types/mocha": "^5.2.7",
     "mocha": "^6.2.0",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "@types/pdfjs-dist": "~2.1.1",
-    "pdfjs-dist": "~ 2.1.266",
     "polar-shared": "^1.32.30",
     "polar-test": "^1.32.30"
   }
