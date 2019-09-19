@@ -1,6 +1,6 @@
 {
   "name": "polar-html",
-  "version": "1.32.31",
+  "version": "1.32.32",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "polar-test": "^1.32.31",
+    "polar-test": "^1.32.32",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
