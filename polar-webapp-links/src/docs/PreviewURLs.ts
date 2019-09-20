@@ -17,7 +17,7 @@ export class PreviewURLs {
 
         return `https://app.getpolarized.io/pdfviewer/web/index.html?file=` +
             encodeURIComponent(docURL) +
-            `&utm_source=pdf_link&utm_medium=chrome_extension&preview=true&from=extension&zoom=page-width`;
+            `&preview=true`;
 
     }
 
