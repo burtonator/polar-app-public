@@ -1,6 +1,6 @@
 {
   "name": "polar-search",
-  "version": "1.32.33",
+  "version": "1.32.34",
   "description": "Provides an API for searching 3rd party APIs",
   "main": "index.js",
   "scripts": {
