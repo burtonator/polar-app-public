@@ -9,12 +9,39 @@ export class AddURLs {
         const matches = url.match(regexp);
 
         if (matches) {
-            return {
-                target: matches[2],
-            };
+
+            const rawTarget = (matches[2] || "").trim();
+
+            if (rawTarget === "") {
+                throw new Error("No URL given in path");
+            }
+
+            const target = this.createCorrectedURL(rawTarget);
+
+            return {target};
+
         }
 
         return undefined;
+
+    }
+
+    public static createCorrectedURL(url: string): string {
+
+        const regexp = "^(https?)(://|:/|/)(.+)"
+
+        const matches = url.match(regexp);
+
+        if (matches) {
+
+            const scheme = matches[1];
+            const rest = matches[3];
+
+            return `${scheme}://${rest}`;
+
+        }
+
+        return url;
 
     }
 
