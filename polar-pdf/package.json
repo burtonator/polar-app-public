@@ -1,6 +1,6 @@
 {
   "name": "polar-pdf",
-  "version": "1.32.36",
+  "version": "1.32.37",
   "description": "Provides support for parsing and working with PDFs.",
   "main": "index.js",
   "scripts": {
