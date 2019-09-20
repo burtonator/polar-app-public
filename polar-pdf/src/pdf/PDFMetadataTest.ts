@@ -38,6 +38,7 @@ describe('PDF Metadata', function() {
         });
 
     });
+
     describe('getMetadata', function() {
 
         it("basic failed read", async function() {
