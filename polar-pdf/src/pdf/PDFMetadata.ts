@@ -6,6 +6,7 @@ import {DOIs} from './DOIs';
 import {PathOrURLStr} from 'polar-shared/src/util/Strings';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {PDFProps} from "./PDFProps";
+import {StreamRangeFactory, Streams} from "polar-shared/src/util/Streams";
 
 console.log("Running with pdf.js version: " + PDFJS.version);
 
@@ -15,6 +16,30 @@ PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.w
 console.log("Running with GlobalWorkerOptions workerSrc: " + PDFJS.GlobalWorkerOptions.workerSrc);
 
 export class PDFMetadata {
+
+    /**
+     * Return true if this is a
+     *
+     * @param streamRangeFactory
+     */
+    public static async isPDF(streamRangeFactory: StreamRangeFactory) {
+
+        // TODO: we could have the range reader computed from the passed
+        // datastructure type (file, URL, cloud storage, etc).
+
+        const stream = streamRangeFactory(0, 4);
+        const buff = await Streams.toBuffer(stream);
+
+        const magic = buff.toString('utf-8');
+
+        // https://en.wikipedia.org/wiki/List_of_file_signatures
+
+        // hex:  25 50 44 46 2d
+        // string: %PDF-
+
+        return magic === '%PDF-';
+
+    }
 
     public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<PDFMeta> {
 
@@ -80,7 +105,8 @@ export class PDFMetadata {
             title,
             description,
             props,
-            doi
+            doi,
+            creator
         };
 
     }
