@@ -4,13 +4,13 @@ export class AddURLs {
 
     public static parse(url: URLStr): AddURL | undefined {
 
-        const regexp = "https://app\.getpolarized\.io/add/(.*)";
+        const regexp = "(https://app\.getpolarized\.io)?/add/(.*)";
 
         const matches = url.match(regexp);
 
         if (matches) {
             return {
-                target: matches[1],
+                target: matches[2],
             };
         }
 
