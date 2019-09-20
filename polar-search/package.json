@@ -1,6 +1,6 @@
 {
   "name": "polar-search",
-  "version": "1.32.39",
+  "version": "1.32.42",
   "description": "Provides an API for searching 3rd party APIs",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "polar-shared": "^1.32.33",
-    "polar-test": "^1.32.33"
+    "polar-shared": "^1.32.42",
+    "polar-test": "^1.32.42"
   }
 }
