@@ -6,6 +6,7 @@ import {StorageSettings} from "../datastore/StorageSettings";
 import {StoragePath} from "../datastore/StoragePath";
 import {URLStr} from "polar-shared/src/util/Strings";
 import { Backend } from "../datastore/Backend";
+import {LiteralOrProvider, Providers} from "polar-shared/src/util/Providers";
 
 export class FirebaseFileStorage {
 
@@ -14,6 +15,7 @@ export class FirebaseFileStorage {
                          uid: string /* UserIDStr */): URLStr {
 
         const storagePath = this.computeStoragePath(backend, fileRef, uid);
+
         return this.computeDownloadURLDirectly(backend, fileRef, storagePath);
 
     }
@@ -85,8 +87,7 @@ export class FirebaseFileStorage {
 
             return value;
 
-        })
-            .getOrElse('');
+        }).getOrElse('');
 
         const settings = this.computeStorageSettings(ext).getOrUndefined();
 
@@ -133,7 +134,7 @@ export class FirebaseFileStorage {
 
     public static computeDownloadURLDirectly(backend: Backend,
                                              ref: FileRef,
-                                             storagePath: StoragePath): URLStr {
+                                             storagePath?:  StoragePath): URLStr {
 
         /**
          * Compute the storage path including the flip over whether we're
@@ -148,8 +149,10 @@ export class FirebaseFileStorage {
                 // there is no blinding of the data path with the users
                 // user ID or other key.
                 return `${backend}/${ref.name}`;
-            } else {
+            } else if (storagePath) {
                 return storagePath.path;
+            } else {
+                throw new Error("No storagePath");
             }
 
         };
