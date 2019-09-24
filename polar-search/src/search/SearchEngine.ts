@@ -1,4 +1,5 @@
 import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {URLStr} from "polar-shared/src/util/Strings";
 
 export namespace search {
 
@@ -91,6 +92,8 @@ export namespace search {
 
     }
 
+    export type LicenseType = 'openaccess';
+
     export interface Entry {
 
         /**
@@ -113,6 +116,12 @@ export namespace search {
         readonly doi?: DOIStr;
 
         readonly pmid?: PMIDStr;
+
+        readonly journal?: string;
+
+        readonly license?: LicenseType | string;
+
+        readonly authors?: ReadonlyArray<Author>;
 
     }
 
@@ -146,6 +155,12 @@ export namespace search {
         readonly type: DocContentType;
         readonly href: string;
         readonly disposition?: DocLinkDisposition;
+
+        /**
+         * The institution hosting this download
+         */
+        readonly institution?: string;
+
     }
 
     export type DocContentType = 'application/pdf' | 'text/html';
@@ -204,5 +219,25 @@ export namespace search {
         }
 
     }
+
+    // TODO: this is a Link now....
+    // export type DownloadContentType = 'application/pdf';
+    //
+    // export interface DownloadURL {
+    //
+    //     readonly primary: boolean;
+    //     readonly contentType: DownloadContentType;
+    //     readonly license?: string;
+    //
+    //     readonly landingURL: URLStr;
+    //
+    //     readonly downloadURL: URLStr;
+    //
+    //     /**
+    //      * The institution hosting this download
+    //      */
+    //     readonly institution: string;
+    //
+    // }
 
 }
