@@ -11,7 +11,101 @@ describe('UnpaywallSearchEngine', function() {
 
         assert.equal(await res.hasNext(), true);
 
-        assertJSON(await res.next(), {});
+        assertJSON(await res.next(), {
+            "entries": [
+                {
+                    "authors": [
+                        {
+                            "displayName": "G. Kucsko",
+                            "firstName": "G.",
+                            "lastName": "Kucsko"
+                        },
+                        {
+                            "displayName": "P. C. Maurer",
+                            "firstName": "P. C.",
+                            "lastName": "Maurer"
+                        },
+                        {
+                            "displayName": "N. Y. Yao",
+                            "firstName": "N. Y.",
+                            "lastName": "Yao"
+                        },
+                        {
+                            "displayName": "M. Kubo",
+                            "firstName": "M.",
+                            "lastName": "Kubo"
+                        },
+                        {
+                            "displayName": "H. J. Noh",
+                            "firstName": "H. J.",
+                            "lastName": "Noh"
+                        },
+                        {
+                            "displayName": "P. K. Lo",
+                            "firstName": "P. K.",
+                            "lastName": "Lo"
+                        },
+                        {
+                            "displayName": "H. Park",
+                            "firstName": "H.",
+                            "lastName": "Park"
+                        },
+                        {
+                            "displayName": "M. D. Lukin",
+                            "firstName": "M. D.",
+                            "lastName": "Lukin"
+                        }
+                    ],
+                    "doi": "10.1038/nature12373",
+                    "id": "10.1038/nature12373",
+                    "links": [
+                        {
+                            "disposition": "download",
+                            "href": "https://dash.harvard.edu/bitstream/1/12285462/1/Nanometer-Scale%20Thermometry.pdf",
+                            "type": "application/pdf"
+                        },
+                        {
+                            "disposition": "landing",
+                            "href": "http://nrs.harvard.edu/urn-3:HUL.InstRepos:12285462",
+                            "type": "text/html"
+                        },
+                        {
+                            "disposition": "download",
+                            "href": "http://europepmc.org/articles/pmc4221854?pdf=render",
+                            "type": "application/pdf"
+                        },
+                        {
+                            "disposition": "landing",
+                            "href": "http://europepmc.org/articles/pmc4221854",
+                            "type": "text/html"
+                        },
+                        {
+                            "disposition": "download",
+                            "href": null,
+                            "type": "application/pdf"
+                        },
+                        {
+                            "disposition": "landing",
+                            "href": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4221854",
+                            "type": "text/html"
+                        },
+                        {
+                            "disposition": "download",
+                            "href": "http://arxiv.org/pdf/1304.1068",
+                            "type": "application/pdf"
+                        },
+                        {
+                            "disposition": "landing",
+                            "href": "http://arxiv.org/abs/1304.1068",
+                            "type": "text/html"
+                        }
+                    ],
+                    "published": "2013-07-31",
+                    "title": "Nanometre-scale thermometry in a living cell",
+                    "updated": "2019-06-27T03:29:12.641910"
+                }
+            ]
+        });
 
         assert.equal(await res.hasNext(), false);
 
