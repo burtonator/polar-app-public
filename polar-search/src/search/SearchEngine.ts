@@ -147,7 +147,7 @@ export namespace search {
 
         readonly lastName?: string;
 
-        readonly affiliation: string;
+        readonly affiliation?: string;
 
     }
 

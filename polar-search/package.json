@@ -14,7 +14,10 @@
     "@types/mocha": "^5.2.7",
     "mocha": "^6.2.0",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "@types/chai": "^4.2.1",
+    "chai": "^4.2.0"
+
   },
   "dependencies": {
     "polar-shared": "^1.32.45",

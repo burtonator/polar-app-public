@@ -1,6 +1,6 @@
 import {search} from "../SearchEngine";
 import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {URLStr} from "polar-shared/src/util/Strings";
+import {Strings, URLStr} from "polar-shared/src/util/Strings";
 
 const EMAIL = 'unpaywall@getpolarized.io';
 
@@ -23,13 +23,18 @@ export class UnpaywallSearchEngine implements search.Engine {
 
         const response: unpaywall.Response = await res.json();
 
+        return UnpaywallSearchEngine.handleResponse(response);
+
+    }
+
+    public static async handleResponse(response: unpaywall.Response) {
         const entries = [this.toEntry(response)];
         const page: search.Page = {entries};
         return new search.SinglePageResults(page);
 
     }
 
-    private toEntry(response: unpaywall.Response): search.Entry {
+    private static toEntry(response: unpaywall.Response): search.Entry {
 
         const toLinks = (): ReadonlyArray<search.DocLink> => {
 
@@ -54,6 +59,43 @@ export class UnpaywallSearchEngine implements search.Engine {
 
         };
 
+        const toAuthors = (): ReadonlyArray<search.Author> => {
+
+            const joinLR = (left: string, right: string): string => {
+
+                const leftEmpty = Strings.empty(left);
+                const rightEmpty = Strings.empty(right);
+
+                if (! leftEmpty && ! rightEmpty) {
+                    return `${left} ${right}`;
+                }
+
+                if (! leftEmpty) {
+                    return left;
+                }
+
+                if (! rightEmpty) {
+                    return right;
+                }
+
+                // they are both empty...
+                return "";
+
+            };
+
+            return response.z_authors.map(current => {
+
+                const displayName = joinLR(current.given, current.family);
+
+                return {
+                    displayName,
+                    firstName: current.given,
+                    lastName: current.family
+                };
+
+            })
+        };
+
         const id = response.doi;
         const title = response.title;
         const doi = response.doi;
@@ -61,6 +103,7 @@ export class UnpaywallSearchEngine implements search.Engine {
         const published = response.published_date;
 
         const links = toLinks();
+        const authors = toAuthors();
 
         return {
             id,
@@ -68,6 +111,7 @@ export class UnpaywallSearchEngine implements search.Engine {
             updated,
             published,
             links,
+            authors,
             doi
         };
 
