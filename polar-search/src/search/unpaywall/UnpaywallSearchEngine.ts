@@ -19,7 +19,7 @@ export class UnpaywallSearchEngine implements search.Engine {
     public async executeQuery(): Promise<search.Results> {
 
         // https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL
-        const url = `api.unpaywall.org/v2/${this.request.q}?email=${EMAIL}`;
+        const url = `https://api.unpaywall.org/v2/${this.request.q}?email=${EMAIL}`;
 
         const res = await fetch(url);
 

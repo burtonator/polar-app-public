@@ -1,0 +1,48 @@
+{
+  "abstracts": [],
+  "refs": [],
+  "contribs": [
+    {
+      "index": 0,
+      "raw_name": "Mauro Conti",
+      "role": "author",
+      "extra": {
+        "seq": "first"
+      }
+    },
+    {
+      "index": 1,
+      "raw_name": "Sandeep Kumar E",
+      "role": "author"
+    },
+    {
+      "index": 2,
+      "raw_name": "Chhagan Lal",
+      "role": "author"
+    },
+    {
+      "index": 3,
+      "raw_name": "Sushmita Ruj",
+      "role": "author"
+    }
+  ],
+  "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+  "pages": "1-1",
+  "ext_ids": {
+    "doi": "10.1109/comst.2018.2842460"
+  },
+  "release_year": 2018,
+  "release_stage": "published",
+  "release_type": "article-journal",
+  "container_id": "b4kxurpz5vbn7gog6wq32vliii",
+  "work_id": "3yfngm4ctzf4ljitq7fxh6s5vq",
+  "title": "A Survey on Security and Privacy Issues of Bitcoin",
+  "state": "active",
+  "ident": "dueceve54nhlzdk3vrpmbb6oc4",
+  "revision": "523a350c-28ac-4d61-a53d-98fbbe6f85de",
+  "extra": {
+    "crossref": {
+      "type": "journal-article"
+    }
+  }
+}

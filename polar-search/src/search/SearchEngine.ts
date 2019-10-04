@@ -1,4 +1,9 @@
-import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {
+    ISODateString,
+    ISODateTimeString,
+    ISODateYearString,
+    ISODateYearMonthString,
+} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {UnpaywallSearchEngine} from "./unpaywall/UnpaywallSearchEngine";
 import {ARXIVSearchEngine} from "./arxiv/ARXIVSearchEngine";
 
@@ -121,9 +126,9 @@ export namespace search {
          */
         readonly id: string;
 
-        readonly published: ISODateTimeString | ISODateString;
+        readonly published: ISODateTimeString | ISODateString | ISODateYearString | ISODateYearMonthString;
 
-        readonly updated?: ISODateTimeString | ISODateString;
+        readonly updated?: ISODateTimeString | ISODateString | ISODateYearString | ISODateYearMonthString;
 
         readonly title?: string;
 
