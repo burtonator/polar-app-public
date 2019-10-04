@@ -101,7 +101,12 @@ describe('UnpaywallSearchEngine', function() {
                     "title": "Nanometre-scale thermometry in a living cell",
                     "updated": "2019-06-27T03:29:12.641910"
                 }
-            ]
+            ],
+            "pagination": {
+                "itemsPerPage": 1,
+                "page": 0,
+                "total": 1
+            }
         });
 
     });
