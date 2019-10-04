@@ -129,7 +129,7 @@ export class ARXIVSearchEngine implements search.Engine {
 
         };
 
-        const toLinks = () => {
+        const toLinks = (): ReadonlyArray<search.DocLink> => {
 
             const links: search.DocLink[] = [];
 
@@ -162,6 +162,30 @@ export class ARXIVSearchEngine implements search.Engine {
 
         };
 
+        const toAuthors = (): ReadonlyArray<search.Author> => {
+
+            const authors: search.Author[] = [];
+
+            const authorElements = Array.from(entryElement.getElementsByTagName('author'));
+
+            for (const authorElement of authorElements) {
+
+                const names = authorElement.getElementsByTagName("name");
+
+                if (names) {
+
+                    const displayName = names[0].textContent || "";
+
+                    authors.push({displayName});
+
+                }
+
+            }
+
+            return authors;
+
+        };
+
         // TODO: arxiv:doi to include the DOI.
 
         const id = toText('id')!;
@@ -170,6 +194,7 @@ export class ARXIVSearchEngine implements search.Engine {
         const published = toText('published')!;
         const summary = toContentStr('text', toText('summary'));
         const links = toLinks();
+        const authors = toAuthors();
 
         return {
             id,
@@ -177,7 +202,8 @@ export class ARXIVSearchEngine implements search.Engine {
             summary,
             updated,
             published,
-            links
+            links,
+            authors
         };
 
     }

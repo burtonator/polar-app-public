@@ -20,6 +20,17 @@ describe('ARXIVSearchEngine', function() {
         assertJSON(response, {
             "entries": [
                 {
+                    "authors": [
+                        {
+                            "displayName": "Pavel Ciaian"
+                        },
+                        {
+                            "displayName": "Miroslava Rajcaniova"
+                        },
+                        {
+                            "displayName": "d'Artis Kancs"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1405.4498v1",
                     "links": [
                         {
@@ -42,6 +53,17 @@ describe('ARXIVSearchEngine', function() {
                     "updated": "2014-05-18T12:59:05Z"
                 },
                 {
+                    "authors": [
+                        {
+                            "displayName": "Wonse Kim"
+                        },
+                        {
+                            "displayName": "Junseok Lee"
+                        },
+                        {
+                            "displayName": "Kyungwon Kang"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1906.03430v1",
                     "links": [
                         {
@@ -64,6 +86,17 @@ describe('ARXIVSearchEngine', function() {
                     "updated": "2019-06-08T09:38:28Z"
                 },
                 {
+                    "authors": [
+                        {
+                            "displayName": "Pavel Ciaian"
+                        },
+                        {
+                            "displayName": "d'Artis Kancs"
+                        },
+                        {
+                            "displayName": "Miroslava Rajcaniova"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1812.09452v1",
                     "links": [
                         {
@@ -86,6 +119,17 @@ describe('ARXIVSearchEngine', function() {
                     "updated": "2018-12-22T05:25:15Z"
                 },
                 {
+                    "authors": [
+                        {
+                            "displayName": "Christian Decker"
+                        },
+                        {
+                            "displayName": "Jochen Seidel"
+                        },
+                        {
+                            "displayName": "Roger Wattenhofer"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1412.7935v1",
                     "links": [
                         {
@@ -108,6 +152,20 @@ describe('ARXIVSearchEngine', function() {
                     "updated": "2014-12-26T12:58:13Z"
                 },
                 {
+                    "authors": [
+                        {
+                            "displayName": "Ittay Eyal"
+                        },
+                        {
+                            "displayName": "Adem Efe Gencer"
+                        },
+                        {
+                            "displayName": "Emin Gun Sirer"
+                        },
+                        {
+                            "displayName": "Robbert van Renesse"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1510.02037v2",
                     "links": [
                         {
@@ -130,6 +188,14 @@ describe('ARXIVSearchEngine', function() {
                     "updated": "2015-11-11T19:38:15Z"
                 },
                 {
+                    "authors": [
+                        {
+                            "displayName": "Jamal Bouoiyour"
+                        },
+                        {
+                            "displayName": "Refk Selmi"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1707.01284v1",
                     "links": [
                         {
@@ -152,6 +218,11 @@ describe('ARXIVSearchEngine', function() {
                     "updated": "2017-07-05T09:39:04Z"
                 },
                 {
+                    "authors": [
+                        {
+                            "displayName": "Adam Hayes"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1805.07610v1",
                     "links": [
                         {
@@ -174,6 +245,14 @@ describe('ARXIVSearchEngine', function() {
                     "updated": "2018-05-19T15:30:29Z"
                 },
                 {
+                    "authors": [
+                        {
+                            "displayName": "Uroš Hercog"
+                        },
+                        {
+                            "displayName": "Andraž Povše"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1907.01538v1",
                     "links": [
                         {
@@ -196,6 +275,20 @@ describe('ARXIVSearchEngine', function() {
                     "updated": "2019-07-02T17:42:54Z"
                 },
                 {
+                    "authors": [
+                        {
+                            "displayName": "Mauro Conti"
+                        },
+                        {
+                            "displayName": "Sandeep Kumar E"
+                        },
+                        {
+                            "displayName": "Chhagan Lal"
+                        },
+                        {
+                            "displayName": "Sushmita Ruj"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1706.00916v3",
                     "links": [
                         {
@@ -218,6 +311,14 @@ describe('ARXIVSearchEngine', function() {
                     "updated": "2017-12-25T18:25:27Z"
                 },
                 {
+                    "authors": [
+                        {
+                            "displayName": "Jan A. Bergstra"
+                        },
+                        {
+                            "displayName": "Peter Weijland"
+                        }
+                    ],
                     "id": "http://arxiv.org/abs/1402.4778v1",
                     "links": [
                         {
