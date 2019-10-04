@@ -289,6 +289,7 @@ describe('ARXIVSearchEngine', function() {
                             "displayName": "Sushmita Ruj"
                         }
                     ],
+                    "doi": "10.1109/COMST.2018.2842460",
                     "id": "http://arxiv.org/abs/1706.00916v3",
                     "links": [
                         {
@@ -347,7 +348,6 @@ describe('ARXIVSearchEngine', function() {
                 "total": 10
             }
         });
-
     });
 
 });

@@ -102,6 +102,7 @@ export class UnpaywallSearchEngine implements search.Engine {
         const doi = response.doi;
         const updated = response.updated;
         const published = response.published_date;
+        const publisher = response.publisher;
 
         const links = toLinks();
         const authors = toAuthors();
@@ -111,6 +112,7 @@ export class UnpaywallSearchEngine implements search.Engine {
             title,
             updated,
             published,
+            publisher,
             links,
             authors,
             doi

@@ -1,6 +1,9 @@
 import {search} from '../SearchEngine';
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DOMParser} from 'xmldom';
+import {DOM, XMLNamespaceStr} from "polar-shared/src/util/DOM";
+
+const NS_ARXIV = "http://arxiv.org/schemas/atom";
 
 export class ARXIVSearchEngine implements search.Engine {
 
@@ -186,13 +189,14 @@ export class ARXIVSearchEngine implements search.Engine {
 
         };
 
-        // TODO: arxiv:doi to include the DOI.
-
         const id = toText('id')!;
         const title = toText('title');
         const updated = toText('updated');
         const published = toText('published')!;
         const summary = toContentStr('text', toText('summary'));
+
+        const doi = DOM.toTextNS(entryElement, NS_ARXIV, 'doi');
+
         const links = toLinks();
         const authors = toAuthors();
 
@@ -203,7 +207,8 @@ export class ARXIVSearchEngine implements search.Engine {
             updated,
             published,
             links,
-            authors
+            authors,
+            doi
         };
 
     }
