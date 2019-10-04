@@ -3,7 +3,7 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DOMParser} from 'xmldom';
 import {DOM, XMLNamespaceStr} from "polar-shared/src/util/DOM";
 
-const NS_ARXIV = "http://arxiv.org/schemas/atom";
+const NS_ARXIV: XMLNamespaceStr = "http://arxiv.org/schemas/atom";
 
 export class ARXIVSearchEngine implements search.Engine {
 
