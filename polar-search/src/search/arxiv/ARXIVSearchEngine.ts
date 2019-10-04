@@ -3,7 +3,9 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 
 export class ARXIVSearchEngine implements search.Engine {
 
-    public id: search.EngineIDStr = 'arxiv';
+    public static ID: search.SearchEngineID = 'arxiv';
+
+    public id: search.EngineIDStr = ARXIVSearchEngine.ID;
 
     constructor(private readonly request: search.Request) {
     }

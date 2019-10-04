@@ -9,7 +9,9 @@ const EMAIL = 'unpaywall@getpolarized.io';
  */
 export class UnpaywallSearchEngine implements search.Engine {
 
-    public id: search.EngineIDStr = 'unpaywall';
+    public static ID: search.SearchEngineID = 'unpaywall';
+
+    public id: search.EngineIDStr = UnpaywallSearchEngine.ID;
 
     constructor(private readonly request: search.Request) {
     }

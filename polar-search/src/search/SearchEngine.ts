@@ -1,6 +1,10 @@
 import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {UnpaywallSearchEngine} from "./unpaywall/UnpaywallSearchEngine";
+import {ARXIVSearchEngine} from "./arxiv/ARXIVSearchEngine";
 
 export namespace search {
+
+    export type SearchEngineID = string;
 
     export interface Request {
 
@@ -48,6 +52,27 @@ export namespace search {
          *
          */
         executeQuery(): Promise<Results>;
+
+    }
+
+    export class Engines {
+
+        public static create(id: search.SearchEngineID, request: search.Request): search.Engine {
+
+            switch (id) {
+
+                case UnpaywallSearchEngine.ID:
+                    return new UnpaywallSearchEngine(request);
+
+                case ARXIVSearchEngine.ID:
+                    return new ARXIVSearchEngine(request);
+
+                default:
+                    throw new Error("Unknown search engine: " + id);
+
+            }
+
+        }
 
     }
 
