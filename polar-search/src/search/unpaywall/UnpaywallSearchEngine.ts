@@ -4,20 +4,20 @@ import {Strings, URLStr} from "polar-shared/src/util/Strings";
 
 const EMAIL = 'unpaywall@getpolarized.io';
 
+/**
+ * https://unpaywall.org/products/api
+ */
 export class UnpaywallSearchEngine implements search.Engine {
 
     public id: search.EngineIDStr = 'unpaywall';
 
-    private readonly query: search.QueryStr;
-
-    constructor(query: search.QueryStr) {
-        this.query = query;
+    constructor(private readonly request: search.Request) {
     }
 
     public async executeQuery(): Promise<search.Results> {
 
         // https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL
-        const url = `api.unpaywall.org/v2/${this.query}?email=${EMAIL}`;
+        const url = `api.unpaywall.org/v2/${this.request.q}?email=${EMAIL}`;
 
         const res = await fetch(url);
 

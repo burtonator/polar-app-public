@@ -3,6 +3,23 @@ import {URLStr} from "polar-shared/src/util/Strings";
 
 export namespace search {
 
+    export interface Request {
+
+        /**
+         * The query to execute as a query string specific to each provider.  For example
+         * some take just a raw DOI.  Some take a title or author syntax.
+         */
+        readonly q: QueryStr;
+
+        /**
+         * The specific page to fetch.  You should first execute the request on page 0
+         * and then the response will give you information on how many pages are left
+         * to fetch.
+         */
+        readonly page?: number;
+
+    }
+
     /**
      * Responsible for creating search engines by matching the query to the
      * implementation.
@@ -42,6 +59,19 @@ export namespace search {
      */
     export type QueryStr = string;
 
+    export interface Pagination {
+
+        /**
+         * The total number of results available.
+         */
+        readonly total: number;
+
+        readonly itemsPerPage: number;
+
+        readonly page: number;
+
+    }
+
     /**
      *
      */
@@ -50,15 +80,9 @@ export namespace search {
         // Example APIs that we should support.
 
         // http://export.arxiv.org/api/query?search_query=all:electron
-
         // https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL
 
-        // TODO: scihub, ncbi
-
-        /**
-         * The total number of results available.
-         */
-        readonly total: number;
+        readonly pagination: Pagination;
 
         /**
          * Gets the current search page, possibly executing the query for the first
@@ -192,9 +216,18 @@ export namespace search {
 
         private nextPage?: Page;
 
+        public readonly pagination: Pagination;
+
         constructor(private readonly page: Page) {
             this.total = page.entries.length;
             this.nextPage = page;
+
+            this.pagination = {
+                total: page.entries.length,
+                itemsPerPage: page.entries.length,
+                page: 0
+            }
+
         }
 
         public async current(): Promise<search.Page | undefined> {

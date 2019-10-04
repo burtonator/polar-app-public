@@ -5,15 +5,12 @@ export class ARXIVSearchEngine implements search.Engine {
 
     public id: search.EngineIDStr = 'arxiv';
 
-    private readonly query: search.QueryStr;
-
-    constructor(query: search.QueryStr) {
-        this.query = query;
+    constructor(private readonly request: search.Request) {
     }
 
     public async executeQuery(): Promise<search.Results> {
 
-        const url = `http://export.arxiv.org/api/query?search_query=${this.query}`;
+        const url = `http://export.arxiv.org/api/query?search_query=${this.request.q}`;
 
         const response = await fetch(url);
 
