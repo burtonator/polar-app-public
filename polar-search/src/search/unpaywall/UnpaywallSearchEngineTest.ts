@@ -1,6 +1,5 @@
 import {unpaywall, UnpaywallSearchEngine} from "./UnpaywallSearchEngine";
 import {assertJSON} from "polar-test/src/test/Assertions";
-import {assert} from 'chai';
 
 describe('UnpaywallSearchEngine', function() {
 
@@ -9,9 +8,7 @@ describe('UnpaywallSearchEngine', function() {
         const response: unpaywall.Response = RESPONSE;
         const res = await UnpaywallSearchEngine.handleResponse(response);
 
-        assert.equal(await res.hasNext(), true);
-
-        assertJSON(await res.next(), {
+        assertJSON(await res, {
             "entries": [
                 {
                     "authors": [
@@ -106,8 +103,6 @@ describe('UnpaywallSearchEngine', function() {
                 }
             ]
         });
-
-        assert.equal(await res.hasNext(), false);
 
     });
 
