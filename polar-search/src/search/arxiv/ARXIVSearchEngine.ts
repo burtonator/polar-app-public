@@ -189,13 +189,13 @@ export class ARXIVSearchEngine implements search.Engine {
 
         };
 
-        const id = toText('id')!;
+        const doi = DOM.toTextNS(entryElement, NS_ARXIV, 'doi');
+
+        const id = doi || toText('id')!;
         const title = toText('title');
         const updated = toText('updated');
         const published = toText('published')!;
         const summary = toContentStr('text', toText('summary'));
-
-        const doi = DOM.toTextNS(entryElement, NS_ARXIV, 'doi');
 
         const links = toLinks();
         const authors = toAuthors();

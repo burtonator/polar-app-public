@@ -290,7 +290,7 @@ describe('ARXIVSearchEngine', function() {
                         }
                     ],
                     "doi": "10.1109/COMST.2018.2842460",
-                    "id": "http://arxiv.org/abs/1706.00916v3",
+                    "id": "10.1109/COMST.2018.2842460",
                     "links": [
                         {
                             "disposition": "landing",
