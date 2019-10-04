@@ -1,5 +1,6 @@
 import {search} from '../SearchEngine';
 import {Optional} from "polar-shared/src/util/ts/Optional";
+import {DOMParser} from 'xmldom';
 
 export class ARXIVSearchEngine implements search.Engine {
 
@@ -21,7 +22,13 @@ export class ARXIVSearchEngine implements search.Engine {
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, "text/xml");
 
-        const entryElements = doc.querySelectorAll('entry');
+        return ARXIVSearchEngine.handleResponse(doc);
+
+    }
+
+    public static handleResponse(doc: Document) {
+
+        const entryElements = doc.getElementsByTagName('entry');
 
         const entries: search.Entry[] = [];
 
@@ -36,7 +43,7 @@ export class ARXIVSearchEngine implements search.Engine {
 
     }
 
-    private toEntry(entryElement: Element): search.Entry {
+    private static toEntry(entryElement: Element): search.Entry {
 
         // title, summary, published, updated, id
         //
@@ -92,13 +99,23 @@ export class ARXIVSearchEngine implements search.Engine {
         //     <category term="cond-mat.str-el" scheme="http://arxiv.org/schemas/atom"/>
         //   </entry>
 
-        const toText = (query: string): string | undefined => {
+        const toText = (elementName: string): string | undefined => {
 
-            const childElement = entryElement.querySelector(query);
+            const childElements = entryElement.getElementsByTagName(elementName);
 
-            return Optional.of(childElement)
-                .map(current => current.textContent)
-                .getOrUndefined();
+            if (childElements.length === 1) {
+
+                const childElement = childElements[0];
+
+                return Optional.of(childElement)
+                    .map(current => current.textContent)
+                    .getOrUndefined();
+
+            } else if (childElements.length === 0) {
+                return undefined;
+            } else {
+                throw new Error(`Too many child elements ${elementName}: ` + childElements.length);
+            }
 
         };
 
@@ -116,7 +133,7 @@ export class ARXIVSearchEngine implements search.Engine {
 
             const links: search.DocLink[] = [];
 
-            const linkElements = Array.from(entryElement.querySelectorAll('link'));
+            const linkElements = Array.from(entryElement.getElementsByTagName('link'));
 
             for (const linkElement of linkElements) {
 

@@ -4,7 +4,7 @@
   "description": "Provides an API for searching 3rd party APIs",
   "main": "index.js",
   "scripts": {
-    "_test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
     "compile": "tsc"
   },
   "keywords": [],
@@ -18,6 +18,8 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "polar-shared": "^1.32.46"
+    "@types/xmldom": "^0.1.29",
+    "polar-shared": "^1.32.46",
+    "xmldom": "^0.1.27"
   }
 }
