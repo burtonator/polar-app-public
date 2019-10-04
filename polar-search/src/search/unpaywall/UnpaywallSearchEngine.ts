@@ -29,8 +29,7 @@ export class UnpaywallSearchEngine implements search.Engine {
 
     public static async handleResponse(response: unpaywall.Response) {
         const entries = [this.toEntry(response)];
-        const page: search.Page = {entries};
-        return new search.SinglePageResults(page);
+        return new search.SinglePageResults(entries);
 
     }
 

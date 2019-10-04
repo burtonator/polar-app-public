@@ -1,5 +1,4 @@
 import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {URLStr} from "polar-shared/src/util/Strings";
 
 export namespace search {
 
@@ -84,34 +83,6 @@ export namespace search {
 
         readonly pagination: Pagination;
 
-        /**
-         * Gets the current search page, possibly executing the query for the first
-         * time.
-         */
-        current(): Promise<Page | undefined>;
-
-        /**
-         * Advanced the results to the next page.
-         */
-        next(): Promise<Page | undefined>;
-
-        /**
-         * Return true if the search result has a current page.
-         */
-        hasCurrent(): Promise<boolean>;
-
-        /**
-         * True if we have another page of results.
-         */
-        hasNext(): Promise<boolean>;
-
-    }
-
-    export interface Page {
-
-        /**
-         * All the entries on this page.
-         */
         readonly entries: ReadonlyArray<Entry>;
 
     }
@@ -210,44 +181,15 @@ export namespace search {
      */
     export class SinglePageResults implements Results {
 
-        public readonly total: number;
-
-        private currentPage?: Page;
-
-        private nextPage?: Page;
-
         public readonly pagination: Pagination;
 
-        constructor(private readonly page: Page) {
-            this.total = page.entries.length;
-            this.nextPage = page;
+        constructor(public entries: ReadonlyArray<Entry>) {
 
             this.pagination = {
-                total: page.entries.length,
-                itemsPerPage: page.entries.length,
+                total: entries.length,
+                itemsPerPage: entries.length,
                 page: 0
             }
-
-        }
-
-        public async current(): Promise<search.Page | undefined> {
-            return this.currentPage;
-        }
-
-        public async hasCurrent(): Promise<boolean> {
-            return this.currentPage !== undefined;
-        }
-
-        public async hasNext(): Promise<boolean> {
-            return this.nextPage !== undefined;
-        }
-
-        public async next(): Promise<search.Page | undefined> {
-
-            this.currentPage = this.nextPage;
-            this.nextPage = undefined;
-
-            return this.currentPage;
 
         }
 

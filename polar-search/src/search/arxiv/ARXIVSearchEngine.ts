@@ -30,9 +30,7 @@ export class ARXIVSearchEngine implements search.Engine {
 
         }
 
-        const page: search.Page = {entries};
-
-        return new search.SinglePageResults(page);
+        return new search.SinglePageResults(entries);
 
     }
 
