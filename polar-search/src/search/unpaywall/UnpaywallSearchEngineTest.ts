@@ -98,6 +98,7 @@ describe('UnpaywallSearchEngine', function() {
                         }
                     ],
                     "published": "2013-07-31",
+                    "publisher": "Springer Nature",
                     "title": "Nanometre-scale thermometry in a living cell",
                     "updated": "2019-06-27T03:29:12.641910"
                 }
