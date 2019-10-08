@@ -83,7 +83,12 @@ export class PDFMetadata {
                 const keys = Object.keys((<any> metadata)._metadata);
 
                 for (const key of keys) {
-                    result[key] = metadata.get(key);
+                    const value = metadata.get(key);
+
+                    if (value) {
+                        result[key] = value;
+                    }
+
                 }
 
                 return result;
