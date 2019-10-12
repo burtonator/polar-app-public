@@ -1,5 +1,6 @@
 import {search} from "../Search";
 import {ISODateYearString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Fetches} from "polar-shared/src/util/Fetch";
 
 /**
  * https://api.fatcat.wiki/v0/release/lookup?doi=10.1109/COMST.2018.2842460
@@ -17,7 +18,7 @@ export class FatcatSearchEngine implements search.Engine {
 
         const url = `https://api.fatcat.wiki/v0/release/lookup?doi=${this.request.q}&expand=files,filesets`;
 
-        const res = await fetch(url);
+        const res = await Fetches.fetch(url);
 
         const response: fatcat.Response = await res.json();
 

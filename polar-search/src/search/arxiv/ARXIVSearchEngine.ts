@@ -2,6 +2,7 @@ import {search} from '../Search';
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DOMParser} from 'xmldom';
 import {DOM, XMLNamespaceStr} from "polar-shared/src/util/DOM";
+import {Fetches} from "polar-shared/src/util/Fetch";
 
 const NS_ARXIV: XMLNamespaceStr = "http://arxiv.org/schemas/atom";
 
@@ -18,7 +19,7 @@ export class ARXIVSearchEngine implements search.Engine {
 
         const url = `http://export.arxiv.org/api/query?search_query=${this.request.q}`;
 
-        const response = await fetch(url);
+        const response = await Fetches.fetch(url);
 
         const text = await response.text();
 

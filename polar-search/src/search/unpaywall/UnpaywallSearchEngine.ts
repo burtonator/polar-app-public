@@ -1,6 +1,7 @@
 import {search} from "../Search";
 import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Strings, URLStr} from "polar-shared/src/util/Strings";
+import {Fetches} from "polar-shared/src/util/Fetch";
 
 const EMAIL = 'unpaywall@getpolarized.io';
 
@@ -21,7 +22,7 @@ export class UnpaywallSearchEngine implements search.Engine {
         // https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL
         const url = `https://api.unpaywall.org/v2/${this.request.q}?email=${EMAIL}`;
 
-        const res = await fetch(url);
+        const res = await Fetches.fetch(url);
 
         const response: unpaywall.Response = await res.json();
 
