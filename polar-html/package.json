@@ -1,6 +1,6 @@
 {
   "name": "polar-html",
-  "version": "1.32.48",
+  "version": "1.32.49",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "mocha": "^6.2.0",
-    "polar-test": "^1.32.48",
+    "polar-test": "^1.32.49",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
