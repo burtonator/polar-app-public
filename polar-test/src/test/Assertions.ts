@@ -1,7 +1,8 @@
-import * as chai from 'chai';
-import {assert} from 'chai';
-
-chai.config.truncateThreshold = 0;
+// WARN: we're using require directly due to a really ugly but with typescript type
+// collision which makes it impossible to track down type collision across multiple
+// packages.  I'm not sure why this ALWAYS hit chai but it's really frustrating
+// and takes hours to fix and this is a 1 line resolution.
+const {assert} = require("chai");
 
 export function assertJSON(actual: any,
                            expected: any,
