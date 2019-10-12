@@ -12,10 +12,10 @@
   "license": "ISC",
   "devDependencies": {
     "tslint": "^5.20.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "@types/chai": "^4.2.1"
   },
   "dependencies": {
-    "@types/chai": "^4.2.1",
     "chai": "^4.2.0"
   }
 }

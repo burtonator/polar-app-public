@@ -1,4 +1,4 @@
-import {search} from '../SearchEngine';
+import {search} from '../Search';
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DOMParser} from 'xmldom';
 import {DOM, XMLNamespaceStr} from "polar-shared/src/util/DOM";

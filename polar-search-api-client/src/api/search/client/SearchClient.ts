@@ -1,5 +1,5 @@
 export class SearchClient {
 
-    public static
+    // public static
 
 }
