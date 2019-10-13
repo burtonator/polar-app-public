@@ -4,7 +4,7 @@
   "description": "Typescript bindings for the latest PDFJS.",
   "main": "index.js",
   "scripts": {
-    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "test": "find  -name *Test.js | xargs mocha --timeout 20000 --exit ",
     "compile": "echo nothing to compile"
   },
   "keywords": [],
