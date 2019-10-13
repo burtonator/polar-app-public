@@ -10,5 +10,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "types": "pdf"
+  "types": "pdf",
+  "private": true
 }
