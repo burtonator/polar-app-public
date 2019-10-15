@@ -1,0 +1,25 @@
+{
+  "name": "polar-web-extension-api",
+  "version": "1.32.53",
+  "description": "Provides just the basic API that we can use in both the frontend and backend for API requests and responses.",
+  "main": "index.js",
+  "scripts": {
+    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.1",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3",
+    "@types/chrome": "0.0.91"
+  },
+  "dependencies": {
+    "polar-shared": "^1.32.53"
+  }
+}

@@ -1,5 +1,4 @@
-import {DataURL} from '../../polar-bookshelf/web/js/util/DataURLs';
-
+import {DataURL} from 'polar-shared/src/util/DataURLs';
 
 const EXTENSION_IDS = [
     "alennbmnfgmkcmfkcnlhpofncmalokfc", // dev

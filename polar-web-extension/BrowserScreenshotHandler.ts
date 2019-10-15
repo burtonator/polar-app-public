@@ -1,10 +1,10 @@
-import {Results} from '../web/js/util/Results';
+import {Results} from 'polar-shared/src/util/Results';
 import {Handlers} from './Handlers';
-import {webextensions} from './WebExtensions';
-import {Canvases} from '../web/js/util/Canvases';
+import {webextensions} from '../polar-web-extension-api/src/WebExtensions';
+import {Canvases} from 'polar-shared/src/js/util/Canvases';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
-import {Stopwatches} from '../web/js/util/Stopwatches';
-import {DataURL} from '../web/js/util/DataURLs';
+import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
+import {DataURL} from 'polar-shared/src/util/DataURLs';
 
 /**
  * Allows us to take screenshots of the current browser within a chrome
