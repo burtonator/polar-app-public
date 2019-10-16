@@ -1,6 +1,6 @@
 import {UnpaywallSearchEngine} from "./unpaywall/UnpaywallSearchEngine";
 import {ARXIVSearchEngine} from "./arxiv/ARXIVSearchEngine";
-import {search} from "./Search";
+import {search} from "polar-search-api/src/api/search/Search";
 
 export class Engines {
 

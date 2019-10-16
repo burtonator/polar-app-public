@@ -1,4 +1,4 @@
-import {search} from "polar-search/src/search/Search";
+import {search} from "polar-search-api/src/api/search/Search";
 import {Fetches, RequestInit} from "polar-shared/src/util/Fetch";
 
 export class SearchClient {

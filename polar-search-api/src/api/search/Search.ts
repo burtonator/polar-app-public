@@ -63,7 +63,7 @@ export namespace search {
     /**
      * A basic query string.
      */
-    export type QueryStr = string;
+    export type QueryStr = DOIStr | string;
 
     export interface Pagination {
 

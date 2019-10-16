@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "polar-search": "^1.32.53",
+    "polar-search-api": "^1.32.53",
     "polar-shared": "^1.32.53"
   }
 }

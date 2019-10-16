@@ -1,4 +1,4 @@
-import {search} from "../Search";
+import {search} from "polar-search-api/src/api/search/Search";
 import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Strings, URLStr} from "polar-shared/src/util/Strings";
 import {Fetches} from "polar-shared/src/util/Fetch";
