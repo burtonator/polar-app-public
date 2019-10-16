@@ -5,8 +5,6 @@ export class AdBlocker {
 
     public static cleanse(contentDoc: Document, url: string): AdBlockResult {
 
-        new RegExp("foo").test("")
-
         return {
             amp: this.removeElements('amp-ad', contentDoc)
         };
