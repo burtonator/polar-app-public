@@ -6,6 +6,7 @@ export class DOILookup {
 
     public static async lookup(doi: DOIStr): Promise<search.Results> {
 
+        // TODO: fatcat supports DOI too...
         return await SearchClient.exec({q: doi, target: 'unpaywall'})
 
     }
