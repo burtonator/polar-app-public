@@ -4,11 +4,13 @@ import {Resources} from "./Resources";
 import {Resource} from "./Resource";
 import {ContentTypes} from "./ContentTypes";
 import {ResourceEntry} from "./ResourceEntry";
+import {PathStr} from "polar-shared/src/util/Strings";
+import {PHZWritable} from "./PHZWritable";
 
 /**
  * Write to a new zip output stream.
  */
-export class PHZWriter {
+export class PHZWriter implements PHZWritable {
 
     private stream: fs.WriteStream;
 
@@ -16,7 +18,7 @@ export class PHZWriter {
 
     public resources: Resources;
 
-    constructor(private output: string | fs.WriteStream) {
+    constructor(private readonly output: PathStr | fs.WriteStream) {
 
         if (typeof this.output === 'string') {
             this.stream = fs.createWriteStream(<string>output);
@@ -89,7 +91,7 @@ export class PHZWriter {
      * Save the new zip file to disk.
      * @return {Promise<void>}
      */
-    public async close() {
+    public async close(): Promise<void> {
 
         this.__writeResources();
 

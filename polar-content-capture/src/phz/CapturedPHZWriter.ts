@@ -4,16 +4,15 @@ import {Captured, CapturedDoc} from '../capture/Captured';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Objects} from "polar-shared/src/util/Objects";
 import {PHZWriter} from "./PHZWriter";
+import {PathStr} from "polar-shared/src/util/Strings";
+import {PHZWritable} from "./PHZWritable";
 
 /**
  * Writes out a PHZ archive from the given captured JSON data.
  */
 export class CapturedPHZWriter {
 
-    public path: string;
-
-    constructor(path: string) {
-        this.path = path;
+    constructor(public readonly output: PathStr | PHZWritable) {
     }
 
     /**
@@ -24,7 +23,17 @@ export class CapturedPHZWriter {
      */
     public async convert(captured: Captured) {
 
-        const phzWriter = new PHZWriter(this.path);
+        const toPHZWritable = () => {
+
+            if (typeof this.output === 'string') {
+                return new PHZWriter(this.output);
+            }
+
+            return <PHZWritable> this.output;
+
+        };
+
+        const phzWriter = toPHZWritable();
 
         // convert the captured to metadata...
         const metadata = CapturedPHZWriter.toMetadata(captured);
@@ -46,7 +55,6 @@ export class CapturedPHZWriter {
         });
 
         await phzWriter.writeMetadata(metadata);
-
         await phzWriter.close();
 
     }
