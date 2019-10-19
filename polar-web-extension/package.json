@@ -1,6 +1,6 @@
 {
   "name": "polar-web-extension",
-  "version": "1.32.53",
+  "version": "1.32.54",
   "description": "https://github.com/yeoman/generator-chrome-extension",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

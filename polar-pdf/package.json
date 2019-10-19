@@ -1,6 +1,6 @@
 {
   "name": "polar-pdf",
-  "version": "1.32.53",
+  "version": "1.32.54",
   "description": "Provides support for parsing and working with PDFs.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "dependencies": {
     "@types/pdfjs-dist": "^2.1.2",
     "pdfjs-dist": "~2.2.228",
-    "polar-shared": "^1.32.53",
-    "polar-test": "^1.32.53"
+    "polar-shared": "^1.32.54",
+    "polar-test": "^1.32.54"
   }
 }
