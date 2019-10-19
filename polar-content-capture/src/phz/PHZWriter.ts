@@ -17,7 +17,7 @@ export class PHZWriter extends AbstractPHZWriter {
         if (typeof this.output === 'string') {
             this.stream = fs.createWriteStream(<string>output);
         } else {
-            this.stream = <fs.WriteStream>output;
+            this.stream = <fs.WriteStream> output;
         }
 
     }
