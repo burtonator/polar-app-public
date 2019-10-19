@@ -1,11 +1,10 @@
 import {Resource} from "./Resource";
-import {PHZWriter} from "./PHZWriter";
 
 export interface PHZWritable {
 
-    writeMetadata(metadata: any): Promise<PHZWriter>;
+    writeMetadata(metadata: any): Promise<void>;
 
-    writeResource(resource: Resource, content: string, comment?: string): Promise<PHZWriter>;
+    writeResource(resource: Resource, content: string, comment?: string): Promise<void>;
 
     close(): Promise<void>;
 
