@@ -12,9 +12,9 @@ import {PHZWritable} from "./PHZWritable";
  */
 export class AbstractPHZWriter implements PHZWritable {
 
-    public zip: JSZip;
+    protected readonly zip: JSZip;
 
-    public resources: Resources;
+    protected readonly resources: Resources;
 
     protected constructor() {
 
