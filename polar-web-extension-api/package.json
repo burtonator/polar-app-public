@@ -20,6 +20,7 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
+    "@types/node": "^12.11.1",
     "polar-shared": "^1.32.54"
   }
 }
