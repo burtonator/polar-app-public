@@ -3,6 +3,7 @@ import WebRequestBodyDetails = chrome.webRequest.WebRequestBodyDetails;
 import WebNavigationParentedCallbackDetails = chrome.webNavigation.WebNavigationParentedCallbackDetails;
 import BlockingResponse = chrome.webRequest.BlockingResponse;
 import {RequestIndex} from './RequestIndex';
+import RequestFilter = chrome.webRequest.RequestFilter;
 
 const HOST = 'app.getpolarized.io';
 
@@ -110,34 +111,40 @@ export class AutoPDFHandler {
 
         if (ENABLE_VIEWER_FILE_URLS) {
 
-            chrome.webRequest.onBeforeRequest.addListener(async (details): Promise<BlockingResponse | undefined> => {
+            // TODO: this is currently disabled but I think I want the NEW mechanism to redirect to the
+            //
+            // /add URL in Polar so that it's easy to automatically register these URL types.
 
-                if (isDownloadable(details)) {
-                    return;
-                }
-
-                // TODO: this has a bug where we can't determine how to open the file
-                // URL properly because it can't use a CORS request with fetch for
-                // some reason.
-
-                const response = await fetch(details.url, {mode: 'no-cors'});
-                const blob = await response.blob();
-
-                const url = URL.createObjectURL(blob);
-                const viewerUrl = getViewerURL(url);
-
-                return { redirectUrl: viewerUrl, };
-              },
-              {
-                urls: [
-                  'file://*/*.pdf',
-                  'file://*/*.PDF',
-                  // 'ftp://*/*.pdf',
-                  // 'ftp://*/*.PDF',
-                ],
-                types: ['main_frame', 'sub_frame'],
-              },
-              ['blocking']);
+            // const beforeRequestListener = (details: WebRequestBodyDetails): BlockingResponse | undefined => {
+            //
+            //     if (isDownloadable(details)) {
+            //         return;
+            //     }
+            //
+            //     // TODO: this has a bug where we can't determine how to open the file
+            //     // URL properly because it can't use a CORS request with fetch for
+            //     // some reason.
+            //
+            //     const response = await fetch(details.url, {mode: 'no-cors'});
+            //     const blob = await response.blob();
+            //
+            //     const url = URL.createObjectURL(blob);
+            //     const viewerUrl = getViewerURL(url);
+            //
+            //     return { redirectUrl: viewerUrl, };
+            // };
+            //
+            // const filter: RequestFilter = {
+            //     urls: [
+            //         'file://*/*.pdf',
+            //         'file://*/*.PDF',
+            //         // 'ftp://*/*.pdf',
+            //         // 'ftp://*/*.PDF',
+            //     ],
+            //     types: ['main_frame', 'sub_frame'],
+            // };
+            //
+            // chrome.webRequest.onBeforeRequest.addListener(beforeRequestListener, filter, ['blocking']);
 
         }
 
