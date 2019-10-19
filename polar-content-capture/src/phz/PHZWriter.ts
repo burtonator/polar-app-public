@@ -22,10 +22,8 @@ export class PHZWriter extends AbstractPHZWriter {
 
     }
 
-
     /**
      * Save the new zip file to disk.
-     * @return {Promise<void>}
      */
     public async close(): Promise<void> {
 
