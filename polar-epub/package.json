@@ -1,0 +1,23 @@
+{
+  "name": "polar-epub",
+  "version": "1.32.55",
+  "description": "EPUB support in Polar.",
+  "main": "index.js",
+  "scripts": {
+    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "mocha": "^6.2.0",
+    "polar-test": "^1.32.55",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "polar-shared": "^1.32.55"
+  }
+}
