@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/node": "^12.11.1",
     "polar-shared": "^1.32.54",
+    "polar-web-extension-api": "^1.32.54",
     "@fortawesome/fontawesome-free": "^5.11.2",
     "bootstrap": "^4.3.1",
     "cache-loader": "^4.1.0",

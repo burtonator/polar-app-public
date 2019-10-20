@@ -1,6 +1,6 @@
 import {Results} from 'polar-shared/src/util/Results';
 import {Handlers} from './Handlers';
-import {webextensions} from '../polar-web-extension-api/src/WebExtensions';
+import {webextensions} from 'polar-web-extension-api/src/WebExtensions';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';

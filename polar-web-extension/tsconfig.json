@@ -13,7 +13,7 @@
     "sourceMap": true,
     "target": "ES2015",
     "module": "ES2015",
-    "moduleResolution": "classic",
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowJs": false,
@@ -29,7 +29,7 @@
 
     "allowSyntheticDefaultImports": true,
 
-    "baseUrl": "../../polar-bookshelf/extension",
+    "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*"]
     },
@@ -37,10 +37,11 @@
 
   },
   "include": [
-    "*.ts"
+    "src/**/*"
   ],
   "exclude": [
-
+    "node_modules/**/*",
+    "node_modules"
   ],
   "types": [
     "mocha",
