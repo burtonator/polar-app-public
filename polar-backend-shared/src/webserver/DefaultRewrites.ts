@@ -1,4 +1,4 @@
-import {Rewrite} from "../polar-shared-webserver/src/webserver/Rewrites";
+import {Rewrite} from "polar-shared-webserver/src/webserver/Rewrites";
 
 export class DefaultRewrites {
 
