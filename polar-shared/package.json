@@ -23,7 +23,8 @@
     "mocha": "^6.2.0",
     "polar-test": "^1.32.55",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "wait-for-expect": "~1.1.0"
   },
   "dependencies": {
     "@types/blueimp-md5": "^2.7.0",
