@@ -2,9 +2,25 @@ import twitter_txt from 'twitter-text';
 import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {Dictionaries} from '../util/Dictionaries';
-import {Arrays} from '../util/Arrays';
+import {SetArrays} from "../util/SetArrays";
+import {IDStr} from "../util/Strings";
+import {Arrays} from "../util/Arrays";
 
 export class Tags {
+
+    /**
+     * Only folders (no tags).
+     */
+    public static onlyFolderTags(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+        return tags.filter(tag => tag.label.startsWith('/'));
+    }
+
+    /**
+     * Only tags (no folders).
+     */
+    public static onlyRegular(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+        return tags.filter(tag => ! tag.label.startsWith('/'));
+    }
 
     public static create(label: string): Tag {
         return {id: label, label};
@@ -67,7 +83,7 @@ export class Tags {
     public static tagsAreValid(...tags: Tag[]): boolean {
 
         return tags.map(tag => this.validateTag(tag).isPresent())
-            .reduce((acc, curr) => ! acc ? false : curr, true);
+                   .reduce((acc, curr) => ! acc ? false : curr, true);
 
     }
 
@@ -83,7 +99,7 @@ export class Tags {
         return tags.filter(tag => this.validateTag(tag).isPresent());
     }
 
-    public static toMap(tags: Tag[]) {
+    public static toMap(tags: ReadonlyArray<Tag>) {
 
         const result: { [id: string]: Tag } = {};
 
@@ -98,7 +114,7 @@ export class Tags {
     /**
      * From a union of the two tag arrays.
      */
-    public static union(a: Tag[], b: Tag[]): Tag[] {
+    public static union(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
 
         const result: { [id: string]: Tag } = {};
 
@@ -144,10 +160,31 @@ export class Tags {
         const split = value.split(":");
 
         return Optional.of({
-                               name: split[0],
-                               value: split[1]
-                           });
+            name: split[0],
+            value: split[1]
+        });
     }
+
+    /**
+     * Find any records in the given array with the given tags.
+     */
+    public static computeRecordsTagged<R extends TaggedRecord>(records: ReadonlyArray<R>,
+                                                               tags: ReadonlyArray<TagStr>): ReadonlyArray<R> {
+
+        const index: {[id: string]: R} = {};
+
+        for (const record of records) {
+
+            if (SetArrays.intersects(record.tags || [], tags)) {
+                index[record.id] = record;
+            }
+
+        }
+
+        return Object.values(index);
+
+    }
+
 }
 
 export interface Tag {
@@ -184,3 +221,21 @@ export interface TypedTag {
     readonly value: string;
 
 }
+
+/**
+ * An object that contains tags.
+ */
+export interface TaggedRecord {
+    readonly id: IDStr;
+    readonly tags?: ReadonlyArray<TagStr>;
+}
+
+/**
+ * A string representation of a tag.
+ */
+export type TagStr = string;
+
+/**
+ * Just the tag ID, not the TagStr (which might not be unique).
+ */
+export type TagIDStr = string;

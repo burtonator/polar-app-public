@@ -63,6 +63,28 @@ describe('RegExp', function() {
 
 });
 
+describe('folders', function() {
+
+    it("test unicode literal", function() {
+
+        // Tags.assertValid("/");
+        Tags.assertValid("/tmp");
+        Tags.assertValid("/tmp/foo");
+        Tags.assertValid("/tmp/foo/CatDog");
+
+        // TODO this SHOULD pass but it does not... I think we should support
+        // spaces in tags now. even though they're not really supported in
+        // other systems.
+        // Tags.assertValid("/tmp/foo/Cat Dog");
+
+        assert.throws(() => Tags.assertValid("/tmp/foo/"));
+        assert.throws(() => Tags.assertValid("/"));
+        assert.throws(() => Tags.assertValid("/tmp//foo"));
+
+    });
+
+});
+
 describe('type tags', function() {
 
     it("basic functionality", function() {
