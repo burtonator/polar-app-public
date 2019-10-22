@@ -8,6 +8,19 @@ import {Arrays} from "../util/Arrays";
 
 export class Tags {
 
+    public static sortByLabel(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+        return [...tags].sort((a, b) => a.label.localeCompare(b.label));
+    }
+
+    public static regularTagsThenFolderTagsSorted(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+
+        const regularTags = this.sortByLabel(this.onlyRegular(tags));
+        const folderTags = this.sortByLabel(this.onlyFolderTags(tags));
+
+        return [...regularTags, ...folderTags];
+
+    }
+
     /**
      * Only folders (no tags).
      */
