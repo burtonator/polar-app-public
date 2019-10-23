@@ -1,6 +1,6 @@
 {
   "name": "polar-webapp-links",
-  "version": "1.32.55",
+  "version": "1.32.56",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,11 +16,11 @@
     "@types/node": "^12.11.1",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "polar-test": "^1.32.55",
+    "polar-test": "^1.32.56",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "polar-shared": "^1.32.55"
+    "polar-shared": "^1.32.56"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "polar-search",
-  "version": "1.32.55",
+  "version": "1.32.56",
   "description": "Provides an API for searching 3rd party APIs",
   "main": "index.js",
   "scripts": {
@@ -13,14 +13,14 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "mocha": "^6.2.0",
-    "polar-test": "^1.32.55",
+    "polar-test": "^1.32.56",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {
     "@types/xmldom": "^0.1.29",
-    "polar-search-api": "^1.32.55",
-    "polar-shared": "^1.32.55",
+    "polar-search-api": "^1.32.56",
+    "polar-shared": "^1.32.56",
     "xmldom": "^0.1.27"
   }
 }
