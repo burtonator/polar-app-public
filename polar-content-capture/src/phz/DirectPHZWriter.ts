@@ -7,6 +7,10 @@ import {Base64Str} from "polar-shared/src/util/Base64";
  */
 export class DirectPHZWriter extends AbstractPHZWriter {
 
+    constructor() {
+        super();
+    }
+
     public async toBase64(): Promise<Base64Str> {
         return await this.zip.generateAsync({type: 'base64'});
     }

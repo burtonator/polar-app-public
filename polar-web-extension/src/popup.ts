@@ -71,6 +71,18 @@ async function onExtensionActivated() {
 
 }
 
+async function onExtensionActivated2() {
+
+    // execute the content script so that we define the handler for capture.
+
+    // chrome.tabs.executeScript({
+    //     file: 'contentScript.js'
+    // });
+
+    //
+
+}
+
 function setupLinkHandlers() {
 
     document.querySelector("#download-link")!.addEventListener('click', () => {
