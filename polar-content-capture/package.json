@@ -26,5 +26,10 @@
 	"dependencies": {
 		"jszip": "~3.2.2",
 		"polar-shared": "^1.32.57"
-	}
+	},
+	"files": [
+		"**/*.js",
+		"**/*.d.ts",
+		"package.json"
+	]
 }
