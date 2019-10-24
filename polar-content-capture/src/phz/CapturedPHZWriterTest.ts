@@ -2,6 +2,7 @@ import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {MockCapturedContent} from './MockCapturedContent';
 import {CapturedPHZWriter} from './CapturedPHZWriter';
 import {TestingTime} from "polar-shared/src/test/TestingTime";
+import {PHZWriter} from "./PHZWriter";
 
 describe('CapturedPHZWriter', function() {
 
@@ -10,7 +11,9 @@ describe('CapturedPHZWriter', function() {
 
         const captured = MockCapturedContent.create();
 
-        const capturedPHZWriter = new CapturedPHZWriter(FilePaths.tmpfile("captured.phz"));
+        const output = new PHZWriter(FilePaths.tmpfile("captured.phz"));
+
+        const capturedPHZWriter = new CapturedPHZWriter(output);
         await capturedPHZWriter.convert(captured);
 
     });

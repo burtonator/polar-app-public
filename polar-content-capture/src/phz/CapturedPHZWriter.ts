@@ -3,8 +3,6 @@ import {ResourceFactory} from './ResourceFactory';
 import {Captured, CapturedDoc} from '../capture/Captured';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Objects} from "polar-shared/src/util/Objects";
-import {PHZWriter} from "./PHZWriter";
-import {PathStr} from "polar-shared/src/util/Strings";
 import {PHZWritable} from "./PHZWritable";
 
 /**
@@ -12,7 +10,7 @@ import {PHZWritable} from "./PHZWritable";
  */
 export class CapturedPHZWriter {
 
-    constructor(public readonly output: PathStr | PHZWritable) {
+    constructor(public readonly output: PHZWritable) {
     }
 
     /**
@@ -23,17 +21,7 @@ export class CapturedPHZWriter {
      */
     public async convert(captured: Captured) {
 
-        const toPHZWritable = () => {
-
-            if (typeof this.output === 'string') {
-                return new PHZWriter(this.output);
-            }
-
-            return <PHZWritable> this.output;
-
-        };
-
-        const phzWriter = toPHZWritable();
+        const phzWriter = this.output;
 
         // convert the captured to metadata...
         const metadata = CapturedPHZWriter.toMetadata(captured);
