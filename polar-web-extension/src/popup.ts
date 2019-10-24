@@ -1,4 +1,5 @@
 import {ImportContentAPI} from './ImportContentAPI';
+import {ExtensionContentCaptureClient} from "./ExtensionContentCaptureClient";
 
 function loadLinkInNewTab(link: string) {
     chrome.tabs.create({url: link});
@@ -71,15 +72,13 @@ async function onExtensionActivated() {
 
 }
 
-async function onExtensionActivated2() {
+async function __onExtensionActivated() {
 
-    // execute the content script so that we define the handler for capture.
+    const captured = await ExtensionContentCaptureClient.capture();
 
-    // chrome.tabs.executeScript({
-    //     file: 'contentScript.js'
-    // });
+    // now that the data is captured from the browser we have to figure out how to
+    // store it in firebase.
 
-    //
 
 }
 

@@ -7,17 +7,20 @@ import {CapturedPHZWriter} from "polar-content-capture/src/phz/CapturedPHZWriter
 
 const MESSAGE_TYPE_CAPTURE = 'polar-capture';
 
-window.addEventListener('message', event => {
+console.log("Starting content capture script (4)");
 
-    const source = <IPostMessage> event.source!;
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     const isCaptureRequest = () => {
-        return event.data && event.data.type === MESSAGE_TYPE_CAPTURE;
+        return message && message.type === MESSAGE_TYPE_CAPTURE;
     };
 
     const handler = async () => {
 
+        console.log("Received a message.");
+
         if (! isCaptureRequest()) {
+            console.log("Message is not a capture request: ", message);
             return;
         }
 
@@ -30,20 +33,15 @@ window.addEventListener('message', event => {
 
         const data = await writer.toBase64();
 
-        source.postMessage(Results.create({data}));
+        sendResponse(Results.create({data}));
 
     };
 
     handler().catch(err => {
         console.error("Unable to capture content: ", err);
-        source.postMessage(Results.createError(err));
+        sendResponse(Results.createError(err));
     });
 
 });
 
-/**
- * This is a workaround for a bad typescript definition that prevents calling postMessage.
- */
-interface IPostMessage {
-    postMessage(message: any, options?: PostMessageOptions): void;
-}
+console.log("FIXME: Polar is listening for capture requests now (2");

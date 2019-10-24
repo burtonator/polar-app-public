@@ -1,7 +1,9 @@
 import {DataURL} from 'polar-shared/src/util/DataURLs';
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const EXTENSION_IDS = [
     "alennbmnfgmkcmfkcnlhpofncmalokfc", // dev
+    "djhpkkgkedcpphgmbekmmeoalamnibfg",
     "jkfdkjomocoaljglgddnmhcbolldcafd"  // prod
 ];
 
@@ -74,6 +76,21 @@ export namespace webextensions {
                 });
 
             });
+
+        }
+
+        public static async sendMessage(tabId: number, message: any): Promise<any> {
+
+            Preconditions.assertPresent(tabId, 'tabId');
+
+            return new Promise((resolve, reject) => {
+                try {
+                    chrome.tabs.sendMessage(tabId, message, response => resolve(response));
+                } catch (e) {
+                    reject(e);
+                }
+
+            })
 
         }
 
