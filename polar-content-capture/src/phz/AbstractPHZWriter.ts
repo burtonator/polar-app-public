@@ -1,10 +1,8 @@
-import fs from "fs";
 import JSZip from "jszip";
 import {Resources} from "./Resources";
 import {Resource} from "./Resource";
 import {ContentTypes} from "./ContentTypes";
 import {ResourceEntry} from "./ResourceEntry";
-import {PathStr} from "polar-shared/src/util/Strings";
 import {PHZWritable} from "./PHZWritable";
 
 /**
