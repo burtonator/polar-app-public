@@ -8,6 +8,7 @@ import {ReadingOverview} from "./ReadingOverview";
 import {IAttachment} from "./IAttachment";
 import {Visibility} from "../datastore/Visibility";
 import {IDocAuthor} from "./IDocAuthor";
+import {IThumbnail} from "./IThumbnail";
 
 export interface IDocInfo {
 
@@ -196,6 +197,11 @@ export interface IDocInfo {
     attachments: {[id: string]: IAttachment};
 
     authors?: ReadonlyArray<IDocAuthor>;
+
+    /**
+     * Thumbnails for the document which allow for preview.
+     */
+    thumbnails?: { [id: string]: IThumbnail };
 
 }
 
