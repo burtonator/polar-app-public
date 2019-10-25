@@ -2,9 +2,10 @@ import {ArrayBuffers} from './ArrayBuffers';
 import {ILTRect} from './rects/ILTRect';
 import {Preconditions} from '../Preconditions';
 import {DataURL} from './DataURLs';
+import {IDimensions} from "./IDimensions";
 
-const IMAGE_TYPE = 'image/png';
-const IMAGE_QUALITY = 1.0;
+const DEFAULT_IMAGE_TYPE = 'image/png';
+const DEFAULT_IMAGE_QUALITY = 1.0;
 
 /**
  * Keeps the binary data but also metadata for the extract.
@@ -17,6 +18,8 @@ export interface ExtractedImage {
 }
 
 export type ImageType = 'image/png' | 'image/jpeg';
+
+export type ImageData = ArrayBuffer | DataURL | HTMLImageElement;
 
 /**
  * Functions for working with canvas objects, extracting screenshots, etc.
@@ -50,7 +53,7 @@ export class Canvases {
 
         const encoded = ArrayBuffers.toBase64(ab);
 
-        return `data:${IMAGE_TYPE};base64,` + encoded;
+        return `data:${DEFAULT_IMAGE_TYPE};base64,` + encoded;
 
     }
 
@@ -96,33 +99,43 @@ export class Canvases {
 
     }
 
-    public static async crop(image: DataURL | HTMLImageElement,
+    private static async createImageElementFromDataURL(image: DataURL): Promise<HTMLImageElement> {
+
+        return new Promise<HTMLImageElement>((resolve, reject) => {
+
+            const img = document.createElement("img") as HTMLImageElement;
+            img.src = image;
+
+            img.onload = () => resolve(img);
+
+            img.onerror = (err) => reject(err);
+            img.onabort = (err) => reject(err);
+
+            return img;
+
+        });
+    }
+
+    private static async createImageElement(image: ImageData): Promise<HTMLImageElement> {
+
+        if (image instanceof HTMLImageElement) {
+            return image;
+        }
+
+        if (image instanceof ArrayBuffer) {
+            const dataURL = await this.toDataURL(image);
+            return this.createImageElementFromDataURL(dataURL);
+        }
+
+        return this.createImageElementFromDataURL(image);
+
+    }
+
+    public static async crop(image: ImageData,
                              rect: ILTRect,
                              opts: CropOpts = new DefaultImageOpts()): Promise<DataURL> {
 
-        const createSRC = () => {
-
-            if (image instanceof HTMLImageElement) {
-                return image;
-            }
-
-            return new Promise<HTMLImageElement>((resolve, reject) => {
-
-                const img = document.createElement("img") as HTMLImageElement;
-                img.src = image;
-
-                img.onload = () => resolve(img);
-
-                img.onerror = (err) => reject(err);
-                img.onabort = (err) => reject(err);
-
-                return img;
-
-            });
-
-        };
-
-        const src = await createSRC();
+        const src = await this.createImageElement(image);
 
         const canvas = opts.canvas || document.createElement("canvas");
 
@@ -136,6 +149,44 @@ export class Canvases {
         ctx.drawImage(src,
                       rect.left, rect.top, rect.width, rect.height,
                       0, 0, rect.width, rect.height);
+
+        return canvas.toDataURL();
+
+    }
+
+    public static async resize(image: ImageData,
+                               dimensions: IDimensions,
+                               opts: ResizeOpts = new DefaultImageOpts()) {
+
+        const src = await this.createImageElement(image);
+
+        const canvas = opts.canvas || document.createElement("canvas");
+
+        const ctx = canvas.getContext('2d', {alpha: false})!;
+
+        canvas.width = dimensions.width;
+        canvas.height = dimensions.height;
+
+        const createSourceDimensions = () => {
+
+            if (opts.keepAspectRatio) {
+                const width = src.width;
+                const idealHeight = src.width / (dimensions.width / dimensions.height);
+                const height = Math.min(src.height, idealHeight);
+
+                return {width, height};
+
+            }
+
+            return {width: src.width, height: src.height};
+
+        };
+
+        // TODO: keep aspect ratio of target option...
+        const sourceDimensions = createSourceDimensions();
+
+        ctx.drawImage(src, 0, 0, sourceDimensions.width, sourceDimensions.height,
+                      0, 0, dimensions.width, dimensions.height);
 
         return canvas.toDataURL();
 
@@ -194,17 +245,23 @@ export class Canvases {
 
 }
 
-interface CropOpts extends ImageOpts {
+interface CanvasOpts {
     canvas?: HTMLCanvasElement;
+}
+
+interface CropOpts extends ImageOpts, CanvasOpts {
+}
+
+interface ResizeOpts extends ImageOpts, CanvasOpts {
+    readonly keepAspectRatio?: boolean;
 }
 
 interface ImageOpts {
     readonly type: ImageType;
     readonly quality: number;
-
 }
 
 class DefaultImageOpts implements ImageOpts {
-    public readonly type = IMAGE_TYPE;
-    public readonly quality = IMAGE_QUALITY;
+    public readonly type = DEFAULT_IMAGE_TYPE;
+    public readonly quality = DEFAULT_IMAGE_QUALITY;
 }
