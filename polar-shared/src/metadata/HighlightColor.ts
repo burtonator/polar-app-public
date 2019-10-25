@@ -24,6 +24,16 @@ export type AlphaChannel = number;
 
 export class HighlightColors {
 
+    public static toDefaultColor(value: NamedColor | RGBColor | undefined | null) {
+
+        if (! value) {
+            return 'yellow';
+        }
+
+        return value;
+
+    }
+
     /**
      * Convert to our standard background color for text highlights.
      *
@@ -31,9 +41,7 @@ export class HighlightColors {
     public static toBackgroundColor(value: NamedColor | RGBColor | undefined | null,
                                     alpha: AlphaChannel = 0.7): BackgroundColor {
 
-        if (! value) {
-            value = 'yellow';
-        }
+        value = this.toDefaultColor(value);
 
         switch (value) {
 
