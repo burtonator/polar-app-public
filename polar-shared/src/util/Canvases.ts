@@ -156,7 +156,7 @@ export class Canvases {
 
     public static async resize(image: ImageData,
                                dimensions: IDimensions,
-                               opts: ResizeOpts = new DefaultImageOpts()) {
+                               opts: ResizeOpts = new DefaultImageOpts()): Promise<ResizedImage> {
 
         const src = await this.createImageElement(image);
 
@@ -185,10 +185,14 @@ export class Canvases {
         // TODO: keep aspect ratio of target option...
         const sourceDimensions = createSourceDimensions();
 
+        // TODO: what the resulting image is not the height because the source dimensions were changed on us...
+
         ctx.drawImage(src, 0, 0, sourceDimensions.width, sourceDimensions.height,
                       0, 0, dimensions.width, dimensions.height);
 
-        return canvas.toDataURL();
+        const dataURL = canvas.toDataURL();
+
+        return {dataURL, size: dimensions};
 
     }
 
@@ -245,23 +249,28 @@ export class Canvases {
 
 }
 
-interface CanvasOpts {
+export interface ResizedImage {
+    readonly dataURL: DataURL;
+    readonly size: IDimensions;
+}
+
+export interface CanvasOpts {
     canvas?: HTMLCanvasElement;
 }
 
-interface CropOpts extends ImageOpts, CanvasOpts {
+export interface CropOpts extends ImageOpts, CanvasOpts {
 }
 
-interface ResizeOpts extends ImageOpts, CanvasOpts {
+export interface ResizeOpts extends ImageOpts, CanvasOpts {
     readonly keepAspectRatio?: boolean;
 }
 
-interface ImageOpts {
+export interface ImageOpts {
     readonly type: ImageType;
     readonly quality: number;
 }
 
-class DefaultImageOpts implements ImageOpts {
+export class DefaultImageOpts implements ImageOpts {
     public readonly type = DEFAULT_IMAGE_TYPE;
     public readonly quality = DEFAULT_IMAGE_QUALITY;
 }

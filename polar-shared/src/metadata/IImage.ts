@@ -1,5 +1,7 @@
 import {BackendFileRef} from "../datastore/BackendFileRef";
 
+export type IImageRel = 'screenshot' | 'thumbnail' | 'highlight' | string;
+
 export interface IImage {
 
     /**
@@ -40,7 +42,7 @@ export interface IImage {
      * the developer and still compatible with the schema.  Standard relations
      * are and will be defined and future relations can be added at any point.
      */
-    readonly rel?: string;
+    readonly rel?: IImageRel;
 
 }
 

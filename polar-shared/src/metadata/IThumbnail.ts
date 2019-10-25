@@ -1,6 +1,7 @@
 import {ISODateTimeString} from "./ISODateTimeStrings";
+import {IImage} from "./IImage";
 
-export interface IThumbnail {
+export interface IThumbnail extends IImage {
 
     /**
      * The unique ID for this object.
@@ -11,6 +12,6 @@ export interface IThumbnail {
      * The time this object was created
      *
      */
-    created: ISODateTimeString;
+    readonly created: ISODateTimeString;
 
 }
