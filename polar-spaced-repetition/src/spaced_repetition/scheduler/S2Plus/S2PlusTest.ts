@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Dates} from './Dates';
-import {PerformanceRating, S2Plus} from './S2Plus';
+import {Performance, Rating, S2Plus} from './S2Plus';
 import {DEFAULT_DIFFICULTY} from './S2Plus';
 import {DEFAULT_INTERVAL} from './S2Plus';
 import {Days} from './Dates';
@@ -9,20 +9,37 @@ import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DateConstants} from "./DateConstants";
 
-interface TestScheduling {
+export interface TestRating {
+
+    readonly reviewedAt: ISODateTimeString;
     readonly difficulty: Difficulty;
     readonly interval: Days;
+
+}
+
+/**
+ * Like scheduling but the dates are ISO strings for ease of use.
+ */
+export interface TestScheduling extends TestRating {
+
     readonly nextReviewDate: ISODateTimeString;
-    readonly reviewedAt: ISODateTimeString;
+
 }
 
 interface TestCalculate {
-    readonly prevReviewedAt: Date,
-    readonly performanceRating: PerformanceRating,
-    readonly prevDifficulty: Difficulty,
-    readonly prevInterval: Days,
+    /**
+     * The current time this test is being run.
+     */
+    readonly timestamp?: ISODateTimeString;
+
+    readonly rating: TestRating;
+
+    readonly performance: Performance,
+
+    // FIXME: what fields are shared with the prev object?
     readonly scheduling: TestScheduling,
 }
+
 //
 // const testData = [
 //     {
@@ -168,13 +185,27 @@ describe("calculate", () => {
         const {today} = testDates;
 
         for (const answer of answers) {
-            const { prevReviewedAt, prevDifficulty, prevInterval, performanceRating, scheduling } = answer;
-            const resultScheduling = S2Plus.calculate(prevReviewedAt, prevDifficulty, prevInterval, performanceRating, today);
-            expect(resultScheduling.reviewedAt).to.equal(today);
-            expect(resultScheduling.interval).to.equal(scheduling.interval);
-            expect(resultScheduling.difficulty.toFixed(2)).to.equal(scheduling.difficulty.toString());
-            expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.nextReviewDate)).to.equal(scheduling.nextReviewDate);
-            expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.reviewedAt)).to.equal(scheduling.reviewedAt);
+            const { performance, scheduling } = answer;
+
+            if (answer.timestamp) {
+                const epoch = new Date(answer.timestamp);
+                TestingTime.freeze(epoch);
+            }
+
+            console.log("====" + new Date().toISOString());
+
+            const rating: Rating = {
+                reviewedAt: new Date(answer.rating.reviewedAt),
+                difficulty: answer.rating.difficulty,
+                interval: answer.rating.interval
+            };
+
+            const resultScheduling = S2Plus.calculate(rating, performance, today);
+            expect(resultScheduling.reviewedAt, "resultScheduling.reviewedAt").to.equal(today);
+            expect(resultScheduling.interval, "resultScheduling.interval").to.equal(scheduling.interval);
+            expect(resultScheduling.difficulty.toFixed(2), "resultScheduling.difficulty").to.equal(scheduling.difficulty.toFixed(2));
+            expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.nextReviewDate), "resultScheduling.nextReviewDate").to.equal(scheduling.nextReviewDate);
+            expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.reviewedAt), "resultScheduling.reviewedAt").to.equal(scheduling.reviewedAt);
             console.log("PASSED");
         }
 
@@ -227,45 +258,52 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
 
     const testDates = DateConstants.create();
 
+    console.log(new Date().toISOString());
+
     return [
 
         {
-            prevReviewedAt: Dates.subtractDays(testDates.today, 1),
-            performanceRating: 1,
+            timestamp: "2012-03-02T11:38:49.321Z",
+            performance: 1,
             // FIXME: how do I set the difficulty for the first one..?
-            prevDifficulty: 0.5,
-            prevInterval: 1,
+            rating: {
+                reviewedAt: "2012-03-01T11:38:49.321Z",
+                difficulty: 0.0,
+                interval: 1,
+            },
             scheduling: {
-                difficulty: 0.44,
-                interval: 2,
-                nextReviewDate: "2012-03-04T11:38:49.321Z",
+                difficulty: 0.00,
+                interval: 3,
+                nextReviewDate: "2012-03-05T11:38:49.321Z",
                 reviewedAt: "2012-03-02T11:38:49.321Z"
             },
         },
-        {
-            prevReviewedAt: Dates.subtractDays(testDates.today, 10),
-            performanceRating: 1,
-            prevDifficulty: 0.5,
-            prevInterval: 1,
-            scheduling: {
-                difficulty: 0.38,
-                interval: 4,
-                nextReviewDate: "2012-03-06T11:38:49.321Z",
-                reviewedAt: "2012-03-02T11:38:49.321Z"
-            },
-        },
-        {
-            prevReviewedAt: Dates.subtractDays(testDates.today, 10),
-            performanceRating: 1,
-            prevDifficulty: 0.5,
-            prevInterval: 1,
-            scheduling: {
-                difficulty: 0.38,
-                interval: 4,
-                nextReviewDate: "2012-03-06T11:38:49.321Z",
-                reviewedAt: "2012-03-02T11:38:49.321Z"
-            },
-        },
+        // FIXME: don't I need to jump the clock into the future here
+        // {
+        //     timestamp: "2012-03-05T11:38:49.321Z",
+        //     prevReviewedAt: new Date("2012-03-02T11:38:49.321Z"),
+        //     performanceRating: 1,
+        //     prevDifficulty: 0.00,
+        //     prevInterval: 3,
+        //     scheduling: {
+        //         difficulty: 0.38,
+        //         interval: 4,
+        //         nextReviewDate: "2012-03-06T11:38:49.321Z",
+        //         reviewedAt: "2012-03-02T11:38:49.321Z"
+        //     },
+        // },
+        // {
+        //     prevReviewedAt: Dates.subtractDays(testDates.today, 10),
+        //     performanceRating: 1,
+        //     prevDifficulty: 0.5,
+        //     prevInterval: 1,
+        //     scheduling: {
+        //         difficulty: 0.38,
+        //         interval: 4,
+        //         nextReviewDate: "2012-03-06T11:38:49.321Z",
+        //         reviewedAt: "2012-03-02T11:38:49.321Z"
+        //     },
+        // },
 
     ];
 

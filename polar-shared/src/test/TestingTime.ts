@@ -2,14 +2,15 @@
 import timekeeper from 'timekeeper';
 import {DurationMS, DurationStr, TimeDurations} from '../util/TimeDurations';
 
-const time = new Date(1330688329321);
+const epoch = new Date(1330688329321);
 
 export class TestingTime {
 
     /**
      * Freeze time for testing at '2012-03-02T11:38:49.321Z'
      */
-    public static freeze() {
+    public static freeze(time: Date = epoch) {
+        timekeeper.reset();
         timekeeper.freeze(time);
     }
 

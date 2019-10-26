@@ -17,7 +17,7 @@ export type ConfidenceInterval = number;
 /**
  * The performance of review base on a confidence interval.
  */
-export type PerformanceRating = ConfidenceInterval;
+export type Performance = ConfidenceInterval;
 
 /**
  * How difficult the item is, from [0.0, 1.0].  Defaults to 0.3 (if the software
@@ -27,6 +27,26 @@ export type PerformanceRating = ConfidenceInterval;
  * because it’s the more natural thing to measure.
  */
 export type Difficulty = ConfidenceInterval;
+
+
+export interface Rating {
+
+    /**
+     * The time this item was reviewed.  For new cards use the current time and the set an 'interval' to the default
+     * interval which is probably 1 day.
+     */
+    readonly reviewedAt: Date;
+
+    readonly difficulty: Difficulty;
+
+    readonly interval: Days;
+
+}
+
+export interface Scheduling extends Rating {
+    readonly nextReviewDate: Date;
+}
+
 
 /**
  * TODO
@@ -62,39 +82,33 @@ export class S2Plus {
     /**
      *
      *
-     * @param prevReviewedAt The time this item was last reviewed.  For new cards use the current time and the set an
-     * 'interval' to the default interval which is probably 1 day.
      *
-     * @param prevDifficulty
+     * @param rating The rating data persisted between ratings of the user.
      *
-     * @param prevInterval
-     *
-     * @param performanceRating After an item is attempted, choose a performanceRating from [0.0, 1.0], with 1.0 being
+     * @param performance After an item is attempted, choose a performanceRating from [0.0, 1.0], with 1.0 being
      * the best.  Set a cutoff point for the answer being “correct” (default is 0.6). Then set
      *
      * @param timestamp The time the calculation was done.
      */
-    public static calculate(prevReviewedAt: Date,
-                            prevDifficulty: Difficulty,
-                            prevInterval: Days,
-                            performanceRating: PerformanceRating,
+    public static calculate(rating: Rating,
+                            performance: Performance,
                             timestamp = new Date()): Scheduling {
 
-        const percentOverdue = this.calcPercentOverdue(prevReviewedAt, prevInterval, timestamp);
+        const percentOverdue = this.calcPercentOverdue(rating.reviewedAt, rating.interval, timestamp);
 
-        const difficultyDelta = percentOverdue * (1 / 17) * (8 - 9 * performanceRating);
-        const difficulty = this.clamp(prevDifficulty + difficultyDelta, 0, 1);
+        const difficultyDelta = percentOverdue * (1 / 17) * (8 - 9 * performance);
+        const difficulty = this.clamp(rating.difficulty + difficultyDelta, 0, 1);
 
         const difficultyWeight = 3 - 1.7 * difficulty;
 
         let intervalDelta;
-        if (performanceRating < GRADE_CUTOFF) {
+        if (performance < GRADE_CUTOFF) {
             intervalDelta = Math.round(1 / difficultyWeight ** 2) || 1;
         } else {
             intervalDelta = 1 + Math.round((difficultyWeight - 1) * percentOverdue);
         }
 
-        const interval = prevInterval * intervalDelta;
+        const interval = rating.interval * intervalDelta;
 
         const nextReviewDate = Dates.addDays(timestamp, interval);
 
@@ -108,11 +122,3 @@ export class S2Plus {
     }
 
 }
-
-export interface Scheduling {
-    readonly difficulty: Difficulty;
-    readonly interval: Days;
-    readonly nextReviewDate: Date;
-    readonly reviewedAt: Date;
-}
-
