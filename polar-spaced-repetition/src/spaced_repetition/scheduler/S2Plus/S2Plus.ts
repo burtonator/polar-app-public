@@ -4,9 +4,6 @@ import {Days} from './Dates';
 const GRADE_MIN = 0;
 const GRADE_MAX = 1;
 const GRADE_CUTOFF = 0.6;
-export const DEFAULT_DIFFICULTY = 0.3;
-
-export const DEFAULT_INTERVAL = 1;
 
 
 /**
@@ -65,6 +62,10 @@ export interface Scheduling extends Rating {
  * http://www.blueraja.com/blog/477/a-better-spaced-repetition-learning-algorithm-sm2
  */
 export class S2Plus {
+
+    public static DEFAULT_DIFFICULTY = 0.3;
+
+    public static DEFAULT_INTERVAL = 1;
 
     public static clamp(value: number, min: number, max: number) {
         return Math.min(Math.max(value, min), max);

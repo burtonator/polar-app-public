@@ -180,33 +180,34 @@ describe("calculate", () => {
         TestingTime.unfreeze();
     });
 
-    function testCalculations(answers: ReadonlyArray<TestCalculate>) {
+    function testCalculations(responses: ReadonlyArray<TestCalculate>) {
 
         const testDates = DateConstants.create();
         const {today} = testDates;
 
-        for (const answer of answers) {
-            const { answer, scheduling } = answer;
+        for (const response of responses) {
 
-            if (answer.timestamp) {
-                console.log("Setting time to: " + answer.timestamp);
-                const epoch = new Date(answer.timestamp);
+            const { answer, scheduling } = response;
+
+            if (response.timestamp) {
+                console.log("Setting time to: " + response.timestamp);
+                const epoch = new Date(response.timestamp);
                 TestingTime.freeze(epoch);
                 Preconditions.assertEqual(new Date().toISOString(),
-                                          answer.timestamp,
+                                          response.timestamp,
                                           "Unable to freeze at the right time");
             }
 
             console.log("====" + new Date().toISOString());
 
             const rating: Rating = {
-                reviewedAt: new Date(answer.rating.reviewedAt),
-                difficulty: answer.rating.difficulty,
-                interval: answer.rating.interval
+                reviewedAt: new Date(response.rating.reviewedAt),
+                difficulty: response.rating.difficulty,
+                interval: response.rating.interval
             };
 
             const resultScheduling = S2Plus.calculate(rating, answer);
-            expect(resultScheduling.reviewedAt.toISOString(), "resultScheduling.reviewedAt").to.equal(answer.timestamp);
+            expect(resultScheduling.reviewedAt.toISOString(), "resultScheduling.reviewedAt").to.equal(response.timestamp);
             expect(resultScheduling.interval, "resultScheduling.interval").to.equal(scheduling.interval);
             expect(resultScheduling.difficulty.toFixed(2), "resultScheduling.difficulty").to.equal(scheduling.difficulty.toFixed(2));
             expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.nextReviewDate), "resultScheduling.nextReviewDate").to.equal(scheduling.nextReviewDate);
@@ -270,15 +271,16 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
 
         // FIXME: this data is ALL wrong...
 
+        // The difficulty for the first it is set to DEFAULT_DIFFICULTY
+
         {
             timestamp: '2012-03-02T11:38:49.321Z',
-            answer: 1,
-            // FIXME: how do I set the difficulty for the first one..?
+            answer: 1.0,
             // FIXME: this is NOT the rating... this is the PREVIOUS rating!!!
             rating: {
                 reviewedAt: "2012-03-01T11:38:49.321Z",
-                difficulty: 0.3,
-                interval: 1,
+                difficulty: S2Plus.DEFAULT_DIFFICULTY,
+                interval: S2Plus.DEFAULT_INTERVAL,
             },
             scheduling: {
                 reviewedAt: "2012-03-02T11:38:49.321Z",
@@ -289,14 +291,7 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
         },
         {
             timestamp: "2012-03-05T11:38:49.321Z",
-            answer: 1,
-
-            // FIXME we should just pop off the previous value I think...
-            // ... just have a list of performances and record the schedulings...
-            //
-            // FIXME: these values don't actually work... they don't make sense.
-            // we should be getting backed off...
-
+            answer: 1.0,
             rating: {
                 reviewedAt: "2012-03-02T11:38:49.321Z",
                 difficulty: 0.24,
@@ -309,21 +304,21 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
                 nextReviewDate: "2012-03-14T11:38:49.321Z",
             },
         },
-        // {
-        //     timestamp: "2012-03-14T11:38:49.321Z",
-        //     performance: 1,
-        //     rating: {
-        //         reviewedAt: "2012-03-02T11:38:49.321Z",
-        //         interval: 3,
-        //         difficulty: 0.00,
-        //     },
-        //     scheduling: {
-        //         reviewedAt: "2012-03-05T11:38:49.321Z",
-        //         interval: 9,
-        //         difficulty: 0.00,
-        //         nextReviewDate: "2012-03-14T11:38:49.321Z",
-        //     },
-        // },
+        {
+            timestamp: "2012-03-14T11:38:49.321Z",
+            answer: 1.0,
+            rating: {
+                reviewedAt: "2012-03-05T11:38:49.321Z",
+                interval: 9,
+                difficulty: 0.18,
+            },
+            scheduling: {
+                reviewedAt: "2012-03-14T11:38:49.321Z",
+                interval: 27,
+                difficulty: 0.12,
+                nextReviewDate: "2012-04-10T11:38:49.321Z",
+            },
+        },
 
     ];
 
