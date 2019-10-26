@@ -8,6 +8,27 @@ export const DEFAULT_DIFFICULTY = 0.3;
 
 export const DEFAULT_INTERVAL = 1;
 
+
+/**
+ * An interval over [0.0, 1.0]
+ */
+export type ConfidenceInterval = number;
+
+/**
+ * The performance of review base on a confidence interval.
+ */
+export type PerformanceRating = ConfidenceInterval;
+
+/**
+ * How difficult the item is, from [0.0, 1.0].  Defaults to 0.3 (if the software
+ * has no way of determining a better default for an item)
+ *
+ * This requires setting a max value for easiness, which I set to 3.0.  I also replaced easiness with difficulty,
+ * because it’s the more natural thing to measure.
+ */
+export type Difficulty = ConfidenceInterval;
+
+
 /**
  * TODO
  *  - What is 'difficulty' and why do we need to have it per iteration...
@@ -42,27 +63,25 @@ export class S2Plus {
     /**
      *
      *
-     * @param reviewedAt The time the value was last reviews.  For new cards
-     *                   use the current time and the set an 'interval' to the
-     *                   default interval which is probably 1 day.
+     * @param prevReviewedAt The time this item was last reviewed.  For new cards use the current time and the set an
+     * 'interval' to the default interval which is probably 1 day.
      *
      * @param prevDifficulty
      *
      * @param prevInterval
      *
-     * @param performanceRating After an item is attempted, choose a
-     * performanceRating from [0.0, 1.0], with 1.0 being the best.  Set a cutoff
-     * point for the answer being “correct” (default is 0.6). Then set
+     * @param performanceRating After an item is attempted, choose a performanceRating from [0.0, 1.0], with 1.0 being
+     * the best.  Set a cutoff point for the answer being “correct” (default is 0.6). Then set
      *
      * @param timestamp The time the calculation was done.
      */
-    public static calculate(reviewedAt: Date,
+    public static calculate(prevReviewedAt: Date,
                             prevDifficulty: Difficulty,
                             prevInterval: Days,
                             performanceRating: PerformanceRating,
                             timestamp = new Date()): Scheduling {
 
-        const percentOverdue = this.calcPercentOverdue(reviewedAt, prevInterval, timestamp);
+        const percentOverdue = this.calcPercentOverdue(prevReviewedAt, prevInterval, timestamp);
 
         const difficultyDelta = percentOverdue * (1 / 17) * (8 - 9 * performanceRating);
         const difficulty = this.clamp(prevDifficulty + difficultyDelta, 0, 1);
@@ -91,21 +110,10 @@ export class S2Plus {
 
 }
 
-/**
- * An interval over [0.0, 1.0]
- */
-export type PerformanceRating = number;
-
 export interface Scheduling {
     readonly difficulty: Difficulty;
     readonly interval: Days;
     readonly nextReviewDate: Date;
     readonly reviewedAt: Date;
 }
-
-/**
- * How difficult the item is, from [0.0, 1.0].  Defaults to 0.3 (if the software
- * has no way of determining a better default for an item)
- */
-export type Difficulty = number;
 

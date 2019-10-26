@@ -3,13 +3,26 @@ import {oneWeekAgo} from './DateConstants';
 import {oneDayAgo} from './DateConstants';
 import {today} from './DateConstants';
 import {Dates} from './Dates';
-import {S2Plus} from './S2Plus';
+import {PerformanceRating, S2Plus} from './S2Plus';
 import {DEFAULT_DIFFICULTY} from './S2Plus';
 import {DEFAULT_INTERVAL} from './S2Plus';
 import {Days} from './Dates';
 import {Difficulty} from './S2Plus';
 import {twoDaysAgo} from './DateConstants';
 import {TestingTime} from "polar-shared/src/test/TestingTime";
+
+interface TestScheduling {
+    readonly difficulty: Difficulty;
+    readonly interval: Days;
+}
+
+interface TestCalculate {
+    readonly prevReviewedAt: Date,
+    readonly performanceRating: PerformanceRating,
+    readonly prevDifficulty: Difficulty,
+    readonly prevInterval: Days,
+    readonly scheduling: TestScheduling,
+}
 
 const testData = [
     {
@@ -50,38 +63,46 @@ const testData = [
     },
 ];
 
-const testDataCalculate = [
+const testDataCalculate: ReadonlyArray<TestCalculate> = [
     {
-        reviewedAt: Dates.subtractDays(today, 1),
+        prevReviewedAt: Dates.subtractDays(today, 1),
         performanceRating: 1,
-        difficulty: 0.5,
-        interval: 1,
-        nextDifficulty: 0.44,
-        nextInterval: 2,
+        prevDifficulty: 0.5,
+        prevInterval: 1,
+        scheduling: {
+            difficulty: 0.44,
+            interval: 2
+        },
     },
     {
-        reviewedAt: Dates.subtractDays(today, 10),
+        prevReviewedAt: Dates.subtractDays(today, 10),
         performanceRating: 1,
-        difficulty: 0.5,
-        interval: 5,
-        nextDifficulty: 0.38,
-        nextInterval: 20,
+        prevDifficulty: 0.5,
+        prevInterval: 5,
+        scheduling: {
+            difficulty: 0.38,
+            interval: 20
+        },
     },
     {
-        reviewedAt: Dates.subtractDays(today, 18),
+        prevReviewedAt: Dates.subtractDays(today, 18),
         performanceRating: 0,
-        difficulty: 0.3,
-        interval: 14,
-        nextDifficulty: 0.91,
-        nextInterval: 14,
+        prevDifficulty: 0.3,
+        prevInterval: 14,
+        scheduling: {
+            difficulty: 0.91,
+            interval: 14
+        },
     },
     {
-        reviewedAt: Dates.subtractDays(today, 200),
+        prevReviewedAt: Dates.subtractDays(today, 200),
         performanceRating: 1,
-        difficulty: 0.3,
-        interval: 100,
-        nextDifficulty: 0.18,
-        nextInterval: 400,
+        prevDifficulty: 0.3,
+        prevInterval: 100,
+        scheduling: {
+            difficulty: 0.18,
+            interval: 400
+        }
     },
 ];
 
@@ -104,9 +125,11 @@ describe("calcPercentOverdue", () => {
 
         for (const data of testData) {
             const { reviewedAt, interval, percentOverdue } = data;
+            console.log("data: ", JSON.stringify(data, null, "  "));
+
             const actual = S2Plus.calcPercentOverdue(reviewedAt, interval);
             expect(actual).to.equal(percentOverdue);
-        };
+        }
 
     });
 
@@ -130,14 +153,21 @@ describe("calculate", () => {
     it("should calculate the next review data", () => {
 
         for (const data of testDataCalculate) {
-            const { reviewedAt, difficulty, interval, performanceRating } = data;
-            const result = S2Plus.calculate(reviewedAt, difficulty, interval, performanceRating, today);
+            const { prevReviewedAt, prevDifficulty, prevInterval, performanceRating, scheduling } = data;
+            const result = S2Plus.calculate(prevReviewedAt, prevDifficulty, prevInterval, performanceRating, today);
             expect(result.reviewedAt).to.equal(today);
-            expect(result.interval).to.equal(data.nextInterval);
-            expect(result.difficulty.toFixed(2)).to.equal(data.nextDifficulty.toString());
+            expect(result.interval).to.equal(scheduling.interval);
+            expect(result.difficulty.toFixed(2)).to.equal(scheduling.difficulty.toString());
         }
 
     });
+
+    it("should calculate the next review data", () => {
+
+        // const result0 = S2Plus.calculate(reviewedAt, difficulty, interval, performanceRating, today);
+
+    });
+
 
     it("basic", () => {
 
