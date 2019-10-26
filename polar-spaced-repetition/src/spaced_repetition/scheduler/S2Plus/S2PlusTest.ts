@@ -1,10 +1,11 @@
 import {expect} from 'chai';
 import {Days} from './Dates';
-import {Answer, Difficulty, Review, S2Plus} from './S2Plus';
+import {Answer, Difficulty, Review, S2Plus, Schedule} from './S2Plus';
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DateConstants} from "./DateConstants";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 export interface TestReview {
 
@@ -176,50 +177,61 @@ describe("calculate", () => {
         TestingTime.unfreeze();
     });
 
-    function testCalculations(responses: ReadonlyArray<TestCalculate>) {
+    function testCalculateIter(answers: ReadonlyArray<Answer>,
+                               init: Review = {
+                                  reviewedAt: new Date("2012-03-01T11:38:49.321Z"),
+                                  difficulty: S2Plus.DEFAULT_DIFFICULTY,
+                                  interval: S2Plus.DEFAULT_INTERVAL,
+                               }) {
 
-        const testDates = DateConstants.create();
-        const {today} = testDates;
+        let review: Review = init;
 
-        for (const response of responses) {
+        const schedules: Schedule[] = [];
 
-            const { answer, scheduling } = response;
+        for (const answer of answers) {
 
-            if (response.timestamp) {
-                console.log("Setting time to: " + response.timestamp);
-                const epoch = new Date(response.timestamp);
-                TestingTime.freeze(epoch);
-                Preconditions.assertEqual(new Date().toISOString(),
-                                          response.timestamp,
-                                          "Unable to freeze at the right time");
+            const schedule = S2Plus.calculate(review, answer);
+
+            schedules.push(schedule);
+            TestingTime.freeze(schedule.nextReviewDate);
+
+            review = {
+                ...schedule
             }
-
-            console.log("====" + new Date().toISOString());
-
-            const rating: Review = {
-                reviewedAt: new Date(response.review.reviewedAt),
-                difficulty: response.review.difficulty,
-                interval: response.review.interval
-            };
-
-            const resultScheduling = S2Plus.calculate(rating, answer);
-            expect(resultScheduling.reviewedAt.toISOString(), "resultScheduling.reviewedAt").to.equal(response.timestamp);
-            expect(resultScheduling.interval, "resultScheduling.interval").to.equal(scheduling.interval);
-            expect(resultScheduling.difficulty.toFixed(2), "resultScheduling.difficulty").to.equal(scheduling.difficulty.toFixed(2));
-            expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.nextReviewDate), "resultScheduling.nextReviewDate").to.equal(scheduling.nextReviewDate);
-            expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.reviewedAt), "resultScheduling.reviewedAt").to.equal(scheduling.reviewedAt);
-            console.log("PASSED");
 
         }
 
+        return schedules;
+
     }
+
     //
     // it("should calculate the next review data", () => {
     //     testCalculations(testDataCalculate);
     // });
 
     it("test with all correct answers", () => {
-        testCalculations(createTestDataWithAllCorrectAnswers());
+        const schedules = testCalculateIter([1, 1, 1]);
+        assertJSON(schedules, [
+            {
+                "difficulty": 0.24117647058823527,
+                "interval": 3,
+                "nextReviewDate": "2012-03-05T11:38:49.321Z",
+                "reviewedAt": "2012-03-02T11:38:49.321Z"
+            },
+            {
+                "difficulty": 0.18235294117647055,
+                "interval": 9,
+                "nextReviewDate": "2012-03-14T11:38:49.321Z",
+                "reviewedAt": "2012-03-05T11:38:49.321Z"
+            },
+            {
+                "difficulty": 0.12352941176470585,
+                "interval": 27,
+                "nextReviewDate": "2012-04-10T11:38:49.321Z",
+                "reviewedAt": "2012-03-14T11:38:49.321Z"
+            }
+        ]);
     });
 
     it("should calculate the next review data", () => {
@@ -256,66 +268,3 @@ describe("calculate", () => {
     // });
 
 });
-
-function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
-
-    console.log("current time: " + new Date().toISOString());
-
-    return [
-
-        // FIXME: this data is ALL wrong...
-        // FIXME: rating is NOT the rating... this is the PREVIOUS rating!!!
-
-        // The difficulty for the first it is set to DEFAULT_DIFFICULTY
-
-        {
-            timestamp: '2012-03-02T11:38:49.321Z',
-            answer: 1.0,
-            // the first time we review something, we need to take the 'reviewedAt' from when
-            // the annotation was first created.
-            review: {
-                reviewedAt: "2012-03-01T11:38:49.321Z",
-                difficulty: S2Plus.DEFAULT_DIFFICULTY,
-                interval: S2Plus.DEFAULT_INTERVAL,
-            },
-            scheduling: {
-                reviewedAt: "2012-03-02T11:38:49.321Z",
-                difficulty: 0.24,
-                interval: 3,
-                nextReviewDate: "2012-03-05T11:38:49.321Z",
-            },
-        },
-        {
-            timestamp: "2012-03-05T11:38:49.321Z",
-            answer: 1.0,
-            review: {
-                reviewedAt: "2012-03-02T11:38:49.321Z",
-                difficulty: 0.24,
-                interval: 3,
-            },
-            scheduling: {
-                reviewedAt: "2012-03-05T11:38:49.321Z",
-                interval: 9,
-                difficulty: 0.18,
-                nextReviewDate: "2012-03-14T11:38:49.321Z",
-            },
-        },
-        {
-            timestamp: "2012-03-14T11:38:49.321Z",
-            answer: 1.0,
-            review: {
-                reviewedAt: "2012-03-05T11:38:49.321Z",
-                interval: 9,
-                difficulty: 0.18,
-            },
-            scheduling: {
-                reviewedAt: "2012-03-14T11:38:49.321Z",
-                interval: 27,
-                difficulty: 0.12,
-                nextReviewDate: "2012-04-10T11:38:49.321Z",
-            },
-        },
-
-    ];
-
-}
