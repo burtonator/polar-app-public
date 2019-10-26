@@ -28,10 +28,9 @@ export type PerformanceRating = ConfidenceInterval;
  */
 export type Difficulty = ConfidenceInterval;
 
-
 /**
  * TODO
- *  - What is 'difficulty' and why do we need to have it per iteration...
+ *  - What is 'difficulty' and why do we need to have it per i...
  *
  *  - What do we use to prioritize the next round of training?  it has to be a
  *    queue but how do I sort the queue?

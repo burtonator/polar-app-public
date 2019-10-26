@@ -91,6 +91,10 @@ export class ISODateTimeStrings {
 
     }
 
+    public static toISODateTimeString(date: Date) {
+        return date.toISOString();
+    }
+
     public static parse(value: string): Date {
         return new Date(Date.parse(value));
     }
