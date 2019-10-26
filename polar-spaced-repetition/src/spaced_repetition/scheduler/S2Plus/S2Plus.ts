@@ -5,7 +5,6 @@ const GRADE_MIN = 0;
 const GRADE_MAX = 1;
 const GRADE_CUTOFF = 0.6;
 
-
 /**
  * An interval over [0.0, 1.0]
  */
@@ -25,11 +24,10 @@ export type Answer = ConfidenceInterval;
  */
 export type Difficulty = ConfidenceInterval;
 
-
 /**
  * Stores metadata needed for computing the next scheduling event.
  */
-export interface Rating {
+export interface Review {
 
     /**
      * The time this item was reviewed.  For new cards use the current time and the set an 'interval' to the default
@@ -43,19 +41,13 @@ export interface Rating {
 
 }
 
-export interface Scheduling extends Rating {
+/**
+ * The next review and next review date.
+ */
+export interface Schedule extends Review {
     readonly nextReviewDate: Date;
 }
 
-
-/**
- * TODO
- *  - What is 'difficulty' and why do we need to have it per i...
- *
- *  - What do we use to prioritize the next round of training?  it has to be a
- *    queue but how do I sort the queue?
- *  -
- */
 
 /**
  * https://github.com/pensieve-srs/pensieve-srs
@@ -84,27 +76,23 @@ export class S2Plus {
     }
 
 
-    // FIXME: rating and performance are confusing variable names.
-
     /**
      *
-     *
-     *
-     * @param rating The rating data persisted between ratings of the user.  This is the LAST rating.  The current
+     * @param review The rating data persisted between ratings of the user.
      *
      * @param answer After an item is attempted, choose a answer from [0.0, 1.0], with 1.0 being
      * the best.  Set a cutoff point for the answer being “correct” (default is 0.6). Then set
      *
      */
-    public static calculate(rating: Rating,
-                            answer: Answer): Scheduling {
+    public static calculate(review: Review,
+                            answer: Answer): Schedule {
 
         const timestamp = new Date();
 
-        const percentOverdue = this.calcPercentOverdue(rating.reviewedAt, rating.interval, timestamp);
+        const percentOverdue = this.calcPercentOverdue(review.reviewedAt, review.interval, timestamp);
 
         const difficultyDelta = percentOverdue * (1 / 17) * (8 - 9 * answer);
-        const difficulty = this.clamp(rating.difficulty + difficultyDelta, 0, 1);
+        const difficulty = this.clamp(review.difficulty + difficultyDelta, 0, 1);
 
         const difficultyWeight = 3 - 1.7 * difficulty;
 
@@ -115,7 +103,7 @@ export class S2Plus {
             intervalDelta = 1 + Math.round((difficultyWeight - 1) * percentOverdue);
         }
 
-        const interval = rating.interval * intervalDelta;
+        const interval = review.interval * intervalDelta;
 
         const nextReviewDate = Dates.addDays(timestamp, interval);
 

@@ -1,16 +1,12 @@
 import {expect} from 'chai';
-import {Dates} from './Dates';
-import {Answer, Rating, S2Plus} from './S2Plus';
-import {DEFAULT_DIFFICULTY} from './S2Plus';
-import {DEFAULT_INTERVAL} from './S2Plus';
 import {Days} from './Dates';
-import {Difficulty} from './S2Plus';
+import {Answer, Difficulty, Review, S2Plus} from './S2Plus';
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DateConstants} from "./DateConstants";
 import {Preconditions} from "polar-shared/src/Preconditions";
 
-export interface TestRating {
+export interface TestReview {
 
     readonly reviewedAt: ISODateTimeString;
     readonly difficulty: Difficulty;
@@ -21,7 +17,7 @@ export interface TestRating {
 /**
  * Like scheduling but the dates are ISO strings for ease of use.
  */
-export interface TestScheduling extends TestRating {
+export interface TestScheduling extends TestReview {
 
     readonly nextReviewDate: ISODateTimeString;
 
@@ -33,7 +29,7 @@ interface TestCalculate {
      */
     readonly timestamp: ISODateTimeString;
 
-    readonly rating: TestRating;
+    readonly review: TestReview;
 
     readonly answer: Answer,
 
@@ -200,10 +196,10 @@ describe("calculate", () => {
 
             console.log("====" + new Date().toISOString());
 
-            const rating: Rating = {
-                reviewedAt: new Date(response.rating.reviewedAt),
-                difficulty: response.rating.difficulty,
-                interval: response.rating.interval
+            const rating: Review = {
+                reviewedAt: new Date(response.review.reviewedAt),
+                difficulty: response.review.difficulty,
+                interval: response.review.interval
             };
 
             const resultScheduling = S2Plus.calculate(rating, answer);
@@ -263,21 +259,21 @@ describe("calculate", () => {
 
 function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
 
-    const testDates = DateConstants.create();
-
     console.log("current time: " + new Date().toISOString());
 
     return [
 
         // FIXME: this data is ALL wrong...
+        // FIXME: rating is NOT the rating... this is the PREVIOUS rating!!!
 
         // The difficulty for the first it is set to DEFAULT_DIFFICULTY
 
         {
             timestamp: '2012-03-02T11:38:49.321Z',
             answer: 1.0,
-            // FIXME: this is NOT the rating... this is the PREVIOUS rating!!!
-            rating: {
+            // the first time we review something, we need to take the 'reviewedAt' from when
+            // the annotation was first created.
+            review: {
                 reviewedAt: "2012-03-01T11:38:49.321Z",
                 difficulty: S2Plus.DEFAULT_DIFFICULTY,
                 interval: S2Plus.DEFAULT_INTERVAL,
@@ -292,7 +288,7 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
         {
             timestamp: "2012-03-05T11:38:49.321Z",
             answer: 1.0,
-            rating: {
+            review: {
                 reviewedAt: "2012-03-02T11:38:49.321Z",
                 difficulty: 0.24,
                 interval: 3,
@@ -307,7 +303,7 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
         {
             timestamp: "2012-03-14T11:38:49.321Z",
             answer: 1.0,
-            rating: {
+            review: {
                 reviewedAt: "2012-03-05T11:38:49.321Z",
                 interval: 9,
                 difficulty: 0.18,
