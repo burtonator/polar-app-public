@@ -15,9 +15,9 @@ export const DEFAULT_INTERVAL = 1;
 export type ConfidenceInterval = number;
 
 /**
- * The performance of review base on a confidence interval.
+ * The answer of review base on a confidence interval.
  */
-export type Performance = ConfidenceInterval;
+export type Answer = ConfidenceInterval;
 
 /**
  * How difficult the item is, from [0.0, 1.0].  Defaults to 0.3 (if the software
@@ -29,6 +29,9 @@ export type Performance = ConfidenceInterval;
 export type Difficulty = ConfidenceInterval;
 
 
+/**
+ * Stores metadata needed for computing the next scheduling event.
+ */
 export interface Rating {
 
     /**
@@ -79,31 +82,33 @@ export class S2Plus {
         return Math.min(2, calculated);
     }
 
+
+    // FIXME: rating and performance are confusing variable names.
+
     /**
      *
      *
      *
-     * @param rating The rating data persisted between ratings of the user.
+     * @param rating The rating data persisted between ratings of the user.  This is the LAST rating.  The current
      *
-     * @param performance After an item is attempted, choose a performanceRating from [0.0, 1.0], with 1.0 being
+     * @param answer After an item is attempted, choose a answer from [0.0, 1.0], with 1.0 being
      * the best.  Set a cutoff point for the answer being “correct” (default is 0.6). Then set
      *
-     * @param timestamp The time the calculation was done.
      */
     public static calculate(rating: Rating,
-                            performance: Performance): Scheduling {
+                            answer: Answer): Scheduling {
 
         const timestamp = new Date();
 
         const percentOverdue = this.calcPercentOverdue(rating.reviewedAt, rating.interval, timestamp);
 
-        const difficultyDelta = percentOverdue * (1 / 17) * (8 - 9 * performance);
+        const difficultyDelta = percentOverdue * (1 / 17) * (8 - 9 * answer);
         const difficulty = this.clamp(rating.difficulty + difficultyDelta, 0, 1);
 
         const difficultyWeight = 3 - 1.7 * difficulty;
 
         let intervalDelta;
-        if (performance < GRADE_CUTOFF) {
+        if (answer < GRADE_CUTOFF) {
             intervalDelta = Math.round(1 / difficultyWeight ** 2) || 1;
         } else {
             intervalDelta = 1 + Math.round((difficultyWeight - 1) * percentOverdue);

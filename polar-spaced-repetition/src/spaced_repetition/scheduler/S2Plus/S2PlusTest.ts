@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Dates} from './Dates';
-import {Performance, Rating, S2Plus} from './S2Plus';
+import {Answer, Rating, S2Plus} from './S2Plus';
 import {DEFAULT_DIFFICULTY} from './S2Plus';
 import {DEFAULT_INTERVAL} from './S2Plus';
 import {Days} from './Dates';
@@ -35,7 +35,7 @@ interface TestCalculate {
 
     readonly rating: TestRating;
 
-    readonly performance: Performance,
+    readonly answer: Answer,
 
     // FIXME: what fields are shared with the prev object?
     readonly scheduling: TestScheduling,
@@ -186,7 +186,7 @@ describe("calculate", () => {
         const {today} = testDates;
 
         for (const answer of answers) {
-            const { performance, scheduling } = answer;
+            const { answer, scheduling } = answer;
 
             if (answer.timestamp) {
                 console.log("Setting time to: " + answer.timestamp);
@@ -205,7 +205,7 @@ describe("calculate", () => {
                 interval: answer.rating.interval
             };
 
-            const resultScheduling = S2Plus.calculate(rating, performance);
+            const resultScheduling = S2Plus.calculate(rating, answer);
             expect(resultScheduling.reviewedAt.toISOString(), "resultScheduling.reviewedAt").to.equal(answer.timestamp);
             expect(resultScheduling.interval, "resultScheduling.interval").to.equal(scheduling.interval);
             expect(resultScheduling.difficulty.toFixed(2), "resultScheduling.difficulty").to.equal(scheduling.difficulty.toFixed(2));
@@ -272,7 +272,7 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
 
         {
             timestamp: '2012-03-02T11:38:49.321Z',
-            performance: 1,
+            answer: 1,
             // FIXME: how do I set the difficulty for the first one..?
             // FIXME: this is NOT the rating... this is the PREVIOUS rating!!!
             rating: {
@@ -289,7 +289,7 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
         },
         {
             timestamp: "2012-03-05T11:38:49.321Z",
-            performance: 1,
+            answer: 1,
 
             // FIXME we should just pop off the previous value I think...
             // ... just have a list of performances and record the schedulings...
