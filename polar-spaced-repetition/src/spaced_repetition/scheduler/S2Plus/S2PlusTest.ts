@@ -212,6 +212,7 @@ describe("calculate", () => {
             expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.nextReviewDate), "resultScheduling.nextReviewDate").to.equal(scheduling.nextReviewDate);
             expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.reviewedAt), "resultScheduling.reviewedAt").to.equal(scheduling.reviewedAt);
             console.log("PASSED");
+
         }
 
     }
@@ -263,16 +264,17 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
 
     const testDates = DateConstants.create();
 
-    console.log(new Date().toISOString());
+    console.log("current time: " + new Date().toISOString());
 
     return [
 
         // FIXME: this data is ALL wrong...
 
         {
-            timestamp: "2012-03-02T11:38:49.321Z",
+            timestamp: '2012-03-02T11:38:49.321Z',
             performance: 1,
             // FIXME: how do I set the difficulty for the first one..?
+            // FIXME: this is NOT the rating... this is the PREVIOUS rating!!!
             rating: {
                 reviewedAt: "2012-03-01T11:38:49.321Z",
                 difficulty: 0.3,
@@ -285,27 +287,26 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
                 nextReviewDate: "2012-03-05T11:38:49.321Z",
             },
         },
-        {
-            timestamp: "2012-03-05T11:38:49.321Z",
-            performance: 1,
-            // FIXME we should just pop off the previous value I think...
-            // ... just have a list of performances and record the schedulings...
-            //
-            // FIXME: these values don't actually work... they don't make sense.
-            // we should be getting backed off...
-
-            rating: {
-                reviewedAt: "2012-03-05T11:38:49.321Z",
-                interval: 3,
-                difficulty: 0.24,
-            },
-            scheduling: {
-                reviewedAt: "2012-03-05T11:38:49.321Z",
-                interval: 3,
-                difficulty: 0.24,
-                nextReviewDate: "2012-03-08T11:38:49.321Z",
-            },
-        },
+        // {
+        //     performance: 1,
+        //     // FIXME we should just pop off the previous value I think...
+        //     // ... just have a list of performances and record the schedulings...
+        //     //
+        //     // FIXME: these values don't actually work... they don't make sense.
+        //     // we should be getting backed off...
+        //
+        //     rating: {
+        //         reviewedAt: "2012-03-05T11:38:49.321Z",
+        //         interval: 3,
+        //         difficulty: 0.24,
+        //     },
+        //     scheduling: {
+        //         reviewedAt: "2012-03-05T11:38:49.321Z",
+        //         interval: 3,
+        //         difficulty: 0.24,
+        //         nextReviewDate: "2012-03-08T11:38:49.321Z",
+        //     },
+        // },
         // {
         //     timestamp: "2012-03-14T11:38:49.321Z",
         //     performance: 1,
