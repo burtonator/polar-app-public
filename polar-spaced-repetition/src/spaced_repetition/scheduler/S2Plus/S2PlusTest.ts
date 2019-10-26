@@ -262,6 +262,8 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
 
     return [
 
+        // FIXME: this data is ALL wrong...
+
         {
             timestamp: "2012-03-02T11:38:49.321Z",
             performance: 1,
