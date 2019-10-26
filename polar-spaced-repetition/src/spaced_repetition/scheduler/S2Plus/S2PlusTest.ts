@@ -279,19 +279,21 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
             },
         },
         // FIXME: don't I need to jump the clock into the future here
-        // {
-        //     timestamp: "2012-03-05T11:38:49.321Z",
-        //     prevReviewedAt: new Date("2012-03-02T11:38:49.321Z"),
-        //     performanceRating: 1,
-        //     prevDifficulty: 0.00,
-        //     prevInterval: 3,
-        //     scheduling: {
-        //         difficulty: 0.38,
-        //         interval: 4,
-        //         nextReviewDate: "2012-03-06T11:38:49.321Z",
-        //         reviewedAt: "2012-03-02T11:38:49.321Z"
-        //     },
-        // },
+        {
+            timestamp: "2012-03-05T11:38:49.321Z",
+            performance: 1,
+            rating: {
+                reviewedAt: "2012-03-02T11:38:49.321Z",
+                interval: 3,
+                difficulty: 0.00,
+            },
+            scheduling: {
+                interval: 3,
+                difficulty: 0.00,
+                nextReviewDate: "2012-03-05T11:38:49.321Z",
+                reviewedAt: "2012-03-02T11:38:49.321Z" // FIXME: this is definitely wrong...
+            },
+        },
         // {
         //     prevReviewedAt: Dates.subtractDays(testDates.today, 10),
         //     performanceRating: 1,
