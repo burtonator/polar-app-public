@@ -5,12 +5,12 @@ import {oneDayAgo} from './DateConstants';
 import {today} from './DateConstants';
 import {Dates} from './Dates';
 import {S2Plus} from './S2Plus';
-import {TestingTime} from '../../../../polar-shared/src/test/TestingTime';
 import {DEFAULT_DIFFICULTY} from './S2Plus';
 import {DEFAULT_INTERVAL} from './S2Plus';
 import {Days} from './Dates';
 import {Difficulty} from './S2Plus';
 import {twoDaysAgo} from './DateConstants';
+import {TestingTime} from "polar-shared/src/test/TestingTime";
 
 const testData = [
     {
