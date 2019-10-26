@@ -1,0 +1,25 @@
+{
+  "name": "polar-spaced-repetition",
+  "version": "1.40.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "compile": "npx tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.1",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "polar-test": "^1.40.1",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "polar-shared": "^1.40.1"
+  }
+}
