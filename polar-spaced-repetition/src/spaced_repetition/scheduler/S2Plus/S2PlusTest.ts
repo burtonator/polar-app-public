@@ -8,6 +8,7 @@ import {Difficulty} from './S2Plus';
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DateConstants} from "./DateConstants";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export interface TestRating {
 
@@ -30,7 +31,7 @@ interface TestCalculate {
     /**
      * The current time this test is being run.
      */
-    readonly timestamp?: ISODateTimeString;
+    readonly timestamp: ISODateTimeString;
 
     readonly rating: TestRating;
 
@@ -188,8 +189,12 @@ describe("calculate", () => {
             const { performance, scheduling } = answer;
 
             if (answer.timestamp) {
+                console.log("Setting time to: " + answer.timestamp);
                 const epoch = new Date(answer.timestamp);
                 TestingTime.freeze(epoch);
+                Preconditions.assertEqual(new Date().toISOString(),
+                                          answer.timestamp,
+                                          "Unable to freeze at the right time");
             }
 
             console.log("====" + new Date().toISOString());
@@ -200,8 +205,8 @@ describe("calculate", () => {
                 interval: answer.rating.interval
             };
 
-            const resultScheduling = S2Plus.calculate(rating, performance, today);
-            expect(resultScheduling.reviewedAt, "resultScheduling.reviewedAt").to.equal(today);
+            const resultScheduling = S2Plus.calculate(rating, performance);
+            expect(resultScheduling.reviewedAt.toISOString(), "resultScheduling.reviewedAt").to.equal(answer.timestamp);
             expect(resultScheduling.interval, "resultScheduling.interval").to.equal(scheduling.interval);
             expect(resultScheduling.difficulty.toFixed(2), "resultScheduling.difficulty").to.equal(scheduling.difficulty.toFixed(2));
             expect(ISODateTimeStrings.toISODateTimeString(resultScheduling.nextReviewDate), "resultScheduling.nextReviewDate").to.equal(scheduling.nextReviewDate);
@@ -270,42 +275,50 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
             // FIXME: how do I set the difficulty for the first one..?
             rating: {
                 reviewedAt: "2012-03-01T11:38:49.321Z",
-                difficulty: 0.0,
+                difficulty: 0.3,
                 interval: 1,
             },
             scheduling: {
-                difficulty: 0.00,
+                reviewedAt: "2012-03-02T11:38:49.321Z",
+                difficulty: 0.24,
                 interval: 3,
                 nextReviewDate: "2012-03-05T11:38:49.321Z",
-                reviewedAt: "2012-03-02T11:38:49.321Z"
             },
         },
-        // FIXME: don't I need to jump the clock into the future here
         {
             timestamp: "2012-03-05T11:38:49.321Z",
             performance: 1,
+            // FIXME we should just pop off the previous value I think...
+            // ... just have a list of performances and record the schedulings...
+            //
+            // FIXME: these values don't actually work... they don't make sense.
+            // we should be getting backed off...
+
             rating: {
-                reviewedAt: "2012-03-02T11:38:49.321Z",
+                reviewedAt: "2012-03-05T11:38:49.321Z",
                 interval: 3,
-                difficulty: 0.00,
+                difficulty: 0.24,
             },
             scheduling: {
+                reviewedAt: "2012-03-05T11:38:49.321Z",
                 interval: 3,
-                difficulty: 0.00,
-                nextReviewDate: "2012-03-05T11:38:49.321Z",
-                reviewedAt: "2012-03-02T11:38:49.321Z" // FIXME: this is definitely wrong...
+                difficulty: 0.24,
+                nextReviewDate: "2012-03-08T11:38:49.321Z",
             },
         },
         // {
-        //     prevReviewedAt: Dates.subtractDays(testDates.today, 10),
-        //     performanceRating: 1,
-        //     prevDifficulty: 0.5,
-        //     prevInterval: 1,
+        //     timestamp: "2012-03-14T11:38:49.321Z",
+        //     performance: 1,
+        //     rating: {
+        //         reviewedAt: "2012-03-02T11:38:49.321Z",
+        //         interval: 3,
+        //         difficulty: 0.00,
+        //     },
         //     scheduling: {
-        //         difficulty: 0.38,
-        //         interval: 4,
-        //         nextReviewDate: "2012-03-06T11:38:49.321Z",
-        //         reviewedAt: "2012-03-02T11:38:49.321Z"
+        //         reviewedAt: "2012-03-05T11:38:49.321Z",
+        //         interval: 9,
+        //         difficulty: 0.00,
+        //         nextReviewDate: "2012-03-14T11:38:49.321Z",
         //     },
         // },
 

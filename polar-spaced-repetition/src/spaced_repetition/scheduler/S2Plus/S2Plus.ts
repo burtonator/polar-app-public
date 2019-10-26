@@ -91,8 +91,9 @@ export class S2Plus {
      * @param timestamp The time the calculation was done.
      */
     public static calculate(rating: Rating,
-                            performance: Performance,
-                            timestamp = new Date()): Scheduling {
+                            performance: Performance): Scheduling {
+
+        const timestamp = new Date();
 
         const percentOverdue = this.calcPercentOverdue(rating.reviewedAt, rating.interval, timestamp);
 
