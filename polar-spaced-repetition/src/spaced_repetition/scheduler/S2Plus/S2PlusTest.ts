@@ -287,26 +287,28 @@ function createTestDataWithAllCorrectAnswers(): ReadonlyArray<TestCalculate> {
                 nextReviewDate: "2012-03-05T11:38:49.321Z",
             },
         },
-        // {
-        //     performance: 1,
-        //     // FIXME we should just pop off the previous value I think...
-        //     // ... just have a list of performances and record the schedulings...
-        //     //
-        //     // FIXME: these values don't actually work... they don't make sense.
-        //     // we should be getting backed off...
-        //
-        //     rating: {
-        //         reviewedAt: "2012-03-05T11:38:49.321Z",
-        //         interval: 3,
-        //         difficulty: 0.24,
-        //     },
-        //     scheduling: {
-        //         reviewedAt: "2012-03-05T11:38:49.321Z",
-        //         interval: 3,
-        //         difficulty: 0.24,
-        //         nextReviewDate: "2012-03-08T11:38:49.321Z",
-        //     },
-        // },
+        {
+            timestamp: "2012-03-05T11:38:49.321Z",
+            performance: 1,
+
+            // FIXME we should just pop off the previous value I think...
+            // ... just have a list of performances and record the schedulings...
+            //
+            // FIXME: these values don't actually work... they don't make sense.
+            // we should be getting backed off...
+
+            rating: {
+                reviewedAt: "2012-03-02T11:38:49.321Z",
+                difficulty: 0.24,
+                interval: 3,
+            },
+            scheduling: {
+                reviewedAt: "2012-03-05T11:38:49.321Z",
+                interval: 9,
+                difficulty: 0.18,
+                nextReviewDate: "2012-03-14T11:38:49.321Z",
+            },
+        },
         // {
         //     timestamp: "2012-03-14T11:38:49.321Z",
         //     performance: 1,
