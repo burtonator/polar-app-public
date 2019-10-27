@@ -234,6 +234,44 @@ describe("calculate", () => {
         ]);
     });
 
+
+    it("test with 2 incorrect", () => {
+        const schedules = testCalculateIter([1, 1, 1, 0.0, 0.0]);
+        assertJSON(schedules, [
+            {
+                "difficulty": 0.24117647058823527,
+                "interval": 3,
+                "nextReviewDate": "2012-03-05T11:38:49.321Z",
+                "reviewedAt": "2012-03-02T11:38:49.321Z"
+            },
+            {
+                "difficulty": 0.18235294117647055,
+                "interval": 9,
+                "nextReviewDate": "2012-03-14T11:38:49.321Z",
+                "reviewedAt": "2012-03-05T11:38:49.321Z"
+            },
+            {
+                "difficulty": 0.12352941176470585,
+                "interval": 27,
+                "nextReviewDate": "2012-04-10T11:38:49.321Z",
+                "reviewedAt": "2012-03-14T11:38:49.321Z"
+            },
+            {
+                "difficulty": 0.5941176470588235,
+                "interval": 27,
+                "nextReviewDate": "2012-05-07T11:38:49.321Z",
+                "reviewedAt": "2012-04-10T11:38:49.321Z"
+            },
+            {
+                "difficulty": 1,
+                "interval": 27,
+                "nextReviewDate": "2012-06-03T11:38:49.321Z",
+                "reviewedAt": "2012-05-07T11:38:49.321Z"
+            }
+        ]);
+    });
+
+
     it("should calculate the next review data", () => {
 
         // const result0 = S2Plus.calculate(reviewedAt, difficulty, interval, performanceRating, today);
