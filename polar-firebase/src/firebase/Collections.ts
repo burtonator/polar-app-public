@@ -7,7 +7,8 @@ import {Arrays} from "polar-shared/src/util/Arrays";
  */
 export class Collections {
 
-    public constructor(private firestore: FirestoreLike) {
+    public constructor(private readonly firestore: FirestoreLike,
+                       private readonly collection: CollectionNameStr) {
 
     }
 
@@ -26,7 +27,6 @@ export class Collections {
 
         }
 
-
         const createdRecord = createRecord();
 
         const record = Dictionaries.onlyDefinedProperties(createdRecord);
@@ -39,30 +39,27 @@ export class Collections {
 
     }
 
-    public async getByID<T>(collection: string, id: string): Promise<T | undefined> {
-
-
-        const userGroupRef = this.firestore.collection(collection).doc(id);
+    public async getByID<T>(id: string): Promise<T | undefined> {
+        const userGroupRef = this.firestore.collection(this.collection).doc(id);
         const doc = await userGroupRef.get();
         return <T> doc.data();
 
     }
 
-    public async getByFieldValue<T>(collection: string, field: string, value: ValueType): Promise<T | undefined> {
-        const results = await this.list<T>(collection, [[field, '==', value]]);
-        return this.first(collection, [field], results);
+    public async getByFieldValue<T>(field: string, value: ValueType): Promise<T | undefined> {
+        const results = await this.list<T>([[field, '==', value]]);
+        return this.first([field], results);
     }
 
-    public async getByFieldValues<T>(collection: string, clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
-        const results = await this.list<T>(collection, clauses);
+    public async getByFieldValues<T>(clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
+        const results = await this.list<T>(clauses);
 
         const fields = clauses.map(current => current[0]);
 
-        return this.first(collection, fields, results);
+        return this.first(fields, results);
     }
 
-    private first<T>(collection: string,
-                     fields: ReadonlyArray<string>,
+    private first<T>(fields: ReadonlyArray<string>,
                      results: ReadonlyArray<T>): T | undefined {
 
         if (results.length === 0) {
@@ -70,17 +67,16 @@ export class Collections {
         } else if (results.length === 1) {
             return results[0];
         } else {
-            throw new Error(`Too many records on collection ${collection} for fields ${fields} ` + results.length);
+            throw new Error(`Too many records on collection ${this.collection} for fields ${fields} ` + results.length);
         }
 
     }
 
-    public async listByFieldValue<T>(collection: string, field: string, value: ValueType): Promise<ReadonlyArray<T>> {
-        return this.list(collection, [[field, '==', value]]);
+    public async listByFieldValue<T>(field: string, value: ValueType): Promise<ReadonlyArray<T>> {
+        return this.list([[field, '==', value]]);
     }
 
-    private createQuery(collection: string,
-                        clauses: ReadonlyArray<Clause>,
+    private createQuery(clauses: ReadonlyArray<Clause>,
                         opts: ListOpts = {}) {
 
         const clause = clauses[0];
@@ -89,7 +85,7 @@ export class Collections {
         Clauses.assertPresent(clause);
 
         let query = this.firestore
-            .collection(collection)
+            .collection(this.collection)
             .where(field, op, value);
 
         for (const clause of clauses.slice(1)) {
@@ -126,11 +122,10 @@ export class Collections {
         return snapshot.docs.map(current => <T> current.data());
     }
 
-    public async list<T>(collection: string,
-                         clauses: ReadonlyArray<Clause>,
+    public async list<T>(clauses: ReadonlyArray<Clause>,
                          opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
 
-        const query = this.createQuery(collection, clauses, opts);
+        const query = this.createQuery(clauses, opts);
 
         const snapshot = await query.get();
 
@@ -138,8 +133,7 @@ export class Collections {
 
     }
 
-    public async iterate<T>(collection: string,
-                            clauses: ReadonlyArray<Clause>,
+    public async iterate<T>(clauses: ReadonlyArray<Clause>,
                             opts: IterateOpts = {}): Promise<Cursor<T>> {
 
         const limit = opts.limit || 100;
@@ -151,7 +145,7 @@ export class Collections {
 
         const next = async (): Promise<ReadonlyArray<T>> => {
 
-            const query = this.createQuery(collection, clauses, {...opts, startAfter});
+            const query = this.createQuery(clauses, {...opts, startAfter});
             const snapshot = await query.get();
 
             hasNext = snapshot.docs.length === limit;
@@ -190,14 +184,13 @@ export class Collections {
     }
 
     public async deleteByID(batch: WriteBatchLike,
-                            collection: string,
                             provider: () => Promise<ReadonlyArray<IDRecord>>) {
 
         const records = await provider();
 
         for (const record of records) {
 
-            const doc = this.firestore.collection(collection)
+            const doc = this.firestore.collection(this.collection)
                                       .doc(record.id);
 
             batch.delete(doc);
@@ -207,6 +200,8 @@ export class Collections {
     }
 
 }
+
+export type FirestoreProvider = () => FirestoreLike;
 
 /**
  * A cursor for easily paging through all results on the data.
@@ -308,3 +303,13 @@ export interface QueryDocumentSnapshotLike {
     data(): DocumentDataLike;
     get(fieldPath: string): any;
 }
+
+/**
+ * A Firebase UID string for a user.
+ */
+export type UserIDStr = string;
+
+/**
+ * The name of a collection.
+ */
+export type CollectionNameStr = string;
