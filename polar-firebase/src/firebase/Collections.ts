@@ -39,11 +39,19 @@ export class Collections {
 
     }
 
-    public async getByID<T>(id: string): Promise<T | undefined> {
-        const userGroupRef = this.firestore.collection(this.collection).doc(id);
-        const doc = await userGroupRef.get();
-        return <T> doc.data();
+    public async set<T>(id: string, value: T) {
+        const ref = this.firestore.collection(this.collection).doc(id);
+        await ref.set(value);
+    }
 
+    public async get<T>(id: string): Promise<T | undefined> {
+        const ref = this.firestore.collection(this.collection).doc(id);
+        const doc = await ref.get();
+        return <T> doc.data();
+    }
+
+    public async getByID<T>(id: string): Promise<T | undefined> {
+        return this.get(id);
     }
 
     public async getByFieldValue<T>(field: string, value: ValueType): Promise<T | undefined> {
@@ -267,6 +275,30 @@ export interface WriteBatchLike {
 
 export interface DocumentReferenceLike {
     get():  Promise<DocumentSnapshotLike>;
+    set(data: DocumentDataLike, options?: SetOptionsLike): Promise<WriteResultLike>;
+}
+
+export interface SetOptionsLike {
+
+    /**
+     * Changes the behavior of a set() call to only replace the values specified
+     * in its data argument. Fields omitted from the set() call remain
+     * untouched.
+     */
+    readonly merge?: boolean;
+}
+
+export interface WriteResultLike {
+
+    /**
+     * The write time as set by the Firestore servers.
+     */
+    readonly writeTime: TimestampLike;
+
+}
+
+export interface TimestampLike {
+
 }
 
 export interface DocumentSnapshotLike {

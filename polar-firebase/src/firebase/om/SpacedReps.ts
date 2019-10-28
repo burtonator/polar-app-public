@@ -1,12 +1,14 @@
-/**
- * Main class storing spaced repetition for flashcards, annotations, etc.
- */
 import {IDStr} from "polar-shared/src/util/Strings";
 import {CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
 
+/**
+ * Main class storing spaced repetition for flashcards, annotations, etc.  This stores the
+ * state of the card so that next time we want to access it we can just fetch it
+ * directly.
+ */
 export class SpacedReps {
 
-    private static firestoreProvider: FirestoreProvider;
+    public static firestoreProvider: FirestoreProvider;
 
     private static COLLECTION: CollectionNameStr = "spaced_rep";
 
@@ -14,10 +16,14 @@ export class SpacedReps {
         return new Collections(this.firestoreProvider(), this.COLLECTION);
     }
 
-    public static set(id: IDStr, spacedRep: SpacedRep) {
+    public static async set(id: IDStr, spacedRep: SpacedRep) {
+        const collections = this.collections();
+        await collections.set(id, spacedRep);
+    }
 
-        // const collections =
-
+    public static async get(id: IDStr): Promise<SpacedRep | undefined> {
+        const collections = this.collections();
+        return await collections.get(id);
     }
 
 }
@@ -28,7 +34,7 @@ export class SpacedReps {
 export interface SpacedRep {
 
     /**
-     *
+     * The ID if the key we're working with.
      */
     readonly id: IDStr;
 
