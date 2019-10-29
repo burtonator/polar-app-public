@@ -44,3 +44,10 @@ export interface Review {
     readonly interval: Days;
 
 }
+
+export type Stage = 'new' | 'learning' | 'graduated';
+/**
+ * The type of repetition mode we're in.  Either flashcard or reading mode.  Reading tends to be more involved so we
+ * have different intervals for this mode.
+ */
+export type RepetitionMode = 'flashcard' | 'reading';

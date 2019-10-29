@@ -33,7 +33,6 @@ export class S2Plus {
         return Math.min(2, calculated);
     }
 
-
     /**
      *
      * @param review The rating data persisted between ratings of the user.

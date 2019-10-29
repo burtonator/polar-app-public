@@ -1,4 +1,4 @@
-import {Days} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Days, RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 export class Learning {
 
@@ -18,8 +18,3 @@ export class Learning {
 
 }
 
-/**
- * The type of repetition mode we're in.  Either flashcard or reading mode.  Reading tends to be more involved so we
- * have different intervals for this mode.
- */
-export type RepetitionMode = 'flashcard' | 'reading';
