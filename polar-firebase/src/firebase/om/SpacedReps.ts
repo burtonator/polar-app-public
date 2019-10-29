@@ -43,4 +43,6 @@ export interface SpacedRep {
      */
     readonly uid: UserIDStr;
 
+    // readonly state:
+
 }

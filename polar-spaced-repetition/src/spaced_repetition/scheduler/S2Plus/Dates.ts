@@ -1,3 +1,5 @@
+import {DateLike, Days} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+
 const milliPerDay = 1000 * 60 * 60 * 24;
 
 export class Dates {
@@ -26,8 +28,4 @@ export class Dates {
 function daysToMS(numDays: number) {
     return numDays * milliPerDay;
 }
-
-export type DateLike = number | string | Date;
-
-export type Days = number;
 

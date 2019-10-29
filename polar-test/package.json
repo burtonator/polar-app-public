@@ -17,5 +17,10 @@
   "dependencies": {
     "@types/node": "^12.11.1",
     "chai": "^4.2.0"
-  }
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
 }

@@ -1,52 +1,10 @@
 import {Dates} from './Dates';
-import {Days} from './Dates';
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Answer, Days, Schedule, Review} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 const GRADE_MIN = 0;
 const GRADE_MAX = 1;
 const GRADE_CUTOFF = 0.6;
-
-/**
- * An interval over [0.0, 1.0]
- */
-export type ConfidenceInterval = number;
-
-/**
- * The answer of review base on a confidence interval.
- */
-export type Answer = ConfidenceInterval;
-
-/**
- * How difficult the item is, from [0.0, 1.0].  Defaults to 0.3 (if the software
- * has no way of determining a better default for an item)
- *
- * This requires setting a max value for easiness, which I set to 3.0.  I also replaced easiness with difficulty,
- * because it’s the more natural thing to measure.
- */
-export type Difficulty = ConfidenceInterval;
-
-/**
- * Stores metadata needed for computing the next scheduling event.
- */
-export interface Review {
-
-    /**
-     * The time this item was reviewed.  For new cards use the current time and the set an 'interval' to the default
-     * interval which is probably 1 day.
-     */
-    readonly reviewedAt: Date;
-
-    readonly difficulty: Difficulty;
-
-    readonly interval: Days;
-
-}
-
-/**
- * The next review and next review date.
- */
-export interface Schedule extends Review {
-    readonly nextReviewDate: Date;
-}
 
 
 /**
@@ -89,7 +47,8 @@ export class S2Plus {
 
         const timestamp = new Date();
 
-        const percentOverdue = this.calcPercentOverdue(review.reviewedAt, review.interval, timestamp);
+        const reviewedAt = ISODateTimeStrings.parse(review.reviewedAt);
+        const percentOverdue = this.calcPercentOverdue(reviewedAt, review.interval, timestamp);
 
         const difficultyDelta = percentOverdue * (1 / 17) * (8 - 9 * answer);
         const difficulty = this.clamp(review.difficulty + difficultyDelta, 0, 1);
@@ -111,7 +70,7 @@ export class S2Plus {
             difficulty,
             interval,
             nextReviewDate,
-            reviewedAt: timestamp,
+            reviewedAt: timestamp.toISOString(),
         };
 
     }

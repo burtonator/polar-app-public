@@ -1,11 +1,11 @@
 import {expect} from 'chai';
-import {Days} from './Dates';
-import {Answer, Difficulty, Review, S2Plus, Schedule} from './S2Plus';
+import {S2Plus} from './S2Plus';
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DateConstants} from "./DateConstants";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {assertJSON} from "polar-test/src/test/Assertions";
+import {Answer, Days, Difficulty, Review, Schedule} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 export interface TestReview {
 
@@ -179,7 +179,7 @@ describe("calculate", () => {
 
     function testCalculateIter(answers: ReadonlyArray<Answer>,
                                init: Review = {
-                                  reviewedAt: new Date("2012-03-01T11:38:49.321Z"),
+                                  reviewedAt: "2012-03-01T11:38:49.321Z",
                                   difficulty: S2Plus.DEFAULT_DIFFICULTY,
                                   interval: S2Plus.DEFAULT_INTERVAL,
                                }) {

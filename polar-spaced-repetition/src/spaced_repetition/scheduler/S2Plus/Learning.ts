@@ -1,4 +1,4 @@
-import {Days} from "./Dates";
+import {Days} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 export class Learning {
 
