@@ -1,4 +1,4 @@
-import {Days, RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {DurationStr} from "polar-shared/src/util/TimeDurations";
 
 export class Learning {

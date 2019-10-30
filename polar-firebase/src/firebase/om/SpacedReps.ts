@@ -43,6 +43,16 @@ export interface SpacedRep {
      */
     readonly uid: UserIDStr;
 
+    /**
+     * True when the card is suspended and no longer available for review.
+     */
+    readonly suspended?: boolean;
+
+    // FIXME: I need to add this back in in the future but I don't like 'reading' as the item.  
+//    readonly itemType:
+
     // readonly state:
 
 }
+
+export type ItemType = 'flashcard' | 'reading';
