@@ -45,7 +45,17 @@ export interface Review {
 
 }
 
+/**
+ * - New cards are cards that have never had any sort of review
+ *
+ * - Learning cards are cards that you're currently working on but have not yet graduated to use SR intervals.
+ *
+ * - Graduated cards are cards that have left learning and are going through interval calculation. These are also
+ *   sometimes called review cards.
+ *
+ */
 export type Stage = 'new' | 'learning' | 'graduated';
+
 /**
  * The type of repetition mode we're in.  Either flashcard or reading mode.  Reading tends to be more involved so we
  * have different intervals for this mode.
