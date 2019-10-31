@@ -1,12 +1,10 @@
-import {assert} from 'chai';
-import {JSDOM} from 'jsdom';
-import {ConstructorOptions} from 'jsdom';
-import {ResourceLoader} from 'jsdom';
-import {FetchOptions} from 'jsdom';
 import {ContentCapture} from './ContentCapture';
-import {isPresent} from 'polar-shared/src/Preconditions';
-import waitForExpect from 'wait-for-expect';
 import {assertJSON} from "polar-test/src/test/Assertions";
+import {assert} from 'chai';
+import {ConstructorOptions, JSDOM} from "jsdom";
+import {ContentResourceLoader} from "./test/ContentResourceLoader";
+import waitForExpect from "wait-for-expect";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 declare var global: any;
 
@@ -16,7 +14,9 @@ describe('ContentCapture', function() {
 
         const url = 'https://www.example.com';
         const opts: ConstructorOptions = {url, contentType: 'text/html', resources: 'usable'};
+        // const opts: ConstructorOptions = {url, contentType: 'text/html'};
         const dom = new JSDOM("<body><div data-foo='bar' data-cat-dog='dog' data-one-two-three-four='dog'></div></body>", opts);
+
         global.window = dom.window;
         global.document = dom.window.document;
 
@@ -85,6 +85,8 @@ describe('ContentCapture', function() {
 
         assertJSON(result, expected);
 
+        dom.window.close();
+
     });
 
 
@@ -129,42 +131,6 @@ describe('ContentCapture', function() {
     });
 
 });
-
-class ContentResourceLoader extends ResourceLoader {
-
-    public constructor(public readonly contentMap: ContentMap,
-                       public readonly required: boolean = true) {
-        super();
-    }
-
-    public fetch(url: string, options: FetchOptions): Promise<Buffer> | null {
-
-        const content = this.contentMap[url];
-
-        // Override the contents of this script to do something unusual.
-        if (content) {
-            const result = Buffer.from(content);
-
-            (<any> result).headers = {
-                'content-type': 'text/html'
-            };
-
-            return Promise.resolve(result);
-        }
-
-        if (this.required) {
-            throw new Error("Resource not found but required: " + url);
-        }
-
-        return super.fetch(url, options);
-
-    }
-
-}
-
-export interface ContentMap {
-    [url: string]: string;
-}
 
 
 

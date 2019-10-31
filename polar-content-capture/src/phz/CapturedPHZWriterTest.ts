@@ -6,8 +6,15 @@ import {PHZWriter} from "./PHZWriter";
 
 describe('CapturedPHZWriter', function() {
 
-    it("write out captured JSON", async function () {
+    beforeEach(() => {
         TestingTime.freeze();
+    });
+
+    afterEach(() => {
+        TestingTime.unfreeze();
+    });
+
+    it("write out captured JSON", async function () {
 
         const captured = MockCapturedContent.create();
 

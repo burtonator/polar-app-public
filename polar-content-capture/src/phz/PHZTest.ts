@@ -15,7 +15,7 @@ TestingTime.freeze();
 describe('PHZ functionality', function() {
 
     it("JSZIP support", function() {
-        console.log("FIXME: " , JSZip.support);
+        console.log("JSZip support: " , JSZip.support);
     });
 
     it("ResourceFactory", function() {
