@@ -1,6 +1,6 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
-import {LearningState, ReviewState, Stage} from "../../../../polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 /**
  * Main class storing spaced repetition for flashcards, annotations, etc.  This stores the
@@ -32,27 +32,11 @@ export class SpacedReps {
 /**
  * Represent the spaced repetition history and state for a card.
  */
-export interface SpacedRep {
-
-    /**
-     * The ID if the key we're working with.
-     */
-    readonly id: IDStr;
+export interface SpacedRep extends ISpacedRep {
 
     /**
      * The user ID / owner of this card.
      */
     readonly uid: UserIDStr;
 
-    /**
-     * True when the card is suspended and no longer available for review.
-     */
-    readonly suspended?: boolean;
-
-    readonly stage: Stage;
-
-    readonly state: ReviewState | LearningState;
-
 }
-
-export type ItemType = 'flashcard' | 'reading';

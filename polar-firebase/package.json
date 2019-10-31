@@ -16,6 +16,7 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "polar-shared": "^1.40.1"
+    "polar-shared": "^1.40.1",
+    "polar-spaced-repetition-api": "^1.40.1"
   }
 }

@@ -1,5 +1,7 @@
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DurationStr} from "polar-shared/src/util/TimeDurations";
+import {UserIDStr} from "../../../../polar-firebase/src/firebase/Collections";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 /**
  * An interval over [0.0, 1.0]
@@ -71,3 +73,21 @@ export type Stage = 'new' | 'learning' | 'review';
  */
 export type RepetitionMode = 'flashcard' | 'reading';
 
+export interface ISpacedRep {
+
+    /**
+     * The ID if the key we're working with.
+     */
+    readonly id: IDStr;
+    /**
+     * True when the card is suspended and no longer available for review.
+     */
+    readonly suspended?: boolean;
+
+    readonly stage: Stage;
+
+    readonly state: ReviewState | LearningState;
+
+}
+
+export type ItemType = 'flashcard' | 'reading';
