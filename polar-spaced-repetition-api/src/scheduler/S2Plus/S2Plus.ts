@@ -36,6 +36,11 @@ export interface LearningState {
 
     readonly interval: DurationStr;
 
+    /**
+     * The remaining intervals, if any.
+     */
+    readonly intervals: ReadonlyArray<DurationStr>;
+
 }
 
 /**

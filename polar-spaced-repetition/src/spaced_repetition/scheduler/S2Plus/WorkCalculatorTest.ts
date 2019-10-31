@@ -89,7 +89,11 @@ describe("WorkCalculator", () => {
                 "stage": "learning",
                 "state": {
                     "reviewedAt": "2012-02-29T11:38:49.321Z",
-                    "interval": "1d"
+                    "interval": "1d",
+                    "intervals": [
+                        "4d",
+                        "8d"
+                    ]
                 }
             }
         ]);

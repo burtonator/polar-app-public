@@ -33,6 +33,14 @@ export class WorkCalculator {
 
     }
 
+    public static computeNext(current: ISpacedRep): ISpacedRep {
+
+        // FIXME compute the next due time...
+
+        return null!;
+
+    }
+
 }
 
 /**
@@ -59,8 +67,8 @@ export function createDefaultWorkRepResolver(delegate: OptionalWorkRepResolver):
             return result;
         }
 
-        const intervals = Learning.intervals('reading');
-        const interval = intervals[0];
+        const intervals = [...Learning.intervals('reading')];
+        const interval = intervals.shift()!;
         const intervalMS = TimeDurations.toMillis(interval);
 
         const created = ISODateTimeStrings.parse(work.created);
@@ -74,6 +82,7 @@ export function createDefaultWorkRepResolver(delegate: OptionalWorkRepResolver):
             state: {
                 reviewedAt: work.created,
                 interval,
+                intervals
             }
         }
 
