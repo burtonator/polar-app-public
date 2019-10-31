@@ -1,10 +1,13 @@
 import {IDStr} from "polar-shared/src/util/Strings";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {DurationMS} from "polar-shared/src/util/TimeDurations";
+import {DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import ts from "typescript/lib/tsserverlibrary";
+import convertCompilerOptions = ts.server.convertCompilerOptions;
+import {Learning} from "./Learning";
 
 export class WorkCalculator {
 
@@ -24,14 +27,55 @@ export class WorkCalculator {
 
         await asyncWorkQueue.execute();
 
-        // FIXME: implement a provider that can see if if we have now ISpacedRep data and then returns default
-        // values for this so that we use the default interval.
-
         workReps.filter(current => current.age > 0)
                 .sort((a, b) => b.age - a.age);
 
         return Arrays.head(workReps, opts.limit);
 
+    }
+
+}
+
+/**
+ * Return a WorkRep if we were able to find it or undefined.
+ */
+export type OptionalWorkRepResolver = (work: Work) => Promise<WorkRep | undefined>;
+
+/**
+ * Return a WorkRep or a default rep if we're unable to find it.
+ */
+export type WorkRepResolver = (work: Work) => Promise<WorkRep>;
+
+/**
+ * If we don't have an explicit state, then we need to compute a new one...
+ *
+ * @param work
+ * @param delegate
+ */
+export async function defaultWorkRepResolver(work: Work, delegate: OptionalWorkRepResolver): Promise<WorkRep> {
+
+    const result = await delegate(work);
+
+    if (result) {
+        return result;
+    }
+
+    const intervals = Learning.intervals('reading');
+    const interval = intervals[0];
+    const intervalMS = TimeDurations.toMillis(interval);
+
+    const created = ISODateTimeStrings.parse(work.created);
+
+    const age = Date.now() - (created.getTime() + intervalMS);
+
+    return {
+        ...work,
+        age,
+        stage: "learning",
+        state: {
+            reviewedAt: work.created,
+            interval,
+        }
     }
 
 }
@@ -43,7 +87,7 @@ export interface CalculateOpts {
     /**
      * Given a unit of work, resolved the space rep metadata.
      */
-    readonly resolver: (ref: WorkRef) => Promise<WorkRep>;
+    readonly resolver: WorkRepResolver;
 
     /**
      * The limit of the number of tasks to return.
@@ -53,11 +97,9 @@ export interface CalculateOpts {
 }
 
 
-export interface WorkRef {
-    readonly id: IDStr;
-}
+export interface Work {
 
-export interface Work extends WorkRef {
+    readonly id: IDStr;
 
     readonly text: string;
 
