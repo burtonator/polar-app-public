@@ -5,8 +5,6 @@ import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plu
 import {DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import ts from "typescript/lib/tsserverlibrary";
-import convertCompilerOptions = ts.server.convertCompilerOptions;
 import {Learning} from "./Learning";
 
 export class WorkCalculator {
