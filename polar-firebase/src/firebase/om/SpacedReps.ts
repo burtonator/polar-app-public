@@ -1,5 +1,6 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
+import {LearningState, ReviewState, Stage} from "../../../../polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 /**
  * Main class storing spaced repetition for flashcards, annotations, etc.  This stores the
@@ -48,10 +49,9 @@ export interface SpacedRep {
      */
     readonly suspended?: boolean;
 
-    // FIXME: I need to add this back in in the future but I don't like 'reading' as the item.  
-//    readonly itemType:
+    readonly stage: Stage;
 
-    // readonly state:
+    readonly state: ReviewState | LearningState;
 
 }
 

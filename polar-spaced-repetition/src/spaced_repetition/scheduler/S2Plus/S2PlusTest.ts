@@ -1,11 +1,8 @@
-import {expect} from 'chai';
 import {S2Plus} from './S2Plus';
 import {TestingTime} from "polar-shared/src/test/TestingTime";
-import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {DateConstants} from "./DateConstants";
-import {Preconditions} from "polar-shared/src/Preconditions";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assertJSON} from "polar-test/src/test/Assertions";
-import {Answer, Days, Difficulty, Review, Schedule} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Answer, Days, Difficulty, ReviewState, Schedule} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 export interface TestReview {
 
@@ -178,13 +175,13 @@ describe("calculate", () => {
     });
 
     function testCalculateIter(answers: ReadonlyArray<Answer>,
-                               init: Review = {
+                               init: ReviewState = {
                                   reviewedAt: "2012-03-01T11:38:49.321Z",
                                   difficulty: S2Plus.DEFAULT_DIFFICULTY,
                                   interval: S2Plus.DEFAULT_INTERVAL,
                                }) {
 
-        let review: Review = init;
+        let review: ReviewState = init;
 
         const schedules: Schedule[] = [];
 
@@ -211,23 +208,25 @@ describe("calculate", () => {
     // });
 
     it("test with all correct answers", () => {
+
         const schedules = testCalculateIter([1, 1, 1]);
+
         assertJSON(schedules, [
             {
                 "difficulty": 0.24117647058823527,
-                "interval": 3,
+                "interval": "3d",
                 "nextReviewDate": "2012-03-05T11:38:49.321Z",
                 "reviewedAt": "2012-03-02T11:38:49.321Z"
             },
             {
                 "difficulty": 0.18235294117647055,
-                "interval": 9,
+                "interval": "9d",
                 "nextReviewDate": "2012-03-14T11:38:49.321Z",
                 "reviewedAt": "2012-03-05T11:38:49.321Z"
             },
             {
                 "difficulty": 0.12352941176470585,
-                "interval": 27,
+                "interval": "27d",
                 "nextReviewDate": "2012-04-10T11:38:49.321Z",
                 "reviewedAt": "2012-03-14T11:38:49.321Z"
             }
@@ -240,31 +239,31 @@ describe("calculate", () => {
         assertJSON(schedules, [
             {
                 "difficulty": 0.24117647058823527,
-                "interval": 3,
+                "interval": "3d",
                 "nextReviewDate": "2012-03-05T11:38:49.321Z",
                 "reviewedAt": "2012-03-02T11:38:49.321Z"
             },
             {
                 "difficulty": 0.18235294117647055,
-                "interval": 9,
+                "interval": "9d",
                 "nextReviewDate": "2012-03-14T11:38:49.321Z",
                 "reviewedAt": "2012-03-05T11:38:49.321Z"
             },
             {
                 "difficulty": 0.12352941176470585,
-                "interval": 27,
+                "interval": "27d",
                 "nextReviewDate": "2012-04-10T11:38:49.321Z",
                 "reviewedAt": "2012-03-14T11:38:49.321Z"
             },
             {
                 "difficulty": 0.5941176470588235,
-                "interval": 27,
+                "interval": "27d",
                 "nextReviewDate": "2012-05-07T11:38:49.321Z",
                 "reviewedAt": "2012-04-10T11:38:49.321Z"
             },
             {
                 "difficulty": 1,
-                "interval": 27,
+                "interval": "27d",
                 "nextReviewDate": "2012-06-03T11:38:49.321Z",
                 "reviewedAt": "2012-05-07T11:38:49.321Z"
             }

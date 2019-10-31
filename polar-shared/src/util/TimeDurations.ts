@@ -6,6 +6,11 @@ export class TimeDurations {
     // TODO: it would be nice to specify 1d1m2s too...
     public static toMillis(duration: Duration): DurationMS {
 
+        Preconditions.assertPresent(duration, 'duration');
+        if (duration === '') {
+            throw new Error("Can not parse empty string to millis");
+        }
+
         if (typeof duration === 'number') {
             // we're done as this is already a number.
             return duration;
@@ -37,12 +42,12 @@ export class TimeDurations {
         } else if (duration.endsWith("s")) {
             return sign * val * 1000;
         } else {
-            throw new Error("Unable to parse duration: " + duration);
+            throw new Error(`Unable to parse duration: ${duration}`);
         }
 
     }
 
-    public static format(duration: Duration) {
+    public static format(duration: Duration): DurationStr {
 
         type TimeComponent = 'd' | 'h' | 'm' | 's' | 'ms';
 

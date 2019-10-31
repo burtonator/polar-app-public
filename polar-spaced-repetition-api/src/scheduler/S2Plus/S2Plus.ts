@@ -1,4 +1,5 @@
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {DurationStr} from "polar-shared/src/util/TimeDurations";
 
 /**
  * An interval over [0.0, 1.0]
@@ -20,7 +21,7 @@ export type Difficulty = ConfidenceInterval;
 /**
  * The next review and next review date.
  */
-export interface Schedule extends Review {
+export interface Schedule extends ReviewState {
     readonly nextReviewDate: Date;
 }
 
@@ -28,10 +29,18 @@ export type DateLike = number | string | Date;
 
 export type Days = number;
 
+export interface LearningState {
+
+    readonly reviewedAt: ISODateTimeString
+
+    readonly interval: DurationStr;
+
+}
+
 /**
  * Stores metadata needed for computing the next scheduling event.
  */
-export interface Review {
+export interface ReviewState {
 
     /**
      * The time this item was reviewed.  For new cards use the current time and the set an 'interval' to the default
@@ -41,7 +50,7 @@ export interface Review {
 
     readonly difficulty: Difficulty;
 
-    readonly interval: Days;
+    readonly interval: DurationStr;
 
 }
 
@@ -54,10 +63,11 @@ export interface Review {
  *   sometimes called review cards.
  *
  */
-export type Stage = 'new' | 'learning' | 'graduated';
+export type Stage = 'new' | 'learning' | 'review';
 
 /**
  * The type of repetition mode we're in.  Either flashcard or reading mode.  Reading tends to be more involved so we
  * have different intervals for this mode.
  */
 export type RepetitionMode = 'flashcard' | 'reading';
+

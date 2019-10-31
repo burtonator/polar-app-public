@@ -1,6 +1,8 @@
-import {Dates} from './Dates';
+import {Dates, daysToMillis} from './Dates';
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Answer, Days, Schedule, Review} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Answer, Days, Schedule, ReviewState} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const GRADE_MIN = 0;
 const GRADE_MAX = 1;
@@ -15,7 +17,7 @@ export class S2Plus {
 
     public static DEFAULT_DIFFICULTY = 0.3;
 
-    public static DEFAULT_INTERVAL = 1;
+    public static DEFAULT_INTERVAL = '1d';
 
     public static clamp(value: number, min: number, max: number) {
         return Math.min(Math.max(value, min), max);
@@ -27,9 +29,13 @@ export class S2Plus {
         return Math.ceil(recall * 100) / 100;
     }
 
-    public static calcPercentOverdue(reviewedAt: Date, interval: Days, timestamp = new Date()) {
+    public static calcPercentOverdue(reviewedAt: Date, interval: DurationStr, timestamp = new Date()) {
+        if (interval === '') {
+            throw new Error("Interval must be a non-empty valid string");
+        }
+
         const diff = Dates.diffDays(timestamp, reviewedAt);
-        const calculated = diff / interval;
+        const calculated = diff / Dates.toDays(interval);
         return Math.min(2, calculated);
     }
 
@@ -41,7 +47,7 @@ export class S2Plus {
      * the best.  Set a cutoff point for the answer being “correct” (default is 0.6). Then set
      *
      */
-    public static calculate(review: Review,
+    public static calculate(review: ReviewState,
                             answer: Answer): Schedule {
 
         const timestamp = new Date();
@@ -61,13 +67,19 @@ export class S2Plus {
             intervalDelta = 1 + Math.round((difficultyWeight - 1) * percentOverdue);
         }
 
-        const interval = review.interval * intervalDelta;
+        const interval = Dates.toDays(review.interval) * intervalDelta;
 
         const nextReviewDate = Dates.addDays(timestamp, interval);
 
+        const intervalStr = TimeDurations.format(daysToMillis(interval));
+
+        if (intervalStr === '') {
+            throw new Error("Interval may not be an empty string");
+        }
+
         return {
             difficulty,
-            interval,
+            interval: intervalStr,
             nextReviewDate,
             reviewedAt: timestamp.toISOString(),
         };
