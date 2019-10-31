@@ -1,7 +1,7 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
-import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {ISpacedRep, LearningState, ReviewState} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -35,9 +35,42 @@ export class WorkCalculator {
 
     public static computeNext(current: ISpacedRep): ISpacedRep {
 
-        // FIXME compute the next due time...
+        switch (current.stage) {
 
-        return null!;
+            case "learning":
+
+                const state = <LearningState> current.state;
+
+                if (state.intervals.length === 0) {
+                    
+                    const newState: ReviewState = {
+                        reviewedAt: ISODateTimeStrings.create(),
+                        difficulty: Learning.DEFAULT_GRADUATING_DIFFICULTY,
+                        interval: Learning.DEFAULT_GRADUATING_INTERVAL
+                    };
+                    
+                    return {...current, state: newState};
+
+                }
+
+                const intervals = [...state.intervals];
+                const interval = intervals.shift()!;
+
+                const newState: LearningState = {
+                    reviewedAt: ISODateTimeStrings.create(),
+                    intervals,
+                    interval
+                };
+
+                return {...current, state: newState};
+
+            case "review":
+                throw new Error("Not supported: " + current.stage);
+
+            default:
+                throw new Error("Not supported: " + current.stage);
+
+        }
 
     }
 
