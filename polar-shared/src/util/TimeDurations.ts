@@ -47,6 +47,13 @@ export class TimeDurations {
 
     }
 
+    /**
+     * Compute a new date by taking the duration and applying it to the date and then computing a new Date.
+     */
+    public static compute(duration: Duration, date: Date = new Date()): Date {
+        return new Date(date.getTime() + TimeDurations.toMillis(duration));
+    }
+
     public static format(duration: Duration): DurationStr {
 
         type TimeComponent = 'd' | 'h' | 'm' | 's' | 'ms';

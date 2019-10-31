@@ -1,6 +1,5 @@
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DurationStr} from "polar-shared/src/util/TimeDurations";
-import {UserIDStr} from "../../../../polar-firebase/src/firebase/Collections";
 import {IDStr} from "polar-shared/src/util/Strings";
 
 /**

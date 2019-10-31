@@ -25,10 +25,11 @@ export class WorkCalculator {
 
         await asyncWorkQueue.execute();
 
-        workReps.filter(current => current.age > 0)
+        const prioritized =
+            workReps.filter(current => current.age > 0)
                 .sort((a, b) => b.age - a.age);
 
-        return Arrays.head(workReps, opts.limit);
+        return Arrays.head(prioritized, opts.limit);
 
     }
 
@@ -47,34 +48,36 @@ export type WorkRepResolver = (work: Work) => Promise<WorkRep>;
 /**
  * If we don't have an explicit state, then we need to compute a new one...
  *
- * @param work
- * @param delegate
  */
-export async function defaultWorkRepResolver(work: Work, delegate: OptionalWorkRepResolver): Promise<WorkRep> {
+export function createDefaultWorkRepResolver(delegate: OptionalWorkRepResolver): WorkRepResolver {
 
-    const result = await delegate(work);
+    return async (work: Work): Promise<WorkRep> => {
 
-    if (result) {
-        return result;
-    }
+        const result = await delegate(work);
 
-    const intervals = Learning.intervals('reading');
-    const interval = intervals[0];
-    const intervalMS = TimeDurations.toMillis(interval);
-
-    const created = ISODateTimeStrings.parse(work.created);
-
-    const age = Date.now() - (created.getTime() + intervalMS);
-
-    return {
-        ...work,
-        age,
-        stage: "learning",
-        state: {
-            reviewedAt: work.created,
-            interval,
+        if (result) {
+            return result;
         }
-    }
+
+        const intervals = Learning.intervals('reading');
+        const interval = intervals[0];
+        const intervalMS = TimeDurations.toMillis(interval);
+
+        const created = ISODateTimeStrings.parse(work.created);
+
+        const age = Date.now() - (created.getTime() + intervalMS);
+
+        return {
+            ...work,
+            age,
+            stage: "learning",
+            state: {
+                reviewedAt: work.created,
+                interval,
+            }
+        }
+
+    };
 
 }
 
