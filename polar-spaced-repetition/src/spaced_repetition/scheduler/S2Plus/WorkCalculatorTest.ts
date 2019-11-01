@@ -3,14 +3,14 @@ import {
     OptionalWorkRepResolver,
     Work,
     WorkCalculator,
-    WorkRep,
     WorkRepResolver
 } from "./WorkCalculator";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
-import {TimeDurations} from "polar-shared/src/util/TimeDurations";
+import {DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
+import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 describe("WorkCalculator", () => {
 
@@ -22,8 +22,9 @@ describe("WorkCalculator", () => {
         TestingTime.freeze();
     });
 
-    async function doTest(potential: ReadonlyArray<Work>) {
-        const resolver = createMockWorkRepResolver();
+    async function doTest(potential: ReadonlyArray<Work>, workMap: PendingWorkRepMap = {}) {
+
+        const resolver = createMockWorkRepResolver(workMap);
 
         const tasks = await WorkCalculator.calculate({
             potential,
@@ -64,22 +65,41 @@ describe("WorkCalculator", () => {
 
     });
 
-    it("with all new items but not ready to use as they haven't expired yet.", async () => {
+    it("compute walk through of each stage", async () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
+        const work: Work = {
+            id: "101",
+            text: 'this is the first one',
+            created: twoDaysAgo.toISOString(),
+            color: 'yellow'
+        };
+
         const potential: ReadonlyArray<Work> = [
-            {
-                id: "101",
-                text: 'this is the first one',
-                created: twoDaysAgo.toISOString(),
-                color: 'yellow'
-            }
+            work
         ];
 
-        const tasks = await doTest(potential);
+        const workMap: PendingWorkRepMap = {};
 
-        assertJSON(tasks, [
+        let step: number = 0;
+
+        const doStep = async (expectedTasks: any, timeForward: DurationStr = '0h') => {
+
+            TestingTime.forward(TimeDurations.toMillis(timeForward));
+
+            console.log("==== Doing step " + step);
+
+            const tasks = await doTest(potential, workMap);
+
+            assertJSON(tasks, expectedTasks);
+            const next = WorkCalculator.computeNext(tasks[0], 1.0);
+            const pendingWorkRep: PendingWorkRep = {work, spacedRep: next};
+            workMap[next.id] = pendingWorkRep;
+            ++step;
+        };
+
+        await doStep([
             {
                 "id": "101",
                 "text": "this is the first one",
@@ -98,19 +118,100 @@ describe("WorkCalculator", () => {
             }
         ]);
 
-    });
+        await doStep([
+            {
+                "id": "101",
+                "text": "this is the first one",
+                "created": "2012-02-29T11:38:49.321Z",
+                "color": "yellow",
+                "stage": "learning",
+                "state": {
+                    "reviewedAt": "2012-03-02T11:38:49.321Z",
+                    "intervals": [
+                        "8d"
+                    ],
+                    "interval": "4d"
+                },
+                "age": 86400000
+            }
+        ], '1d');
 
+        await doStep([
+            {
+                "id": "101",
+                "text": "this is the first one",
+                "created": "2012-02-29T11:38:49.321Z",
+                "color": "yellow",
+                "stage": "learning",
+                "state": {
+                    "reviewedAt": "2012-03-03T11:38:49.321Z",
+                    "intervals": [],
+                    "interval": "8d"
+                },
+                "age": 345600000
+            }
+        ], '4d');
+
+        await doStep([
+            {
+                "id": "101",
+                "text": "this is the first one",
+                "created": "2012-02-29T11:38:49.321Z",
+                "color": "yellow",
+                "stage": "review",
+                "state": {
+                    "reviewedAt": "2012-03-07T11:38:49.321Z",
+                    "difficulty": 0.3,
+                    "interval": "16d"
+                },
+                "age": 691200000
+            }
+        ], '8d');
+
+        await doStep([
+            {
+                "id": "101",
+                "text": "this is the first one",
+                "created": "2012-02-29T11:38:49.321Z",
+                "color": "yellow",
+                "stage": "review",
+                "state": {
+                    "difficulty": 0.27058823529411763,
+                    "interval": "32d",
+                    "nextReviewDate": "2012-04-16T11:38:49.321Z",
+                    "reviewedAt": "2012-03-15T11:38:49.321Z"
+                },
+                "age": 1382400000
+            }
+        ], '16d');
+
+    });
 
 });
 
-function createMockWorkRepResolver(map: WorkMap = {}): WorkRepResolver {
+export interface PendingWorkRep {
+    readonly work: Work;
+    readonly spacedRep: ISpacedRep;
+}
+
+export type PendingWorkRepMap = {[id: string]: PendingWorkRep};
+
+function createMockWorkRepResolver(pendingWorkRepMap: PendingWorkRepMap = {}): WorkRepResolver {
 
     const optionalWorkRepResolver: OptionalWorkRepResolver = async (work: Work) => {
-        return Optional.of(map[work.id]).getOrUndefined();
+
+        const pendingWorkRep = Optional.of(pendingWorkRepMap[work.id]).getOrUndefined();
+
+        if (pendingWorkRep) {
+            const age = WorkCalculator.computeAge(pendingWorkRep.spacedRep);
+            return {...pendingWorkRep.work, ...pendingWorkRep.spacedRep, age};
+        }
+
+        return undefined;
+
     };
 
     return createDefaultWorkRepResolver(optionalWorkRepResolver)
 
 }
 
-export type WorkMap = {[id: string]: WorkRep};

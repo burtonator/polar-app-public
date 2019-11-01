@@ -34,6 +34,14 @@ export class WorkCalculator {
 
     }
 
+    private static computeAgeFromReviewedAt(reviewedAt: ISODateTimeString) {
+        return Date.now() - ISODateTimeStrings.parse(reviewedAt).getTime();
+    }
+
+    public static computeAge(current: ISpacedRep) {
+        return this.computeAgeFromReviewedAt(current.state.reviewedAt);
+    }
+
     /**
      * Compute the next space repetition intervals/state from the current and the given answer.
      */
