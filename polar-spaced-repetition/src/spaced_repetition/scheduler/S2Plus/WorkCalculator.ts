@@ -1,11 +1,12 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
-import {ISpacedRep, LearningState, ReviewState} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Answer, ISpacedRep, LearningState, ReviewState} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Learning} from "./Learning";
+import {S2Plus} from "./S2Plus";
 
 export class WorkCalculator {
 
@@ -33,39 +34,77 @@ export class WorkCalculator {
 
     }
 
-    public static computeNext(current: ISpacedRep): ISpacedRep {
+    /**
+     * Compute the next space repetition intervals/state from the current and the given answer.
+     */
+    public static computeNext(current: ISpacedRep, answer: Answer): ISpacedRep {
+
+        const computeLearning = (): ISpacedRep => {
+
+            const learningState = <LearningState> current.state;
+
+            if (learningState.intervals.length === 0) {
+
+                const state: ReviewState = {
+                    reviewedAt: ISODateTimeStrings.create(),
+                    difficulty: Learning.DEFAULT_GRADUATING_DIFFICULTY,
+                    interval: Learning.DEFAULT_GRADUATING_INTERVAL
+                };
+
+                return {
+                    id: current.id,
+                    suspended: current.suspended,
+                    stage: 'review',
+                    state: state
+                };
+
+            }
+
+            const intervals = [...learningState.intervals];
+            const interval = intervals.shift()!;
+
+            const state: LearningState = {
+                reviewedAt: ISODateTimeStrings.create(),
+                intervals,
+                interval
+            };
+
+            return {
+                id: current.id,
+                suspended: current.suspended,
+                stage: 'learning',
+                state
+            };
+
+        };
+
+        const computeReview = (): ISpacedRep => {
+
+            const reviewState = <ReviewState> current.state;
+
+            const schedule = S2Plus.calculate(reviewState, answer);
+
+            const state: ReviewState = {
+                ...schedule,
+                reviewedAt: ISODateTimeStrings.create(),
+            };
+
+            return {
+                id: current.id,
+                suspended: current.suspended,
+                stage: 'review',
+                state
+            };
+
+        };
 
         switch (current.stage) {
 
             case "learning":
-
-                const state = <LearningState> current.state;
-
-                if (state.intervals.length === 0) {
-                    
-                    const newState: ReviewState = {
-                        reviewedAt: ISODateTimeStrings.create(),
-                        difficulty: Learning.DEFAULT_GRADUATING_DIFFICULTY,
-                        interval: Learning.DEFAULT_GRADUATING_INTERVAL
-                    };
-                    
-                    return {...current, state: newState};
-
-                }
-
-                const intervals = [...state.intervals];
-                const interval = intervals.shift()!;
-
-                const newState: LearningState = {
-                    reviewedAt: ISODateTimeStrings.create(),
-                    intervals,
-                    interval
-                };
-
-                return {...current, state: newState};
+                return computeLearning();
 
             case "review":
-                throw new Error("Not supported: " + current.stage);
+                return computeReview();
 
             default:
                 throw new Error("Not supported: " + current.stage);
