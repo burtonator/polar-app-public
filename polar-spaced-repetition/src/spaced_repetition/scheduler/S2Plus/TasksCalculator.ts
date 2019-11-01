@@ -8,18 +8,18 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {Learning} from "./Learning";
 import {S2Plus} from "./S2Plus";
 
-export class WorkCalculator {
+export class TasksCalculator {
 
     /**
      * Take potential work and use data from the backend to prioritize it for the user.
      */
-    public static async calculate(opts: CalculateOpts): Promise<ReadonlyArray<WorkRep>> {
+    public static async calculate(opts: CalculateOpts): Promise<ReadonlyArray<TaskRep>> {
 
-        const workReps: WorkRep[] = [];
+        const taskReps: TaskRep[] = [];
 
         const jobs = opts.potential.map((current) => async () => {
-            const workRep = await opts.resolver(current);
-            workReps.push(workRep);
+            const taskRep = await opts.resolver(current);
+            taskReps.push(taskRep);
         });
 
         const asyncWorkQueue = new AsyncWorkQueue(jobs);
@@ -27,7 +27,7 @@ export class WorkCalculator {
         await asyncWorkQueue.execute();
 
         const prioritized =
-            workReps.filter(current => current.age > 0)
+            taskReps.filter(current => current.age > 0)
                 .sort((a, b) => b.age - a.age);
 
         return Arrays.head(prioritized, opts.limit);
@@ -126,22 +126,22 @@ export class WorkCalculator {
 /**
  * Return a WorkRep if we were able to find it or undefined.
  */
-export type OptionalWorkRepResolver = (work: Work) => Promise<WorkRep | undefined>;
+export type OptionalTaskRepResolver = (task: Task) => Promise<TaskRep | undefined>;
 
 /**
  * Return a WorkRep or a default rep if we're unable to find it.
  */
-export type WorkRepResolver = (work: Work) => Promise<WorkRep>;
+export type TaskRepResolver = (task: Task) => Promise<TaskRep>;
 
 /**
  * If we don't have an explicit state, then we need to compute a new one...
  *
  */
-export function createDefaultWorkRepResolver(delegate: OptionalWorkRepResolver): WorkRepResolver {
+export function createDefaultTaskRepResolver(delegate: OptionalTaskRepResolver): TaskRepResolver {
 
-    return async (work: Work): Promise<WorkRep> => {
+    return async (task: Task): Promise<TaskRep> => {
 
-        const result = await delegate(work);
+        const result = await delegate(task);
 
         if (result) {
             return result;
@@ -151,16 +151,16 @@ export function createDefaultWorkRepResolver(delegate: OptionalWorkRepResolver):
         const interval = intervals.shift()!;
         const intervalMS = TimeDurations.toMillis(interval);
 
-        const created = ISODateTimeStrings.parse(work.created);
+        const created = ISODateTimeStrings.parse(task.created);
 
         const age = Date.now() - (created.getTime() + intervalMS);
 
         return {
-            ...work,
+            ...task,
             age,
             stage: "learning",
             state: {
-                reviewedAt: work.created,
+                reviewedAt: task.created,
                 interval,
                 intervals
             }
@@ -172,12 +172,12 @@ export function createDefaultWorkRepResolver(delegate: OptionalWorkRepResolver):
 
 export interface CalculateOpts {
 
-    readonly potential: ReadonlyArray<Work>;
+    readonly potential: ReadonlyArray<Task>;
 
     /**
-     * Given a unit of work, resolved the space rep metadata.
+     * Given a task, resolve the space rep metadata.
      */
-    readonly resolver: WorkRepResolver;
+    readonly resolver: TaskRepResolver;
 
     /**
      * The limit of the number of tasks to return.
@@ -187,7 +187,7 @@ export interface CalculateOpts {
 }
 
 
-export interface Work {
+export interface Task {
 
     readonly id: IDStr;
 
@@ -202,7 +202,7 @@ export interface Work {
 
 }
 
-export interface WorkRep extends ISpacedRep, Work {
+export interface TaskRep extends ISpacedRep, Task {
 
     /**
      * The age of the work so we can sort the priority queue.

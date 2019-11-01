@@ -1,10 +1,10 @@
 import {
-    createDefaultWorkRepResolver,
-    OptionalWorkRepResolver,
-    Work,
-    WorkCalculator,
-    WorkRepResolver
-} from "./WorkCalculator";
+    createDefaultTaskRepResolver,
+    OptionalTaskRepResolver,
+    Task,
+    TasksCalculator,
+    TaskRepResolver
+} from "./TasksCalculator";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assertJSON} from "polar-test/src/test/Assertions";
@@ -22,11 +22,11 @@ describe("WorkCalculator", () => {
         TestingTime.freeze();
     });
 
-    async function doTest(potential: ReadonlyArray<Work>, workMap: PendingWorkRepMap = {}) {
+    async function doTest(potential: ReadonlyArray<Task>, workMap: PendingWorkRepMap = {}) {
 
         const resolver = createMockWorkRepResolver(workMap);
 
-        const tasks = await WorkCalculator.calculate({
+        const tasks = await TasksCalculator.calculate({
             potential,
             resolver,
             limit: 10
@@ -38,7 +38,7 @@ describe("WorkCalculator", () => {
 
     it("with no items", async () => {
 
-        const potential: ReadonlyArray<Work> = [
+        const potential: ReadonlyArray<Task> = [
 
         ];
 
@@ -50,7 +50,7 @@ describe("WorkCalculator", () => {
 
     it("with all new items but not ready to use as they haven't expired yet.", async () => {
 
-        const potential: ReadonlyArray<Work> = [
+        const potential: ReadonlyArray<Task> = [
             {
                 id: "101",
                 text: 'this is the first one',
@@ -69,14 +69,14 @@ describe("WorkCalculator", () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const work: Work = {
+        const work: Task = {
             id: "101",
             text: 'this is the first one',
             created: twoDaysAgo.toISOString(),
             color: 'yellow'
         };
 
-        const potential: ReadonlyArray<Work> = [
+        const potential: ReadonlyArray<Task> = [
             work
         ];
 
@@ -93,7 +93,7 @@ describe("WorkCalculator", () => {
             const tasks = await doTest(potential, workMap);
 
             assertJSON(tasks, expectedTasks);
-            const next = WorkCalculator.computeNext(tasks[0], 1.0);
+            const next = TasksCalculator.computeNext(tasks[0], 1.0);
             const pendingWorkRep: PendingWorkRep = {work, spacedRep: next};
             workMap[next.id] = pendingWorkRep;
             ++step;
@@ -190,20 +190,20 @@ describe("WorkCalculator", () => {
 });
 
 export interface PendingWorkRep {
-    readonly work: Work;
+    readonly work: Task;
     readonly spacedRep: ISpacedRep;
 }
 
 export type PendingWorkRepMap = {[id: string]: PendingWorkRep};
 
-function createMockWorkRepResolver(pendingWorkRepMap: PendingWorkRepMap = {}): WorkRepResolver {
+function createMockWorkRepResolver(pendingWorkRepMap: PendingWorkRepMap = {}): TaskRepResolver {
 
-    const optionalWorkRepResolver: OptionalWorkRepResolver = async (work: Work) => {
+    const optionalWorkRepResolver: OptionalTaskRepResolver = async (work: Task) => {
 
         const pendingWorkRep = Optional.of(pendingWorkRepMap[work.id]).getOrUndefined();
 
         if (pendingWorkRep) {
-            const age = WorkCalculator.computeAge(pendingWorkRep.spacedRep);
+            const age = TasksCalculator.computeAge(pendingWorkRep.spacedRep);
             return {...pendingWorkRep.work, ...pendingWorkRep.spacedRep, age};
         }
 
@@ -211,7 +211,7 @@ function createMockWorkRepResolver(pendingWorkRepMap: PendingWorkRepMap = {}): W
 
     };
 
-    return createDefaultWorkRepResolver(optionalWorkRepResolver)
+    return createDefaultTaskRepResolver(optionalWorkRepResolver)
 
 }
 
