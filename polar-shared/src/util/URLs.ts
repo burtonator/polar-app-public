@@ -1,7 +1,9 @@
 
-import {Strings, URLStr} from "./Strings";
+import {PathOrURLStr, Strings, URLStr} from "./Strings";
 import {ArrayBuffers} from "./ArrayBuffers";
 import {Blobs} from "./Blobs";
+import {Files} from "./Files";
+import {FilePaths} from "./FilePaths";
 
 export class URLs {
 
@@ -122,6 +124,22 @@ export class URLs {
 
         const response = await fetch(url, {method: 'HEAD', headers});
         return response.ok;
+
+    }
+
+    public static async toURL(docPathOrURL: PathOrURLStr): Promise<URLStr> {
+
+        const isPath = ! URLs.isURL(docPathOrURL);
+
+        if (isPath && ! await Files.existsAsync(docPathOrURL)) {
+            throw new Error("File does not exist at path: " + docPathOrURL);
+        }
+
+        if (URLs.isURL(docPathOrURL)) {
+            return docPathOrURL;
+        } else {
+            return FilePaths.toURL(docPathOrURL);
+        }
 
     }
 
