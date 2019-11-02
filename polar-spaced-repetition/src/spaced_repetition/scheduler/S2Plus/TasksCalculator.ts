@@ -121,6 +121,29 @@ export class TasksCalculator {
 
     }
 
+    public static createInitialLearningState(task: Task): TaskRep {
+
+        const intervals = [...Learning.intervals('reading')];
+        const interval = intervals.shift()!;
+        const intervalMS = TimeDurations.toMillis(interval);
+
+        const created = ISODateTimeStrings.parse(task.created);
+
+        const age = Date.now() - (created.getTime() + intervalMS);
+
+        return {
+            ...task,
+            age,
+            stage: "learning",
+            state: {
+                reviewedAt: task.created,
+                interval,
+                intervals
+            }
+        }
+
+    }
+
 }
 
 /**
@@ -147,24 +170,7 @@ export function createDefaultTaskRepResolver(delegate: OptionalTaskRepResolver):
             return result;
         }
 
-        const intervals = [...Learning.intervals('reading')];
-        const interval = intervals.shift()!;
-        const intervalMS = TimeDurations.toMillis(interval);
-
-        const created = ISODateTimeStrings.parse(task.created);
-
-        const age = Date.now() - (created.getTime() + intervalMS);
-
-        return {
-            ...task,
-            age,
-            stage: "learning",
-            state: {
-                reviewedAt: task.created,
-                interval,
-                intervals
-            }
-        }
+        return TasksCalculator.createInitialLearningState(task);
 
     };
 
