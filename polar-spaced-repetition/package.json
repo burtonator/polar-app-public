@@ -23,5 +23,10 @@
   "dependencies": {
     "polar-shared": "^1.40.2",
     "polar-spaced-repetition-api": "^1.40.2"
-  }
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
 }

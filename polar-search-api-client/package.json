@@ -23,5 +23,10 @@
     "polar-search": "^1.40.2",
     "polar-search-api": "^1.40.2",
     "polar-shared": "^1.40.2"
-  }
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
 }

@@ -24,5 +24,10 @@
     "pdfjs-dist": "~2.2.228",
     "polar-shared": "^1.40.2",
     "polar-test": "^1.40.2"
-  }
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
 }

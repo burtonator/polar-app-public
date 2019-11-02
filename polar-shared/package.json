@@ -41,5 +41,10 @@
     "timekeeper": "^2.2.0",
     "twitter-text": "^3.0.0",
     "uuid": "^3.3.3"
-  }
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
 }
