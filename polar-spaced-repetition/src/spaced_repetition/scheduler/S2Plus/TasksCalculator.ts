@@ -27,8 +27,9 @@ export class TasksCalculator {
         await asyncWorkQueue.execute();
 
         const prioritized =
-            taskReps.filter(current => current.age > 0)
-                .sort((a, b) => b.age - a.age);
+            taskReps.filter(current => current.age > 0)  // they have to be expired and ready to evaluate.
+                    .filter(current => current.suspended !== true) // if they're suspended we have to ignore
+                    .sort((a, b) => b.age - a.age);
 
         return Arrays.head(prioritized, opts.limit);
 

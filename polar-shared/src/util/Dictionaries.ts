@@ -157,6 +157,7 @@ export class Dictionaries {
      * stored with undefined values.  This is primarily because Firebase doesn't
      * support undefined.
      *
+     * // TODO: make this support generics properly.
      * @param dict
      */
     public static onlyDefinedProperties(dict: any): any {
