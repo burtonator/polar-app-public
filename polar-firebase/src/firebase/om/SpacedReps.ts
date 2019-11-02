@@ -1,5 +1,5 @@
 import {IDStr} from "polar-shared/src/util/Strings";
-import {CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
+import {Clause, CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
 import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 /**
@@ -25,6 +25,12 @@ export class SpacedReps {
     public static async get(id: IDStr): Promise<SpacedRep | undefined> {
         const collections = this.collections();
         return await collections.get(id);
+    }
+
+    public static async list(uid: UserIDStr): Promise<ReadonlyArray<SpacedRep>> {
+        const collections = this.collections();
+        const clauses: ReadonlyArray<Clause> = [['uid', '==', uid]];
+        return await collections.list(clauses);
     }
 
 }

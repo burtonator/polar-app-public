@@ -84,8 +84,7 @@ export class Collections {
         return this.list([[field, '==', value]]);
     }
 
-    private createQuery(clauses: ReadonlyArray<Clause>,
-                        opts: ListOpts = {}) {
+    private createQuery(clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
 
         const clause = clauses[0];
         const [field, op, value] = clause;
@@ -275,7 +274,7 @@ export interface WriteBatchLike {
 
 export interface DocumentReferenceLike {
     get():  Promise<DocumentSnapshotLike>;
-    set(data: DocumentDataLike, options?: SetOptionsLike): Promise<WriteResultLike>;
+    set(data: DocumentDataLike, options?: SetOptionsLike): Promise<any>;
 }
 
 export interface SetOptionsLike {
