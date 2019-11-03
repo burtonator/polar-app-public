@@ -66,21 +66,6 @@ export class TasksCalculator {
         return this.computeAgeFromReviewedAt(current.state.reviewedAt);
     }
 
-    public static ratingToAnswer(rating: Rating): Answer {
-        // these only really apply to the review stage.
-
-        switch (rating) {
-            case 'again':
-                return 0.00;
-            case 'hard':
-                return 0.25;
-            case 'good':
-                return 0.75;
-            case 'easy':
-                return 1.00;
-        }
-
-    }
 
     /**
      * Compute the next space repetition intervals/state from the current and the given answer.
@@ -171,8 +156,7 @@ export class TasksCalculator {
                 return computeLapsedDueToAgain();
             }
 
-            const answer = this.ratingToAnswer(rating);
-            const schedule = S2Plus.calculate(reviewState, answer);
+            const schedule = S2Plus.calculateFromRating(reviewState, rating);
 
             const state: ReviewState = {
                 ...schedule,
@@ -195,14 +179,20 @@ export class TasksCalculator {
 
             const lapsedState = <LapsedState> taskRep.state;
 
-            const computedInterval = TimeDurations.toMillis(lapsedState.reviewState.interval) * this.LAPSE_REVIEW_NEW_INTERVAL_FACTOR;
+            const {reviewState} = lapsedState;
+
+            // We need to take the reviewState, compute a NEW review state, and THEN apply
+            // LAPSE_REVIEW_NEW_INTERVAL_FACTOR and  LAPSE_REVIEW_NEW_INTERVAL_MIN
+            const schedule = S2Plus.calculateFromRating(reviewState, rating);
+
+            const computedInterval = TimeDurations.toMillis(schedule.interval) * this.LAPSE_REVIEW_NEW_INTERVAL_FACTOR;
             const minInterval = TimeDurations.toMillis(this.LAPSE_REVIEW_NEW_INTERVAL_MIN);
 
             const interval = Math.max(computedInterval, minInterval);
 
             const state: ReviewState = {
                 reviewedAt: ISODateTimeStrings.create(),
-                difficulty: lapsedState.reviewState.difficulty,
+                difficulty: schedule.difficulty,
                 interval
             };
 

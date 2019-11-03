@@ -1,6 +1,6 @@
 import {Dates, daysToMillis} from './Dates';
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Answer, Days, ReviewState, Schedule} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Answer, Days, Rating, ReviewState, Schedule} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Duration, DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
 
 const GRADE_CUTOFF = 0.6;
@@ -36,6 +36,26 @@ export class S2Plus {
         return Math.min(2, calculated);
     }
 
+    public static ratingToAnswer(rating: Rating): Answer {
+        // these only really apply to the review stage.
+
+        switch (rating) {
+            case 'again':
+                return 0.00;
+            case 'hard':
+                return 0.25;
+            case 'good':
+                return 0.75;
+            case 'easy':
+                return 1.00;
+        }
+
+    }
+
+    public static calculateFromRating(review: ReviewState, rating: Rating): Schedule {
+        const answer = this.ratingToAnswer(rating);
+        return S2Plus.calculate(review, answer);
+    }
     /**
      *
      * @param review The rating data persisted between ratings of the user.
