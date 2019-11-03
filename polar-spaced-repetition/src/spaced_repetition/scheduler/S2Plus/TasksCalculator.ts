@@ -66,10 +66,6 @@ export class TasksCalculator {
 
         const computeLearning = (): ISpacedRep => {
 
-            // FIXME: this is only the right behavior for 'good'
-            //
-            //
-
             if (rating === 'again') {
                 // FIXME: test that this works.
                 // 'again' should revert back to the beginning of all the intervals
@@ -82,8 +78,6 @@ export class TasksCalculator {
 
                 // we're graduating into review. Easy should mean we jump
                 // immediately into review mode
-
-                // FIXME: test that easy automatically jumps us to graduating.
 
                 const state: ReviewState = {
                     reviewedAt: ISODateTimeStrings.create(),

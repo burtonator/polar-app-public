@@ -10,7 +10,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
-import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {ISpacedRep, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 
@@ -39,7 +39,10 @@ class Tester {
         this.potential = [task];
     }
 
-    public async doStep(expectedTasks: any, timeForward: DurationStr = '0h') {
+    public async doStep(expectedTasks: any,
+                        timeForward: DurationStr = '0h',
+                        rating: Rating = 'good',
+                        expectedNext?: any) {
 
         TestingTime.forward(TimeDurations.toMillis(timeForward));
 
@@ -51,7 +54,12 @@ class Tester {
 
         assertJSON(Dictionaries.sorted(tasks), Dictionaries.sorted(expectedTasks));
 
-        const next = TasksCalculator.computeNextSpacedRep(tasks[0], 'good');
+        const next = TasksCalculator.computeNextSpacedRep(tasks[0], rating);
+
+        if (expectedNext) {
+            assertJSON(Dictionaries.sorted(next), Dictionaries.sorted(expectedNext));
+        }
+
         const pendingWorkRep: PendingTaskRep = {task: this.task, spacedRep: next};
         this.pendingTaskRepMap[next.id] = pendingWorkRep;
         ++this.step;
@@ -99,44 +107,144 @@ describe("TasksCalculator", () => {
 
     });
 
-    it("compute walk through of each stage", async () => {
+    it("again on last iteration so we jump back", async () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const work: Task = {
+        const task: Task = {
             id: "101",
             text: 'this is the first one',
             created: twoDaysAgo.toISOString(),
             color: 'yellow'
         };
 
-        const potential: ReadonlyArray<Task> = [
-            work
-        ];
+        const tester = new Tester(task);
 
-        const workMap: PendingTaskRepMap = {};
+        await tester.doStep([
+                {
+                    "id": "101",
+                    "text": "this is the first one",
+                    "created": "2012-02-29T11:38:49.321Z",
+                    "color": "yellow",
+                    "age": 86400000,
+                    "stage": "learning",
+                    "state": {
+                        "reviewedAt": "2012-02-29T11:38:49.321Z",
+                        "interval": "1d",
+                        "intervals": [
+                            "4d",
+                            "8d"
+                        ]
+                    }
+                }
+            ],
+            '0h',
+            'good',
+            {
+                "id": "101",
+                "stage": "learning",
+                "state": {
+                    "interval": "4d",
+                    "intervals": [
+                        "8d"
+                    ],
+                    "reviewedAt": "2012-03-02T11:38:49.321Z"
+                }
+            });
 
-        let step: number = 0;
 
-        const doStep = async (expectedTasks: any, timeForward: DurationStr = '0h') => {
+        await tester.doStep([
+                {
+                    "age": 86400000,
+                    "color": "yellow",
+                    "created": "2012-02-29T11:38:49.321Z",
+                    "id": "101",
+                    "stage": "learning",
+                    "state": {
+                        "interval": "4d",
+                        "intervals": [
+                            "8d"
+                        ],
+                        "reviewedAt": "2012-03-02T11:38:49.321Z"
+                    },
+                    "text": "this is the first one"
+                }
+            ],
+            '1d',
+            'good',
+            {
+                "id": "101",
+                "stage": "learning",
+                "state": {
+                    "interval": "8d",
+                    "intervals": [],
+                    "reviewedAt": "2012-03-03T11:38:49.321Z"
+                }
+            });
 
-            TestingTime.forward(TimeDurations.toMillis(timeForward));
+    });
 
-            console.log("==== Doing step " + step);
 
-            const tasks = await doTest(potential, workMap);
+    it("first iteration is easy so jump right to review", async () => {
 
-            console.log("tasks: " + JSON.stringify(Dictionaries.sorted(tasks), null, "  ") );
+        const twoDaysAgo = TimeDurations.compute('-2d');
 
-            assertJSON(Dictionaries.sorted(tasks), Dictionaries.sorted(expectedTasks));
-
-            const next = TasksCalculator.computeNextSpacedRep(tasks[0], 'good');
-            const pendingWorkRep: PendingTaskRep = {task: work, spacedRep: next};
-            workMap[next.id] = pendingWorkRep;
-            ++step;
+        const task: Task = {
+            id: "101",
+            text: 'this is the first one',
+            created: twoDaysAgo.toISOString(),
+            color: 'yellow'
         };
 
-        await doStep([
+        const tester = new Tester(task);
+
+        const expectedWork = [
+            {
+                "id": "101",
+                "text": "this is the first one",
+                "created": "2012-02-29T11:38:49.321Z",
+                "color": "yellow",
+                "age": 86400000,
+                "stage": "learning",
+                "state": {
+                    "reviewedAt": "2012-02-29T11:38:49.321Z",
+                    "interval": "1d",
+                    "intervals": [
+                        "4d",
+                        "8d"
+                    ]
+                }
+            }
+        ];
+
+        const expectedNext = {
+            "id": "101",
+            "stage": "review",
+            "state": {
+                "difficulty": 0.3,
+                "interval": "16d",
+                "reviewedAt": "2012-03-02T11:38:49.321Z"
+            }
+        };
+
+        await tester.doStep(expectedWork, '0h', 'easy', expectedNext);
+
+    });
+
+    it("compute walk through of each stage", async () => {
+
+        const twoDaysAgo = TimeDurations.compute('-2d');
+
+        const task: Task = {
+            id: "101",
+            text: 'this is the first one',
+            created: twoDaysAgo.toISOString(),
+            color: 'yellow'
+        };
+
+        const tester = new Tester(task);
+
+        await tester.doStep([
             {
                 "id": "101",
                 "text": "this is the first one",
@@ -155,7 +263,7 @@ describe("TasksCalculator", () => {
             }
         ]);
 
-        await doStep([
+        await tester.doStep([
             {
                 "id": "101",
                 "text": "this is the first one",
@@ -173,7 +281,7 @@ describe("TasksCalculator", () => {
             }
         ], '1d');
 
-        await doStep([
+        await tester.doStep([
             {
                 "id": "101",
                 "text": "this is the first one",
@@ -189,7 +297,7 @@ describe("TasksCalculator", () => {
             }
         ], '4d');
 
-        await doStep([
+        await tester.doStep([
             {
                 "id": "101",
                 "text": "this is the first one",
@@ -205,7 +313,7 @@ describe("TasksCalculator", () => {
             }
         ], '8d');
 
-        await doStep([
+        await tester.doStep([
             {
                 "id": "101",
                 "text": "this is the first one",
