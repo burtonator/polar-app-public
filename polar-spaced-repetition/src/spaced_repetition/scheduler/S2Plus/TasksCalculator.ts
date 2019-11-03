@@ -31,7 +31,7 @@ export class TasksCalculator {
     /**
      * The minimum amount of time to wait when we added it back as a review card.
      */
-    public static LAPSE_REVIEW_NEW_INTERVAL_MIN_DURATION: Duration = '1d';
+    public static LAPSE_REVIEW_NEW_INTERVAL_MIN: Duration = '1d';
 
     /**
      * Take potential work and use data from the backend to prioritize it for the user.
@@ -141,20 +141,13 @@ export class TasksCalculator {
 
             const reviewState = <ReviewState> taskRep.state;
 
-            const computeLapsed = (): ISpacedRep => {
+            /**
+             * Compute a new lapsed stage due to the user selecting 'again'
+             */
+            const computeLapsedDueToAgain = (): ISpacedRep => {
                 // schedule it for tomorrow
 
                 // FIXME test this...
-                // FIXME: the next state should be a function to restore
-                // the interval and difficulty based on a percentage of the current.
-
-                // FIXME: this won't work because I need a way to compute the 'age' explicitly... or create a new
-                // LapsedState...
-
-                // FIXME the LapsedState could have a ReviewState internally that it can restore from and have
-                // some type of dampening to lower it by say 50%...
-
-                // FIXME: this will also require a new 'stage' of 'lapsed'
 
                 const lapses = taskRep.lapses !== undefined ? taskRep.lapses + 1 : 1;
 
@@ -175,7 +168,7 @@ export class TasksCalculator {
             };
 
             if (rating === 'again') {
-                return computeLapsed();
+                return computeLapsedDueToAgain();
             }
 
             const answer = this.ratingToAnswer(rating);
@@ -196,6 +189,34 @@ export class TasksCalculator {
 
         };
 
+        const computeLapsed = (): ISpacedRep => {
+
+            // FIXME test this...
+
+            const lapsedState = <LapsedState> taskRep.state;
+
+            const computedInterval = TimeDurations.toMillis(lapsedState.reviewState.interval) * this.LAPSE_REVIEW_NEW_INTERVAL_FACTOR;
+            const minInterval = TimeDurations.toMillis(this.LAPSE_REVIEW_NEW_INTERVAL_MIN);
+
+            const interval = Math.max(computedInterval, minInterval);
+
+            const state: ReviewState = {
+                reviewedAt: ISODateTimeStrings.create(),
+                difficulty: lapsedState.reviewState.difficulty,
+                interval
+            };
+
+            // now the stage goes back to review but we have a much smaller interval now...
+            return {
+                id: taskRep.id,
+                suspended: taskRep.suspended,
+                lapses: taskRep.lapses,
+                stage: 'review',
+                state
+            };
+
+        };
+
         switch (taskRep.stage) {
 
             case "learning":
@@ -203,6 +224,9 @@ export class TasksCalculator {
 
             case "review":
                 return computeReview();
+
+            case "lapsed":
+                return computeLapsed();
 
             default:
                 throw new Error("Not supported: " + taskRep.stage);
