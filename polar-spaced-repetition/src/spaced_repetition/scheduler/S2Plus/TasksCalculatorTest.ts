@@ -50,8 +50,7 @@ class Tester {
         this.potential = [task];
     }
 
-    public async doStep(expectedTasks: any,
-                        timeForward: DurationStr = '0h',
+    public async doStep(timeForward: DurationStr = '0h',
                         rating: Rating = 'good',
                         assertions?: ReadonlyArray<TestAssertion>) {
 
@@ -62,8 +61,6 @@ class Tester {
         const tasks = await doTest(this.potential, this.pendingTaskRepMap);
 
         console.log("tasks: " + JSON.stringify(Dictionaries.sorted(tasks), null, "  ") );
-
-        assertJSON(Dictionaries.sorted(tasks), Dictionaries.sorted(expectedTasks));
 
         const next = TasksCalculator.computeNextSpacedRep(tasks[0], rating);
 
@@ -147,48 +144,9 @@ describe("TasksCalculator", () => {
 
         const tester = new Tester(task);
 
-        await tester.doStep([
-                {
-                    "id": "101",
-                    "text": "this is the first one",
-                    "created": "2012-02-29T11:38:49.321Z",
-                    "color": "yellow",
-                    "age": 86400000,
-                    "stage": "learning",
-                    "state": {
-                        "reviewedAt": "2012-02-29T11:38:49.321Z",
-                        "interval": "1d",
-                        "intervals": [
-                            "4d",
-                            "8d"
-                        ]
-                    }
-                }
-            ],
-            '0h',
-            'good',
-            [
-                {
-                    next: {
-                        "id": "101",
-                        "stage": "learning",
-                        "state": {
-                            "interval": "4d",
-                            "intervals": [
-                                "8d"
-                            ],
-                            "reviewedAt": "2012-03-02T11:38:49.321Z"
-                        }
-                    }
-                }
-            ]);
-
-
-        await tester.doStep([
-                {
-                    "age": 86400000,
-                    "color": "yellow",
-                    "created": "2012-02-29T11:38:49.321Z",
+        await tester.doStep( '0h', 'good', [
+            {
+                next: {
                     "id": "101",
                     "stage": "learning",
                     "state": {
@@ -197,12 +155,32 @@ describe("TasksCalculator", () => {
                             "8d"
                         ],
                         "reviewedAt": "2012-03-02T11:38:49.321Z"
-                    },
-                    "text": "this is the first one"
+                    }
                 }
-            ],
-            '1d',
-            'good',
+            },
+            {
+                tasks: [
+                    {
+                        "id": "101",
+                        "text": "this is the first one",
+                        "created": "2012-02-29T11:38:49.321Z",
+                        "color": "yellow",
+                        "age": 86400000,
+                        "stage": "learning",
+                        "state": {
+                            "reviewedAt": "2012-02-29T11:38:49.321Z",
+                            "interval": "1d",
+                            "intervals": [
+                                "4d",
+                                "8d"
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]);
+
+        await tester.doStep('1d', 'good',
             [
                 {
                     next: {
@@ -214,27 +192,29 @@ describe("TasksCalculator", () => {
                             "reviewedAt": "2012-03-03T11:38:49.321Z"
                         }
                     }
+                },
+                {
+                    tasks: [
+                        {
+                            "age": 86400000,
+                            "color": "yellow",
+                            "created": "2012-02-29T11:38:49.321Z",
+                            "id": "101",
+                            "stage": "learning",
+                            "state": {
+                                "interval": "4d",
+                                "intervals": [
+                                    "8d"
+                                ],
+                                "reviewedAt": "2012-03-02T11:38:49.321Z"
+                            },
+                            "text": "this is the first one"
+                        }
+                    ]
                 }
             ]);
 
-
-        await tester.doStep([
-                {
-                    "age": 691200000,
-                    "color": "yellow",
-                    "created": "2012-02-29T11:38:49.321Z",
-                    "id": "101",
-                    "stage": "learning",
-                    "state": {
-                        "interval": "8d",
-                        "intervals": [],
-                        "reviewedAt": "2012-03-03T11:38:49.321Z"
-                    },
-                    "text": "this is the first one"
-                }
-            ],
-            '8d',
-            'again',
+        await tester.doStep('8d', 'again',
             [
                 {
                     next: {
@@ -249,6 +229,23 @@ describe("TasksCalculator", () => {
                             "reviewedAt": "2012-02-29T11:38:49.321Z"
                         }
                     }
+                },
+                {
+                    tasks: [
+                        {
+                            "age": 691200000,
+                            "color": "yellow",
+                            "created": "2012-02-29T11:38:49.321Z",
+                            "id": "101",
+                            "stage": "learning",
+                            "state": {
+                                "interval": "8d",
+                                "intervals": [],
+                                "reviewedAt": "2012-03-03T11:38:49.321Z"
+                            },
+                            "text": "this is the first one"
+                        }
+                    ]
                 }
             ]);
 
@@ -268,7 +265,7 @@ describe("TasksCalculator", () => {
 
         const tester = new Tester(task);
 
-        const expectedWork = [
+        const expectedTasks = [
             {
                 "id": "101",
                 "text": "this is the first one",
@@ -297,7 +294,10 @@ describe("TasksCalculator", () => {
             }
         };
 
-        await tester.doStep(expectedWork, '0h', 'easy', [{next: expectedNext}]);
+        await tester.doStep('0h', 'easy', [
+            {next: expectedNext},
+            {tasks: expectedTasks}
+        ]);
 
     });
 
@@ -314,91 +314,111 @@ describe("TasksCalculator", () => {
 
         const tester = new Tester(task);
 
-        await tester.doStep([
+        await tester.doStep('0h', 'good', [
             {
-                "id": "101",
-                "text": "this is the first one",
-                "created": "2012-02-29T11:38:49.321Z",
-                "color": "yellow",
-                "age": 86400000,
-                "stage": "learning",
-                "state": {
-                    "reviewedAt": "2012-02-29T11:38:49.321Z",
-                    "interval": "1d",
-                    "intervals": [
-                        "4d",
-                        "8d"
-                    ]
-                }
+                tasks: [
+                    {
+                        "id": "101",
+                        "text": "this is the first one",
+                        "created": "2012-02-29T11:38:49.321Z",
+                        "color": "yellow",
+                        "age": 86400000,
+                        "stage": "learning",
+                        "state": {
+                            "reviewedAt": "2012-02-29T11:38:49.321Z",
+                            "interval": "1d",
+                            "intervals": [
+                                "4d",
+                                "8d"
+                            ]
+                        }
+                    }
+                ]
             }
         ]);
 
-        await tester.doStep([
+        await tester.doStep('1d', 'good', [
             {
-                "id": "101",
-                "text": "this is the first one",
-                "created": "2012-02-29T11:38:49.321Z",
-                "color": "yellow",
-                "stage": "learning",
-                "state": {
-                    "reviewedAt": "2012-03-02T11:38:49.321Z",
-                    "intervals": [
-                        "8d"
-                    ],
-                    "interval": "4d"
-                },
-                "age": 86400000
+                tasks: [
+                    {
+                        "id": "101",
+                        "text": "this is the first one",
+                        "created": "2012-02-29T11:38:49.321Z",
+                        "color": "yellow",
+                        "stage": "learning",
+                        "state": {
+                            "reviewedAt": "2012-03-02T11:38:49.321Z",
+                            "intervals": [
+                                "8d"
+                            ],
+                            "interval": "4d"
+                        },
+                        "age": 86400000
+                    }
+                ]
             }
-        ], '1d');
+        ]);
 
-        await tester.doStep([
+        await tester.doStep('4d', 'good', [
             {
-                "id": "101",
-                "text": "this is the first one",
-                "created": "2012-02-29T11:38:49.321Z",
-                "color": "yellow",
-                "stage": "learning",
-                "state": {
-                    "reviewedAt": "2012-03-03T11:38:49.321Z",
-                    "intervals": [],
-                    "interval": "8d"
-                },
-                "age": 345600000
+                tasks: [
+                    {
+                        "id": "101",
+                        "text": "this is the first one",
+                        "created": "2012-02-29T11:38:49.321Z",
+                        "color": "yellow",
+                        "stage": "learning",
+                        "state": {
+                            "reviewedAt": "2012-03-03T11:38:49.321Z",
+                            "intervals": [],
+                            "interval": "8d"
+                        },
+                        "age": 345600000
+                    }
+                ]
             }
-        ], '4d');
+        ]);
 
-        await tester.doStep([
+        await tester.doStep('8d', 'good', [
             {
-                "id": "101",
-                "text": "this is the first one",
-                "created": "2012-02-29T11:38:49.321Z",
-                "color": "yellow",
-                "stage": "review",
-                "state": {
-                    "reviewedAt": "2012-03-07T11:38:49.321Z",
-                    "difficulty": 0.3,
-                    "interval": "16d"
-                },
-                "age": 691200000
+                tasks: [
+                    {
+                        "id": "101",
+                        "text": "this is the first one",
+                        "created": "2012-02-29T11:38:49.321Z",
+                        "color": "yellow",
+                        "stage": "review",
+                        "state": {
+                            "reviewedAt": "2012-03-07T11:38:49.321Z",
+                            "difficulty": 0.3,
+                            "interval": "16d"
+                        },
+                        "age": 691200000
+                    }
+                ]
             }
-        ], '8d');
+        ]);
 
-        await tester.doStep([
+        await tester.doStep('16d', 'good', [
             {
-                "id": "101",
-                "text": "this is the first one",
-                "created": "2012-02-29T11:38:49.321Z",
-                "color": "yellow",
-                "stage": "review",
-                "state": {
-                    "difficulty": 0.3367647058823529,
-                    "interval": "32d",
-                    "nextReviewDate": "2012-04-16T11:38:49.321Z",
-                    "reviewedAt": "2012-03-15T11:38:49.321Z"
-                },
-                "age": 1382400000
+                tasks: [
+                    {
+                        "id": "101",
+                        "text": "this is the first one",
+                        "created": "2012-02-29T11:38:49.321Z",
+                        "color": "yellow",
+                        "stage": "review",
+                        "state": {
+                            "difficulty": 0.3367647058823529,
+                            "interval": "32d",
+                            "nextReviewDate": "2012-04-16T11:38:49.321Z",
+                            "reviewedAt": "2012-03-15T11:38:49.321Z"
+                        },
+                        "age": 1382400000
+                    }
+                ]
             }
-        ], '16d');
+        ]);
 
     });
 
