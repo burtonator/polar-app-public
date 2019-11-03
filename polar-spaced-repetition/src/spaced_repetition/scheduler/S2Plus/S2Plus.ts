@@ -3,10 +3,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Answer, Days, ReviewState, Schedule} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
 
-const GRADE_MIN = 0;
-const GRADE_MAX = 1;
 const GRADE_CUTOFF = 0.6;
-
 
 /**
  * https://github.com/pensieve-srs/pensieve-srs

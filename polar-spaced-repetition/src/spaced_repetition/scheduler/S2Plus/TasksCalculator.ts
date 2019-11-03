@@ -1,14 +1,37 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
-import {Answer, ISpacedRep, LearningState, ReviewState, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
+import {
+    Answer,
+    ISpacedRep,
+    LearningState,
+    ReviewState,
+    Rating,
+    LapsedState
+} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Duration, DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Learning} from "./Learning";
 import {S2Plus} from "./S2Plus";
 
 export class TasksCalculator {
+
+    /**
+     * The amount of time to wait to process the card again when it has lapsed.
+     */
+    public static LAPSE_INIT_INTERVAL: Duration = '1d';
+
+    /**
+     * The factor we use to restore the new interval against the review interval once we're ready to continue working
+     * add it back to the review stage.
+     */
+    public static LAPSE_REVIEW_NEW_INTERVAL_FACTOR = 0.0;
+
+    /**
+     * The minimum amount of time to wait when we added it back as a review card.
+     */
+    public static LAPSE_REVIEW_NEW_INTERVAL_MIN_DURATION: Duration = '1d';
 
     /**
      * Take potential work and use data from the backend to prioritize it for the user.
@@ -64,6 +87,9 @@ export class TasksCalculator {
      */
     public static computeNextSpacedRep(taskRep: TaskRep, rating: Rating): ISpacedRep {
 
+        // FIXME: if we hit 'again' when in review mode, we have to set the the interval to 1d
+        // so we review it again tomorrow.
+
         const computeLearning = (): ISpacedRep => {
 
             if (rating === 'again') {
@@ -115,6 +141,43 @@ export class TasksCalculator {
 
             const reviewState = <ReviewState> taskRep.state;
 
+            const computeLapsed = (): ISpacedRep => {
+                // schedule it for tomorrow
+
+                // FIXME test this...
+                // FIXME: the next state should be a function to restore
+                // the interval and difficulty based on a percentage of the current.
+
+                // FIXME: this won't work because I need a way to compute the 'age' explicitly... or create a new
+                // LapsedState...
+
+                // FIXME the LapsedState could have a ReviewState internally that it can restore from and have
+                // some type of dampening to lower it by say 50%...
+
+                // FIXME: this will also require a new 'stage' of 'lapsed'
+
+                const lapses = taskRep.lapses !== undefined ? taskRep.lapses + 1 : 1;
+
+                const state: LapsedState = {
+                    reviewedAt: ISODateTimeStrings.create(),
+                    interval: this.LAPSE_INIT_INTERVAL,
+                    reviewState
+                };
+
+                return {
+                    id: taskRep.id,
+                    suspended: taskRep.suspended,
+                    lapses,
+                    stage: 'lapsed',
+                    state,
+                };
+
+            };
+
+            if (rating === 'again') {
+                return computeLapsed();
+            }
+
             const answer = this.ratingToAnswer(rating);
             const schedule = S2Plus.calculate(reviewState, answer);
 
@@ -126,6 +189,7 @@ export class TasksCalculator {
             return {
                 id: taskRep.id,
                 suspended: taskRep.suspended,
+                lapses: taskRep.lapses,
                 stage: 'review',
                 state
             };

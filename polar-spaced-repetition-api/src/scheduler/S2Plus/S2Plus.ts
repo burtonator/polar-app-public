@@ -1,5 +1,5 @@
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {DurationStr} from "polar-shared/src/util/TimeDurations";
+import {Duration, DurationStr} from "polar-shared/src/util/TimeDurations";
 import {IDStr} from "polar-shared/src/util/Strings";
 
 /**
@@ -57,14 +57,25 @@ export type DateLike = number | string | Date;
 
 export type Days = number;
 
-export interface LearningState {
-
-    readonly reviewedAt: ISODateTimeString
-
-    readonly interval: DurationStr;
+export interface BaseState {
 
     /**
-     * The remaining intervals, if any.
+     * The time this item was reviewed.  For new cards use the current time and the set an 'interval' to the default
+     * interval which is probably 1 day.
+     */
+    readonly reviewedAt: ISODateTimeString
+
+    /**
+     * The amount of time until this task is due.
+     */
+    readonly interval: Duration;
+
+}
+
+export interface LearningState extends BaseState {
+
+    /**
+     * The remaining intervals, if any, that need to be completed until moving to the review state.
      */
     readonly intervals: ReadonlyArray<DurationStr>;
 
@@ -73,17 +84,18 @@ export interface LearningState {
 /**
  * Stores metadata needed for computing the next scheduling event.
  */
-export interface ReviewState {
-
-    /**
-     * The time this item was reviewed.  For new cards use the current time and the set an 'interval' to the default
-     * interval which is probably 1 day.
-     */
-    readonly reviewedAt: ISODateTimeString
+export interface ReviewState extends BaseState {
 
     readonly difficulty: Difficulty;
 
-    readonly interval: DurationStr;
+}
+
+export interface LapsedState extends BaseState {
+
+    /**
+     * The stage prior to lapsing so we can compute a new review interval once we've reviewed it once as a lapsed card.
+     */
+    readonly reviewState: ReviewState;
 
 }
 
@@ -96,7 +108,7 @@ export interface ReviewState {
  *   sometimes called review cards.
  *
  */
-export type Stage = 'new' | 'learning' | 'review';
+export type Stage = 'new' | 'learning' | 'review' | 'lapsed';
 
 /**
  * The type of repetition mode we're in.  Either flashcard or reading mode.  Reading tends to be more involved so we
@@ -115,9 +127,14 @@ export interface ISpacedRep {
      */
     readonly suspended?: boolean;
 
+    /**
+     * The number of lapses on this card.  Used to track bad/poor cards.
+     */
+    readonly lapses?: number;
+
     readonly stage: Stage;
 
-    readonly state: ReviewState | LearningState;
+    readonly state: ReviewState | LearningState | LapsedState;
 
 }
 
