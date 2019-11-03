@@ -12,7 +12,7 @@ import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
-describe("WorkCalculator", () => {
+describe("TasksCalculator", () => {
 
     beforeEach(() => {
         TestingTime.freeze();
@@ -93,7 +93,7 @@ describe("WorkCalculator", () => {
             const tasks = await doTest(potential, workMap);
 
             assertJSON(tasks, expectedTasks);
-            const next = TasksCalculator.computeNext(tasks[0], 1.0);
+            const next = TasksCalculator.computeNext(tasks[0], 'easy');
             const pendingWorkRep: PendingWorkRep = {work, spacedRep: next};
             workMap[next.id] = pendingWorkRep;
             ++step;

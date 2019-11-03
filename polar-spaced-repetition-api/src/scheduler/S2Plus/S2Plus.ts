@@ -10,6 +10,33 @@ export type ConfidenceInterval = number;
  * The answer of review base on a confidence interval.
  */
 export type Answer = ConfidenceInterval;
+
+/**
+ * The ratings for learning.
+ */
+export type LearningRating = 'again' | 'good' | 'easy';
+
+/**
+ * The rating for reviews
+ */
+export type ReviewRating = 'again' | 'hard' | 'good' | 'easy';
+
+/**
+ * When a card is in learning mode:
+ *
+ * - again: restarts the card to the starting intervals and goes through the entire routine
+ * - good: moves to the next learning interval
+ * - easy: automatically jumps the card to review:
+ *
+ * When a card is in review mode:
+ *
+ * - again: causes the card to lapse and reviews it more frequently
+ * - hard: shows it slightly more often in the future
+ * - good: the delay was about right and don't adjust the difficulty.
+ * - easy: delay even further in the future. It's best to probably pick good most of the time.
+ */
+export type Rating = LearningRating | ReviewRating;
+
 /**
  * How difficult the item is, from [0.0, 1.0].  Defaults to 0.3 (if the software
  * has no way of determining a better default for an item)

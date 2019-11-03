@@ -1,7 +1,7 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
-import {Answer, ISpacedRep, LearningState, ReviewState} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Answer, ISpacedRep, LearningState, ReviewState, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -43,10 +43,26 @@ export class TasksCalculator {
         return this.computeAgeFromReviewedAt(current.state.reviewedAt);
     }
 
+    public static ratingToAnswer(rating: Rating): Answer {
+        // these only really apply to the review stage.
+
+        switch (rating) {
+            case 'again':
+                return 0.00;
+            case 'hard':
+                return 0.25;
+            case 'good':
+                return 0.75;
+            case 'easy':
+                return 1.00;
+        }
+
+    }
+
     /**
      * Compute the next space repetition intervals/state from the current and the given answer.
      */
-    public static computeNext(current: ISpacedRep, answer: Answer): ISpacedRep {
+    public static computeNext(current: ISpacedRep, rating: Rating): ISpacedRep {
 
         const computeLearning = (): ISpacedRep => {
 
@@ -91,6 +107,7 @@ export class TasksCalculator {
 
             const reviewState = <ReviewState> current.state;
 
+            const answer = this.ratingToAnswer(rating);
             const schedule = S2Plus.calculate(reviewState, answer);
 
             const state: ReviewState = {
