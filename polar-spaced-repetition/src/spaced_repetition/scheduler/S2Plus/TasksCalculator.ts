@@ -31,7 +31,7 @@ export class TasksCalculator {
     /**
      * The minimum amount of time to wait when we added it back as a review card.
      */
-    public static LAPSE_REVIEW_NEW_INTERVAL_MIN: Duration = '1d';
+    public static LAPSE_REVIEW_NEW_INTERVAL_MIN: Duration = '4d';
 
     /**
      * Take potential work and use data from the backend to prioritize it for the user.
@@ -130,17 +130,14 @@ export class TasksCalculator {
              * Compute a new lapsed stage due to the user selecting 'again'
              */
             const computeLapsedDueToAgain = (): ISpacedRep => {
-                // schedule it for tomorrow
-
-                // FIXME test this...
-
-                const lapses = taskRep.lapses !== undefined ? taskRep.lapses + 1 : 1;
 
                 const state: LapsedState = {
                     reviewedAt: ISODateTimeStrings.create(),
                     interval: this.LAPSE_INIT_INTERVAL,
                     reviewState
                 };
+
+                const lapses = taskRep.lapses !== undefined ? taskRep.lapses + 1 : 1;
 
                 return {
                     id: taskRep.id,
@@ -174,8 +171,6 @@ export class TasksCalculator {
         };
 
         const computeLapsed = (): ISpacedRep => {
-
-            // FIXME test this...
 
             const lapsedState = <LapsedState> taskRep.state;
 

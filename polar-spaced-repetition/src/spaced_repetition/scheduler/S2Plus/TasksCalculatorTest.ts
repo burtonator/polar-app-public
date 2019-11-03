@@ -2,8 +2,8 @@ import {
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
     Task,
-    TasksCalculator,
-    TaskRepResolver
+    TaskRepResolver,
+    TasksCalculator
 } from "./TasksCalculator";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -18,13 +18,11 @@ async function doTest(potential: ReadonlyArray<Task>, workMap: PendingTaskRepMap
 
     const resolver = createMockWorkRepResolver(workMap);
 
-    const tasks = await TasksCalculator.calculate({
+    return await TasksCalculator.calculate({
         potential,
         resolver,
         limit: 10
     });
-
-    return tasks;
 
 }
 
@@ -84,8 +82,8 @@ class Tester {
 
         }
 
-        const pendingWorkRep: PendingTaskRep = {task: this.task, spacedRep: next};
-        this.pendingTaskRepMap[next.id] = pendingWorkRep;
+        const pendingTaskRep: PendingTaskRep = {task: this.task, spacedRep: next};
+        this.pendingTaskRepMap[next.id] = pendingTaskRep;
         ++this.step;
 
     };
@@ -297,6 +295,74 @@ describe("TasksCalculator", () => {
         await tester.doStep('0h', 'easy', [
             {next: expectedNext},
             {tasks: expectedTasks}
+        ]);
+
+    });
+
+    it("compute lapsed", async () => {
+
+        const twoDaysAgo = TimeDurations.compute('-2d');
+
+        const task: Task = {
+            id: "101",
+            text: 'this is the first one',
+            created: twoDaysAgo.toISOString(),
+            color: 'yellow'
+        };
+
+        const tester = new Tester(task);
+
+        await tester.doStep('0h', 'good');
+
+        await tester.doStep('1d', 'good');
+
+        await tester.doStep('4d', 'good', [
+            {
+                next: {
+                    "id": "101",
+                    "stage": "review",
+                    "state": {
+                        "difficulty": 0.3,
+                        "interval": "16d",
+                        "reviewedAt": "2012-03-07T11:38:49.321Z"
+                    }
+                }
+            }
+        ]);
+
+        // we should lapse now
+        await tester.doStep('8d', 'again', [
+            {
+                next: {
+                    "id": "101",
+                    "lapses": 1,
+                    "stage": "lapsed",
+                    "state": {
+                        "interval": "1d",
+                        "reviewState": {
+                            "difficulty": 0.3,
+                            "interval": "16d",
+                            "reviewedAt": "2012-03-07T11:38:49.321Z"
+                        },
+                        "reviewedAt": "2012-03-15T11:38:49.321Z"
+                    }
+                }
+            }
+        ]);
+
+        await tester.doStep('1d', 'good', [
+            {
+                next: {
+                    "id": "101",
+                    "lapses": 1,
+                    "stage": "review",
+                    "state": {
+                        "difficulty": 0.34136029411764707,
+                        "interval": 345600000,
+                        "reviewedAt": "2012-03-16T11:38:49.321Z"
+                    }
+                }
+            }
         ]);
 
     });
