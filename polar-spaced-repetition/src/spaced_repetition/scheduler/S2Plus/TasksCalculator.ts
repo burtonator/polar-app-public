@@ -72,9 +72,6 @@ export class TasksCalculator {
      */
     public static computeNextSpacedRep(taskRep: TaskRep, rating: Rating): ISpacedRep {
 
-        // FIXME: if we hit 'again' when in review mode, we have to set the the interval to 1d
-        // so we review it again tomorrow.
-
         const computeLearning = (): ISpacedRep => {
 
             if (rating === 'again') {
