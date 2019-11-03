@@ -1,6 +1,8 @@
 
 import timekeeper from 'timekeeper';
 import {DurationMS, DurationStr, TimeDurations} from '../util/TimeDurations';
+import {Dates} from "../util/Dates";
+import {ISODateTimeString} from "../metadata/ISODateTimeStrings";
 
 const epoch = new Date(1330688329321);
 
@@ -9,9 +11,12 @@ export class TestingTime {
     /**
      * Freeze time for testing at '2012-03-02T11:38:49.321Z'
      */
-    public static freeze(time: Date = epoch) {
+    public static freeze(date: Date | ISODateTimeString = epoch) {
+
+        date = Dates.toDate(date);
+
         timekeeper.reset();
-        timekeeper.freeze(time);
+        timekeeper.freeze(date);
     }
 
     public static unfreeze() {

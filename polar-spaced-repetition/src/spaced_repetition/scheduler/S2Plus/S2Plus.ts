@@ -79,7 +79,7 @@ export class S2Plus {
         return {
             difficulty,
             interval: intervalStr,
-            nextReviewDate,
+            nextReviewDate: nextReviewDate.toISOString(),
             reviewedAt: timestamp.toISOString(),
         };
 

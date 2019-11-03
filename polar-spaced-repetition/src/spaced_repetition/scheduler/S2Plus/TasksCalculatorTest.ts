@@ -11,6 +11,7 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 describe("TasksCalculator", () => {
 
@@ -92,8 +93,11 @@ describe("TasksCalculator", () => {
 
             const tasks = await doTest(potential, workMap);
 
-            assertJSON(tasks, expectedTasks);
-            const next = TasksCalculator.computeNext(tasks[0], 'easy');
+            console.log("tasks: " + JSON.stringify(Dictionaries.sorted(tasks), null, "  ") );
+
+            assertJSON(Dictionaries.sorted(tasks), Dictionaries.sorted(expectedTasks));
+
+            const next = TasksCalculator.computeNextSpacedRep(tasks[0], 'good');
             const pendingWorkRep: PendingWorkRep = {work, spacedRep: next};
             workMap[next.id] = pendingWorkRep;
             ++step;
@@ -176,7 +180,7 @@ describe("TasksCalculator", () => {
                 "color": "yellow",
                 "stage": "review",
                 "state": {
-                    "difficulty": 0.27058823529411763,
+                    "difficulty": 0.3367647058823529,
                     "interval": "32d",
                     "nextReviewDate": "2012-04-16T11:38:49.321Z",
                     "reviewedAt": "2012-03-15T11:38:49.321Z"

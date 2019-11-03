@@ -50,7 +50,7 @@ export type Difficulty = ConfidenceInterval;
  * The next review and next review date.
  */
 export interface Schedule extends ReviewState {
-    readonly nextReviewDate: Date;
+    readonly nextReviewDate: ISODateTimeString;
 }
 
 export type DateLike = number | string | Date;

@@ -62,13 +62,29 @@ export class TasksCalculator {
     /**
      * Compute the next space repetition intervals/state from the current and the given answer.
      */
-    public static computeNext(current: ISpacedRep, rating: Rating): ISpacedRep {
+    public static computeNextSpacedRep(taskRep: TaskRep, rating: Rating): ISpacedRep {
 
         const computeLearning = (): ISpacedRep => {
 
-            const learningState = <LearningState> current.state;
+            // FIXME: this is only the right behavior for 'good'
+            //
+            //
 
+            if (rating === 'again') {
+                // FIXME: test that this works.
+                // 'again' should revert back to the beginning of all the intervals
+                return this.createInitialSpacedRep(taskRep);
+            }
+
+            const learningState = <LearningState> taskRep.state;
+
+            // if (rating === 'easy' || learningState.intervals.length === 0) {
             if (learningState.intervals.length === 0) {
+
+                // we're graduating into review. Easy should mean we jump
+                // immediately into review mode
+
+                // FIXME: test that easy automatically jumps us to graduating.
 
                 const state: ReviewState = {
                     reviewedAt: ISODateTimeStrings.create(),
@@ -77,8 +93,8 @@ export class TasksCalculator {
                 };
 
                 return {
-                    id: current.id,
-                    suspended: current.suspended,
+                    id: taskRep.id,
+                    suspended: taskRep.suspended,
                     stage: 'review',
                     state: state
                 };
@@ -95,8 +111,8 @@ export class TasksCalculator {
             };
 
             return {
-                id: current.id,
-                suspended: current.suspended,
+                id: taskRep.id,
+                suspended: taskRep.suspended,
                 stage: 'learning',
                 state
             };
@@ -105,7 +121,7 @@ export class TasksCalculator {
 
         const computeReview = (): ISpacedRep => {
 
-            const reviewState = <ReviewState> current.state;
+            const reviewState = <ReviewState> taskRep.state;
 
             const answer = this.ratingToAnswer(rating);
             const schedule = S2Plus.calculate(reviewState, answer);
@@ -116,15 +132,15 @@ export class TasksCalculator {
             };
 
             return {
-                id: current.id,
-                suspended: current.suspended,
+                id: taskRep.id,
+                suspended: taskRep.suspended,
                 stage: 'review',
                 state
             };
 
         };
 
-        switch (current.stage) {
+        switch (taskRep.stage) {
 
             case "learning":
                 return computeLearning();
@@ -133,31 +149,42 @@ export class TasksCalculator {
                 return computeReview();
 
             default:
-                throw new Error("Not supported: " + current.stage);
+                throw new Error("Not supported: " + taskRep.stage);
 
         }
 
     }
 
-    public static createInitialLearningState(task: Task): TaskRep {
+
+    public static createInitialSpacedRep(task: Task): ISpacedRep {
 
         const intervals = [...Learning.intervals('reading')];
         const interval = intervals.shift()!;
-        const intervalMS = TimeDurations.toMillis(interval);
-
-        const created = ISODateTimeStrings.parse(task.created);
-
-        const age = Date.now() - (created.getTime() + intervalMS);
 
         return {
-            ...task,
-            age,
+            id: task.id,
             stage: "learning",
             state: {
                 reviewedAt: task.created,
                 interval,
                 intervals
             }
+        }
+
+    }
+
+    public static createInitialLearningState(task: Task): TaskRep {
+
+        const spacedRep = this.createInitialSpacedRep(task);
+
+        const intervalMS = TimeDurations.toMillis(spacedRep.state.interval);
+        const created = ISODateTimeStrings.parse(task.created);
+        const age = Date.now() - (created.getTime() + intervalMS);
+
+        return {
+            ...task,
+            ...spacedRep,
+            age,
         }
 
     }

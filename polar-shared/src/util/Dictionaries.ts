@@ -83,7 +83,7 @@ export class Dictionaries {
             return dict;
         }
 
-        if (! (typeof dict === 'object')) {
+        if (typeof dict !== 'object') {
             // if we're not a dictionary we're done
             return dict;
         }
