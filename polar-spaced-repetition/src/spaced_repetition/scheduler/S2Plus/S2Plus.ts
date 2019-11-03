@@ -1,7 +1,7 @@
 import {Dates, daysToMillis} from './Dates';
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Answer, Days, ReviewState, Schedule} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
+import {Duration, DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
 
 const GRADE_CUTOFF = 0.6;
 
@@ -25,13 +25,14 @@ export class S2Plus {
         return Math.ceil(recall * 100) / 100;
     }
 
-    public static calcPercentOverdue(reviewedAt: Date, interval: DurationStr, timestamp = new Date()) {
-        if (interval === '') {
+    public static calcPercentOverdue(reviewedAt: Date, duration: Duration, timestamp = new Date()) {
+
+        if (duration === '') {
             throw new Error("Interval must be a non-empty valid string");
         }
 
         const diff = Dates.diffDays(timestamp, reviewedAt);
-        const calculated = diff / Dates.toDays(interval);
+        const calculated = diff / Dates.toDays(duration);
         return Math.min(2, calculated);
     }
 
