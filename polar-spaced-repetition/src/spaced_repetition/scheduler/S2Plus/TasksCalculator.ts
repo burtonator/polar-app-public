@@ -78,8 +78,7 @@ export class TasksCalculator {
 
             const learningState = <LearningState> taskRep.state;
 
-            // if (rating === 'easy' || learningState.intervals.length === 0) {
-            if (learningState.intervals.length === 0) {
+            if (rating === 'easy' || learningState.intervals.length === 0) {
 
                 // we're graduating into review. Easy should mean we jump
                 // immediately into review mode
