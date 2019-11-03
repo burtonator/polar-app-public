@@ -94,6 +94,19 @@ export class Strings {
         return text;
     }
 
+    /**
+     * Make the first character uppercase.
+     */
+    public static upperFirst(text: string) {
+
+        if (text === '') {
+            return text;
+        }
+
+        return text[0].toUpperCase() + text.substring(1);
+
+    }
+
 }
 
 /**

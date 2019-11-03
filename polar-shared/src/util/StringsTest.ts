@@ -35,6 +35,17 @@ describe('Strings', function() {
 
     });
 
+
+    describe('upperFirst', function() {
+
+        it("basic", function() {
+            assert.equal(Strings.upperFirst('hello'), 'Hello');
+            assert.equal(Strings.upperFirst('h'), 'H');
+            assert.equal(Strings.upperFirst(''), '');
+        });
+
+    });
+
     describe('indent', function() {
 
         it("basic", function() {
