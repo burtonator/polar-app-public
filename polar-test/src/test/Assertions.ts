@@ -21,7 +21,7 @@ export function assertJSON(actual: any,
 
     try {
 
-        assert.equal(expected, actual, message);
+        assert.equal(actual, expected, message);
 
     } catch (e) {
         console.error(e.message);

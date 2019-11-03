@@ -27,6 +27,17 @@ async function doTest(potential: ReadonlyArray<Task>, workMap: PendingTaskRepMap
     return tasks;
 
 }
+
+interface TasksTestAssertion {
+    readonly tasks: any;
+}
+
+interface NextTestAssertion {
+    readonly next: any;
+}
+
+type TestAssertion = TasksTestAssertion | NextTestAssertion;
+
 class Tester {
 
     public pendingTaskRepMap: PendingTaskRepMap = {};
@@ -42,7 +53,7 @@ class Tester {
     public async doStep(expectedTasks: any,
                         timeForward: DurationStr = '0h',
                         rating: Rating = 'good',
-                        expectedNext?: any) {
+                        assertions?: ReadonlyArray<TestAssertion>) {
 
         TestingTime.forward(TimeDurations.toMillis(timeForward));
 
@@ -56,8 +67,24 @@ class Tester {
 
         const next = TasksCalculator.computeNextSpacedRep(tasks[0], rating);
 
-        if (expectedNext) {
-            assertJSON(Dictionaries.sorted(next), Dictionaries.sorted(expectedNext));
+        if (assertions) {
+
+            for (const assertion of assertions) {
+
+                if ((<any> assertion).tasks) {
+                    const tasksTestAssertion = <TasksTestAssertion> assertion;
+                    assertJSON(Dictionaries.sorted(tasks), Dictionaries.sorted(tasksTestAssertion.tasks));
+                    console.log("tasks test assertion passed");
+                }
+
+                if ((<any> assertion).next) {
+                    const nextTestAssertion = <NextTestAssertion> assertion;
+                    assertJSON(Dictionaries.sorted(next), Dictionaries.sorted(nextTestAssertion.next));
+                    console.log("next test assertion passed");
+                }
+
+            }
+
         }
 
         const pendingWorkRep: PendingTaskRep = {task: this.task, spacedRep: next};
@@ -140,17 +167,21 @@ describe("TasksCalculator", () => {
             ],
             '0h',
             'good',
-            {
-                "id": "101",
-                "stage": "learning",
-                "state": {
-                    "interval": "4d",
-                    "intervals": [
-                        "8d"
-                    ],
-                    "reviewedAt": "2012-03-02T11:38:49.321Z"
+            [
+                {
+                    next: {
+                        "id": "101",
+                        "stage": "learning",
+                        "state": {
+                            "interval": "4d",
+                            "intervals": [
+                                "8d"
+                            ],
+                            "reviewedAt": "2012-03-02T11:38:49.321Z"
+                        }
+                    }
                 }
-            });
+            ]);
 
 
         await tester.doStep([
@@ -172,15 +203,54 @@ describe("TasksCalculator", () => {
             ],
             '1d',
             'good',
-            {
-                "id": "101",
-                "stage": "learning",
-                "state": {
-                    "interval": "8d",
-                    "intervals": [],
-                    "reviewedAt": "2012-03-03T11:38:49.321Z"
+            [
+                {
+                    next: {
+                        "id": "101",
+                        "stage": "learning",
+                        "state": {
+                            "interval": "8d",
+                            "intervals": [],
+                            "reviewedAt": "2012-03-03T11:38:49.321Z"
+                        }
+                    }
                 }
-            });
+            ]);
+
+
+        await tester.doStep([
+                {
+                    "age": 691200000,
+                    "color": "yellow",
+                    "created": "2012-02-29T11:38:49.321Z",
+                    "id": "101",
+                    "stage": "learning",
+                    "state": {
+                        "interval": "8d",
+                        "intervals": [],
+                        "reviewedAt": "2012-03-03T11:38:49.321Z"
+                    },
+                    "text": "this is the first one"
+                }
+            ],
+            '8d',
+            'again',
+            [
+                {
+                    next: {
+                        "id": "101",
+                        "stage": "learning",
+                        "state": {
+                            "interval": "1d",
+                            "intervals": [
+                                "4d",
+                                "8d"
+                            ],
+                            "reviewedAt": "2012-02-29T11:38:49.321Z"
+                        }
+                    }
+                }
+            ]);
 
     });
 
@@ -227,7 +297,7 @@ describe("TasksCalculator", () => {
             }
         };
 
-        await tester.doStep(expectedWork, '0h', 'easy', expectedNext);
+        await tester.doStep(expectedWork, '0h', 'easy', [{next: expectedNext}]);
 
     });
 

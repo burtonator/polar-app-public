@@ -67,7 +67,6 @@ export class TasksCalculator {
         const computeLearning = (): ISpacedRep => {
 
             if (rating === 'again') {
-                // FIXME: test that this works.
                 // 'again' should revert back to the beginning of all the intervals
                 return this.createInitialSpacedRep(taskRep);
             }
