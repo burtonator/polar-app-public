@@ -121,7 +121,7 @@ export class Dictionaries {
             return dict;
         }
 
-        if (! (typeof dict === 'object')) {
+        if (typeof dict !== 'object') {
             // if we're not a dictionary we're done
             return dict;
         }
@@ -167,27 +167,32 @@ export class Dictionaries {
             return dict;
         }
 
-        if (! (typeof dict === 'object')) {
+        if (typeof dict !== 'object') {
             // if we're not a dictionary we're done
             return dict;
         }
 
         const result: any = {};
 
-        for (const key of Object.keys(dict).sort()) {
-            const value = dict[key];
+        if (Array.isArray(dict)) {
+            return dict.map(current => this.onlyDefinedProperties(current));
+        } else {
 
-            if (value === undefined) {
-                continue;
+            for (const key of Object.keys(dict).sort()) {
+                const value = dict[key];
+
+                if (value === undefined) {
+                    continue;
+                }
+
+                result[key] = this.onlyDefinedProperties(value);
             }
 
-            result[key] = this.onlyDefinedProperties(value);
+            return result;
+
         }
 
-        return result;
-
     }
-
 
     /**
      * Create a deep copy of the given dictionary.

@@ -4,6 +4,38 @@ import { assertJSON } from 'polar-test/src/test/Assertions';
 
 describe('Dictionaries', function() {
 
+    describe("onlyDefinedProperties", () => {
+
+        it("with array", () => {
+            const value = {
+                "interval": "1d",
+                "intervals": ["4d", "8d"],
+                "reviewedAt": "2018-08-22T15:41:42.633Z"
+            };
+
+            assertJSON(Dictionaries.onlyDefinedProperties(value), value);
+        });
+
+        it("with nested dicts within arrays", () => {
+
+            const value = {
+                foo: [
+                    {
+                        bar: [
+                            {
+                                dog: 'cat'
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            assertJSON(Dictionaries.onlyDefinedProperties(value), value);
+        });
+
+
+    });
+
     it("numberKeys", async function () {
 
         const dict: {[key: number]: string} = {
