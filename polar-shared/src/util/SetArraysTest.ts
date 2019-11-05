@@ -45,7 +45,22 @@ describe('SetArrays', function() {
 
         });
 
+    });
+
+    describe('equal', function() {
+
+        it("basic", function () {
+
+            // empty arrays
+            assert.ok(SetArrays.equal([], []));
+
+            assert.isFalse(SetArrays.equal([], ['xxx']));
+
+            assert.ok(SetArrays.equal(['y', 'x'], ['x', 'y']));
+
+        });
 
     });
+
 
 });

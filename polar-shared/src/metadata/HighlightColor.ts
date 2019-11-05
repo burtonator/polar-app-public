@@ -24,7 +24,7 @@ export type AlphaChannel = number;
 
 export class HighlightColors {
 
-    public static toDefaultColor(value: NamedColor | RGBColor | undefined | null) {
+    public static withDefaultColor(value: NamedColor | RGBColor | undefined | null) {
 
         if (! value) {
             return 'yellow';
@@ -41,7 +41,7 @@ export class HighlightColors {
     public static toBackgroundColor(value: NamedColor | RGBColor | undefined | null,
                                     alpha: AlphaChannel = 0.7): BackgroundColor {
 
-        value = this.toDefaultColor(value);
+        value = this.withDefaultColor(value);
 
         switch (value) {
 

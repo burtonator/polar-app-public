@@ -1,6 +1,8 @@
 /**
  * Set theoretic operations for Typescript arrays.
  */
+import {Arrays, PrimitiveArray} from "./Arrays";
+
 export class SetArrays {
 
     /**
@@ -57,7 +59,6 @@ export class SetArrays {
 
     }
 
-
     public static toSet<T>(arr: ReadonlyArray<T>): Set<T> {
 
         const set = new Set<T>();
@@ -66,6 +67,15 @@ export class SetArrays {
 
         return set;
 
+    }
+
+    /**
+     * Return true if these arrays are the same.
+     */
+    public static equal(a: PrimitiveArray, b: PrimitiveArray) {
+        const _a = [...a].sort();
+        const _b = [...b].sort();
+        return Arrays.equal(_a, _b);
     }
 
 }
