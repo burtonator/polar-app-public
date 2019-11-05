@@ -314,6 +314,13 @@ export class Dictionaries {
 
     }
 
+    /**
+     * Pretty printed and sorted JSON
+     */
+    public static toJSON(obj: any) {
+        return JSON.stringify(this.sorted(obj), null, "  ")
+    }
+
 }
 
 
