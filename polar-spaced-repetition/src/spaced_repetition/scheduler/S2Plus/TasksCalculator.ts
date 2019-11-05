@@ -76,7 +76,7 @@ export class TasksCalculator {
 
             if (rating === 'again') {
                 // 'again' should revert back to the beginning of all the intervals
-                return this.createInitialSpacedRep(taskRep);
+                return this.createInitialSpacedRep(taskRep, ISODateTimeStrings.create());
             }
 
             const learningState = <LearningState> taskRep.state;
@@ -218,7 +218,8 @@ export class TasksCalculator {
     }
 
 
-    public static createInitialSpacedRep(task: Task): ISpacedRep {
+    public static createInitialSpacedRep(task: Task,
+                                         reviewedAt: ISODateTimeString = task.created): ISpacedRep {
 
         const intervals = [...Learning.intervals('reading')];
         const interval = intervals.shift()!;
@@ -227,7 +228,7 @@ export class TasksCalculator {
             id: task.id,
             stage: "learning",
             state: {
-                reviewedAt: task.created,
+                reviewedAt,
                 interval,
                 intervals
             }

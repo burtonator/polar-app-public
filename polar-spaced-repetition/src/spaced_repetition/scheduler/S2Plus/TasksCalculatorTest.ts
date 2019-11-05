@@ -58,9 +58,23 @@ class Tester {
 
         const tasks = await doTest(this.potential, this.pendingTaskRepMap);
 
-        console.log("tasks: " + JSON.stringify(Dictionaries.sorted(tasks), null, "  ") );
+        console.log("tasks: " + Dictionaries.toJSON(tasks));
 
-        const next = TasksCalculator.computeNextSpacedRep(tasks[0], rating);
+        const computeNext = () => {
+
+            if (tasks.length === 0) {
+                return undefined;
+            }
+
+            const next = TasksCalculator.computeNextSpacedRep(tasks[0], rating);
+
+            console.log("next: " + Dictionaries.toJSON(next));
+
+            return next;
+
+        };
+
+        const next = computeNext();
 
         if (assertions) {
 
@@ -82,8 +96,11 @@ class Tester {
 
         }
 
-        const pendingTaskRep: PendingTaskRep = {task: this.task, spacedRep: next};
-        this.pendingTaskRepMap[next.id] = pendingTaskRep;
+        if (next) {
+            const pendingTaskRep: PendingTaskRep = {task: this.task, spacedRep: next};
+            this.pendingTaskRepMap[next.id] = pendingTaskRep;
+        }
+
         ++this.step;
 
     };
@@ -129,7 +146,7 @@ describe("TasksCalculator", () => {
 
     });
 
-    it("again on last iteration so we jump back", async () => {
+    it("learning: again on last iteration so we jump back", async () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
@@ -224,7 +241,7 @@ describe("TasksCalculator", () => {
                                 "4d",
                                 "8d"
                             ],
-                            "reviewedAt": "2012-02-29T11:38:49.321Z"
+                            "reviewedAt": "2012-03-11T11:38:49.321Z"
                         }
                     }
                 },
@@ -250,7 +267,7 @@ describe("TasksCalculator", () => {
     });
 
 
-    it("first iteration is easy so jump right to review", async () => {
+    it("learning: first iteration is easy so jump right to review", async () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
@@ -299,7 +316,74 @@ describe("TasksCalculator", () => {
 
     });
 
-    it("compute lapsed", async () => {
+    it("learning: first trigger 'again' so we schedule it for an hour from now", async () => {
+
+        const twoDaysAgo = TimeDurations.compute('-2d');
+
+        const task: Task = {
+            id: "101",
+            text: 'this is the first one',
+            created: twoDaysAgo.toISOString(),
+            color: 'yellow'
+        };
+
+        const tester = new Tester(task);
+
+        console.log("====== Date is now: " + new Date().toISOString());
+
+        await tester.doStep('0h', 'again', [
+            {
+                next: {
+                    "id": "101",
+                    "stage": "learning",
+                    "state": {
+                        "interval": "1d",
+                        "intervals": [
+                            "4d",
+                            "8d"
+                        ],
+                        "reviewedAt": "2012-03-02T11:38:49.321Z"
+                    }
+                }
+            }
+        ]);
+
+        console.log("====== Date is now: " + new Date().toISOString());
+
+        await tester.doStep('0h', 'again', [
+            {
+                tasks: []
+            }
+        ]);
+
+        await tester.doStep('1d', 'again', [
+            {
+                tasks: [
+                    {
+                        "age": 86400000,
+                        "color": "yellow",
+                        "created": "2012-02-29T11:38:49.321Z",
+                        "id": "101",
+                        "stage": "learning",
+                        "state": {
+                            "interval": "1d",
+                            "intervals": [
+                                "4d",
+                                "8d"
+                            ],
+                            "reviewedAt": "2012-03-02T11:38:49.321Z"
+                        },
+                        "text": "this is the first one"
+                    }
+                ]
+            }
+        ]);
+
+
+    });
+
+
+    it("review: compute lapsed and verify we restore the right new interval", async () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
