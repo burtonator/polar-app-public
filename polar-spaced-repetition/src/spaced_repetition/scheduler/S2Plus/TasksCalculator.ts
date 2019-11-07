@@ -304,18 +304,10 @@ export interface CalculateOpts<A> {
 
 }
 
-// FIXME: this is a problem I think because I don't necessarily want to embed react here...
-// export interface FlashcardTaskAction {
-//     readonly front: React.ReactNode;
-//     readonly back: React.ReactNode;
-// }
-
 /**
- * An action to just read some text for review.
+ * An action to just *read* some text for review.  This is just a string.
  */
 export type ReadTaskAction = string;
-
-export type TaskAction = ReadTaskAction;
 
 /**
  * Perform a task with a given action.
