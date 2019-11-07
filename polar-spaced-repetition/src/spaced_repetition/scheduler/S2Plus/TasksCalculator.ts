@@ -307,7 +307,7 @@ export interface CalculateOpts<A> {
 /**
  * An action to just *read* some text for review.  This is just a string.
  */
-export type ReadTaskAction = string;
+export type ReadingTaskAction = string;
 
 /**
  * Perform a task with a given action.

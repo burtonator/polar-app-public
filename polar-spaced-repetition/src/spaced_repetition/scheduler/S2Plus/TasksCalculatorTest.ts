@@ -1,6 +1,7 @@
 import {
     createDefaultTaskRepResolver,
-    OptionalTaskRepResolver, ReadTaskAction,
+    OptionalTaskRepResolver,
+    ReadingTaskAction,
     Task,
     TaskRepResolver,
     TasksCalculator
@@ -14,7 +15,7 @@ import {ISpacedRep, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Pl
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 
-async function doTest(potential: ReadonlyArray<Task<ReadTaskAction>>, workMap: PendingTaskRepMap = {}) {
+async function doTest(potential: ReadonlyArray<Task<ReadingTaskAction>>, workMap: PendingTaskRepMap = {}) {
 
     const resolver = createMockWorkRepResolver(workMap);
 
@@ -42,9 +43,9 @@ class Tester {
 
     public step: number = 0;
 
-    public potential: ReadonlyArray<Task<ReadTaskAction>>;
+    public potential: ReadonlyArray<Task<ReadingTaskAction>>;
 
-    constructor(public readonly task: Task<ReadTaskAction>) {
+    constructor(public readonly task: Task<ReadingTaskAction>) {
         this.potential = [task];
     }
 
@@ -119,7 +120,7 @@ describe("TasksCalculator", () => {
 
     it("with no items", async () => {
 
-        const potential: ReadonlyArray<Task<ReadTaskAction>> = [
+        const potential: ReadonlyArray<Task<ReadingTaskAction>> = [
 
         ];
 
@@ -131,7 +132,7 @@ describe("TasksCalculator", () => {
 
     it("with all new items but not ready to use as they haven't expired yet.", async () => {
 
-        const potential: ReadonlyArray<Task<ReadTaskAction>> = [
+        const potential: ReadonlyArray<Task<ReadingTaskAction>> = [
             {
                 id: "101",
                 action: 'this is the first one',
@@ -151,7 +152,7 @@ describe("TasksCalculator", () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const task: Task<ReadTaskAction> = {
+        const task: Task<ReadingTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
@@ -273,7 +274,7 @@ describe("TasksCalculator", () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const task: Task<ReadTaskAction> = {
+        const task: Task<ReadingTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
@@ -323,7 +324,7 @@ describe("TasksCalculator", () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const task: Task<ReadTaskAction> = {
+        const task: Task<ReadingTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
@@ -391,7 +392,7 @@ describe("TasksCalculator", () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const task: Task<ReadTaskAction> = {
+        const task: Task<ReadingTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
@@ -460,7 +461,7 @@ describe("TasksCalculator", () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const task: Task<ReadTaskAction> = {
+        const task: Task<ReadingTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
@@ -581,15 +582,15 @@ describe("TasksCalculator", () => {
 });
 
 export interface PendingTaskRep {
-    readonly action: Task<ReadTaskAction>;
+    readonly action: Task<ReadingTaskAction>;
     readonly spacedRep: ISpacedRep;
 }
 
 export type PendingTaskRepMap = {[id: string]: PendingTaskRep};
 
-function createMockWorkRepResolver(pendingTaskRepMap: PendingTaskRepMap = {}): TaskRepResolver<ReadTaskAction> {
+function createMockWorkRepResolver(pendingTaskRepMap: PendingTaskRepMap = {}): TaskRepResolver<ReadingTaskAction> {
 
-    const optionalTaskRepResolver: OptionalTaskRepResolver<ReadTaskAction> = async (task: Task<ReadTaskAction>) => {
+    const optionalTaskRepResolver: OptionalTaskRepResolver<ReadingTaskAction> = async (task: Task<ReadingTaskAction>) => {
 
         const pendingWorkRep = Optional.of(pendingTaskRepMap[task.id]).getOrUndefined();
 
