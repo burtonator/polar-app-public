@@ -37,6 +37,26 @@ describe('ClozeParser', function() {
 
     it("toRegions", function () {
 
+        assertJSON(ClozeParser.toRegions(''), [
+            {
+                "type": "text",
+                "subtype": "full",
+                "text": "",
+                "offset": 0,
+                "length": 0
+            }
+        ]);
+
+        assertJSON(ClozeParser.toRegions('nothing '), [
+            {
+                "type": "text",
+                "subtype": "full",
+                "text": "nothing ",
+                "offset": 0,
+                "length": 8
+            }
+        ]);
+
         assertJSON(ClozeParser.toRegions('Is Your {{c1::Startup}} Idea Taken?'), [
             {
                 "type": "text",
@@ -101,7 +121,7 @@ describe('ClozeParser', function() {
                 "length": 1
             }
         ]);
-
+        assertJSON(ClozeParser.toRegions('{{c1::Startup}}'), []);
     });
 
 

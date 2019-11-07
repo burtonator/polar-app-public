@@ -54,6 +54,7 @@ export class ClozeParser {
             const offset = curr.offset + curr.length;
             const length = input.length - offset;
             const text = input.substring(offset, offset + length);
+
             const textRegion: TextRegion = {
                 type: 'text',
                 subtype: 'last',
@@ -75,7 +76,6 @@ export class ClozeParser {
             return textRegion;
 
         };
-
 
         if (clozeRegions.length === 0) {
 
