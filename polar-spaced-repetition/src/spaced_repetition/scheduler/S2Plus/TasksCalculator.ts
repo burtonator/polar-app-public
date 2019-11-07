@@ -36,9 +36,9 @@ export class TasksCalculator {
     /**
      * Take potential work and use data from the backend to prioritize it for the user.
      */
-    public static async calculate(opts: CalculateOpts): Promise<ReadonlyArray<TaskRep>> {
+    public static async calculate<A>(opts: CalculateOpts<A>): Promise<ReadonlyArray<TaskRep<A>>> {
 
-        const taskReps: TaskRep[] = [];
+        const taskReps: TaskRep<A>[] = [];
 
         const jobs = opts.potential.map((current) => async () => {
             const taskRep = await opts.resolver(current);
@@ -70,7 +70,7 @@ export class TasksCalculator {
     /**
      * Compute the next space repetition intervals/state from the current and the given answer.
      */
-    public static computeNextSpacedRep(taskRep: TaskRep, rating: Rating): ISpacedRep {
+    public static computeNextSpacedRep<A>(taskRep: TaskRep<A>, rating: Rating): ISpacedRep {
 
         const computeLearning = (): ISpacedRep => {
 
@@ -218,8 +218,8 @@ export class TasksCalculator {
     }
 
 
-    public static createInitialSpacedRep(task: Task,
-                                         reviewedAt: ISODateTimeString = task.created): ISpacedRep {
+    public static createInitialSpacedRep<A>(task: Task<A>,
+                                            reviewedAt: ISODateTimeString = task.created): ISpacedRep {
 
         const intervals = [...Learning.intervals('reading')];
         const interval = intervals.shift()!;
@@ -236,7 +236,7 @@ export class TasksCalculator {
 
     }
 
-    public static createInitialLearningState(task: Task): TaskRep {
+    public static createInitialLearningState<A>(task: Task<A>): TaskRep<A> {
 
         const spacedRep = this.createInitialSpacedRep(task);
 
@@ -257,20 +257,24 @@ export class TasksCalculator {
 /**
  * Return a WorkRep if we were able to find it or undefined.
  */
-export type OptionalTaskRepResolver = (task: Task) => Promise<TaskRep | undefined>;
+export interface OptionalTaskRepResolver<A> {
+    (task: Task<A>): Promise<TaskRep<A> | undefined>;
+}
 
 /**
  * Return a WorkRep or a default rep if we're unable to find it.
  */
-export type TaskRepResolver = (task: Task) => Promise<TaskRep>;
+export interface TaskRepResolver<A> {
+    (task: Task<A>): Promise<TaskRep<A>>;
+}
 
 /**
  * If we don't have an explicit state, then we need to compute a new one...
  *
  */
-export function createDefaultTaskRepResolver(delegate: OptionalTaskRepResolver): TaskRepResolver {
+export function createDefaultTaskRepResolver<A>(delegate: OptionalTaskRepResolver<A>): TaskRepResolver<A> {
 
-    return async (task: Task): Promise<TaskRep> => {
+    return async (task: Task<A>): Promise<TaskRep<A>> => {
 
         const result = await delegate(task);
 
@@ -284,14 +288,14 @@ export function createDefaultTaskRepResolver(delegate: OptionalTaskRepResolver):
 
 }
 
-export interface CalculateOpts {
+export interface CalculateOpts<A> {
 
-    readonly potential: ReadonlyArray<Task>;
+    readonly potential: ReadonlyArray<Task<A>>;
 
     /**
      * Given a task, resolve the space rep metadata.
      */
-    readonly resolver: TaskRepResolver;
+    readonly resolver: TaskRepResolver<A>;
 
     /**
      * The limit of the number of tasks to return.
@@ -300,12 +304,31 @@ export interface CalculateOpts {
 
 }
 
+// FIXME: this is a problem I think because I don't necessarily want to embed react here...
+// export interface FlashcardTaskAction {
+//     readonly front: React.ReactNode;
+//     readonly back: React.ReactNode;
+// }
 
-export interface Task {
+/**
+ * An action to just read some text for review.
+ */
+export type ReadTaskAction = string;
+
+export type TaskAction = ReadTaskAction;
+
+/**
+ * Perform a task with a given action.
+ */
+export interface Task<A> {
 
     readonly id: IDStr;
 
-    readonly text: string;
+    /**
+     * The action that the user has to complete.  If this is a string it's just a reading task but if it's a flashcard
+     * we have to bring up a flashcard UI with a 'show answer' button.
+     */
+    readonly action: A;
 
     /**
      * The time the items was first created. This is used to compute the initial age.
@@ -316,7 +339,7 @@ export interface Task {
 
 }
 
-export interface TaskRep extends ISpacedRep, Task {
+export interface TaskRep<A> extends ISpacedRep, Task<A> {
 
     /**
      * The age of the work so we can sort the priority queue.
