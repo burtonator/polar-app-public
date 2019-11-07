@@ -1,11 +1,27 @@
 export class ClozeParser {
 
-    public static parse(input: string) {
+    public static parse(input: string): ReadonlyArray<ClozeRegion> {
 
-        const regex = /{{c([0-9]+)::(.*)}}/g;
+        const regex = /{{c([0-9]+)::(.*?)}}/g;
         const matches = this.matches(input, regex);
 
-        // TODO: I need a way to take the text , reliably, and occlude the clozes...
+        const toCloze = (match: RegExpExecArray) => {
+
+            const id = parseInt(match[1]);
+            const occluded = match[2];
+            const offset = match.index;
+            const length = match[0].length;
+
+            const cloze: ClozeRegion = {
+                id, occluded, offset, length,
+                type: 'cloze'
+            };
+
+            return cloze;
+
+        };
+
+        return matches.map(current => toCloze(current));
 
     }
 
@@ -28,20 +44,33 @@ export class ClozeParser {
 
 }
 
-interface Cloze {
+export type RegionType = 'text' | 'cloze';
 
-    readonly text: string;
+export interface Region {
+    readonly offset: number;
+    readonly length: number;
+    readonly type: RegionType;
+}
+
+/**
+ * Just plain text.
+ */
+export interface TextRegion extends Region {
+    readonly type: 'text';
+}
+
+export interface ClozeRegion extends Region{
+
+    readonly type: 'cloze';
+
+    /**
+     * The cloze ID.  Normally starting at one (c1, c2, etc)
+     */
+    readonly id: number;
 
     /**
      * The occluded text that should be initially hidden.
      */
     readonly occluded: string;
 
-    readonly offset: number;
-
-    readonly length: number;
-
 }
-
-
-// “Is Your {{c1::Startup}} Idea Taken?” — And WHy We Love X For Y {{c2::Startups}}
