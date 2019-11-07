@@ -7,7 +7,7 @@ import {
     LearningState,
     ReviewState,
     Rating,
-    LapsedState
+    LapsedState, RepetitionMode
 } from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Duration, DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
@@ -221,7 +221,7 @@ export class TasksCalculator {
     public static createInitialSpacedRep<A>(task: Task<A>,
                                             reviewedAt: ISODateTimeString = task.created): ISpacedRep {
 
-        const intervals = [...Learning.intervals('reading')];
+        const intervals = [...Learning.intervals(task.mode)];
         const interval = intervals.shift()!;
 
         return {
@@ -328,6 +328,11 @@ export interface Task<A> {
     readonly created: ISODateTimeString;
 
     readonly color: HighlightColor;
+
+    /**
+     * The mode that this task uses when computing new intervals (flashcard or reading).
+     */
+    readonly mode: RepetitionMode;
 
 }
 

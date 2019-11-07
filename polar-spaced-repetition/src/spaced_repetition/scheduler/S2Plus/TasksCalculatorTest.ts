@@ -136,7 +136,8 @@ describe("TasksCalculator", () => {
                 id: "101",
                 action: 'this is the first one',
                 created: ISODateTimeStrings.create(),
-                color: 'yellow'
+                color: 'yellow',
+                mode: 'reading'
             }
         ];
 
@@ -154,7 +155,8 @@ describe("TasksCalculator", () => {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
-            color: 'yellow'
+            color: 'yellow',
+            mode: 'reading'
         };
 
         const tester = new Tester(task);
@@ -275,7 +277,8 @@ describe("TasksCalculator", () => {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
-            color: 'yellow'
+            color: 'yellow',
+            mode: 'reading'
         };
 
         const tester = new Tester(task);
@@ -324,7 +327,8 @@ describe("TasksCalculator", () => {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
-            color: 'yellow'
+            color: 'yellow',
+            mode: 'reading'
         };
 
         const tester = new Tester(task);
@@ -391,7 +395,8 @@ describe("TasksCalculator", () => {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
-            color: 'yellow'
+            color: 'yellow',
+            mode: 'reading'
         };
 
         const tester = new Tester(task);
@@ -459,7 +464,8 @@ describe("TasksCalculator", () => {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
-            color: 'yellow'
+            color: 'yellow',
+            mode: 'reading'
         };
 
         const tester = new Tester(task);
