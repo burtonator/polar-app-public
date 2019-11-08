@@ -180,10 +180,11 @@ describe("TasksCalculator", () => {
                 tasks: [
                     {
                         "id": "101",
-                        "text": "this is the first one",
+                        "action": "this is the first one",
                         "created": "2012-02-29T11:38:49.321Z",
                         "color": "yellow",
                         "age": 86400000,
+                        "mode": "reading",
                         "stage": "learning",
                         "state": {
                             "reviewedAt": "2012-02-29T11:38:49.321Z",
@@ -218,6 +219,7 @@ describe("TasksCalculator", () => {
                             "color": "yellow",
                             "created": "2012-02-29T11:38:49.321Z",
                             "id": "101",
+                            "mode": "reading",
                             "stage": "learning",
                             "state": {
                                 "interval": "4d",
@@ -226,7 +228,7 @@ describe("TasksCalculator", () => {
                                 ],
                                 "reviewedAt": "2012-03-02T11:38:49.321Z"
                             },
-                            "text": "this is the first one"
+                            "action": "this is the first one"
                         }
                     ]
                 }
@@ -255,13 +257,14 @@ describe("TasksCalculator", () => {
                             "color": "yellow",
                             "created": "2012-02-29T11:38:49.321Z",
                             "id": "101",
+                            "mode": "reading",
                             "stage": "learning",
                             "state": {
                                 "interval": "8d",
                                 "intervals": [],
                                 "reviewedAt": "2012-03-03T11:38:49.321Z"
                             },
-                            "text": "this is the first one"
+                            "action": "this is the first one"
                         }
                     ]
                 }
@@ -287,10 +290,11 @@ describe("TasksCalculator", () => {
         const expectedTasks = [
             {
                 "id": "101",
-                "text": "this is the first one",
+                "action": "this is the first one",
                 "created": "2012-02-29T11:38:49.321Z",
                 "color": "yellow",
                 "age": 86400000,
+                "mode": "reading",
                 "stage": "learning",
                 "state": {
                     "reviewedAt": "2012-02-29T11:38:49.321Z",
@@ -369,6 +373,7 @@ describe("TasksCalculator", () => {
                         "color": "yellow",
                         "created": "2012-02-29T11:38:49.321Z",
                         "id": "101",
+                        "mode": "reading",
                         "stage": "learning",
                         "state": {
                             "interval": "1d",
@@ -378,7 +383,7 @@ describe("TasksCalculator", () => {
                             ],
                             "reviewedAt": "2012-03-02T11:38:49.321Z"
                         },
-                        "text": "this is the first one"
+                        "action": "this is the first one"
                     }
                 ]
             }
@@ -476,10 +481,11 @@ describe("TasksCalculator", () => {
                 tasks: [
                     {
                         "id": "101",
-                        "text": "this is the first one",
+                        "action": "this is the first one",
                         "created": "2012-02-29T11:38:49.321Z",
                         "color": "yellow",
                         "age": 86400000,
+                        "mode": "reading",
                         "stage": "learning",
                         "state": {
                             "reviewedAt": "2012-02-29T11:38:49.321Z",
@@ -499,9 +505,10 @@ describe("TasksCalculator", () => {
                 tasks: [
                     {
                         "id": "101",
-                        "text": "this is the first one",
+                        "action": "this is the first one",
                         "created": "2012-02-29T11:38:49.321Z",
                         "color": "yellow",
+                        "mode": "reading",
                         "stage": "learning",
                         "state": {
                             "reviewedAt": "2012-03-02T11:38:49.321Z",
@@ -521,9 +528,10 @@ describe("TasksCalculator", () => {
                 tasks: [
                     {
                         "id": "101",
-                        "text": "this is the first one",
+                        "action": "this is the first one",
                         "created": "2012-02-29T11:38:49.321Z",
                         "color": "yellow",
+                        "mode": "reading",
                         "stage": "learning",
                         "state": {
                             "reviewedAt": "2012-03-03T11:38:49.321Z",
@@ -541,9 +549,10 @@ describe("TasksCalculator", () => {
                 tasks: [
                     {
                         "id": "101",
-                        "text": "this is the first one",
+                        "action": "this is the first one",
                         "created": "2012-02-29T11:38:49.321Z",
                         "color": "yellow",
+                        "mode": "reading",
                         "stage": "review",
                         "state": {
                             "reviewedAt": "2012-03-07T11:38:49.321Z",
@@ -561,9 +570,10 @@ describe("TasksCalculator", () => {
                 tasks: [
                     {
                         "id": "101",
-                        "text": "this is the first one",
+                        "action": "this is the first one",
                         "created": "2012-02-29T11:38:49.321Z",
                         "color": "yellow",
+                        "mode": "reading",
                         "stage": "review",
                         "state": {
                             "difficulty": 0.3367647058823529,
