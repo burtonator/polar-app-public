@@ -327,7 +327,8 @@ export interface Task<A> {
      */
     readonly created: ISODateTimeString;
 
-    readonly color: HighlightColor;
+    // FIXME: move this over to ReadingTaskAction
+    readonly color?: HighlightColor;
 
     /**
      * The mode that this task uses when computing new intervals (flashcard or reading).
