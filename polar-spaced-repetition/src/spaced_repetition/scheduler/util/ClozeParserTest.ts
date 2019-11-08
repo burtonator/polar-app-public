@@ -8,27 +8,30 @@ describe('ClozeParser', function() {
         assertJSON(ClozeParser.toClozeRegions('Is Your {{c1::Startup}} Idea Taken?'), [
             {
                 "id": 1,
-                "occluded": "Startup",
+                "text": "Startup",
                 "offset": 8,
                 "length": 15,
-                "type": "cloze"
+                "type": "cloze",
+                "subtype": "none"
             }
         ]);
 
         assertJSON(ClozeParser.toClozeRegions('Is Your {{c1::Startup}} Idea Taken?  Not by {{c2::Microsoft}}.'), [
             {
                 "id": 1,
-                "occluded": "Startup",
+                "text": "Startup",
                 "offset": 8,
                 "length": 15,
-                "type": "cloze"
+                "type": "cloze",
+                "subtype": "none"
             },
             {
                 "id": 2,
-                "occluded": "Microsoft",
+                "text": "Microsoft",
                 "offset": 44,
                 "length": 17,
-                "type": "cloze"
+                "type": "cloze",
+                "subtype": "none"
             }
         ]);
 
@@ -36,6 +39,16 @@ describe('ClozeParser', function() {
 
 
     it("toRegions", function () {
+
+        assertJSON(ClozeParser.toRegions('The capital of california is {{c1:Sacramento}}.'), [
+            {
+                "type": "text",
+                "subtype": "full",
+                "text": "The capital of california is {{c1:Sacramento}}.",
+                "offset": 0,
+                "length": 47
+            }
+        ]);
 
         assertJSON(ClozeParser.toRegions(''), [
             {
@@ -121,7 +134,30 @@ describe('ClozeParser', function() {
                 "length": 1
             }
         ]);
-        assertJSON(ClozeParser.toRegions('{{c1::Startup}}'), []);
+        assertJSON(ClozeParser.toRegions('{{c1::Startup}}'), [
+            {
+                "type": "text",
+                "subtype": "first",
+                "text": "",
+                "offset": 0,
+                "length": 0
+            },
+            {
+                "id": 1,
+                "text": "Startup",
+                "offset": 0,
+                "length": 15,
+                "type": "cloze",
+                "subtype": "none"
+            },
+            {
+                "type": "text",
+                "subtype": "last",
+                "text": "",
+                "offset": 15,
+                "length": 0
+            }
+        ]);
     });
 
 

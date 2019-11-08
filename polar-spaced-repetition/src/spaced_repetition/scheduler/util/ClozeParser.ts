@@ -1,4 +1,5 @@
 import {Tuples} from "polar-shared/src/util/Tuples";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export class ClozeParser {
 
@@ -32,6 +33,8 @@ export class ClozeParser {
      * Parse this out into 'regions' that can just be raw text too.
      */
     public static toRegions(input: string): ReadonlyArray<Region> {
+
+        Preconditions.assertPresent(input, 'input');
 
         const clozeRegions = this.toClozeRegions(input);
 
