@@ -1,14 +1,21 @@
 import {PDFText} from "./PDFText";
+import {TextContent} from "pdfjs-dist";
 
 xdescribe('PDFText', function() {
 
     xit("basic read", async function () {
 
-        await PDFText.getText('/home/burton/projects/innodata-scratch/pypestream/manual/2018-mazda-6-112446.pdf',
-                              ((page, textContent) => {
-                                  const rawText = textContent.items.map(current => current.str).join(' ');
-                                  console.log(`${page}: ${rawText}`);
-                              }));
+        // file:///home/burton/Downloads/manual_dsc_envoy.pdf
+
+        const dumpTextContent = (page: number, textContent: TextContent) => {
+            const rawText = textContent.items.map(current => current.str).join(' ');
+            // const fonts = textContent.items.map(current => current.fontName).join(', ');
+
+            console.log(`${page}: ${rawText}: `);
+
+        };
+
+        await PDFText.getText('/home/burton/Downloads/manual_dsc_envoy.pdf', dumpTextContent);
     });
 
 });
