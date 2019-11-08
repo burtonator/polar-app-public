@@ -40,13 +40,28 @@ describe('ClozeParser', function() {
 
     it("toRegions", function () {
 
-        assertJSON(ClozeParser.toRegions('The capital of california is {{c1:Sacramento}}.'), [
+        assertJSON(ClozeParser.toRegions('The capital of california is {{c1::Sacramento}}.'), [
             {
                 "type": "text",
-                "subtype": "full",
-                "text": "The capital of california is {{c1:Sacramento}}.",
+                "subtype": "first",
+                "text": "The capital of california is ",
                 "offset": 0,
-                "length": 47
+                "length": 29
+            },
+            {
+                "id": 1,
+                "text": "Sacramento",
+                "offset": 29,
+                "length": 18,
+                "type": "cloze",
+                "subtype": "none"
+            },
+            {
+                "type": "text",
+                "subtype": "last",
+                "text": ".",
+                "offset": 47,
+                "length": 1
             }
         ]);
 

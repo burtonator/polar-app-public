@@ -119,6 +119,10 @@ export class ClozeParser {
 
     }
 
+    public static regionsToText(regions: ReadonlyArray<Region>): string {
+        return regions.map(current => current.text).join('');
+    }
+
     private static matches(text: string, re: RegExp): ReadonlyArray<RegExpExecArray> {
 
         let m;
