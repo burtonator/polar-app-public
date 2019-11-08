@@ -1,4 +1,4 @@
-import {Tuples} from "../../../../../../polar-bookshelf/web/js/util/Tuples";
+import {Tuples} from "polar-shared/src/util/Tuples";
 
 export class ClozeParser {
 
