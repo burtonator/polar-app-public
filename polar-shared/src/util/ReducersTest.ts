@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 import {Reducers} from './Reducers';
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('Reducers', function() {
 
@@ -87,4 +88,22 @@ describe('Reducers', function() {
 
     });
 
+
+
+
+    describe('FLAT', function() {
+
+        // [].reduce()
+
+        // FIXME: ok, this is all fucked because I can give the INITIAL value
+        // to the reducer but not a DEFAULT value to return if the array is
+        // empty and the reducer is NEVER called if there are no values and TS
+        //
+
+        it("basic", async function () {
+            const result = [[1, 2],[3, 4]].reduce(Reducers.FLAT);
+            assertJSON(result, [1, 2, 3, 4]);
+        });
+
+    });
 });

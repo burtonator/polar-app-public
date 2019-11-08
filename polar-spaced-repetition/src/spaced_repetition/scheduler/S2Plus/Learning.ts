@@ -1,5 +1,6 @@
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {DurationStr} from "polar-shared/src/util/TimeDurations";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 
 export class Learning {
@@ -10,6 +11,8 @@ export class Learning {
 
     public static intervals(mode: RepetitionMode): ReadonlyArray<DurationStr> {
 
+        Preconditions.assertPresent(mode, 'mode');
+
         switch (mode) {
 
             case "flashcard":
@@ -17,6 +20,9 @@ export class Learning {
 
             case "reading":
                 return ['1d', '4d', '8d'];
+
+            default:
+                throw new Error("Unknown repetition mode: " + mode);
 
         }
 
