@@ -2,7 +2,6 @@ import {
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
     ReadingTaskAction,
-    Task,
     TaskRepResolver,
     TasksCalculator
 } from "./TasksCalculator";
@@ -11,7 +10,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
-import {ISpacedRep, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {ISpacedRep, Rating, Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 
@@ -57,17 +56,18 @@ class Tester {
 
         console.log("==== Doing step " + this.step);
 
-        const tasks = await doTest(this.potential, this.pendingTaskRepMap);
+        const calculatedTaskReps = await doTest(this.potential, this.pendingTaskRepMap);
+        const {taskReps} = calculatedTaskReps;
 
-        console.log("tasks: " + Dictionaries.toJSON(tasks));
+        console.log("tasks: " + Dictionaries.toJSON(taskReps));
 
         const computeNext = () => {
 
-            if (tasks.length === 0) {
+            if (taskReps.length === 0) {
                 return undefined;
             }
 
-            const next = TasksCalculator.computeNextSpacedRep(tasks[0], rating);
+            const next = TasksCalculator.computeNextSpacedRep(taskReps[0], rating);
 
             console.log("next: " + Dictionaries.toJSON(next));
 
@@ -83,7 +83,7 @@ class Tester {
 
                 if ((<any> assertion).tasks) {
                     const tasksTestAssertion = <TasksTestAssertion> assertion;
-                    assertJSON(Dictionaries.sorted(tasks), Dictionaries.sorted(tasksTestAssertion.tasks));
+                    assertJSON(Dictionaries.sorted(taskReps), Dictionaries.sorted(tasksTestAssertion.tasks));
                     console.log("tasks test assertion passed");
                 }
 

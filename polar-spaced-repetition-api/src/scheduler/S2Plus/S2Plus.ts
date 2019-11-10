@@ -1,6 +1,7 @@
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Duration, DurationStr} from "polar-shared/src/util/TimeDurations";
+import {Duration, DurationMS, DurationStr} from "polar-shared/src/util/TimeDurations";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 /**
  * An interval over [0.0, 1.0]
@@ -139,3 +140,82 @@ export interface ISpacedRep {
 }
 
 export type ItemType = 'flashcard' | 'reading';
+
+/**
+ * Perform a task with a given action.
+ */
+export interface Task<A> {
+
+    readonly id: IDStr;
+
+    /**
+     * The action that the user has to complete.  If this is a string it's just a reading task but if it's a flashcard
+     * we have to bring up a flashcard UI with a 'show answer' button.
+     */
+    readonly action: A;
+
+    /**
+     * The time the items was first created. This is used to compute the initial age.
+     */
+    readonly created: ISODateTimeString;
+
+    // FIXME: move this over to ReadingTaskAction
+    readonly color?: HighlightColor;
+
+    /**
+     * The mode that this task uses when computing new intervals (flashcard or reading).
+     */
+    readonly mode: RepetitionMode;
+
+}
+
+
+export interface TaskRep<A> extends ISpacedRep, Task<A> {
+
+    /**
+     * The age of the work so we can sort the priority queue.
+     */
+    readonly age: DurationMS;
+
+}
+/**
+ * Number of cards in a given stage.
+ */
+export interface StageCounts {
+
+    /**
+     * The number of cards in learning stage.
+     */
+    readonly nrLearning: number;
+
+    /**
+     * The number of cards in review stage.
+     */
+    readonly nrReview: number;
+
+    /**
+     * The number of cards in lapsed stage.
+     */
+    readonly nrLapsed: number;
+
+}
+
+export class StageCountsCalculator {
+
+    public static calculate(tasks: ReadonlyArray<TaskRep<any>>): StageCounts {
+
+        const nrLearning = 0;
+        const nrReview = 0;
+        const nrLapsed = 0;
+
+        // for (const task of tasks) {
+        //     switch (task.) {
+        //
+        //     }
+        // }
+
+        return {nrLearning, nrReview, nrLapsed};
+
+    }
+
+}

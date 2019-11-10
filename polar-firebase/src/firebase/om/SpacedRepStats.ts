@@ -1,6 +1,6 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Clause, CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
-import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {RepetitionMode, StageCounts} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 /**
@@ -55,27 +55,6 @@ export class SpacedRepStats {
 
 }
 
-/**
- * Number of cards in a given stage.
- */
-export interface StageCounts {
-
-    /**
-     * The number of cards in learning stage.
-     */
-    readonly nrLearning: number;
-
-    /**
-     * The number of cards in review stage.
-     */
-    readonly nrReview: number;
-
-    /**
-     * The number of cards in lapsed stage.
-     */
-    readonly nrLapsed: number;
-
-}
 
 /**
  * A basic stat must have a mode.

@@ -1,19 +1,27 @@
-import {IDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {
-    Answer,
     ISpacedRep,
+    LapsedState,
     LearningState,
-    ReviewState,
     Rating,
-    LapsedState, RepetitionMode
+    ReviewState, StageCounts, StageCountsCalculator,
+    Task
 } from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Duration, DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Learning} from "./Learning";
 import {S2Plus} from "./S2Plus";
+
+export interface CalculatedTaskReps<A> {
+
+    /**
+     * The task reps that need to be completed.
+     */
+    readonly taskReps: ReadonlyArray<TaskRep<A>>;
+
+    readonly stageCounts: StageCounts;
+}
 
 export class TasksCalculator {
 
@@ -36,25 +44,28 @@ export class TasksCalculator {
     /**
      * Take potential work and use data from the backend to prioritize it for the user.
      */
-    public static async calculate<A>(opts: CalculateOpts<A>): Promise<ReadonlyArray<TaskRep<A>>> {
+    public static async calculate<A>(opts: CalculateOpts<A>): Promise<CalculatedTaskReps<A>> {
 
-        const taskReps: TaskRep<A>[] = [];
+        const resolvedTaskReps: TaskRep<A>[] = [];
 
         const jobs = opts.potential.map((current) => async () => {
             const taskRep = await opts.resolver(current);
-            taskReps.push(taskRep);
+            resolvedTaskReps.push(taskRep);
         });
 
         const asyncWorkQueue = new AsyncWorkQueue(jobs);
 
         await asyncWorkQueue.execute();
 
-        const prioritized =
-            taskReps.filter(current => current.age > 0)  // they have to be expired and ready to evaluate.
+        const prioritizedTaskReps =
+            resolvedTaskReps.filter(current => current.age > 0)  // they have to be expired and ready to evaluate.
                     .filter(current => current.suspended !== true) // if they're suspended we have to ignore
                     .sort((a, b) => b.age - a.age);
 
-        return Arrays.head(prioritized, opts.limit);
+        const taskReps = Arrays.head(prioritizedTaskReps, opts.limit);
+        const stageCounts = StageCountsCalculator.calculate(prioritizedTaskReps);
+
+        return {taskReps, stageCounts};
 
     }
 
@@ -309,34 +320,6 @@ export interface CalculateOpts<A> {
  */
 export type ReadingTaskAction = string;
 
-/**
- * Perform a task with a given action.
- */
-export interface Task<A> {
-
-    readonly id: IDStr;
-
-    /**
-     * The action that the user has to complete.  If this is a string it's just a reading task but if it's a flashcard
-     * we have to bring up a flashcard UI with a 'show answer' button.
-     */
-    readonly action: A;
-
-    /**
-     * The time the items was first created. This is used to compute the initial age.
-     */
-    readonly created: ISODateTimeString;
-
-    // FIXME: move this over to ReadingTaskAction
-    readonly color?: HighlightColor;
-
-    /**
-     * The mode that this task uses when computing new intervals (flashcard or reading).
-     */
-    readonly mode: RepetitionMode;
-
-}
-
 export interface TaskRep<A> extends ISpacedRep, Task<A> {
 
     /**
@@ -345,3 +328,4 @@ export interface TaskRep<A> extends ISpacedRep, Task<A> {
     readonly age: DurationMS;
 
 }
+
