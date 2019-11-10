@@ -63,9 +63,9 @@ export class ISODateTimeStrings {
 
         const date = this.parse(datetime);
 
-        const unixtimeMs = date.valueOf() - TimeDurations.toMillis(durationStr);
+        const unixtimeMillis = date.valueOf() - TimeDurations.toMillis(durationStr);
 
-        return this.create(new Date(unixtimeMs));
+        return this.create(new Date(unixtimeMillis));
 
     }
 
@@ -88,6 +88,22 @@ export class ISODateTimeStrings {
         const day = Strings.lpad(ordDay, '0', 2);
 
         return `${year}-${month}-${day}`;
+
+    }
+
+    /**
+     * Round the date to the nearest hour.
+     */
+    public static toISODateStringRoundedToHour(date: Date | number | ISODateString) {
+
+        // create a new date
+        date = new Date(date);
+
+        date.setUTCMilliseconds(0);
+        date.setUTCSeconds(0);
+        date.setUTCMinutes(0);
+
+        return date.toISOString();
 
     }
 

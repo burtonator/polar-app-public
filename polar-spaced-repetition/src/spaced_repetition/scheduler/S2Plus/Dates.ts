@@ -22,7 +22,7 @@ export class Dates {
         const utc2 = Date.UTC(dateB.getFullYear(), dateB.getMonth(), dateB.getDate());
 
         return Math.floor((utc1 - utc2) / milliPerDay);
-    }
+    };
 
     public static toDays(duration: Duration) {
         return TimeDurations.toMillis(duration) / milliPerDay;
