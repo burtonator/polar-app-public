@@ -178,32 +178,52 @@ export interface TaskRep<A> extends ISpacedRep, Task<A> {
     readonly age: DurationMS;
 
 }
-/**
- * Number of cards in a given stage.
- */
-export interface StageCounts {
+
+export interface MutableStageCounts {
+
+    nrNew: number;
 
     /**
      * The number of cards in learning stage.
      */
-    readonly nrLearning: number;
+    nrLearning: number;
 
     /**
      * The number of cards in review stage.
      */
-    readonly nrReview: number;
+    nrReview: number;
 
     /**
      * The number of cards in lapsed stage.
      */
-    readonly nrLapsed: number;
+    nrLapsed: number;
+
+}
+
+/**
+ * Number of cards in a given stage.
+ */
+export interface StageCounts extends Readonly<MutableStageCounts> {
+
 
 }
 
 export class StageCountsCalculator {
 
+    public static createMutable(): MutableStageCounts {
+
+        return {
+            nrNew: 0,
+            nrLearning: 0,
+            nrLapsed: 0,
+            nrReview: 0
+        };
+
+    }
+
     public static calculate(tasks: ReadonlyArray<TaskRep<any>>): StageCounts {
 
+        let nrNew = 0;
         let nrLearning = 0;
         let nrReview = 0;
         let nrLapsed = 0;
@@ -212,6 +232,7 @@ export class StageCountsCalculator {
             switch (task.stage) {
 
                 case "new":
+                    ++nrNew;
                     break;
                 case "learning":
                     ++nrLearning;
@@ -226,7 +247,7 @@ export class StageCountsCalculator {
             }
         }
 
-        return {nrLearning, nrReview, nrLapsed};
+        return {nrNew, nrLearning, nrReview, nrLapsed};
 
     }
 

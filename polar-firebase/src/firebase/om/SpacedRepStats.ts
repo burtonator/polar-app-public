@@ -22,7 +22,7 @@ export class SpacedRepStats {
      * Write a new stat to the database.
      */
     public static async write(uid: UserIDStr,
-                              spacedRepStat: SpacedRepStat) {
+                              spacedRepStat: SpacedRepStat): Promise<SpacedRepStatRecord> {
 
         const id = Hashcodes.createRandomID();
 
@@ -35,6 +35,7 @@ export class SpacedRepStats {
         const collections = this.collections();
         await collections.set(id, spacedRepStatRecord);
 
+        return spacedRepStatRecord;
     }
 
     /**
