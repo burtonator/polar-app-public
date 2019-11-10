@@ -36,7 +36,7 @@ export class SpacedReps {
 }
 
 /**
- * Represent the spaced repetition history and state for a card.
+ * Represent the spaced repetition state for a card.
  */
 export interface SpacedRep extends ISpacedRep {
 
