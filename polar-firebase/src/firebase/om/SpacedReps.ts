@@ -1,6 +1,6 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Clause, CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
-import {ISpacedRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {ISpacedRep, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 /**
  * Main class storing spaced repetition for flashcards, annotations, etc.  This stores the
@@ -31,6 +31,19 @@ export class SpacedReps {
         const collections = this.collections();
         const clauses: ReadonlyArray<Clause> = [['uid', '==', uid]];
         return await collections.list(clauses);
+    }
+
+    public static convertFromTaskRep(uid: UserIDStr, taskRep: TaskRep<any>): SpacedRep {
+
+        return {
+            uid,
+            id: taskRep.id,
+            suspended: taskRep.suspended,
+            lapses: taskRep.lapses,
+            stage: taskRep.stage,
+            state: taskRep.state
+        }
+
     }
 
 }

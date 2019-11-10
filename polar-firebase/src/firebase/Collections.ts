@@ -40,6 +40,7 @@ export class Collections {
     }
 
     public async set<T>(id: string, value: T) {
+        value = Dictionaries.onlyDefinedProperties(value);
         const ref = this.firestore.collection(this.collection).doc(id);
         await ref.set(value);
     }
