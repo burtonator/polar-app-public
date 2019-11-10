@@ -1,5 +1,6 @@
 import {ISODateString, ISODateTimeStrings} from "../metadata/ISODateTimeStrings";
 import {ArrayListMultimap} from "./Multimap";
+import {Arrays} from "./Arrays";
 
 export interface DataPoint {
     readonly created: ISODateString;
@@ -30,9 +31,9 @@ export class Statistics {
             multimap.put(created, dataPoint);
         }
 
-        return multimap.keys()
-                       .map(key => dataPointsReducer(key, multimap.get(key)));
+        const keys = [...multimap.keys()].sort();
 
+        return keys.map(key => dataPointsReducer(key, multimap.get(key)));
 
     }
 
