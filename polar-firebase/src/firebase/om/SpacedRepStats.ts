@@ -2,6 +2,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {Clause, CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
 import {RepetitionMode, StageCounts} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 /**
  * Stores card stats for a user each time they compute a new queue so that we can keep track
@@ -27,6 +28,7 @@ export class SpacedRepStats {
 
         const spacedRepStatRecord: SpacedRepStatRecord = {
             id, uid,
+            created: ISODateTimeStrings.create(),
             ...spacedRepStat
         };
 
@@ -84,6 +86,11 @@ export interface ISpacedRepStatRecord {
      * The user ID / owner of this card.
      */
     readonly uid: UserIDStr;
+
+    /**
+     * The time this stat was recorded.
+     */
+    readonly created: ISODateTimeString;
 
 }
 

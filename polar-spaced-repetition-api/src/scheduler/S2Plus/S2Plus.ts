@@ -204,15 +204,27 @@ export class StageCountsCalculator {
 
     public static calculate(tasks: ReadonlyArray<TaskRep<any>>): StageCounts {
 
-        const nrLearning = 0;
-        const nrReview = 0;
-        const nrLapsed = 0;
+        let nrLearning = 0;
+        let nrReview = 0;
+        let nrLapsed = 0;
 
-        // for (const task of tasks) {
-        //     switch (task.) {
-        //
-        //     }
-        // }
+        for (const task of tasks) {
+            switch (task.stage) {
+
+                case "new":
+                    break;
+                case "learning":
+                    ++nrLearning;
+                    break;
+                case "review":
+                    ++nrReview;
+                    break;
+                case "lapsed":
+                    ++nrLapsed;
+                    break;
+
+            }
+        }
 
         return {nrLearning, nrReview, nrLapsed};
 
