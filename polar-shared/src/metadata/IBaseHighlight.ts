@@ -41,8 +41,13 @@ export interface IBaseHighlight extends IAnnotation {
      */
     color?: HighlightColor;
 
-
     position?: Position;
+
+    /**
+     * True if the user has flagged this highlight.  This can be used to call
+     * to action that this annotation needs further editing, is important, etc.
+     */
+    flagged?: boolean;
 
 }
 
