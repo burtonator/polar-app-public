@@ -126,7 +126,15 @@ describe("TasksCalculator", () => {
 
         const tasks = await doTest(potential);
 
-        assertJSON(tasks, []);
+        assertJSON(tasks, {
+            "stageCounts": {
+                "nrLapsed": 0,
+                "nrLearning": 0,
+                "nrNew": 0,
+                "nrReview": 0
+            },
+            "taskReps": []
+        });
 
     });
 
@@ -144,7 +152,15 @@ describe("TasksCalculator", () => {
 
         const tasks = await doTest(potential);
 
-        assertJSON(tasks, []);
+        assertJSON(tasks, {
+            "stageCounts": {
+                "nrLapsed": 0,
+                "nrLearning": 0,
+                "nrNew": 0,
+                "nrReview": 0
+            },
+            "taskReps": []
+        });
 
     });
 
