@@ -54,6 +54,23 @@ export class SpacedRepStats {
         ];
 
         return await collections.list(clauses);
+
+    }
+
+    /**
+     * Return true if this user has stats.
+     */
+    public static async hasStats(uid: UserIDStr): Promise<boolean> {
+
+        const collections = this.collections();
+
+        const clauses: ReadonlyArray<Clause> = [
+            ['uid', '==', uid],
+        ];
+
+        const result = await collections.list(clauses, {limit: 1});
+        return result.length > 0;
+
     }
 
 }
