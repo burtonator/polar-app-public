@@ -1,6 +1,32 @@
-export class PDFTextLayers {
+/**
+ * Enable or disable modern text layers.
+ */
+import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
+import {Logger} from "polar-shared/src/logger/Logger";
 
-    public static enableModernTextLayers(enabled: boolean = true) {
+const log = Logger.create();
+
+export class PDFModernTextLayers {
+
+    public static configure() {
+
+        const enabled = FeatureToggles.get('modern-text-layers', true);
+
+        if (enabled) {
+            this.enable();
+        } else {
+            this.disable();
+        }
+
+    }
+
+    private static notice(enabled: boolean) {
+        log.notice("PDF layer using modern text layers: " + enabled)
+    }
+
+    public static enable() {
+
+        this.notice(true);
 
         if (window.localStorage) {
 
@@ -36,7 +62,8 @@ export class PDFTextLayers {
 
     }
 
-    public static disableModernTextLayers() {
+    public static disable() {
+        this.notice(true);
         window.localStorage.removeItem('pdfjs.preferences');
     }
 
