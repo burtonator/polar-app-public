@@ -14,7 +14,7 @@ export interface IVersionedObject {
     /**
      * When an object is created it has an id just like every other annotation
      * object however, we can update them over time and when it's updated we
-     * need to generate a new id.  The guid allows us to reference aan object as
+     * need to generate a new id.  The guid allows us to reference an object as
      * it changes over time.  If the user updates the object we keep the same
      * guid so we have a unique handle on the annotation as it's edited and the
      * initial guid never changes but the id is still essentially the pk.
