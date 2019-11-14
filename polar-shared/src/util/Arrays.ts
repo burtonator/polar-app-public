@@ -3,7 +3,31 @@ import {Optional} from "./ts/Optional";
 
 export type PrimitiveArray = ReadonlyArray<string | number | boolean>;
 
+/**
+ * A type that can be converted to an array.
+ */
+export type ToArrayLike<T> = ReadonlyArray<T> |
+                            {[key: string]: T} |
+                            {[key: number]: T} |
+                            undefined |
+                            null;
+
 export class Arrays {
+
+    public static toArray<T>(value: ToArrayLike<T>): ReadonlyArray<T> {
+
+        if (value === undefined || value === null) {
+            return [];
+        }
+
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        return Object.values(value);
+
+    }
+
 
     public static onlyDefined<T>(values: ReadonlyArray<T | undefined>): ReadonlyArray<T> {
 

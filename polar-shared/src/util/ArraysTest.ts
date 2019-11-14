@@ -23,4 +23,16 @@ describe('Arrays', function() {
 
     });
 
+    describe('toArray', function() {
+
+        it("basic", function () {
+            assertJSON(Arrays.toArray(null), []);
+            assertJSON(Arrays.toArray(undefined), []);
+            assertJSON(Arrays.toArray(['hello']), ['hello']);
+            assertJSON(Arrays.toArray({1: 'hello'}), ['hello']);
+            assertJSON(Arrays.toArray({'1': 'hello'}), ['hello']);
+        });
+
+    });
+
 });

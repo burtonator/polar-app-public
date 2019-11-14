@@ -345,3 +345,38 @@ export type UserIDStr = string;
  * The name of a collection.
  */
 export type CollectionNameStr = string;
+
+/**
+ * The type of primitives that Firestore supports.
+ */
+export type FirestorePrimitive = string | number | boolean | null;
+
+// TODO: this entire system of object typing for Firestore needs work.  The 'arrays' we specify can not
+// be regular arrays but must be number indexed dictionaries.
+
+export interface FirestoreTypedArray<T extends FirestorePrimitive | FirestoreDict | FirebaseDictTyped<T>> {
+    readonly [id: number]: T;
+}
+
+/**
+ * An array type that accepts.  This syntax prevents .includes() from working since it's
+ * not actually a real dictionary.
+ */
+export interface FirestoreArray {
+    readonly [id: number]: FirestoreDict | FirestoreArray | FirestorePrimitive;
+}
+
+export type FirebaseDictTyped<T> = {
+    readonly [P in keyof T]: FirestorePrimitive;
+};
+
+export interface FirestoreDict {
+    readonly [id: string]: FirestoreDict | FirestoreArray | FirestorePrimitive | FirebaseDictTyped<any>;
+}
+
+
+// export interface FirestoreDict2<T> {
+//     readonly [id: keyof T]: FirestorePrimitive;
+// }
+
+export type FirestoreValue = FirestoreDict | FirestoreArray | FirestorePrimitive;
