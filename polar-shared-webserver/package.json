@@ -1,6 +1,6 @@
 {
   "name": "polar-shared-webserver",
-  "version": "1.50.11",
+  "version": "1.50.12",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,14 +15,14 @@
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "polar-test": "^1.50.11",
+    "polar-test": "^1.50.12",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {
     "@types/express": "^4.17.1",
     "express": "^4.17.1",
-    "polar-shared": "^1.50.11"
+    "polar-shared": "^1.50.12"
   },
   "files": [
     "**/*.js",
