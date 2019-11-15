@@ -138,6 +138,16 @@ export class Tags {
 
     }
 
+    /**
+     * Difference (a \ b): create a set that contains those elements of set a
+     * that are not in set b
+     *
+     */
+    public static difference(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+        const diff = b.map(current => current.id);
+        return a.filter(current => ! diff.includes(current.id));
+    }
+
     public static toIDs(tags: ReadonlyArray<Tag>) {
         return tags.map(current => current.id);
     }

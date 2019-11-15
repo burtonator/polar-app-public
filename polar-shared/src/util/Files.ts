@@ -403,7 +403,7 @@ export class Files {
             // create a unique path name for the tmp file including a suffix
             // which prevents races too so that only one atomic write wins if
             // multiple are attempted.  This can happen now with streams.
-            const suffix = Math.floor(Math.random() * 999999);
+            const suffix = Math.floor(Math.random() * 100000000);
 
             const dirname = FilePaths.dirname(path);
             const basename = FilePaths.basename(path);
@@ -505,6 +505,12 @@ export class Files {
 
     }
 
+    /**
+     * Asynchronously rename file at oldPath to the pathname provided as newPath. In the case that newPath already
+     * exists, it will be overwritten. If there is a directory at newPath, an error will be raised instead. No arguments
+     * other than a possible exception are given to the completion callback.
+     *
+     */
     public static async renameAsync(oldPath: string, newPath: string) {
         return this.withProperException(() => this.promised.rename(oldPath, newPath));
     }

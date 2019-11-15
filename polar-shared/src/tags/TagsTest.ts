@@ -1,5 +1,6 @@
 import {Tags} from './Tags';
 import {assert} from 'chai';
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('basename', function() {
 
@@ -8,6 +9,30 @@ describe('basename', function() {
         assert.equal(Tags.basename(''), '');
         assert.equal(Tags.basename('/foo/bar'), 'bar');
         assert.equal(Tags.basename('/foo'), 'foo');
+
+    });
+
+});
+
+describe('difference', function() {
+
+    it("basic", function() {
+        const foo = Tags.create('foo');
+        const bar = Tags.create('bar');
+
+        const a = [foo, bar];
+        const b = [bar];
+
+        const result = Tags.difference(a, b);
+
+        assert.equal(result.length, 1);
+
+        assertJSON(result, [
+            {
+                "id": "foo",
+                "label": "foo"
+            }
+        ]);
 
     });
 
