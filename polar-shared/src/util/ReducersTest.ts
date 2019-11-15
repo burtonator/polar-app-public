@@ -18,6 +18,12 @@ describe('Reducers', function() {
 
     describe('LAST', function() {
 
+        // it("no values", async function() {
+        //     const arr: number[] = [];
+        //     const val = arr.reduce(Reducers.LAST, undefined);
+        //     assert.equal(val, undefined);
+        // });
+
         it("two values", async function() {
             assert.equal([0, 1].reduce(Reducers.LAST), 1);
         });

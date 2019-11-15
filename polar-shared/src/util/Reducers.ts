@@ -26,7 +26,7 @@ export class Reducers {
         };
 
     public static LAST =
-        <T> (previousValue: T, currentValue: T) => currentValue
+        <T> (previousValue: T, currentValue: T) => currentValue;
 
     public static FLAT =
         <T> (accumulator: ReadonlyArray<T>, currentValue: ReadonlyArray<T>, currentIndex: number) => {

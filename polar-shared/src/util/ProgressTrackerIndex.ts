@@ -1,7 +1,7 @@
 import {Progress} from "./ProgressTracker";
 import {isPresent} from '../Preconditions';
-import {Reducers} from "./Reducers";
 import {Optional} from "./ts/Optional";
+import {Arrays} from "./Arrays";
 
 export class ProgressTrackerIndex {
 
@@ -29,9 +29,10 @@ export class ProgressTrackerIndex {
 
         }
 
-        return Optional.of(Object.values(this.index)
-                               .sort((a, b) => a.progress - b.progress)
-                               .reduce(Reducers.FIRST));
+        const values = Object.values(this.index)
+                             .sort((a, b) => a.progress - b.progress);
+
+        return Optional.of(Arrays.first(values));
 
     }
 
