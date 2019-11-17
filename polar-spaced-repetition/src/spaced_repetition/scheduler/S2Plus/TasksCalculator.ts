@@ -63,18 +63,20 @@ export class TasksCalculator {
                     .sort((a, b) => b.age - a.age);
 
         const taskReps = Arrays.head(prioritizedTaskReps, opts.limit);
+
         const stageCounts = StageCountsCalculator.calculate(prioritizedTaskReps);
 
         return {taskReps, stageCounts};
 
     }
 
-    private static computeAgeFromReviewedAt(reviewedAt: ISODateTimeString) {
-        return Date.now() - ISODateTimeStrings.parse(reviewedAt).getTime();
+    private static computeAgeFromReviewedAt(reviewedAt: ISODateTimeString, duration: Duration) {
+        const dueAt = ISODateTimeStrings.parse(reviewedAt).getTime() + TimeDurations.toMillis(duration);
+        return Date.now() - dueAt;
     }
 
     public static computeAge(current: ISpacedRep) {
-        return this.computeAgeFromReviewedAt(current.state.reviewedAt);
+        return this.computeAgeFromReviewedAt(current.state.reviewedAt, current.state.interval);
     }
 
 
