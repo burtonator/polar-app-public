@@ -2,6 +2,20 @@ import { Reducers } from "./Reducers";
 
 export class Numbers {
 
+    /**
+     * Type guard to verify that the value given is always a number type.
+     * @param value
+     */
+    public static toNumber(value: number | string): number {
+
+        if (typeof value === 'string') {
+            return parseInt(value);
+        }
+
+        return value;
+
+    }
+
     public static sum(...values: number[]) {
         return values.reduce(Reducers.SUM, 0);
     }
