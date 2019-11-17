@@ -125,6 +125,23 @@ export class TimeDurations {
     }
 
     /**
+     * Format to a concise time like 4w, 4.5w, etc.  Do not do more detailed formatting like 4m2d as this isn't
+     * very user friendly.
+     *
+     * @param duration
+     */
+    public static formatConcise(duration: Duration) {
+
+        //
+        // const durationMS = this.toMillis(duration);
+        //
+        // // year / month, week, day, hour.. what about confusing with minute and month???
+        //
+        // if (durationMS > 24 * 60 * 60 * 1000;
+
+    }
+
+    /**
      * Compute a random duration based on the given duration.
      * @param duration
      */
