@@ -5,6 +5,21 @@ import {IDStr} from "./Strings";
 export class Dictionaries {
 
     /**
+     * Return true if a is equal to be but using only the given keys.
+     */
+    public static equals(a: any, b: any, keys: ReadonlyArray<string>) {
+
+        for(const key of keys) {
+            if (a[key] !== b[key]) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    /**
      * Convert a dictionary to number keys. In JS all dictionaries use string keys
      * but TS supports string keys.
      */
