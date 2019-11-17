@@ -18,6 +18,17 @@ export interface IVersionedObject {
      * it changes over time.  If the user updates the object we keep the same
      * guid so we have a unique handle on the annotation as it's edited and the
      * initial guid never changes but the id is still essentially the pk.
+     *
+     * Example:
+     *
+     * On creation:
+     *
+     * id: 10101, guid: 10101
+     *
+     * on first edit
+     *
+     * id: 10102, guid: 10101
+     *
      */
 
     guid: string;
