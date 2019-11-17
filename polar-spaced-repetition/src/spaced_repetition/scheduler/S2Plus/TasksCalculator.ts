@@ -66,6 +66,8 @@ export class TasksCalculator {
 
         const stageCounts = StageCountsCalculator.calculate(prioritizedTaskReps);
 
+        console.log("New stageCounts: ", stageCounts)
+
         return {taskReps, stageCounts};
 
     }
