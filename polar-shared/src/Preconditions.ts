@@ -2,6 +2,12 @@ import {NULL_FUNCTION} from './util/Functions';
 
 export class Preconditions {
 
+    public static assertCondition(assertion: boolean, message: string) {
+        if (! assertion) {
+            throw new Error("Assertion failed: " + message);
+        }
+    }
+
     /**
      *
      * @param value  The value we're trying to assert.

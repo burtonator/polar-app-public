@@ -339,7 +339,9 @@ export class Dictionaries {
 }
 
 
-type ForDictCallbackFunction<T> = (key: string, value: T) => void;
+interface ForDictCallbackFunction<T> {
+    (key: string, value: T): void;
+}
 
 export interface DictionaryEntry<V> {
     readonly key: string;
