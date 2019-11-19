@@ -3,6 +3,7 @@
 import {Callers} from './Callers';
 import {LoggerDelegate} from './LoggerDelegate';
 import {ILogger} from './ILogger';
+import {ConsoleLogger} from "./ConsoleLogger";
 
 export class Logger {
 
@@ -15,6 +16,8 @@ export class Logger {
         if (caller.filename === 'Logger.js') {
             throw new Error("Wrong caller: " + caller.filename);
         }
+
+        // return new ConsoleLogger();
 
         return new DelegatedLogger(caller.filename);
     }
@@ -43,27 +46,27 @@ class DelegatedLogger implements ILogger {
     // with spectron instead of hacking it here.
 
     public notice(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().notice.bind(LoggerDelegate.get()), msg, ...args);
+        LoggerDelegate.get().notice(msg, ...args);
     }
 
     public info(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().info.bind(LoggerDelegate.get()), msg, ...args);
+        LoggerDelegate.get().info(msg, ...args);
     }
 
     public warn(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().warn.bind(LoggerDelegate.get()), msg, ...args);
+        LoggerDelegate.get().warn(msg, ...args);
     }
 
     public error(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().error.bind(LoggerDelegate.get()), msg, ...args);
+        LoggerDelegate.get().error(msg, ...args);
     }
 
     public verbose(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().verbose.bind(LoggerDelegate.get()), msg, ...args);
+        LoggerDelegate.get().verbose(msg, ...args);
     }
 
     public debug(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().debug.bind(LoggerDelegate.get()), msg, ...args);
+        LoggerDelegate.get().debug(msg, ...args);
     }
 
     public async sync(): Promise<void> {

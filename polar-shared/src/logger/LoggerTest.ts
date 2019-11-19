@@ -42,4 +42,22 @@ describe('Logger', function() {
 
     });
 
+    it("with swallowed exceptions", function() {
+
+        const brokenFunction = () => {
+            throw new Error("Something really bad happened!");
+        };
+
+        const log = Logger.create();
+
+        try {
+            brokenFunction();
+        } catch (e) {
+            console.error(e);
+            log.error("hello", e);
+            // log.error(e);
+        }
+
+    });
+
 });
