@@ -209,7 +209,9 @@ export class Collections {
 
 }
 
-export type FirestoreProvider = () => FirestoreLike;
+export interface FirestoreProvider {
+    (): FirestoreLike;
+}
 
 /**
  * A cursor for easily paging through all results on the data.

@@ -86,5 +86,3 @@ export class Resource {
     }
 
 }
-
-export type DocTypeFormat = 'html' | 'xml';

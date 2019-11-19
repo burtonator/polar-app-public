@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/chrome": "0.0.91",
     "polar-mocha": "^1.60.1",
-    "tslint": "^5.20.0",
-    "typescript": "^3.6.4"
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
   }
 }
