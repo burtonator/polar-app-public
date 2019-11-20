@@ -19,14 +19,16 @@
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
     "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.2",
+    "@types/semver": "~6.2.0"
   },
   "dependencies": {
     "@types/node": "^12.11.1",
     "@types/showdown": "^1.9.3",
     "polar-shared": "^1.60.4",
     "polar-markdown": "^1.60.4",
-    "polar-test": "^1.60.4"
+    "polar-test": "^1.60.4",
+    "semver": "~6.3.0"
   },
   "files": [
     "**/*.js",
