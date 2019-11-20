@@ -25,12 +25,11 @@ export class ReleaseMetadataParser {
             const parsedMarkdown = MarkdownParser.parse(markdown.toString('utf-8'));
 
             function getFrontStr(key: string) {
-                const value = <string> parsedMarkdown.front[key];
-                return Preconditions.assertPresent(value, 'key missing: ' + key);
+                return <string> parsedMarkdown.front[key] || undefined;
             }
 
             const release = getFrontStr('release');
-            const date = getFrontStr('date');
+            const date = Preconditions.assertPresent(getFrontStr('date'));
 
             if (release) {
                 result.push({
