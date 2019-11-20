@@ -3,6 +3,7 @@ import {Files} from "polar-shared/src/util/Files";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {MarkdownParser} from "polar-markdown/src/MarkdownParser";
 import {ReleaseMetadata} from "./ReleaseMetadatas";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export class ReleaseMetadataParser {
 
@@ -23,11 +24,19 @@ export class ReleaseMetadataParser {
             const markdown = await Files.readFileAsync(markdownFile);
             const parsedMarkdown = MarkdownParser.parse(markdown.toString('utf-8'));
 
-            const release = <string> parsedMarkdown.front['release'];
+            function getFrontStr(key: string) {
+                const value = <string> parsedMarkdown.front[key];
+                return Preconditions.assertPresent(value, 'key missing: ' + key);
+            }
+
+            const release = getFrontStr('release');
+            const date = getFrontStr('date');
+
             if (release) {
                 result.push({
                     release,
-                    html: parsedMarkdown.html
+                    html: parsedMarkdown.html,
+                    date
                 })
             }
 
