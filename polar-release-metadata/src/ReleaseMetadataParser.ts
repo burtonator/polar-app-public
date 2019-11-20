@@ -1,13 +1,8 @@
-import {VersionStr} from "polar-shared/src/util/Version";
-import {HTMLStr, PathStr} from "polar-shared/src/util/Strings";
+import {PathStr} from "polar-shared/src/util/Strings";
 import {Files} from "polar-shared/src/util/Files";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
-import {MarkdownParser} from "./MarkdownParser";
-
-export interface ReleaseMetadata {
-    readonly release: VersionStr;
-    readonly html: HTMLStr;
-}
+import {MarkdownParser} from "polar-markdown/src/MarkdownParser";
+import {ReleaseMetadata} from "./ReleaseMetadatas";
 
 export class ReleaseMetadataParser {
 
