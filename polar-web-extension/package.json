@@ -1,6 +1,6 @@
 {
   "name": "polar-web-extension",
-  "version": "1.60.7",
+  "version": "1.60.8",
   "description": "https://github.com/yeoman/generator-chrome-extension",
   "scripts": {
     "test": "polar-mocha",
@@ -15,9 +15,9 @@
     "bootstrap": "^4.3.1",
     "cache-loader": "^4.1.0",
     "fork-ts-checker-webpack-plugin": "^1.6.0",
-    "polar-content-capture": "^1.60.7",
-    "polar-shared": "^1.60.7",
-    "polar-web-extension-api": "^1.60.7",
+    "polar-content-capture": "^1.60.8",
+    "polar-shared": "^1.60.8",
+    "polar-web-extension-api": "^1.60.8",
     "thread-loader": "^2.1.3",
     "ts-loader": "^6.2.1",
     "webpack": "^4.41.2",
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@types/chrome": "0.0.91",
-    "polar-mocha": "^1.60.7",
+    "polar-mocha": "^1.60.8",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   }
