@@ -17,6 +17,10 @@ export function assertJSON(actual: any,
         console.error("BEGIN ACTUAL ==========");
         console.error(actual);
         console.error("END ACTUAL   ==========");
+
+        console.error("BEGIN EXPECTED ==========");
+        console.error(expected);
+        console.error("END EXPECTED   ==========");
     }
 
     try {
