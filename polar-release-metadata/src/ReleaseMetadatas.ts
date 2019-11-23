@@ -1,5 +1,5 @@
 import {VersionStr} from "polar-shared/src/util/Version";
-import {HTMLStr} from "polar-shared/src/util/Strings";
+import {HTMLStr, URLStr} from "polar-shared/src/util/Strings";
 import * as semver from 'semver';
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
@@ -27,6 +27,9 @@ export class ReleaseMetadatas {
 }
 
 export interface ReleaseMetadata {
+    readonly title: string;
+    readonly large_image: URLStr | undefined;
+    readonly video_embed: URLStr | undefined;
     readonly release: VersionStr;
     readonly html: HTMLStr;
     readonly date: ISODateTimeString;

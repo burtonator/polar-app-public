@@ -30,13 +30,17 @@ export class ReleaseMetadataParser {
 
             const release = getFrontStr('release');
             const date = Preconditions.assertPresent(getFrontStr('date'));
+            const title = Preconditions.assertPresent(getFrontStr('title'));
+            // tslint:disable-next-line:variable-name
+            const video_embed = getFrontStr('video_embed');
+            // tslint:disable-next-line:variable-name
+            const large_image = getFrontStr('large_image');
 
             if (release) {
                 result.push({
-                    release,
+                    date, title, large_image, video_embed, release,
                     html: parsedMarkdown.html,
-                    date
-                })
+                });
             }
 
         }
