@@ -33,6 +33,7 @@
   "files": [
     "**/*.js",
     "**/*.d.ts",
+    "src/**/*.json",
     "package.json"
   ]
 }
