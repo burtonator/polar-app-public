@@ -50,7 +50,11 @@ export class Texts {
      */
     public static toPlainText(text?: Text | string): PlainTextStr | undefined {
 
-        if (text && this.isText(text)) {
+        if (! text) {
+            return undefined;
+        }
+
+        if (this.isText(text)) {
 
             text = <Text> text;
 
