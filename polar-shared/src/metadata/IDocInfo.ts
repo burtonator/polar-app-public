@@ -187,6 +187,11 @@ export interface IDocInfo {
      */
     doi?: string;
 
+    /**
+     * The PubMed ID for this document.
+     */
+    pmid?: string;
+
     readingPerDay?: ReadingOverview;
 
     /**
