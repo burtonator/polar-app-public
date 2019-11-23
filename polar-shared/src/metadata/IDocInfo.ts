@@ -9,6 +9,7 @@ import {IAttachment} from "./IAttachment";
 import {Visibility} from "../datastore/Visibility";
 import {IDocAuthor} from "./IDocAuthor";
 import {IThumbnail} from "./IThumbnail";
+import {IText} from "./Text";
 
 export interface IDocInfo {
 
@@ -202,6 +203,11 @@ export interface IDocInfo {
      * Thumbnails for the document which allow for preview.
      */
     thumbnails?: { [id: string]: IThumbnail };
+
+    /**
+     * Summary of the document provided from the publisher.
+     */
+    summary?: IText;
 
 }
 
