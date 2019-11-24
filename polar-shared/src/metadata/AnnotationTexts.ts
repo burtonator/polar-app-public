@@ -7,7 +7,7 @@ import {Texts} from "./Texts";
 import {IText, ITextLike} from './Text';
 import {ITextHighlights} from "./ITextHighlights";
 
-export class Annotations {
+export class AnnotationTexts {
 
     public static toHTML(type: AnnotationType,
                          annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard) {
