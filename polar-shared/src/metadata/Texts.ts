@@ -67,6 +67,12 @@ export class Texts {
             }
 
             if (text.HTML) {
+
+                if (typeof document === 'undefined') {
+                    // we aren't running in the browser.
+                    return text.HTML;
+                }
+
                 // TODO: this is very slow and can be improved at runtime.
                 const div = document.createElement('div');
                 div.innerHTML = text.HTML;
