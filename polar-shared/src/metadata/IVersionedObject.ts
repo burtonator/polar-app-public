@@ -1,6 +1,7 @@
 import {ISODateTimeString} from "./ISODateTimeStrings";
 import {Ref} from "./Refs";
 import {IAuthor} from "./IAuthor";
+import {IDStr} from "../util/Strings";
 
 export interface IVersionedObject {
 
@@ -9,7 +10,7 @@ export interface IVersionedObject {
      * that we can reference it easily.  The ID should represent the immutable
      * form of this object. If the object is mutated the id should change.
      */
-    id: string;
+    id: IDStr;
 
     /**
      * When an object is created it has an id just like every other annotation
@@ -31,7 +32,7 @@ export interface IVersionedObject {
      *
      */
 
-    guid: string;
+    guid: IDStr;
 
     /**
      * The time this object was created

@@ -10,10 +10,8 @@ export interface IDocMeta {
      */
     docInfo: IDocInfo;
 
-
     /**
      * A sparse dictionary of page number to page metadata.
-     *
      */
     pageMetas: { [id: number]: IPageMeta };
 
