@@ -20,19 +20,19 @@ export class Annotations {
             const textFields = Object.values(flashcard.fields);
 
             if (textFields.length > 0) {
-                return Texts.toPlainText(textFields[0]);
+                return Texts.toText(textFields[0]);
             }
 
         }
 
         if (obj.text) {
             const sourceText: Text = obj.revisedText || obj.text;
-            text = Texts.toPlainText(sourceText);
+            text = Texts.toText(sourceText);
         }
 
         if (obj.content) {
             const sourceText: Text = obj.content;
-            text = Texts.toPlainText(sourceText);
+            text = Texts.toText(sourceText);
         }
 
         return text;

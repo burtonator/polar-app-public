@@ -48,7 +48,7 @@ export class Texts {
      * This is somewhat confusing but take a Text object and convert it to a
      * plain text string with no HTML formatting.
      */
-    public static toPlainText(text?: Text | string): PlainTextStr | undefined {
+    public static toText(text?: Text | string): PlainTextStr | undefined {
 
         if (! text) {
             return undefined;

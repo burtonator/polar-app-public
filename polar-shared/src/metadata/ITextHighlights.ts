@@ -9,7 +9,7 @@ export class ITextHighlights {
     }
 
     public static toText(textHighlight: ITextHighlight): HTMLStr | undefined {
-        return Texts.toPlainText(textHighlight.revisedText) || Texts.toPlainText(textHighlight.text);
+        return Texts.toText(textHighlight.revisedText) || Texts.toText(textHighlight.text);
     }
 
 }
