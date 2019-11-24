@@ -2,40 +2,57 @@ import {AnnotationType} from "./AnnotationType";
 import {ITextHighlight} from "./ITextHighlight";
 import {IAreaHighlight} from "./IAreaHighlight";
 import {IFlashcard} from "./IFlashcard";
-import { IComment } from "./IComment";
+import {IComment} from "./IComment";
 import {Texts} from "./Texts";
-import {Text} from './Text';
+import {IText, ITextLike} from './Text';
+import {ITextHighlights} from "./ITextHighlights";
 
 export class Annotations {
+
+    public static toHTML(type: AnnotationType,
+                         annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard) {
+
+        return Texts.toHTML(this.toIText(type, annotation));
+
+    }
 
     public static toText(type: AnnotationType,
                          annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard) {
 
-        const obj = <any> annotation;
+        return Texts.toText(this.toIText(type, annotation));
 
-        let text: string | undefined;
+    }
+
+    public static toIText(type: AnnotationType,
+                          annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard): ITextLike | undefined {
+
+        const obj = <any> annotation;
 
         if (type === AnnotationType.FLASHCARD) {
             const flashcard = <IFlashcard> annotation;
             const textFields = Object.values(flashcard.fields);
 
             if (textFields.length > 0) {
-                return Texts.toText(textFields[0]);
+                return textFields[0];
             }
 
         }
 
+        if (type === AnnotationType.TEXT_HIGHLIGHT) {
+            return ITextHighlights.toIText(<ITextHighlight> annotation);
+        }
+
         if (obj.text) {
-            const sourceText: Text = obj.revisedText || obj.text;
-            text = Texts.toText(sourceText);
+            const sourceText: IText = obj.revisedText || obj.text;
+            return sourceText;
         }
 
         if (obj.content) {
-            const sourceText: Text = obj.content;
-            text = Texts.toText(sourceText);
+            const sourceText: IText = obj.content;
+            return sourceText;
         }
 
-        return text;
+        return undefined;
 
     }
 

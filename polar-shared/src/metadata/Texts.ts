@@ -1,4 +1,4 @@
-import {Text} from './Text';
+import {IText, Text} from './Text';
 import {TextType} from './TextType';
 import {isPresent} from "../Preconditions";
 import {HTMLStr, PlainTextStr} from "../util/Strings";
@@ -16,7 +16,7 @@ export class Texts {
 
     }
 
-    public static toHTML(text?: Text | string): HTMLStr | undefined {
+    public static toHTML(text: IText | string | undefined): HTMLStr | undefined {
 
         if (text && this.isText(text)) {
 
@@ -48,7 +48,7 @@ export class Texts {
      * This is somewhat confusing but take a Text object and convert it to a
      * plain text string with no HTML formatting.
      */
-    public static toText(text?: Text | string): PlainTextStr | undefined {
+    public static toText(text: IText | string | undefined): PlainTextStr | undefined {
 
         if (! text) {
             return undefined;
@@ -92,7 +92,7 @@ export class Texts {
     /**
      * Get the first field from the text object or the string value.
      */
-    public static toString(text?: Text | string): string | undefined {
+    public static toString(text: IText | string | undefined): string | undefined {
 
         if (text && this.isText(text)) {
 
@@ -120,7 +120,7 @@ export class Texts {
 
     }
 
-    public static isText(text?: any): boolean {
+    public static isText(text: any | undefined): boolean {
 
         if (text && typeof text === 'object') {
             return isPresent(text.MARKDOWN) || isPresent(text.HTML) || isPresent(text.TEXT);

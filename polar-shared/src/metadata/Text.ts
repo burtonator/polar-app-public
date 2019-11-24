@@ -23,3 +23,5 @@ export interface IText {
     HTML?: string;
 
 }
+
+export type ITextLike = string | IText;
