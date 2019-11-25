@@ -144,6 +144,11 @@ export type PathOrURLStr = string;
 export type IDStr = string;
 
 /**
+ * Semantics of an IDStr but designed to be readable like a URI, token, etc.
+ */
+export type ReadableIDStr = IDStr;
+
+/**
  * An email address string.
  */
 export type EmailStr = string;

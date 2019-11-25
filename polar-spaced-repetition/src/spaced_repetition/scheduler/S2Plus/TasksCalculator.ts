@@ -319,11 +319,6 @@ export interface CalculateOpts<A> {
 
 }
 
-/**
- * An action to just *read* some text for review.  This is just a string.
- */
-export type ReadingTaskAction = string;
-
 export interface TaskRep<A> extends ISpacedRep, Task<A> {
 
     /**
