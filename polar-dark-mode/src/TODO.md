@@ -6,6 +6,8 @@
 -- primary selected color is broken
 -- placing the cursor in a text are is broken
 -- font is wrong...
+ - context menu mouse over
+ - button bar colors in doc menu are too light
 
 
 ```css    
