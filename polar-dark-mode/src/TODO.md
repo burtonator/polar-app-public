@@ -8,7 +8,7 @@
 -- font is wrong...
  - context menu mouse over
  - button bar colors in doc menu are too light
-
+ - when the multi buttons to the top left are inactive they're they wrong color.
 
 ```css    
     canvas {
