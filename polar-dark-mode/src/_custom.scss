@@ -80,5 +80,9 @@ input, button {
 }
 
 hr {
-  border-bottom-color: var(--grey500);
+  border-top: 1px solid var(--grey500);
+}
+
+.progress {
+  font-size: 1.0rem;
 }
