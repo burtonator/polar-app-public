@@ -46,3 +46,22 @@ body, button {
   color: var(--primary-text-color);
   background-color: var(--primary-background-color);
 }
+
+.border {
+  border-left-color: var(--grey300) !important;
+  border-right-color: var(--grey300) !important;
+  border-top-color: var(--grey300) !important;
+  border-bottom-color: var(--grey300) !important;
+}
+
+.border-bottom {
+  border-bottom-color: var(--grey300) !important;
+}
+
+.border-top {
+  border-bottom-color: var(--grey300) !important;
+}
+
+input, button {
+  background-color: var(--grey200);
+}
