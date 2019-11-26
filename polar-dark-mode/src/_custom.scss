@@ -42,7 +42,7 @@
   --selected-text-color: var(--primary-text-color);
 }
 
-body, button {
+.form-control, body, button {
   color: var(--primary-text-color);
   background-color: var(--primary-background-color);
 }
@@ -59,11 +59,11 @@ body, button {
 }
 
 .border-top {
-  border-bottom-color: var(--grey300) !important;
+  border-top-color: var(--grey300) !important;
 }
 
 input, button {
-  background-color: var(--grey200);
+  background-color: var(--grey400);
 }
 
 .btn-light {

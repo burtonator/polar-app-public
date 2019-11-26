@@ -7207,7 +7207,7 @@ a.text-dark:hover, a.text-dark:focus {
   --selected-background-color: var(--primary);
   --selected-text-color: var(--primary-text-color); }
 
-body, button {
+.form-control, body, button {
   color: var(--primary-text-color);
   background-color: var(--primary-background-color); }
 
@@ -7221,10 +7221,10 @@ body, button {
   border-bottom-color: var(--grey300) !important; }
 
 .border-top {
-  border-bottom-color: var(--grey300) !important; }
+  border-top-color: var(--grey300) !important; }
 
 input, button {
-  background-color: var(--grey200); }
+  background-color: var(--grey400); }
 
 .btn-light {
   background-color: var(--light);
@@ -7266,3 +7266,6 @@ input, button {
   border-top-color: var(--grey300);
   border-right-color: var(--grey300);
   border-bottom-color: var(--grey300); }
+
+.ReactTable .-pagination {
+  border-top-color: var(--grey300); }
