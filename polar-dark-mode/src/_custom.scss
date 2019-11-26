@@ -41,3 +41,8 @@
   --selected-background-color: var(--primary);
   --selected-text-color: var(--primary-text-color);
 }
+
+body, button {
+  color: var(--primary-text-color);
+  background-color: var(--primary-background-color);
+}
