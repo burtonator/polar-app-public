@@ -1,1 +1,2 @@
 -- the light buttons are too dark.
+-- the react-select dropdown colors are wrong (for light)

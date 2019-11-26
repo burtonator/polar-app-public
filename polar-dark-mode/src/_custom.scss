@@ -65,3 +65,18 @@ body, button {
 input, button {
   background-color: var(--grey200);
 }
+
+.btn-light {
+  background-color: var(--light);
+  border-color: var(--light);
+}
+
+.bg-light {
+  background-color: var(--light);
+}
+
+.text-light {
+  color: var(--light);
+}
+
+
