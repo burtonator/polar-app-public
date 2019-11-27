@@ -2,7 +2,6 @@ import {assert} from 'chai';
 import {
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
-    ReadingTaskAction,
     TaskRepResolver,
     TasksCalculator
 } from "./TasksCalculator";
@@ -14,8 +13,9 @@ import {DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {ISpacedRep, Rating, Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
+type TestTaskAction = string;
 
-async function doTest(potential: ReadonlyArray<Task<ReadingTaskAction>>, workMap: PendingTaskRepMap = {}) {
+async function doTest(potential: ReadonlyArray<Task<TestTaskAction>>, workMap: PendingTaskRepMap = {}) {
 
     const resolver = createMockWorkRepResolver(workMap);
 
@@ -43,9 +43,9 @@ class Tester {
 
     public step: number = 0;
 
-    public potential: ReadonlyArray<Task<ReadingTaskAction>>;
+    public potential: ReadonlyArray<Task<TestTaskAction>>;
 
-    constructor(public readonly task: Task<ReadingTaskAction>) {
+    constructor(public readonly task: Task<TestTaskAction>) {
         this.potential = [task];
     }
 
@@ -105,7 +105,7 @@ class Tester {
 
         ++this.step;
 
-    };
+    }
 
 }
 
@@ -121,7 +121,7 @@ describe("TasksCalculator", () => {
 
     it("with no items", async () => {
 
-        const potential: ReadonlyArray<Task<ReadingTaskAction>> = [
+        const potential: ReadonlyArray<Task<TestTaskAction>> = [
 
         ];
 
@@ -141,7 +141,7 @@ describe("TasksCalculator", () => {
 
     it("with all new items but not ready to use as they haven't expired yet.", async () => {
 
-        const potential: ReadonlyArray<Task<ReadingTaskAction>> = [
+        const potential: ReadonlyArray<Task<TestTaskAction>> = [
             {
                 id: "101",
                 action: 'this is the first one',
@@ -169,7 +169,7 @@ describe("TasksCalculator", () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const task: Task<ReadingTaskAction> = {
+        const task: Task<TestTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: ISODateTimeStrings.create(),
@@ -296,7 +296,7 @@ describe("TasksCalculator", () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const task: Task<ReadingTaskAction> = {
+        const task: Task<TestTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
@@ -347,7 +347,7 @@ describe("TasksCalculator", () => {
 
         const twoDaysAgo = TimeDurations.compute('-2d');
 
-        const task: Task<ReadingTaskAction> = {
+        const task: Task<TestTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: twoDaysAgo.toISOString(),
@@ -414,7 +414,7 @@ describe("TasksCalculator", () => {
 
     it("review: compute lapsed and verify we restore the right new interval", async () => {
 
-        const task: Task<ReadingTaskAction> = {
+        const task: Task<TestTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: ISODateTimeStrings.create(),
@@ -481,7 +481,7 @@ describe("TasksCalculator", () => {
 
     it("compute walk through of each stage", async () => {
 
-        const task: Task<ReadingTaskAction> = {
+        const task: Task<TestTaskAction> = {
             id: "101",
             action: 'this is the first one',
             created: ISODateTimeStrings.create(),
@@ -630,15 +630,17 @@ describe("TasksCalculator", () => {
 });
 
 export interface PendingTaskRep {
-    readonly action: Task<ReadingTaskAction>;
+    readonly action: Task<TestTaskAction>;
     readonly spacedRep: ISpacedRep;
 }
 
-export type PendingTaskRepMap = {[id: string]: PendingTaskRep};
+export interface PendingTaskRepMap {
+    [id: string]: PendingTaskRep;
+}
 
-function createMockWorkRepResolver(pendingTaskRepMap: PendingTaskRepMap = {}): TaskRepResolver<ReadingTaskAction> {
+function createMockWorkRepResolver(pendingTaskRepMap: PendingTaskRepMap = {}): TaskRepResolver<TestTaskAction> {
 
-    const optionalTaskRepResolver: OptionalTaskRepResolver<ReadingTaskAction> = async (task: Task<ReadingTaskAction>) => {
+    const optionalTaskRepResolver: OptionalTaskRepResolver<TestTaskAction> = async (task: Task<TestTaskAction>) => {
 
         const pendingWorkRep = Optional.of(pendingTaskRepMap[task.id]).getOrUndefined();
 
@@ -651,7 +653,7 @@ function createMockWorkRepResolver(pendingTaskRepMap: PendingTaskRepMap = {}): T
 
     };
 
-    return createDefaultTaskRepResolver<string>(optionalTaskRepResolver)
+    return createDefaultTaskRepResolver<string>(optionalTaskRepResolver);
 
 }
 
