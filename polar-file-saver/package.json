@@ -1,0 +1,30 @@
+{
+  "name": "polar-file-saver",
+  "version": "1.60.12",
+  "description": "n",
+  "main": "index.js",
+  "scripts": {
+    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.1",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2",
+    "@types/file-saver": "^2.0.1"
+  },
+  "dependencies": {
+    "file-saver": "^2.0.2"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
+}
