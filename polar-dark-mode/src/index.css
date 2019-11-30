@@ -7021,7 +7021,7 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #444; } }
 
 .bg-primary .navbar-nav .active > .nav-link {
-  color: #00bc8c !important; }
+  color: var(--primary600) !important; }
 
 .bg-light.navbar {
   background-color: #00bc8c !important; }

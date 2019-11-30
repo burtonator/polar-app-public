@@ -9,7 +9,7 @@
 
 .bg-primary {
   .navbar-nav .active > .nav-link {
-    color: $success !important;
+    color: var(--primary600) !important;
   }
 }
 
