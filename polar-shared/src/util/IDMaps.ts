@@ -5,7 +5,7 @@ export class IDMaps {
     /**
      * Convert an array of values with ID properties into a map with the ID as key.
      */
-    public static toIDMap<T extends IDRecord>(values: ReadonlyArray<T>): IDMap<T> {
+    public static create<T extends IDRecord>(values: ReadonlyArray<T>): IDMap<T> {
 
         const result: IDMap<T> = {};
 
