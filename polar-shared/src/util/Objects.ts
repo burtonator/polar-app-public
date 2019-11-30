@@ -79,6 +79,20 @@ export class Objects {
         return Object.keys(obj) as Array<(keyof T)>;
     }
 
+    public static toObjectSTR(obj: string | object | undefined): string {
+
+        if (! obj) {
+            return "";
+        }
+
+        if (typeof obj === 'string') {
+            return obj;
+        }
+
+        return JSON.stringify(obj);
+
+    }
+
 }
 
 /**
