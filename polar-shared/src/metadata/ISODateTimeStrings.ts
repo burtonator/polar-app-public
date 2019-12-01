@@ -127,5 +127,9 @@ export class ISODateTimeStrings {
         return input.substring(0, '0000'.length);
     }
 
+    public static compare(a: ISODateTimeString, b: ISODateTimeString): number {
+        return this.parse(a).getTime() - this.parse(b).getTime();
+    }
+
 }
 
