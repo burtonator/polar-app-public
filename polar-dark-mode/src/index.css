@@ -7280,4 +7280,7 @@ hr {
   filter: invert(0.85); }
 
 .polar-pdfviewer .page {
-  border-image: none; }
+  border-image: none !important; }
+
+.polar-pdfviewer .page {
+  background-color: var(--primary-background-color); }
