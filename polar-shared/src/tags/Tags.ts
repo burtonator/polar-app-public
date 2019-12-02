@@ -6,6 +6,8 @@ import {SetArrays} from "../util/SetArrays";
 import {IDStr} from "../util/Strings";
 import {Arrays} from "../util/Arrays";
 
+export type TagType = 'tag' | 'folder';
+
 export class Tags {
 
     public static sortByLabel(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {

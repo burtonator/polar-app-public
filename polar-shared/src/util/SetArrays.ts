@@ -2,6 +2,7 @@
  * Set theoretic operations for Typescript arrays.
  */
 import {Arrays, PrimitiveArray} from "./Arrays";
+import {Sets} from "./Sets";
 
 export class SetArrays {
 
@@ -57,6 +58,13 @@ export class SetArrays {
 
         return false;
 
+    }
+
+    /**
+     * Make sure the array has all unique values (IE is a set).
+     */
+    public static unique<T>(values: ReadonlyArray<T>) {
+        return Sets.toArray(SetArrays.toSet(values));
     }
 
     public static toSet<T>(arr: ReadonlyArray<T>): Set<T> {
