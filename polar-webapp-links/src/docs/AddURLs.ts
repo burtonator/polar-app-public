@@ -13,7 +13,7 @@ export class AddURLs {
             const rawTarget = (matches[2] || "").trim();
 
             if (rawTarget === "") {
-                throw new Error("No URL given in path");
+                throw new Error("No URL given in path data: " + url);
             }
 
             const target = this.createCorrectedURL(rawTarget);
