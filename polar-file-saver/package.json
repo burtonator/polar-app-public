@@ -1,6 +1,6 @@
 {
   "name": "polar-file-saver",
-  "version": "1.60.12",
+  "version": "1.60.13",
   "description": "n",
   "main": "index.js",
   "scripts": {
@@ -12,12 +12,12 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "^4.2.1",
+    "@types/file-saver": "^2.0.1",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
     "tslint": "^5.20.1",
-    "typescript": "^3.7.2",
-    "@types/file-saver": "^2.0.1"
+    "typescript": "^3.7.2"
   },
   "dependencies": {
     "file-saver": "^2.0.2"
