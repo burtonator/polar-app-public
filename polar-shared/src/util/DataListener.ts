@@ -5,18 +5,32 @@ export interface DataSubscriber {
     <D>(value: D | undefined, onError?: ErrorHandlerCallback): SnapshotUnsubscriber;
 }
 
+export type OnUpdatedCallback = <D>(value: D | undefined) => void;
+
 /**
  * Listen to data via a provider interface, and give us the ability to easily unsubscribe too.
+ *
+ * This provides us with both a live listener and a cached listener/getter.
  */
 export class DataListener<D> {
 
     private value: D | undefined;
     private unsubscriber: SnapshotUnsubscriber;
 
-    constructor(subscriber: DataSubscriber) {
+    /**
+     *
+     * @param subscriber The subscriber to provide the data as well as an unsubscriber.
+     * @param onUpdated An optional callback to also update us in real time.
+     */
+    constructor(private readonly subscriber: DataSubscriber,
+                private readonly onUpdated?: OnUpdatedCallback) {
 
         const onNext = (data: D | undefined) => {
             this.value = data;
+
+            if (this.onUpdated) {
+                this.onUpdated(data);
+            }
         };
 
         this.unsubscriber = subscriber(onNext);
@@ -32,3 +46,4 @@ export class DataListener<D> {
     }
 
 }
+
