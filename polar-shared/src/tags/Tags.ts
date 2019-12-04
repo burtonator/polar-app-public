@@ -127,7 +127,9 @@ export class Tags {
     }
 
     /**
-     * From a union of the two tag arrays.
+     * From a union of the two tag arrays...
+     *
+     * TODO: this is actually a toSet or a intersection but not a union.
      */
     public static union(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
 
@@ -264,3 +266,21 @@ export type TagStr = string;
  * Just the tag ID, not the TagStr (which might not be unique).
  */
 export type TagIDStr = string;
+
+
+/**
+ * A tag but also the data about the number of records that match this tag.
+ */
+export interface TagDescriptor extends Tag {
+
+    /**
+     * Total number of items in this tag.
+     */
+    readonly count: number;
+
+    /**
+     * The IDs of all the documents that are a member of this tag.
+     */
+    readonly members: ReadonlyArray<IDStr>;
+
+}
