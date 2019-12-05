@@ -231,6 +231,11 @@ export function createSiblings(arrayLikeObject: any) {
     return Functions.createSiblings(arrayLikeObject);
 }
 
+/**
+ * A basic callback function.  No params and void return type.
+ */
+export type Callback = () => void;
+
 export const NULL_FUNCTION = () => { /* no op */ };
 
 export const ASYNC_NULL_FUNCTION = async () => { /* no op */ };
