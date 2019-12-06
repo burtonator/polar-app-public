@@ -150,6 +150,7 @@ export type PlatformEnumType
       Platform.LINUX |
       Platform.ANDROID |
       Platform.IOS |
+      Platform.CHROME_OS |
       Platform.UNKNOWN;
 
 export type PlatformType = 'desktop' | 'mobile' | 'unknown';
