@@ -24,7 +24,9 @@ export class TagDescriptors {
     /**
      * From a union of the two tag arrays...
      */
-    public static merge(docTags: ReadonlyArray<TagDescriptor>, userTags: ReadonlyArray<Tag> | undefined): ReadonlyArray<TagDescriptor> {
+    public static merge(docTags: ReadonlyArray<TagDescriptor> | undefined, userTags: ReadonlyArray<Tag> | undefined): ReadonlyArray<TagDescriptor> {
+
+        docTags = docTags || [];
 
         const result: { [id: string]: TagDescriptor } = {};
 
