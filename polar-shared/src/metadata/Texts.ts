@@ -98,15 +98,15 @@ export class Texts {
 
             text = <Text> text;
 
-            if (text.TEXT) {
+            if (isPresent(text.TEXT)) {
                 return text.TEXT;
             }
 
-            if (text.MARKDOWN) {
+            if (isPresent(text.MARKDOWN)) {
                 return text.MARKDOWN;
             }
 
-            if (text.HTML) {
+            if (isPresent(text.HTML)) {
                 return text.HTML;
             }
 
