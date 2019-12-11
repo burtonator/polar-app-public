@@ -67,7 +67,7 @@ export class Tags {
             label = '#' + label;
         }
 
-        const strippedLabel = this.stripTypedLabel(label);
+        const strippedLabel = this.stripTag(label);
 
         if ( ! strippedLabel.isPresent()) {
             return Optional.empty();
@@ -156,22 +156,39 @@ export class Tags {
         return tags.map(current => current.id);
     }
 
+    public static stripTag(tag: TagStr): Optional<string> {
+        return this.stripTypedTag(this.stripTagInvalidChars(tag));
+    }
+
+
+    /**
+     * Remove spaces, dashes, etc from the tag to use all the other validations.  We work with spaces in tags, they're
+     * just not usable in other systems like Twitter tags so users have to be careful.  But many people insist upon
+     * them.
+     */
+    public static stripTagInvalidChars(tag: TagStr): string {
+        return tag.replace(/[- ]+/g, '');
+    }
+
     /**
      * We support foo:bar values in tags so that we can have typed tags.
      * For example: type:book or deck:fun or something along those lines.
      *
      * We also support / to denote hierarchy, like deck:main/sub
+     *
+     * @VisibleForTesting
      */
-    public static stripTypedLabel(label: string): Optional<string> {
+    public static stripTypedTag(tag: TagStr): Optional<string> {
 
-        const match = label.match(/:/g);
+        const match = tag.match(/:/g);
 
         if (match && match.length > 1) {
+            // too many colons so this is invalid
             return Optional.empty();
         }
 
         // Remove any single lonely slashes
-        const noslashes = label.replace(/([^\/])\/([^\/])/g, '$1$2');
+        const noslashes = tag.replace(/([^\/])\/([^\/])/g, '$1$2');
 
         // If there are any slashes left, we don't like it.
         if (noslashes.match(/\//g)) {
