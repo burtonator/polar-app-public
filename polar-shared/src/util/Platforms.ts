@@ -37,15 +37,16 @@ export class Platforms {
             }
 
             const userAgentMap: UserAgentMap = {
-                "MacIntel":    Platform.MACOS,
-                "MacPPC":      Platform.MACOS,
-                "Android":     Platform.ANDROID,
-                "iPhone":      Platform.IOS,
-                "iPad":        Platform.IOS,
-                "Linux":       Platform.LINUX,
-                "Win32":       Platform.WINDOWS,
-                "Win64":       Platform.WINDOWS,
-                "CrOS x86_64": Platform.CHROME_OS
+                "MacIntel":                    Platform.MACOS,
+                "MacPPC":                      Platform.MACOS,
+                "Macintosh; Intel Mac OS X":   Platform.MACOS,
+                "Android":                     Platform.ANDROID,
+                "iPhone":                      Platform.IOS,
+                "iPad":                        Platform.IOS,
+                "Linux":                       Platform.LINUX,
+                "Win32":                       Platform.WINDOWS,
+                "Win64":                       Platform.WINDOWS,
+                "CrOS x86_64":                 Platform.CHROME_OS
             };
 
             if (userAgent) {
