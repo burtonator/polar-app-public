@@ -43,6 +43,9 @@ describe('RegExp', function() {
 
     it("test unicode literal", function() {
 
+        Tags.assertValid("#deck:polar/machinelearning");
+        // Tags.assertValid("#deck:polar/machine-learning");
+
         Tags.assertValid("#deck:microsoft");
 
         Tags.assertValid("#hashtag");
