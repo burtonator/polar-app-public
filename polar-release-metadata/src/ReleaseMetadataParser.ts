@@ -36,9 +36,11 @@ export class ReleaseMetadataParser {
             // tslint:disable-next-line:variable-name
             const large_image = getFrontStr('large_image');
 
+
             if (release) {
+                const id = release;
                 result.push({
-                    date, title, large_image, video_embed, release,
+                    id, date, title, large_image, video_embed, release,
                     html: parsedMarkdown.html,
                 });
             }
