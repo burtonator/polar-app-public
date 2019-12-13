@@ -21,7 +21,7 @@ export class PDFModernTextLayers {
     }
 
     private static notice(enabled: boolean) {
-        log.notice("PDF layer using modern text layers: " + enabled)
+        // log.notice("PDF layer using modern text layers: " + enabled);
     }
 
     public static enable() {
