@@ -4,6 +4,9 @@ import {ArrayBuffers} from "./ArrayBuffers";
 import {Blobs} from "./Blobs";
 import {Files} from "./Files";
 import {FilePaths} from "./FilePaths";
+import { Logger } from "../logger/Logger";
+
+const log = Logger.create();
 
 export class URLs {
 
@@ -56,12 +59,21 @@ export class URLs {
 
     public static absolute(url: string, base: string): string {
 
+        // WARN: this is correct BUT for some reason it broke on google cloud
+        // storage so I need to figure out why this is happening.
+
         // if (this.isURL(base)) {
-        //     // this is already a URL.
+        //     // this is already a URL and we dont' need to do anything to convert it.
         //     return base;
         // }
 
-        return new URL(url, base).toString();
+        try {
+            return new URL(url, base).toString();
+        } catch (e) {
+            log.warn("Unable to convert URL to absolute: ", {url, base});
+            throw e;
+        }
+
     }
 
     /**
@@ -74,9 +86,9 @@ export class URLs {
         }
 
         return path.startsWith("file:") ||
-            path.startsWith("blob:") ||
-            path.startsWith("http:") ||
-            path.startsWith("https:");
+               path.startsWith("blob:") ||
+               path.startsWith("http:") ||
+               path.startsWith("https:");
 
     }
 
