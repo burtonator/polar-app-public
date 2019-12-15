@@ -1,6 +1,6 @@
 {
   "name": "polar-markdown",
-  "version": "1.70.6",
+  "version": "1.70.7",
   "description": "Provides support for parsing and working with markdown",
   "main": "index.js",
   "scripts": {
@@ -22,8 +22,8 @@
     "@types/node": "^12.11.1",
     "@types/showdown": "^1.9.3",
     "gray-matter": "^4.0.2",
-    "polar-shared": "^1.70.6",
-    "polar-test": "^1.70.6",
+    "polar-shared": "^1.70.7",
+    "polar-test": "^1.70.7",
     "showdown": "^1.9.1"
   },
   "files": [
