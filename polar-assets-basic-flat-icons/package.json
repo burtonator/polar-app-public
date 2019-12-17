@@ -1,6 +1,6 @@
 {
   "name": "polar-assets-basic-flat-icons",
-  "version": "1.80.2",
+  "version": "1.80.3",
   "description": "",
   "scripts": {
     "test": "echo no tests",
@@ -18,10 +18,6 @@
     "url": "https://github.com/burtonator/polar-app-public/issues"
   },
   "homepage": "https://github.com/burtonator/polar-app-public",
-  "devDependencies": {
-  },
-  "dependencies": {
-  },
   "files": [
     "**/*.svg",
     "package.json"
