@@ -17,6 +17,14 @@ export class DefaultRewrites {
                 "destination": "/apps/repository/index.html"
             },
             {
+                "source": "/plans",
+                "destination": "/apps/repository/index.html"
+            },
+            {
+                "source": "/plans-year",
+                "destination": "/apps/repository/index.html"
+            },
+            {
                 "source": "/stats",
                 "destination": "/apps/repository/index.html"
             },
