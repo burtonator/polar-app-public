@@ -33,6 +33,10 @@ export class DefaultRewrites {
                 "destination": "/apps/repository/index.html"
             },
             {
+                "source": "/invite",
+                "destination": "/apps/repository/index.html"
+            },
+            {
                 "source": "/group/:group/highlights",
                 "destination": "/apps/repository/index.html"
             },
