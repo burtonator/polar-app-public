@@ -1,6 +1,6 @@
 {
   "name": "polar-shared",
-  "version": "1.80.9",
+  "version": "1.80.10",
   "description": "",
   "scripts": {
     "test": "scripts/test-runner.sh",
@@ -21,7 +21,7 @@
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "polar-test": "^1.80.9",
+    "polar-test": "^1.80.10",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2",
     "wait-for-expect": "~3.0.1"
@@ -35,13 +35,13 @@
     "@types/uuid": "^3.4.5",
     "base58check": "^2.0.0",
     "blueimp-md5": "^2.12.0",
+    "core-js": "3.6.0",
     "js-sha3": "^0.8.0",
     "node-fetch": "^2.6.0",
     "sanitize-html": "^1.20.1",
     "timekeeper": "^2.2.0",
     "twitter-text": "^3.0.1",
-    "uuid": "^3.3.3",
-    "core-js": "3.6.0"
+    "uuid": "^3.3.3"
   },
   "files": [
     "**/*.js",
