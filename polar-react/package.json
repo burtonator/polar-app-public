@@ -1,0 +1,27 @@
+{
+  "name": "polar-react",
+  "version": "1.80.10",
+  "description": "Basic React dependencies and utilities.",
+  "scripts": {
+    "test": "echo",
+    "compile": "echo"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "mocha": "^6.2.0",
+    "polar-test": "^1.80.10",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2",
+    "@types/react": "~16.9.11",
+    "@types/react-dom": "~16.9.4",
+    "@types/react-router-dom": "~5.1.2"
+  },
+  "dependencies": {
+    "react": "~16.11.0",
+    "react-dom": "~16.11.0",
+    "react-router-dom": "~5.1.2"
+  }
+}
