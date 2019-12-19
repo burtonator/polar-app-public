@@ -24,7 +24,7 @@
     "polar-test": "^1.80.9",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2",
-    "wait-for-expect": "~1.1.0"
+    "wait-for-expect": "~3.0.1"
   },
   "dependencies": {
     "@types/blueimp-md5": "^2.7.0",
@@ -39,8 +39,9 @@
     "node-fetch": "^2.6.0",
     "sanitize-html": "^1.20.1",
     "timekeeper": "^2.2.0",
-    "twitter-text": "^3.0.0",
-    "uuid": "^3.3.3"
+    "twitter-text": "^3.0.1",
+    "uuid": "^3.3.3",
+    "core-js": "3.6.0"
   },
   "files": [
     "**/*.js",
