@@ -1,9 +1,8 @@
-import {HTMLStr, PlainTextStr} from "../util/Strings";
 import sanitizeHtml from 'sanitize-html';
 
 export class TextSerializer {
 
-    public static serialize(html?: HTMLStr): PlainTextStr | undefined {
+    public static serialize(html?: string): string | undefined {
 
         if (! html) {
             return undefined;

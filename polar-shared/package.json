@@ -30,7 +30,6 @@
     "@types/blueimp-md5": "^2.7.0",
     "@types/node": "^12.11.1",
     "@types/node-fetch": "^2.5.1",
-    "@types/sanitize-html": "^1.20.1",
     "@types/twitter-text": "^2.0.0",
     "@types/uuid": "^3.4.5",
     "base58check": "^2.0.0",
@@ -38,7 +37,6 @@
     "core-js": "3.6.0",
     "js-sha3": "^0.8.0",
     "node-fetch": "^2.6.0",
-    "sanitize-html": "^1.20.1",
     "timekeeper": "^2.2.0",
     "twitter-text": "^3.0.1",
     "uuid": "^3.3.3"
