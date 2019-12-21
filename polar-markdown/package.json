@@ -2,7 +2,6 @@
   "name": "polar-markdown",
   "version": "1.80.10",
   "description": "Provides support for parsing and working with markdown",
-  "main": "index.js",
   "scripts": {
     "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
     "compile": "tsc"
