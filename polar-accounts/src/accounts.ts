@@ -10,4 +10,3 @@ export namespace accounts {
     }
 
 }
-

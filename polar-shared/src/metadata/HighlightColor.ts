@@ -1,14 +1,15 @@
-
-
 /**
  * Older colors by name
  */
+import {AlphaChannel} from "../util/Colors";
+
+
 export type NamedColor = 'yellow' | 'red' | 'green' | 'blue' | 'transparent';
 
 /**
  * RGB colors as #FFFFFF or #000000
  */
-export type RGBColor = string;
+export type RGBStr = string;
 
 /**
  * An rgba CSS string like rgba(0, 0, 0, 0.5)
@@ -17,14 +18,9 @@ export type RGBAStr = string;
 
 export type BackgroundColor = RGBAStr | 'transparent';
 
-/**
- * Alpha channel as [0.0, 1.0]
- */
-export type AlphaChannel = number;
-
 export class HighlightColors {
 
-    public static withDefaultColor(value: NamedColor | RGBColor | undefined | null) {
+    public static withDefaultColor(value: NamedColor | RGBStr | undefined | null) {
 
         if (! value) {
             return 'yellow';
@@ -38,7 +34,7 @@ export class HighlightColors {
      * Convert to our standard background color for text highlights.
      *
      */
-    public static toBackgroundColor(value: NamedColor | RGBColor | undefined | null,
+    public static toBackgroundColor(value: NamedColor | RGBStr | undefined | null,
                                     alpha: AlphaChannel = 0.7): BackgroundColor {
 
         value = this.withDefaultColor(value);
@@ -70,7 +66,7 @@ export class HighlightColors {
     /**
      * Convert a color like #FFFFFF to rgba
      */
-    public static toRGBA(value: RGBColor, alpha: AlphaChannel) {
+    public static toRGBA(value: RGBStr, alpha: AlphaChannel) {
 
         const toInt = (str: string) => {
             return parseInt(str, 16);

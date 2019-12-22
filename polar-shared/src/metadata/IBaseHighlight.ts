@@ -1,4 +1,4 @@
-import {NamedColor, RGBColor} from "./HighlightColor";
+import {NamedColor, RGBStr} from "./HighlightColor";
 import {IImage} from "./IImage";
 import {IRect} from "../util/rects/IRect";
 import {IAnnotation} from "./IAnnotation";
@@ -10,7 +10,7 @@ import {IAnnotation} from "./IAnnotation";
  * not need to be visibly shown.
  */
 
-export type HighlightColor = NamedColor | RGBColor;
+export type HighlightColor = NamedColor | RGBStr;
 
 export interface HighlightRects {
     [key: string]: IRect;
