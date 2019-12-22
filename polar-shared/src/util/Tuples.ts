@@ -22,6 +22,7 @@ export class Tuples {
         for (let idx = 0; idx < arr.length; ++idx) {
 
             result.push({
+                idx,
                 curr: arr[idx],
                 prev: Optional.of(arr[idx - 1]).getOrUndefined(),
                 next: Optional.of(arr[idx + 1]).getOrUndefined()
@@ -42,6 +43,8 @@ export class Tuples {
  * previous and future states.
  */
 export interface IArrayElement<T> {
+
+    readonly idx: number;
 
     readonly prev?: T;
 
