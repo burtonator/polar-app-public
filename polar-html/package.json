@@ -1,6 +1,6 @@
 {
   "name": "polar-html",
-  "version": "1.80.15",
+  "version": "1.80.16",
   "description": "",
   "scripts": {
     "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
@@ -14,7 +14,7 @@
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "polar-test": "^1.80.15",
+    "polar-test": "^1.80.16",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
