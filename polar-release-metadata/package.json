@@ -1,6 +1,6 @@
 {
   "name": "polar-release-metadata",
-  "version": "1.80.14",
+  "version": "1.80.15",
   "description": "Provides support for parsing and working with markdown",
   "main": "index.js",
   "scripts": {
@@ -25,9 +25,9 @@
   "dependencies": {
     "@types/node": "^12.11.1",
     "@types/showdown": "^1.9.3",
-    "polar-markdown": "^1.80.14",
-    "polar-shared": "^1.80.14",
-    "polar-test": "^1.80.14",
+    "polar-markdown": "^1.80.15",
+    "polar-shared": "^1.80.15",
+    "polar-test": "^1.80.15",
     "semver": "~6.3.0"
   },
   "files": [
