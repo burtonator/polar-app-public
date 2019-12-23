@@ -18,11 +18,15 @@ export interface DataPointsReducer<A extends DataPoint> {
     (timestamp: ISODateString, datapoints: ReadonlyArray<A>): A;
 }
 
+export interface EntryDatapointFactory<A> {
+    (key: ISODateTimeString): A;
+};
+
 export class Statistics {
 
     public static compute<A extends DataPoint>(dataPoints: Iterable<A>,
                                                dataPointsReducer: DataPointsReducer<A>,
-                                               emptyDatapointFactory: (key: ISODateTimeString) => A | undefined,
+                                               emptyDatapointFactory: EntryDatapointFactory<A> | undefined,
                                                timeReducer: TimeReducer = ISODateTimeStrings.toISODateStringRoundedToHour): ReadonlyArray<A> {
 
         const multimap = new ArrayListMultimap<ISODateString, A>();
@@ -38,9 +42,18 @@ export class Statistics {
 
         // with the reduced data, we need to add ZERO values for days we don't have any values.
 
-        const result = [
-            ...reduced
-        ]
+        // if (emptyDatapointFactory) {
+        //
+        //     const result = [
+        //         ...reduced,
+        //         emptyDatapointFactory(ISODateTimeStrings.create())
+        //     ]
+        //
+        //     return result;
+        //
+        // } else {
+        //     return reduced;
+        // }
 
         return reduced;
 
