@@ -80,6 +80,7 @@ export class SpacedRepStats {
  * A basic stat must have a mode.
  */
 export interface IStat {
+    readonly created: ISODateTimeString;
     readonly mode: RepetitionMode;
 }
 

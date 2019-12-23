@@ -1,4 +1,4 @@
-import {ISODateString, ISODateTimeStrings} from "../metadata/ISODateTimeStrings";
+import {ISODateString, ISODateTimeString, ISODateTimeStrings} from "../metadata/ISODateTimeStrings";
 import {ArrayListMultimap} from "./Multimap";
 import {Arrays} from "./Arrays";
 
@@ -22,6 +22,7 @@ export class Statistics {
 
     public static compute<A extends DataPoint>(dataPoints: Iterable<A>,
                                                dataPointsReducer: DataPointsReducer<A>,
+                                               emptyDatapointFactory: (key: ISODateTimeString) => A | undefined,
                                                timeReducer: TimeReducer = ISODateTimeStrings.toISODateStringRoundedToHour): ReadonlyArray<A> {
 
         const multimap = new ArrayListMultimap<ISODateString, A>();
@@ -33,7 +34,15 @@ export class Statistics {
 
         const keys = [...multimap.keys()].sort();
 
-        return keys.map(key => dataPointsReducer(key, multimap.get(key)));
+        const reduced = keys.map(key => dataPointsReducer(key, multimap.get(key)));
+
+        // with the reduced data, we need to add ZERO values for days we don't have any values.
+
+        const result = [
+            ...reduced
+        ]
+
+        return reduced;
 
     }
 
