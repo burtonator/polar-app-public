@@ -1,0 +1,36 @@
+{
+  "name": "polar-svg-icons",
+  "version": "1.80.26",
+  "description": "",
+  "scripts": {
+    "test": "echo",
+    "compile": "npx tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burtonator/polar-app-public.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/burtonator/polar-app-public/issues"
+  },
+  "homepage": "https://github.com/burtonator/polar-app-public",
+  "devDependencies": {
+    "@types/react": "~16.9.11",
+    "@types/react-dom": "~16.9.4",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "react": "~16.11.0",
+    "react-dom": "~16.11.0"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
+}
