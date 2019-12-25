@@ -31,8 +31,8 @@
     "react-dom": "~16.11.0"
   },
   "files": [
-    "**/*.js",
-    "**/*.d.ts",
+    "src/**/*.js",
+    "src/**/*.d.ts",
     "package.json"
   ]
 }
