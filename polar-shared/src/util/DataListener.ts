@@ -1,4 +1,5 @@
-import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../../../../polar-bookshelf/web/js/firebase/Firebase";
+import {ErrorHandlerCallback} from "../../../../polar-bookshelf/web/js/firebase/Firebase";
+import {SnapshotUnsubscriber} from "../../../../polar-bookshelf/web/js/firebase/SnapshotSubscribers";
 
 export interface DataSubscriber {
     // tslint:disable-next-line:callable-types
