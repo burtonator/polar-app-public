@@ -20,6 +20,7 @@ export class DefaultRewrites {
                     "/whats-new",
                     "/logout",
                     "/login",
+                    "/logs",
                     "/configured",
                     "/invite",
                     "/premium",
