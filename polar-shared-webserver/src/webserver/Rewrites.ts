@@ -16,25 +16,42 @@ export class Rewrites {
 
     }
 
-}
+    /**
+     * Convert the rewrite to a array of source paths.
+     */
+    public static toSources(rewrite: BaseRewrite): ReadonlyArray<URLPathStr> {
 
+        if (Array.isArray(rewrite.source)) {
+            return rewrite.source;
+        } else {
+            return [<URLPathStr> rewrite.source];
+        }
+
+    }
+
+}
 
 export type ContentGenerator = (url: string) => Promise<string>;
 
+export interface BaseRewrite {
+    readonly source: URLPathStr | ReadonlyArray<URLPathStr>;
+    readonly destination: string | ContentGenerator;
+}
+
 export interface IDRewrite {
     readonly id: IDStr;
-    readonly source: string;
-    readonly destination: string | ContentGenerator;
 }
 
-export interface DestinationRewrite {
-    readonly source: string;
-    readonly destination: string | ContentGenerator;
+export interface DestinationRewrite extends BaseRewrite {
 }
 
-export interface FunctionRewrite {
-    readonly source: string;
-    readonly function: string;
+/**
+ * A rewrite with just one source, an id, and a destination.
+ */
+export interface DirectRewrite {
+    readonly id: string;
+    readonly source: URLPathStr;
+    readonly destination: string | ContentGenerator;
 }
 
 export type Rewrite = DestinationRewrite;

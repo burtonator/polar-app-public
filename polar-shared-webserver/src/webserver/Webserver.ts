@@ -242,14 +242,20 @@ export class Webserver implements WebRequestHandler {
 
                 // TODO: it's probably not efficient to build this regex each
                 // time
-                const regex = PathToRegexps.pathToRegexp(rewrite.source);
 
-                const matches = Rewrites.matchesRegex(regex, url);
+                const sources = Rewrites.toSources(rewrite);
 
-                // console.debug(`Compiled as regexp: ${regex} matches: ${matches}`);
+                for (const source of sources) {
+                    const regex = PathToRegexps.pathToRegexp(source);
 
-                if (matches) {
-                    return rewrite;
+                    const matches = Rewrites.matchesRegex(regex, url);
+
+                    // console.debug(`Compiled as regexp: ${regex} matches: ${matches}`);
+
+                    if (matches) {
+                        return rewrite;
+                    }
+
                 }
 
             }
@@ -293,7 +299,7 @@ export class Webserver implements WebRequestHandler {
 }
 
 
-export type ExpressRequestHandler = (req: express.Request, res: express.Response) => void;;
+export type ExpressRequestHandler = (req: express.Request, res: express.Response) => void;
 
 export interface WebRequestHandler {
 

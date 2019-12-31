@@ -9,31 +9,21 @@ export class DefaultRewrites {
 
         return [
             {
-                "source": "/",
-                "destination": "/apps/repository/index.html"
-            },
-            {
-                "source": "/index.html",
-                "destination": "/apps/repository/index.html"
-            },
-            {
-                "source": "/plans",
-                "destination": "/apps/repository/index.html"
-            },
-            {
-                "source": "/plans-year",
-                "destination": "/apps/repository/index.html"
-            },
-            {
-                "source": "/stats",
-                "destination": "/apps/repository/index.html"
-            },
-            {
-                "source": "/annotations",
-                "destination": "/apps/repository/index.html"
-            },
-            {
-                "source": "/invite",
+                "source": [
+                    "/",
+                    "/index.html",
+                    "/plans",
+                    "/plans-year",
+                    "/stats",
+                    "/annotations",
+                    "/invite",
+                    "/whats-new",
+                    "/logout",
+                    "/login",
+                    "/configured",
+                    "/invite",
+                    "/premium",
+                ],
                 "destination": "/apps/repository/index.html"
             },
             {
