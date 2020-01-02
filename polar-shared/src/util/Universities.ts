@@ -57,7 +57,6 @@ function createUniversitiesMap(university: ReadonlyArray<University>): DomainNam
 const universities = createUniversities();
 const domainNameToUniversityMap = createUniversitiesMap(universities);
 
-
 export class Universities {
 
     public static get() {
