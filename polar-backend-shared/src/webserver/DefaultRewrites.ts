@@ -24,6 +24,8 @@ export class DefaultRewrites {
                     "/configured",
                     "/invite",
                     "/premium",
+                    "/account",
+                    "/settings",
                 ],
                 "destination": "/apps/repository/index.html"
             },
