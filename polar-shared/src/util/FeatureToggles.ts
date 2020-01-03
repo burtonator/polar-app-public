@@ -32,11 +32,15 @@ export class FeatureToggles {
     }
 
     public static toggle(name: string) {
+        this.set(name, ! this.get(name));
+    }
 
-        if (this.get(name)) {
-            this.disable(name);
-        } else {
+    public static set(name: string, value: boolean) {
+
+        if (value) {
             this.enable(name);
+        } else {
+            this.disable(name);
         }
 
     }
