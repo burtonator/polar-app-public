@@ -1,6 +1,6 @@
 {
   "name": "polar-react-svg-icons",
-  "version": "1.80.26",
+  "version": "1.80.27",
   "description": "",
   "scripts": {
     "test": "echo",
@@ -21,8 +21,6 @@
     "@types/react-dom": "~16.9.4",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
-  },
-  "dependencies": {
   },
   "peerDependencies": {
     "react": "~16.11.0",
