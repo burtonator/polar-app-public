@@ -13,7 +13,7 @@ export class Strings {
 
         let buff = "";
 
-        for(let i = 0; i < len; ++i) {
+        for (let i = 0; i < len; ++i) {
             buff += c;
         }
 
