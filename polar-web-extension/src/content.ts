@@ -43,5 +43,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     });
 
 });
-
-console.log("FIXME: Polar is listening for capture requests now (2");
