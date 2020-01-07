@@ -1,6 +1,6 @@
 {
   "name": "polar-browsers",
-  "version": "1.80.33",
+  "version": "1.80.34",
   "description": "Determine which browser is being used.",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "mocha": "^6.2.0",
-    "polar-test": "^1.80.33",
+    "polar-test": "^1.80.34",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
