@@ -165,6 +165,11 @@ describe('FilePaths', function() {
 
         });
 
+        it('with hash', function() {
+            assert.equal(FilePaths.toURL("/tmp/Test #1/chubby.pdf"), 'file:///tmp/Test%20%231/chubby.pdf');
+            assert.equal(FilePaths.toURL("/tmp/Test ?1/chubby.pdf"), 'file:///tmp/Test%20%3F1/chubby.pdf');
+        });
+
     });
 
 });

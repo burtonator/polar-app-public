@@ -197,7 +197,8 @@ export class FilePaths {
 
         }
 
-        return encodeURI('file://' + path);
+        return encodeURI('file://' + path)
+                   .replace(/[?#]/g, encodeURIComponent);
 
     }
 
