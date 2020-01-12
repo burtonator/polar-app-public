@@ -29,8 +29,8 @@ export class ReleaseMetadataParser {
             }
 
             const release = getFrontStr('release');
-            const date = Preconditions.assertPresent(getFrontStr('date'));
-            const title = Preconditions.assertPresent(getFrontStr('title'));
+            const date = Preconditions.assertPresent(getFrontStr('date'), 'date');
+            const title = Preconditions.assertPresent(getFrontStr('title'), 'title');
             // tslint:disable-next-line:variable-name
             const video_embed = getFrontStr('video_embed');
             // tslint:disable-next-line:variable-name
