@@ -23,7 +23,7 @@ export class Reducers {
                 return previousValue;
             }
 
-        }
+        };
 
     public static LAST =
         <T> (previousValue: T, currentValue: T) => currentValue

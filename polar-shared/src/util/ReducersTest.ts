@@ -92,10 +92,12 @@ describe('Reducers', function() {
             assert.ok(typeof [undefined, null, null].reduce(Reducers.FIRST) === "undefined");
         });
 
+        it("empty", async function () {
+            assert.equal([].reduce(Reducers.MIN, 0), 0);
+            assertJSON([].reduce(Reducers.FLAT, []), []);
+        });
+
     });
-
-
-
 
     describe('FLAT', function() {
 
@@ -112,4 +114,7 @@ describe('Reducers', function() {
         });
 
     });
+
+
+
 });
