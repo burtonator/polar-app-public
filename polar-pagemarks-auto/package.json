@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@types/node": "^12.11.1",
-    "polar-test": "^1.90.2"
+    "polar-test": "^1.90.2",
+    "polar-shared": "^1.90.2"
   },
   "files": [
     "**/*.js",
