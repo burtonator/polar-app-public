@@ -285,19 +285,3 @@ export type TagStr = string;
 export type TagIDStr = string;
 
 
-/**
- * A tag but also the data about the number of records that match this tag.
- */
-export interface TagDescriptor extends Tag {
-
-    /**
-     * Total number of items in this tag.
-     */
-    readonly count: number;
-
-    /**
-     * The IDs of all the documents that are a member of this tag.
-     */
-    readonly members: ReadonlyArray<IDStr>;
-
-}
