@@ -12,6 +12,10 @@ export class URLParamsIndex {
         return value || undefined;
     }
 
+    public toJSON() {
+        return JSON.stringify(this.backing);
+    }
+
 }
 
 export class URLParams {

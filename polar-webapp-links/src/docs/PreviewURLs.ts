@@ -1,4 +1,4 @@
-/**
+    /**
  * Methods for working with content preview URLs.
  */
 import {URLStr} from "polar-shared/src/util/Strings";
