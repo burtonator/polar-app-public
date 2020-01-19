@@ -28,7 +28,7 @@ export class AddURLs {
 
             return undefined;
 
-        }
+        };
 
         const parseWithQuery = (): AddURL | undefined => {
 
@@ -44,7 +44,7 @@ export class AddURLs {
 
                 return undefined;
 
-            }
+            };
 
             const file = searchParams.get('file');
             const docInfo = parseDocInfo();
@@ -60,7 +60,7 @@ export class AddURLs {
 
             return undefined;
 
-        }
+        };
 
         return parseWithQuery() || parseWithPathInfo();
 
@@ -68,7 +68,7 @@ export class AddURLs {
 
     public static createCorrectedURL(url: string): string {
 
-        const regexp = "^(https?)(://|:/|/)(.+)"
+        const regexp = "^(https?)(://|:/|/)(.+)";
 
         const matches = url.match(regexp);
 
