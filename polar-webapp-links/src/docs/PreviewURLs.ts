@@ -2,6 +2,7 @@
  * Methods for working with content preview URLs.
  */
 import {URLStr} from "polar-shared/src/util/Strings";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export class PreviewURLs {
 
@@ -13,11 +14,12 @@ export class PreviewURLs {
         return url.searchParams.get('preview') === 'true';
     }
 
-    public static createPreviewURL(docURL: URLStr): URLStr {
+    public static createPreviewURL(docURL: URLStr, docInfo: Partial<IDocInfo> = {}): URLStr {
 
         return `https://app.getpolarized.io/pdfviewer/web/index.html?file=` +
             encodeURIComponent(docURL) +
-            `&preview=true`;
+            `&preview=true` +
+            '&docInfo=' + encodeURIComponent(JSON.stringify(docInfo));
 
     }
 
