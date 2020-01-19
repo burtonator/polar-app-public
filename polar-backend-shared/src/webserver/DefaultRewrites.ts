@@ -62,6 +62,10 @@ export class DefaultRewrites {
                 "source": "/login.html",
                 "destination": "/apps/repository/login.html"
             },
+            {
+                "source": "/logout.html",
+                "destination": "/apps/repository/logout.html"
+            },
 
             {
                 "source": "/pdfjsWorker-bundle.js",

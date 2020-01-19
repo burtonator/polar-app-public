@@ -1,4 +1,5 @@
 import {URLStr} from "polar-shared/src/util/Strings";
+import {URLParams} from "polar-shared/src/util/URLParams";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export class AddURLs {
@@ -31,11 +32,11 @@ export class AddURLs {
 
         const parseWithQuery = (): AddURL | undefined => {
 
-            const parsedURL = new URL(url);
+            const searchParams = URLParams.parse(url);
 
             const parseDocInfo = (): IDocInfo | undefined => {
 
-                const json = parsedURL.searchParams.get('docInfo');
+                const json = searchParams.get('docInfo');
 
                 if (json) {
                     return JSON.parse(json);
@@ -45,7 +46,7 @@ export class AddURLs {
 
             }
 
-            const file = parsedURL.searchParams.get('file');
+            const file = searchParams.get('file');
             const docInfo = parseDocInfo();
 
             if (file) {
