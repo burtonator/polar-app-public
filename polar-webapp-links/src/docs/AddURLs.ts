@@ -7,7 +7,7 @@ export class AddURLs {
 
         const parseWithPathInfo = (): AddURL | undefined => {
 
-            const regexp = "(https://app\.getpolarized\.io)?/add/(.*)";
+            const regexp = "(https://app\.getpolarized\.io)?/add/(http.*)";
 
             const matches = url.match(regexp);
 
@@ -61,7 +61,7 @@ export class AddURLs {
 
         }
 
-        return parseWithPathInfo() || parseWithQuery();
+        return parseWithQuery() || parseWithPathInfo();
 
     }
 
