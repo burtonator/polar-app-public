@@ -3,7 +3,7 @@
   "version": "1.90.10",
   "description": "URL parsing framework that's portable to Node 8, 10, etc.",
   "scripts": {
-    "test": "scripts/test-runner.sh",
+    "test": "find src -name *Test.js | xargs mocha --timeout 20000 --exit ",
     "compile": "npx tsc"
   },
   "repository": {
