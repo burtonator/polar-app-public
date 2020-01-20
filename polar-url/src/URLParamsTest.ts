@@ -19,7 +19,11 @@ describe('URLParams', function() {
 
         // this is the second URL that's redirected.
 
-        assertJSON(URLParams.parse("http://localhost/add/?docInfo=%7B%22title%22%3A%229th+Circuit+holds+that+scraping+a+public+website+does+not+violate+the+CFAA+%5Bpdf%5D%22%7D&file=http%3A%2F%2Fcdn.ca9.uscourts.gov%2Fdatastore%2Fopinions%2F2019%2F09%2F09%2F17-16783.pdf").toJSON(), {});
+        assertJSON(URLParams.parse("http://localhost/add/?docInfo=%7B%22title%22%3A%229th+Circuit+holds+that+scraping+a+public+website+does+not+violate+the+CFAA+%5Bpdf%5D%22%7D&file=http%3A%2F%2Fcdn.ca9.uscourts.gov%2Fdatastore%2Fopinions%2F2019%2F09%2F09%2F17-16783.pdf").toJSON(),
+            {
+                "docInfo": "{\"title\":\"9th Circuit holds that scraping a public website does not violate the CFAA [pdf]\"}",
+                "file": "http://cdn.ca9.uscourts.gov/datastore/opinions/2019/09/09/17-16783.pdf"
+            });
 
     });
 

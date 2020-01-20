@@ -22,6 +22,10 @@ export class URLParams {
 
     public static parse(url: string): URLParamsIndex {
 
+        url = decodeURI(url);
+
+        // TODO: decodeURIComponent doesn't properly handle '+'
+
         const parseQueryString = () => {
 
             const start = url.indexOf('?');

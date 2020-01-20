@@ -1,0 +1,37 @@
+{
+  "name": "polar-url",
+  "version": "1.90.9",
+  "description": "URL parsing framework that's portable to Node 8, 10, etc.",
+  "scripts": {
+    "test": "scripts/test-runner.sh",
+    "compile": "npx tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burtonator/polar-shared.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/burtonator/polar-shared/issues"
+  },
+  "homepage": "https://github.com/burtonator/polar-shared#readme",
+  "devDependencies": {
+    "@types/chai": "^4.2.1",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "polar-test": "^1.90.9",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@types/whatwg-url": "^6.4.0",
+    "whatwg-url": "^8.0.0"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
+}
