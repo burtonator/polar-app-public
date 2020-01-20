@@ -1,5 +1,5 @@
 import {URLStr} from "polar-shared/src/util/Strings";
-import {URLParams} from "polar-shared/src/util/URLParams";
+import {URLParams} from "polar-url/src/URLParams";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export class AddURLs {
