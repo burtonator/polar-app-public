@@ -29,10 +29,10 @@ interface TestCalculate {
 
     readonly review: TestReview;
 
-    readonly answer: Answer,
+    readonly answer: Answer;
 
     // FIXME: what fields are shared with the prev object?
-    readonly scheduling: TestScheduling,
+    readonly scheduling: TestScheduling;
 }
 
 //
@@ -194,7 +194,7 @@ describe("calculate", () => {
 
             review = {
                 ...schedule
-            }
+            };
 
         }
 
@@ -231,6 +231,15 @@ describe("calculate", () => {
                 "reviewedAt": "2012-03-14T11:38:49.321Z"
             }
         ]);
+    });
+
+
+    xit("test with all correct answers (long term)", () => {
+
+        const schedules = testCalculateIter([1, 1, 1, 1, 1, 1, 1, 1]);
+
+        console.log(schedules);
+
     });
 
 
