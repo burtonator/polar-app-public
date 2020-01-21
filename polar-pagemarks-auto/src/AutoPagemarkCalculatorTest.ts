@@ -1,11 +1,11 @@
-import {AutoPagemarkCalculator, Book} from "./AutoPagemarkCalculator";
+import {AutoPagemarkCalculator, View} from "./AutoPagemarkCalculator";
 import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('AutoPagemarkCalculator', function() {
 
     it("basic fully visible", async function () {
 
-        const book: Book = {
+        const view: View = {
             viewport: {
                 top: 0,
                 bottom: 100
@@ -19,7 +19,7 @@ describe('AutoPagemarkCalculator', function() {
             ]
         };
 
-        assertJSON(AutoPagemarkCalculator.calculate(book), [
+        assertJSON(AutoPagemarkCalculator.calculate(view), [
             {
                 "id": 1,
                 "top": 10,
@@ -32,7 +32,7 @@ describe('AutoPagemarkCalculator', function() {
 
     it("basic half visible", async function () {
 
-        const book: Book = {
+        const view: View = {
             viewport: {
                 top: 15,
                 bottom: 100
@@ -46,7 +46,7 @@ describe('AutoPagemarkCalculator', function() {
             ]
         };
 
-        assertJSON(AutoPagemarkCalculator.calculate(book), [
+        assertJSON(AutoPagemarkCalculator.calculate(view), [
             {
                 "id": 1,
                 "top": 10,
