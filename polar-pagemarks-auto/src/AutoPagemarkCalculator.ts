@@ -29,19 +29,31 @@ export interface PageVisibility extends Page {
     readonly perc: number;
 }
 
-export interface Book {
+export interface View {
     readonly viewport: Viewport;
     readonly pages: ReadonlyArray<Page>;
 }
 
+/**
+ * Basic pagemark calculator.
+ *
+ * This is modeled after three main components:
+ *
+ *  The 'view' is just a block with a height.
+ *
+ *  The 'viewport' is a window into that view.  It's basically the screen.
+ *
+ *  A 'page' can be seen through a viewwport and may or may not be visible.
+ *
+ */
 export class AutoPagemarkCalculator {
 
-    public static calculate(book: Book) {
+    public static calculate(view: View) {
 
         function computeCoverage(page: Page): PageVisibility {
 
-            const visibleBottom = Math.min(page.bottom, book.viewport.bottom);
-            const visibleTop = Math.max(page.top, book.viewport.top);
+            const visibleBottom = Math.min(page.bottom, view.viewport.bottom);
+            const visibleTop = Math.max(page.top, view.viewport.top);
             const visible = visibleBottom - visibleTop;
 
             const height = page.bottom - page.top;
@@ -52,7 +64,7 @@ export class AutoPagemarkCalculator {
 
         }
 
-        return book.pages.map(computeCoverage);
+        return view.pages.map(computeCoverage);
 
     }
 
