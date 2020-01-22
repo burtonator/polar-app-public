@@ -48,8 +48,11 @@ describe('AutoPagemarker', function() {
 
     it("basic fully visible", async function () {
 
-        const pagemarker = new AutoPagemarker(NULL_FUNCTION);
+        // TODO/FIXME: rework this text by creating the raw pages,
+        // then moving the viewpoint and then using the
+        // ViewCalculator
 
+        const pagemarker = new AutoPagemarker(NULL_FUNCTION);
 
         const viewVisibility = createViewVisibility();
 
