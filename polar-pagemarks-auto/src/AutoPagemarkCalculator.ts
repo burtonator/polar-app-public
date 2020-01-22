@@ -13,6 +13,8 @@
  +----------------+  <-----------------+
  */
 
+import {UnixTimeMS} from "polar-shared/src/metadata/ISODateTimeStrings";
+
 export interface Block {
     readonly top: number;
     readonly bottom: number;
@@ -34,6 +36,11 @@ export interface View {
     readonly pages: ReadonlyArray<Page>;
 }
 
+export interface ViewVisibility {
+    readonly viewport: Viewport;
+    readonly visibilities: ReadonlyArray<PageVisibility>;
+    readonly computed: UnixTimeMS;
+}
 /**
  * Basic pagemark calculator.
  *
@@ -48,7 +55,7 @@ export interface View {
  */
 export class AutoPagemarkCalculator {
 
-    public static calculate(view: View) {
+    public static calculate(view: View): ViewVisibility {
 
         function computeCoverage(page: Page): PageVisibility {
 
@@ -64,8 +71,18 @@ export class AutoPagemarkCalculator {
 
         }
 
-        return view.pages.map(computeCoverage);
+        const visibilities = view.pages.map(computeCoverage);
 
+        return {
+            viewport: view.viewport,
+            visibilities,
+            computed: Date.now()
+        };
+
+    }
+
+    public static visible(visibilities: ReadonlyArray<PageVisibility>): ReadonlyArray<PageVisibility> {
+        return visibilities.filter(current => current.perc > 0);
     }
 
 }

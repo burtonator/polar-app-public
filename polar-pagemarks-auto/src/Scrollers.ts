@@ -13,14 +13,9 @@ export class Scrollers {
         const handleScroll = () => {
 
             const view = ViewCalculator.compute(selectors);
-            const visibilities = AutoPagemarkCalculator.calculate(view);
+            const viewVisibility = AutoPagemarkCalculator.calculate(view);
 
-            console.log("FIXME: view: ", view);
-            console.log("FIXME: visibilities: ", visibilities);
-
-            const visible = visibilities.filter(current => current.perc > 0);
-
-            console.log("FIXME: visible: ", visible);
+            const visible = viewVisibility.visibilities.filter(current => current.perc > 0);
 
         };
 
