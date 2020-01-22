@@ -1,4 +1,4 @@
-import {AutoPagemarker, CreatePagemarkCallback, PageID} from "./AutoPagemarker";
+import {AutoPagemarker, PageID} from "./AutoPagemarker";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {PageVisibility, Viewport, ViewVisibility} from "./AutoPagemarkCalculator";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -55,10 +55,18 @@ describe('AutoPagemarker', function() {
         const result = pagemarker.compute(viewVisibility);
 
         assertJSON(result, {
-            strategy: 'init'
+            "position": {
+                "pageVisibility": {
+                    "bottom": 1100,
+                    "id": 1,
+                    "perc": 100,
+                    "top": 0
+                },
+                "timestamp": 1330688329321
+            },
+            "strategy": "init"
         });
 
     });
-
 
 });

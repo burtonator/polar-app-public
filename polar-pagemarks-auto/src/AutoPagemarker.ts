@@ -34,6 +34,7 @@ export type ComputeStrategy = 'init' | 'early' | 'jumped' | 'created' | 'no-page
 
 export interface ComputeResult {
     readonly strategy: ComputeStrategy;
+    readonly position: Position | undefined;
 }
 
 
@@ -49,20 +50,34 @@ export class AutoPagemarker {
     public compute(curr: ViewVisibility): ComputeResult {
 
         const visible = AutoPagemarkCalculator.visible(curr.visibilities);
-        
+
+        const createResult = (strategy: ComputeStrategy): ComputeResult => {
+
+            const position: Position | undefined
+                = this.position ? {...this.position} : undefined;
+
+            return {
+                strategy,
+                position
+            };
+
+        };
+
         if (visible.length === 0) {
             console.warn("Nothing visible");
-            return {strategy: 'no-pages'};
+            return createResult('no-pages');
         }
 
         const pageVisibility = visible[0];
 
-        const updatePosition = () => {
+        const updatePosition = (strategy: ComputeStrategy): ComputeResult => {
 
             this.position = {
                 pageVisibility,
                 timestamp: Date.now()
             };
+
+            return createResult(strategy);
 
         };
 
@@ -71,14 +86,12 @@ export class AutoPagemarker {
             // if the current position is undefined, then we've just started
             // and so there's nothing left to do
 
-            updatePosition();
-            return {strategy: 'init'};
-            
+            return updatePosition('init');
+
         }
 
         if ((Date.now() - this.position.timestamp) < MIN_DURATION) {
-            updatePosition();
-            return {strategy: 'early'};
+            return updatePosition('early');
         }
 
 
@@ -88,11 +101,10 @@ export class AutoPagemarker {
             // we have advanced one page exactly and the previous page
             // is now moved forward.
             this.callback(prevPageID);
-            return {strategy: 'created'};
+            return updatePosition('created');
 
         } else {
-            updatePosition();
-            return {strategy: 'jumped'};
+            return updatePosition('jumped');
         }
 
     }
