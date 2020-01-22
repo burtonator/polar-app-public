@@ -95,9 +95,6 @@ export class AutoPagemarker {
             return {strategy: 'jumped'};
         }
 
-        // see if we've advanced a page and if so we need to mark the previous
-        // pages as read once it's scrolled past.
-
     }
 
 }
