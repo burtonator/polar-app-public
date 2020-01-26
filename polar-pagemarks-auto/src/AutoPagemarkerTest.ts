@@ -1,20 +1,28 @@
-import {AutoPagemarker, ExtendPagemark} from "./AutoPagemarker";
+import {AutoPagemarker, ExtendPagemark, PageID} from "./AutoPagemarker";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {ViewVisibilityCalculator, Page, View, Viewport, ViewVisibility} from "./ViewVisibilityCalculator";
+import {Page, View, Viewport, ViewVisibility, ViewVisibilityCalculator} from "./ViewVisibilityCalculator";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {Numbers} from "polar-shared/src/util/Numbers";
-import {assert} from 'chai';
+
+const PAGE_HEIGHT = 1100;
+
+const createViewportForPage = (page: PageID): Viewport => {
+
+    const bottom = (page * PAGE_HEIGHT);
+    const top = bottom - PAGE_HEIGHT;
+
+    return {top, bottom};
+
+};
 
 const createView = (viewport: Viewport,
                     nrPages: number): View => {
 
-    const height = 1100;
-
     const createPage = (page: number): Page => {
 
-        const bottom = (page * height);
-        const top = bottom - height;
+        const bottom = (page * PAGE_HEIGHT);
+        const top = bottom - PAGE_HEIGHT;
 
         return {
             id: page,
@@ -42,6 +50,35 @@ const createViewVisibility = (viewport: Viewport,
 
 };
 
+interface TestResult {
+    extendPagemark: ExtendPagemark;
+}
+
+type Tester = (viewport: Viewport, expected: any) => TestResult;
+
+const createTester = (nrPages: number = 10): Tester => {
+
+    let extendPagemark: ExtendPagemark | undefined;
+
+    // tslint:disable-next-line:variable-name
+    const pagemarker = new AutoPagemarker(_extendPagemark => extendPagemark = _extendPagemark);
+
+    return (viewport: Viewport, expected: any) => {
+
+        const viewVisibility = createViewVisibility(viewport, nrPages);
+
+        const result = pagemarker.compute(viewVisibility);
+
+        assertJSON(result, expected);
+
+        return {
+            extendPagemark: extendPagemark!
+        };
+
+    };
+
+};
+
 describe('AutoPagemarker', function() {
 
     beforeEach(() => {
@@ -52,7 +89,7 @@ describe('AutoPagemarker', function() {
         TestingTime.unfreeze();
     });
 
-    it("basic fully visible", async function () {
+    it("basic fully visible", function () {
 
         // TODO/FIXME: rework this text by creating the raw pages,
         // then moving the viewpoint and then using the
@@ -86,27 +123,9 @@ describe('AutoPagemarker', function() {
 
     });
 
-    it("two half visible", async function () {
+    it("two half visible", function () {
 
-        // TODO/FIXME: rework this text by creating the raw pages,
-        // then moving the viewpoint and then using the
-        // ViewCalculator
-
-        const nrPages = 10;
-
-        let pagemarked: ExtendPagemark | undefined;
-
-        const pagemarker = new AutoPagemarker(page => pagemarked = page);
-
-        const doTest = (viewport: Viewport, expected: any) => {
-
-            const viewVisibility = createViewVisibility(viewport, 10);
-
-            const result = pagemarker.compute(viewVisibility);
-
-            assertJSON(result, expected);
-
-        };
+        const doTest = createTester();
 
         doTest(
             {
@@ -153,7 +172,7 @@ describe('AutoPagemarker', function() {
 
         TestingTime.forward('15s');
 
-        doTest(
+        const testResult = doTest(
             {
                 top: 1100,
                 bottom: 2200
@@ -175,7 +194,94 @@ describe('AutoPagemarker', function() {
             }
         );
 
-        assertJSON(pagemarked, {origin: 1, page: 1});
+        assertJSON(testResult.extendPagemark, {origin: 1, page: 1});
+
+    });
+
+    it("page 1, then jump, then scroll, to see if origin is right.", function () {
+
+        const doTest = createTester();
+
+        doTest(
+            createViewportForPage(1),
+            {
+                "position": {
+                    "created": 1330688329321,
+                    "origin": 1,
+                    "pageVisibility": {
+                        "bottom": 1100,
+                        "id": 1,
+                        "perc": 1,
+                        "top": 0
+                    },
+                    "updated": 1330688329321
+                },
+                "strategy": "init"
+            });
+
+        TestingTime.forward('15s');
+
+        doTest(
+            createViewportForPage(5),
+            {
+                "position": {
+                    "created": 1330688344321,
+                    "origin": 5,
+                    "pageVisibility": {
+                        "bottom": 5500,
+                        "id": 5,
+                        "perc": 1,
+                        "top": 4400
+                    },
+                    "updated": 1330688344321
+                },
+                "strategy": "jumped"
+            }
+        );
+
+        TestingTime.forward('15s');
+
+        const testResult = doTest(
+            createViewportForPage(6),
+            {
+                "pagemarked": 5,
+                "position": {
+                    "created": 1330688344321,
+                    "origin": 5,
+                    "pageVisibility": {
+                        "bottom": 6600,
+                        "id": 6,
+                        "perc": 1,
+                        "top": 5500
+                    },
+                    "updated": 1330688359321
+                },
+                "strategy": "created"
+            }
+        );
+
+        assertJSON(testResult.extendPagemark, {origin: 5, page: 5});
+
+        const testResult1 = doTest(
+            createViewportForPage(7),
+            {
+                "pagemarked": 6,
+                "position": {
+                    "created": 1330688344321,
+                    "origin": 5,
+                    "pageVisibility": {
+                        "bottom": 7700,
+                        "id": 7,
+                        "perc": 1,
+                        "top": 6600
+                    },
+                    "updated": 1330688359321
+                },
+                "strategy": "created"
+            }
+        );
+
+        assertJSON(testResult1.extendPagemark, {origin: 5, page: 6});
 
     });
 
