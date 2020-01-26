@@ -72,6 +72,7 @@ describe('AutoPagemarker', function() {
         assertJSON(result, {
             "position": {
                 "created": 1330688329321,
+                "origin": 1,
                 "pageVisibility": {
                     "bottom": 1100,
                     "id": 1,
@@ -115,6 +116,7 @@ describe('AutoPagemarker', function() {
             {
                 "position": {
                     "created": 1330688329321,
+                    "origin": 1,
                     "pageVisibility": {
                         "bottom": 1100,
                         "id": 1,
@@ -135,7 +137,8 @@ describe('AutoPagemarker', function() {
             },
             {
                 "position": {
-                    "created": 1330688344321,
+                    "created": 1330688329321,
+                    "origin": 1,
                     "pageVisibility": {
                         "bottom": 1100,
                         "id": 1,
@@ -144,7 +147,7 @@ describe('AutoPagemarker', function() {
                     },
                     "updated": 1330688344321
                 },
-                "strategy": "jumped"
+                "strategy": "updated"
             }
         );
 
@@ -158,7 +161,8 @@ describe('AutoPagemarker', function() {
             {
                 "pagemarked": 1,
                 "position": {
-                    "created": 1330688344321,
+                    "created": 1330688329321,
+                    "origin": 1,
                     "pageVisibility": {
                         "bottom": 2200,
                         "id": 2,

@@ -24,6 +24,12 @@ export interface Position {
     readonly pageVisibility: PageVisibility;
 
     /**
+     * Where we first jumped so that we don't create a pagemark from page zero
+     * all the way to the current page if we jumped from the beginning.
+     */
+    readonly origin: PageID;
+
+    /**
      * The timestamp of the last position on scroll.
      */
     readonly created: UnixTimeMS;
@@ -116,6 +122,7 @@ export class AutoPagemarker {
             } else {
 
                 this.position = {
+                    origin: pageVisibility.id,
                     pageVisibility,
                     created: now,
                     updated: now

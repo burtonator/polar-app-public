@@ -1,6 +1,9 @@
 import {ViewCalculator} from "./ViewCalculator";
 import {ViewVisibilityCalculator} from "./ViewVisibilityCalculator";
 import {AutoPagemarker} from "./AutoPagemarker";
+import {Logger} from "polar-shared/src/logger/Logger";
+
+const log = Logger.create();
 
 export class Scrollers {
 
@@ -12,7 +15,7 @@ export class Scrollers {
         };
 
         const autoPagemarker = new AutoPagemarker(page => {
-            console.log("New page auto pagemarked... ", page);
+            log.debug("New page auto pagemarked... ", page);
         });
 
         const handleScroll = () => {
