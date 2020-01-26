@@ -76,11 +76,17 @@ export interface ExtendPagemark {
 
 export type CreatePagemarkCallback = (extendPagemark: ExtendPagemark) => void;
 
+/**
+ * Some document formats like HTML and ePub essentially have LONG pages.
+ */
+export type AutoPagemarkerMode = 'full' | 'partial';
+
 export class AutoPagemarker {
 
     private position?: Position;
 
-    constructor(private callback: CreatePagemarkCallback) {
+    constructor(private callback: CreatePagemarkCallback,
+                private mode: AutoPagemarkerMode = 'full') {
     }
 
     public compute(curr: ViewVisibility): ComputeResult {
@@ -156,13 +162,52 @@ export class AutoPagemarker {
         const prevPageID = (this.position.pageVisibility.id);
         const currPageID = pageVisibility.id;
 
-        if ((currPageID - 1) === prevPageID) {
+        interface Coverage {
+            readonly perc: Percentage100;
+        }
+
+        /**
+         * Compute what percentage of the page is covered and whether we should emit.
+         */
+        const computeCoverage = (): Coverage | undefined => {
+
+            switch (this.mode) {
+
+                case "full":
+
+                    // for the PDF viewer only cover pages that are no longer in
+                    // view.
+
+                    if ((currPageID - 1) === prevPageID) {
+                        return {perc: 100};
+                    } else {
+                        return undefined;
+                    }
+
+                case "partial":
+
+                    // this is used in the HTML viewer (and the future ePub viewer)
+                    // and since it only has one page we just adjust the coverage
+                    // to be JUST up to the beginning of the viewport.
+
+                    return {
+                        perc: pageVisibility.perc * 100
+                    };
+
+            }
+
+        };
+
+        const coverage = computeCoverage();
+
+        if (coverage) {
             // we have advanced one page exactly and the previous page
             // is now moved forward.
+
             this.callback({
                 origin: this.position.origin,
                 page: prevPageID,
-                perc: 100
+                perc: coverage.perc
             });
 
             return updatePosition('created', prevPageID);
