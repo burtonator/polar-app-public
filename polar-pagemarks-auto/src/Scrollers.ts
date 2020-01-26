@@ -2,12 +2,14 @@ import {ViewCalculator} from "./ViewCalculator";
 import {ViewVisibilityCalculator} from "./ViewVisibilityCalculator";
 import {AutoPagemarker} from "./AutoPagemarker";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {Pagemarks} from "../../../polar-bookshelf/web/js/metadata/Pagemarks";
 
 const log = Logger.create();
 
 export class Scrollers {
 
-    public static register() {
+    public static register(docMeta: IDocMeta) {
 
         const selectors = {
             container: '#viewerContainer',
@@ -15,7 +17,10 @@ export class Scrollers {
         };
 
         const autoPagemarker = new AutoPagemarker(extendPagemark => {
+
+            Pagemarks.updatePagemarksForRange(docMeta, extendPagemark.page, 100, {start: extendPagemark.origin});
             log.debug("New page auto pagemarked... ", extendPagemark);
+
         });
 
         const handleScroll = () => {

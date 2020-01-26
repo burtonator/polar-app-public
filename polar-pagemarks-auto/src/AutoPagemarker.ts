@@ -148,8 +148,6 @@ export class AutoPagemarker {
         }
 
         if ((now - this.position.created) < MIN_DURATION) {
-            // FIXME: what happens if we jump to early and scroll around..., then stop, and start
-            // scrolling normally.
             return updatePosition('early');
         }
 
