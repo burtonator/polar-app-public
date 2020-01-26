@@ -1,4 +1,4 @@
-import {Block, Page, View} from "./AutoPagemarkCalculator";
+import {Block, Page, View} from "./ViewVisibilityCalculator";
 
 export type CSSSelector = string;
 

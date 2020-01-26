@@ -1,5 +1,5 @@
 import {ViewCalculator} from "./ViewCalculator";
-import {AutoPagemarkCalculator} from "./AutoPagemarkCalculator";
+import {ViewVisibilityCalculator} from "./ViewVisibilityCalculator";
 import {AutoPagemarker} from "./AutoPagemarker";
 
 export class Scrollers {
@@ -18,7 +18,7 @@ export class Scrollers {
         const handleScroll = () => {
 
             const view = ViewCalculator.compute(selectors);
-            const viewVisibility = AutoPagemarkCalculator.calculate(view);
+            const viewVisibility = ViewVisibilityCalculator.calculate(view);
 
             autoPagemarker.compute(viewVisibility);
 

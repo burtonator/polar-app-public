@@ -1,4 +1,4 @@
-import {AutoPagemarkCalculator, View} from "./AutoPagemarkCalculator";
+import {ViewVisibilityCalculator, View} from "./ViewVisibilityCalculator";
 import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('AutoPagemarkCalculator', function() {
@@ -19,7 +19,7 @@ describe('AutoPagemarkCalculator', function() {
             ]
         };
 
-        assertJSON(AutoPagemarkCalculator.calculate(view), [
+        assertJSON(ViewVisibilityCalculator.calculate(view), [
             {
                 "id": 1,
                 "top": 10,
@@ -46,7 +46,7 @@ describe('AutoPagemarkCalculator', function() {
             ]
         };
 
-        assertJSON(AutoPagemarkCalculator.calculate(view), [
+        assertJSON(ViewVisibilityCalculator.calculate(view), [
             {
                 "id": 1,
                 "top": 10,

@@ -1,9 +1,10 @@
 import {AutoPagemarker} from "./AutoPagemarker";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {AutoPagemarkCalculator, Page, View, Viewport, ViewVisibility} from "./AutoPagemarkCalculator";
+import {ViewVisibilityCalculator, Page, View, Viewport, ViewVisibility} from "./ViewVisibilityCalculator";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {Numbers} from "polar-shared/src/util/Numbers";
+import {assert} from 'chai';
 
 const createView = (viewport: Viewport,
                     nrPages: number): View => {
@@ -37,7 +38,7 @@ const createViewVisibility = (viewport: Viewport,
 
     const view = createView(viewport, nrPages);
 
-    return AutoPagemarkCalculator.calculate(view);
+    return ViewVisibilityCalculator.calculate(view);
 
 };
 
@@ -62,11 +63,11 @@ describe('AutoPagemarker', function() {
             bottom: 1100
         };
 
-        const pagemarker = new AutoPagemarker(NULL_FUNCTION);
+        const pagemarked = new AutoPagemarker(NULL_FUNCTION);
 
         const viewVisibility = createViewVisibility(viewport, 2);
 
-        const result = pagemarker.compute(viewVisibility);
+        const result = pagemarked.compute(viewVisibility);
 
         assertJSON(result, {
             "position": {
@@ -169,6 +170,8 @@ describe('AutoPagemarker', function() {
                 "strategy": "created"
             }
         );
+
+        assert.equal(pagemarked, 1);
 
     });
 

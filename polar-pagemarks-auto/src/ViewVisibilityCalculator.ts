@@ -53,7 +53,7 @@ export interface ViewVisibility {
  *  A 'page' can be seen through a viewwport and may or may not be visible.
  *
  */
-export class AutoPagemarkCalculator {
+export class ViewVisibilityCalculator {
 
     public static calculate(view: View): ViewVisibility {
 

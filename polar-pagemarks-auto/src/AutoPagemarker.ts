@@ -1,7 +1,7 @@
 /**
  * Takes a set of computed visibilities, then determines where to place the pagemarks.
  */
-import {AutoPagemarkCalculator, PageVisibility, ViewVisibility} from "./AutoPagemarkCalculator";
+import {ViewVisibilityCalculator, PageVisibility, ViewVisibility} from "./ViewVisibilityCalculator";
 import {UnixTimeMS} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 const MIN_DURATION = 15 * 1000;
@@ -68,7 +68,9 @@ export class AutoPagemarker {
 
     public compute(curr: ViewVisibility): ComputeResult {
 
-        const visible = AutoPagemarkCalculator.visible(curr.visibilities);
+        const now = Date.now();
+
+        const visible = ViewVisibilityCalculator.visible(curr.visibilities);
 
         const createResult = (strategy: ComputeStrategy,
                               pagemarked: number | undefined): ComputeResult => {
@@ -93,8 +95,6 @@ export class AutoPagemarker {
 
         const updatePosition = (strategy: ComputeStrategy,
                                 pagemarked: number | undefined = undefined): ComputeResult => {
-
-            const now = Date.now();
 
             if (this.position) {
 
@@ -127,14 +127,15 @@ export class AutoPagemarker {
 
         }
 
-        if ((Date.now() - this.position.created) < MIN_DURATION) {
+        if ((now - this.position.created) < MIN_DURATION) {
+            // FIXME: what happens if we jump to early and scroll around..., then stop, and start
+            // scrolling normally.
             return updatePosition('early');
         }
 
+        const prevPageID = (this.position.pageVisibility.id);
 
-        const prevPageID = (pageVisibility.id - 1);
-
-        if (this.position.pageVisibility.id === prevPageID) {
+        if ((pageVisibility.id - 1) === prevPageID) {
             // we have advanced one page exactly and the previous page
             // is now moved forward.
             this.callback(prevPageID);
