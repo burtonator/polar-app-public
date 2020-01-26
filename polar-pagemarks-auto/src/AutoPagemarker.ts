@@ -4,7 +4,7 @@
 import {AutoPagemarkCalculator, PageVisibility, ViewVisibility} from "./AutoPagemarkCalculator";
 import {UnixTimeMS} from "polar-shared/src/metadata/ISODateTimeStrings";
 
-const MIN_DURATION = 30 * 1000;
+const MIN_DURATION = 15 * 1000;
 
 /**
  * A page ID greater than 1.
@@ -35,6 +35,7 @@ export type ComputeStrategy = 'init' | 'early' | 'jumped' | 'created' | 'no-page
 export interface ComputeResult {
     readonly strategy: ComputeStrategy;
     readonly position: Position | undefined;
+    readonly pagemarked: number | undefined;
 }
 
 
@@ -51,33 +52,36 @@ export class AutoPagemarker {
 
         const visible = AutoPagemarkCalculator.visible(curr.visibilities);
 
-        const createResult = (strategy: ComputeStrategy): ComputeResult => {
+        const createResult = (strategy: ComputeStrategy,
+                              pagemarked: number | undefined): ComputeResult => {
 
             const position: Position | undefined
                 = this.position ? {...this.position} : undefined;
 
             return {
                 strategy,
-                position
+                position,
+                pagemarked
             };
 
         };
 
         if (visible.length === 0) {
             console.warn("Nothing visible");
-            return createResult('no-pages');
+            return createResult('no-pages', undefined);
         }
 
         const pageVisibility = visible[0];
 
-        const updatePosition = (strategy: ComputeStrategy): ComputeResult => {
+        const updatePosition = (strategy: ComputeStrategy,
+                                pagemarked: number | undefined = undefined): ComputeResult => {
 
             this.position = {
                 pageVisibility,
                 timestamp: Date.now()
             };
 
-            return createResult(strategy);
+            return createResult(strategy, pagemarked);
 
         };
 
@@ -101,7 +105,7 @@ export class AutoPagemarker {
             // we have advanced one page exactly and the previous page
             // is now moved forward.
             this.callback(prevPageID);
-            return updatePosition('created');
+            return updatePosition('created', prevPageID);
 
         } else {
             return updatePosition('jumped');
