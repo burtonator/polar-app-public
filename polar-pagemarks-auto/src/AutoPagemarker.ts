@@ -1,10 +1,13 @@
 /**
  * Takes a set of computed visibilities, then determines where to place the pagemarks.
  */
-import {ViewVisibilityCalculator, PageVisibility, ViewVisibility} from "./ViewVisibilityCalculator";
+import {PageVisibility, ViewVisibility, ViewVisibilityCalculator} from "./ViewVisibilityCalculator";
 import {UnixTimeMS} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Logger} from "polar-shared/src/logger/Logger";
 
-const MIN_DURATION = 15 * 1000;
+const log = Logger.create();
+
+const MIN_DURATION = 5 * 1000; // FIXME: should be 15s in production.
 
 /**
  * A page ID greater than 1.
@@ -32,23 +35,25 @@ export interface Position {
 
 }
 
-
-
 /**
  * The strategy used within the compute (for testing primarily)
  *
- * init: there was no previous position so we just initialized it.
+ * init: there was no previous position so we just initialized it.  This is done
+ *       on startup.
  *
  * early: we haven't been on a spot long enough for it to be considered 'reading'
- *        and so we skipped this update.
+ *        and so we skipped this update and just defined the position for next
+ *        time.
  *
  * jumped: We jumped around the page and didn't scroll forward on a page.
  *
  * created: a new pagemark was created and emitted.
  *
+ * updated: We scrolled but the page wasn't advanced enough to make a change.
+ *
  * no-pages: no pages were visible.  I practice this should never happen though.
  */
-export type ComputeStrategy = 'init' | 'early' | 'jumped' | 'created' | 'no-pages';
+export type ComputeStrategy = 'init' | 'early' | 'jumped' | 'created' | 'updated' | 'no-pages';
 
 export interface ComputeResult {
     readonly strategy: ComputeStrategy;
@@ -78,11 +83,15 @@ export class AutoPagemarker {
             const position: Position | undefined
                 = this.position ? {...this.position} : undefined;
 
-            return {
+            const result = {
                 strategy,
                 position,
                 pagemarked
             };
+
+            log.debug("Auto pagemarker result: ", result);
+
+            return result;
 
         };
 
@@ -134,14 +143,19 @@ export class AutoPagemarker {
         }
 
         const prevPageID = (this.position.pageVisibility.id);
+        const currPageID = pageVisibility.id;
 
-        if ((pageVisibility.id - 1) === prevPageID) {
+        if ((currPageID - 1) === prevPageID) {
             // we have advanced one page exactly and the previous page
             // is now moved forward.
             this.callback(prevPageID);
             return updatePosition('created', prevPageID);
 
+        } else if (currPageID === prevPageID) {
+            return updatePosition('updated');
         } else {
+            log.debug("jumped due to pages: ", {currPageID, prevPageID});
+
             this.position = undefined;
             return updatePosition('jumped');
         }
