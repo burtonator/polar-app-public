@@ -16,6 +16,8 @@ export class Scrollers {
             page: '.page',
         };
 
+        // FIXME: this has to use the task scheduler to avoid wasting too much CPU time.
+
         const autoPagemarker = new AutoPagemarker(extendPagemark => {
 
             Pagemarks.updatePagemarksForRange(docMeta, extendPagemark.page, 100, {start: extendPagemark.origin});

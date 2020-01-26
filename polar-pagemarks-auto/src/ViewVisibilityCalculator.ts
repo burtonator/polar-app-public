@@ -1,5 +1,3 @@
-
-
 /*
 
  +----------------+  <-----------------+
@@ -14,6 +12,7 @@
  */
 
 import {UnixTimeMS} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Percentage1} from "polar-shared/src/util/Percentages";
 
 export interface Block {
     readonly top: number;
@@ -28,7 +27,7 @@ export interface Page extends Block {
 }
 
 export interface PageVisibility extends Page {
-    readonly perc: number;
+    readonly perc: Percentage1;
 }
 
 export interface View {

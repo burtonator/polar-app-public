@@ -1,3 +1,13 @@
+/**
+ * A percentage with the interval [0,1]
+ */
+export type Percentage1 = number;
+
+/**
+ * A percentage with the interval [0,100]
+ */
+export type Percentage100 = number;
+
 export class Percentages {
 
     /**

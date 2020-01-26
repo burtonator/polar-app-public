@@ -4,6 +4,7 @@
 import {PageVisibility, ViewVisibility, ViewVisibilityCalculator} from "./ViewVisibilityCalculator";
 import {UnixTimeMS} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {Percentage100} from "polar-shared/src/util/Percentages";
 
 const log = Logger.create();
 
@@ -70,6 +71,7 @@ export interface ComputeResult {
 export interface ExtendPagemark {
     readonly origin: PageID;
     readonly page: PageID;
+    readonly perc: Percentage100;
 }
 
 export type CreatePagemarkCallback = (extendPagemark: ExtendPagemark) => void;
@@ -159,7 +161,8 @@ export class AutoPagemarker {
             // is now moved forward.
             this.callback({
                 origin: this.position.origin,
-                page: prevPageID
+                page: prevPageID,
+                perc: 100
             });
 
             return updatePosition('created', prevPageID);

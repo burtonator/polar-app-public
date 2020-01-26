@@ -194,7 +194,7 @@ describe('AutoPagemarker', function() {
             }
         );
 
-        assertJSON(testResult.extendPagemark, {origin: 1, page: 1});
+        assertJSON(testResult.extendPagemark, {origin: 1, page: 1, perc: 100});
 
     });
 
@@ -260,7 +260,7 @@ describe('AutoPagemarker', function() {
             }
         );
 
-        assertJSON(testResult.extendPagemark, {origin: 5, page: 5});
+        assertJSON(testResult.extendPagemark, {origin: 5, page: 5, perc: 100});
 
         const testResult1 = doTest(
             createViewportForPage(7),
@@ -281,7 +281,7 @@ describe('AutoPagemarker', function() {
             }
         );
 
-        assertJSON(testResult1.extendPagemark, {origin: 5, page: 6});
+        assertJSON(testResult1.extendPagemark, {origin: 5, page: 6, perc: 100});
 
     });
 
