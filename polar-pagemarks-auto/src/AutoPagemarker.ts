@@ -11,10 +11,28 @@ const MIN_DURATION = 15 * 1000;
  */
 export type PageID = number;
 
+/**
+ * The position of our reading on the last scroll.  The position is reset if we jump
+ * too far to be a reasonable reading and not just a jump to another part of the
+ * document.
+ */
 export interface Position {
+
     readonly pageVisibility: PageVisibility;
-    readonly timestamp: UnixTimeMS;
+
+    /**
+     * The timestamp of the last position on scroll.
+     */
+    readonly created: UnixTimeMS;
+
+    /**
+     * The last time we were updated.
+     */
+    readonly updated: UnixTimeMS;
+
 }
+
+
 
 /**
  * The strategy used within the compute (for testing primarily)
@@ -76,10 +94,25 @@ export class AutoPagemarker {
         const updatePosition = (strategy: ComputeStrategy,
                                 pagemarked: number | undefined = undefined): ComputeResult => {
 
-            this.position = {
-                pageVisibility,
-                timestamp: Date.now()
-            };
+            const now = Date.now();
+
+            if (this.position) {
+
+                this.position = {
+                    ...this.position,
+                    pageVisibility,
+                    updated: now,
+                };
+
+            } else {
+
+                this.position = {
+                    pageVisibility,
+                    created: now,
+                    updated: now
+                };
+
+            }
 
             return createResult(strategy, pagemarked);
 
@@ -94,7 +127,7 @@ export class AutoPagemarker {
 
         }
 
-        if ((Date.now() - this.position.timestamp) < MIN_DURATION) {
+        if ((Date.now() - this.position.created) < MIN_DURATION) {
             return updatePosition('early');
         }
 
@@ -108,6 +141,7 @@ export class AutoPagemarker {
             return updatePosition('created', prevPageID);
 
         } else {
+            this.position = undefined;
             return updatePosition('jumped');
         }
 

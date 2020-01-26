@@ -70,13 +70,14 @@ describe('AutoPagemarker', function() {
 
         assertJSON(result, {
             "position": {
+                "created": 1330688329321,
                 "pageVisibility": {
                     "bottom": 1100,
                     "id": 1,
                     "perc": 1,
                     "top": 0
                 },
-                "timestamp": 1330688329321
+                "updated": 1330688329321
             },
             "strategy": "init"
         });
@@ -112,13 +113,14 @@ describe('AutoPagemarker', function() {
             },
             {
                 "position": {
+                    "created": 1330688329321,
                     "pageVisibility": {
                         "bottom": 1100,
                         "id": 1,
-                        "perc": 1.0,
+                        "perc": 1,
                         "top": 0
                     },
-                    "timestamp": 1330688329321
+                    "updated": 1330688329321
                 },
                 "strategy": "init"
             });
@@ -132,13 +134,14 @@ describe('AutoPagemarker', function() {
             },
             {
                 "position": {
+                    "created": 1330688344321,
                     "pageVisibility": {
                         "bottom": 1100,
                         "id": 1,
                         "perc": 0.5454545454545454,
                         "top": 0
                     },
-                    "timestamp": 1330688344321
+                    "updated": 1330688344321
                 },
                 "strategy": "jumped"
             }
@@ -154,13 +157,14 @@ describe('AutoPagemarker', function() {
             {
                 "pagemarked": 1,
                 "position": {
+                    "created": 1330688344321,
                     "pageVisibility": {
                         "bottom": 2200,
                         "id": 2,
                         "perc": 1,
                         "top": 1100
                     },
-                    "timestamp": 1330688359321
+                    "updated": 1330688359321
                 },
                 "strategy": "created"
             }
