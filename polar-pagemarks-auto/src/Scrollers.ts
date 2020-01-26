@@ -1,5 +1,6 @@
 import {ViewCalculator} from "./ViewCalculator";
 import {AutoPagemarkCalculator} from "./AutoPagemarkCalculator";
+import {AutoPagemarker} from "./AutoPagemarker";
 
 export class Scrollers {
 
@@ -10,12 +11,16 @@ export class Scrollers {
             page: '.page',
         };
 
+        const autoPagemarker = new AutoPagemarker(page => {
+            console.log("New page auto pagemarked... ", page);
+        });
+
         const handleScroll = () => {
 
             const view = ViewCalculator.compute(selectors);
             const viewVisibility = AutoPagemarkCalculator.calculate(view);
 
-            const visible = viewVisibility.visibilities.filter(current => current.perc > 0);
+            autoPagemarker.compute(viewVisibility);
 
         };
 

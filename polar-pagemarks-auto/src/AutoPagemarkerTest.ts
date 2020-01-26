@@ -168,5 +168,4 @@ describe('AutoPagemarker', function() {
 
     });
 
-
 });
