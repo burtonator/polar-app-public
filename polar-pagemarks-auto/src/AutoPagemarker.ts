@@ -67,8 +67,12 @@ export interface ComputeResult {
     readonly pagemarked: number | undefined;
 }
 
+export interface ExtendPagemark {
+    readonly origin: PageID;
+    readonly page: PageID;
+}
 
-export type CreatePagemarkCallback = (page: PageID) => void;
+export type CreatePagemarkCallback = (extendPagemark: ExtendPagemark) => void;
 
 export class AutoPagemarker {
 
@@ -155,7 +159,11 @@ export class AutoPagemarker {
         if ((currPageID - 1) === prevPageID) {
             // we have advanced one page exactly and the previous page
             // is now moved forward.
-            this.callback(prevPageID);
+            this.callback({
+                origin: this.position.origin,
+                page: prevPageID
+            });
+
             return updatePosition('created', prevPageID);
 
         } else if (currPageID === prevPageID) {

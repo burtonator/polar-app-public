@@ -14,8 +14,8 @@ export class Scrollers {
             page: '.page',
         };
 
-        const autoPagemarker = new AutoPagemarker(page => {
-            log.debug("New page auto pagemarked... ", page);
+        const autoPagemarker = new AutoPagemarker(extendPagemark => {
+            log.debug("New page auto pagemarked... ", extendPagemark);
         });
 
         const handleScroll = () => {

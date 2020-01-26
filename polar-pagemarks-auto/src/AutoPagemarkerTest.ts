@@ -1,4 +1,4 @@
-import {AutoPagemarker} from "./AutoPagemarker";
+import {AutoPagemarker, ExtendPagemark} from "./AutoPagemarker";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ViewVisibilityCalculator, Page, View, Viewport, ViewVisibility} from "./ViewVisibilityCalculator";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -94,7 +94,7 @@ describe('AutoPagemarker', function() {
 
         const nrPages = 10;
 
-        let pagemarked: number | undefined;
+        let pagemarked: ExtendPagemark | undefined;
 
         const pagemarker = new AutoPagemarker(page => pagemarked = page);
 
@@ -175,7 +175,7 @@ describe('AutoPagemarker', function() {
             }
         );
 
-        assert.equal(pagemarked, 1);
+        assertJSON(pagemarked, {origin: 1, page: 1});
 
     });
 
