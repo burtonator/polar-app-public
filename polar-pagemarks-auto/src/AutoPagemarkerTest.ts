@@ -1,28 +1,30 @@
-import {AutoPagemarker, ExtendPagemark, PageID} from "./AutoPagemarker";
+import {AutoPagemarker, AutoPagemarkerMode, ExtendPagemark, PageID} from "./AutoPagemarker";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Page, View, Viewport, ViewVisibility, ViewVisibilityCalculator} from "./ViewVisibilityCalculator";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {Numbers} from "polar-shared/src/util/Numbers";
 
-const PAGE_HEIGHT = 1100;
+const DEFAULT_PAGE_HEIGHT = 1100;
 
-const createViewportForPage = (page: PageID): Viewport => {
+const createViewportForPage = (page: PageID,
+                               height: number): Viewport => {
 
-    const bottom = (page * PAGE_HEIGHT);
-    const top = bottom - PAGE_HEIGHT;
+    const bottom = (page * height);
+    const top = bottom - height;
 
     return {top, bottom};
 
 };
 
 const createView = (viewport: Viewport,
-                    nrPages: number): View => {
+                    nrPages: number,
+                    height: number): View => {
 
     const createPage = (page: number): Page => {
 
-        const bottom = (page * PAGE_HEIGHT);
-        const top = bottom - PAGE_HEIGHT;
+        const bottom = (page * height);
+        const top = bottom - height;
 
         return {
             id: page,
@@ -42,9 +44,10 @@ const createView = (viewport: Viewport,
 };
 
 const createViewVisibility = (viewport: Viewport,
-                              nrPages: number): ViewVisibility => {
+                              nrPages: number,
+                              height: number): ViewVisibility => {
 
-    const view = createView(viewport, nrPages);
+    const view = createView(viewport, nrPages, height);
 
     return ViewVisibilityCalculator.calculate(view);
 
@@ -56,16 +59,18 @@ interface TestResult {
 
 type Tester = (viewport: Viewport, expected: any) => TestResult;
 
-const createTester = (nrPages: number = 10): Tester => {
+const createTester = (nrPages: number = 10,
+                      mode: AutoPagemarkerMode = 'full',
+                      height: number = DEFAULT_PAGE_HEIGHT): Tester => {
 
     let extendPagemark: ExtendPagemark | undefined;
 
     // tslint:disable-next-line:variable-name
-    const pagemarker = new AutoPagemarker(_extendPagemark => extendPagemark = _extendPagemark);
+    const pagemarker = new AutoPagemarker(_extendPagemark => extendPagemark = _extendPagemark, mode);
 
     return (viewport: Viewport, expected: any) => {
 
-        const viewVisibility = createViewVisibility(viewport, nrPages);
+        const viewVisibility = createViewVisibility(viewport, nrPages, height);
 
         const result = pagemarker.compute(viewVisibility);
 
@@ -102,7 +107,7 @@ describe('AutoPagemarker', function() {
 
         const pagemarked = new AutoPagemarker(NULL_FUNCTION);
 
-        const viewVisibility = createViewVisibility(viewport, 2);
+        const viewVisibility = createViewVisibility(viewport, 2, DEFAULT_PAGE_HEIGHT);
 
         const result = pagemarked.compute(viewVisibility);
 
@@ -203,7 +208,7 @@ describe('AutoPagemarker', function() {
         const doTest = createTester();
 
         doTest(
-            createViewportForPage(1),
+            createViewportForPage(1, DEFAULT_PAGE_HEIGHT),
             {
                 "position": {
                     "created": 1330688329321,
@@ -222,7 +227,7 @@ describe('AutoPagemarker', function() {
         TestingTime.forward('15s');
 
         doTest(
-            createViewportForPage(5),
+            createViewportForPage(5, DEFAULT_PAGE_HEIGHT),
             {
                 "position": {
                     "created": 1330688344321,
@@ -242,7 +247,7 @@ describe('AutoPagemarker', function() {
         TestingTime.forward('15s');
 
         const testResult = doTest(
-            createViewportForPage(6),
+            createViewportForPage(6, DEFAULT_PAGE_HEIGHT),
             {
                 "pagemarked": 5,
                 "position": {
@@ -263,7 +268,7 @@ describe('AutoPagemarker', function() {
         assertJSON(testResult.extendPagemark, {origin: 5, page: 5, perc: 100});
 
         const testResult1 = doTest(
-            createViewportForPage(7),
+            createViewportForPage(7, DEFAULT_PAGE_HEIGHT),
             {
                 "pagemarked": 6,
                 "position": {
@@ -284,5 +289,63 @@ describe('AutoPagemarker', function() {
         assertJSON(testResult1.extendPagemark, {origin: 5, page: 6, perc: 100});
 
     });
+
+    it("partial pagemarks with one large page", function () {
+
+        const height = 5000;
+
+        const doTest = createTester(1, 'partial', 5000);
+
+        doTest(
+            {
+                top: 0,
+                bottom: 1000
+            },
+            {
+                "position": {
+                    "created": 1330688329321,
+                    "origin": 1,
+                    "pageVisibility": {
+                        "bottom": 5000,
+                        "id": 1,
+                        "perc": 0.2,
+                        "top": 0
+                    },
+                    "updated": 1330688329321
+                },
+                "strategy": "init"
+            });
+
+        TestingTime.forward('15s');
+
+        const testResult = doTest(
+            {
+                top: 0,
+                bottom: 1000
+            },
+            {
+                "pagemarked": 1,
+                "position": {
+                    "created": 1330688329321,
+                    "origin": 1,
+                    "pageVisibility": {
+                        "bottom": 5000,
+                        "id": 1,
+                        "perc": 0.2,
+                        "top": 0
+                    },
+                    "updated": 1330688344321
+                },
+                "strategy": "created"
+            });
+
+        assertJSON(testResult.extendPagemark, {
+            "origin": 1,
+            "page": 1,
+            "perc": 20
+        });
+
+    });
+
 
 });
