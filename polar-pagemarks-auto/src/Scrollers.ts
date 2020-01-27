@@ -2,7 +2,7 @@ import {ViewCalculator} from "./ViewCalculator";
 import {ViewVisibilityCalculator} from "./ViewVisibilityCalculator";
 import {AutoPagemarker, AutoPagemarkerMode, ExtendPagemark} from "./AutoPagemarker";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {TaskThrottler} from "./TaskThrottler";
 
 const log = Logger.create();
 
@@ -15,8 +15,6 @@ export class Scrollers {
             container: '#viewerContainer',
             page: '.page',
         };
-
-        // FIXME: this has to use the task scheduler to avoid wasting too much CPU time.
 
         const onPagemarkCreated = (extendPagemark: ExtendPagemark) => {
             extender(extendPagemark);
@@ -36,10 +34,10 @@ export class Scrollers {
 
         const container = document.querySelector(selectors.container);
 
+        const throttler = new TaskThrottler(250);
+
         container!.addEventListener('scroll', (event) => {
-
-            handleScroll();
-
+            throttler.schedule(() => handleScroll());
         });
 
     }
