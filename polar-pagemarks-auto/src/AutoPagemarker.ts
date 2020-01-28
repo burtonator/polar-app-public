@@ -218,6 +218,10 @@ export class AutoPagemarker {
 
                     const height = viewVisibility.viewport.bottom - viewVisibility.viewport.top;
 
+                    // FIXME register with something like (prevous move > 30s ago and jump is <= 100 % of viewport height then
+                    // set the previous page to 100% of height... JUST below the current fold... just call
+                    // currentePagemarkToPoint
+
                     // FIXME: use  pageVisibility.perc to determine which 'page' is marked...
                     //
                     // map BACK ot the original??
