@@ -1,6 +1,6 @@
 {
   "name": "polar-pdf-types",
-  "version": "1.90.13",
+  "version": "1.90.14",
   "description": "Typescript bindings for the latest PDFJS.",
   "main": "index.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "polar-react",
-  "version": "1.90.13",
+  "version": "1.90.14",
   "description": "Basic React dependencies and utilities.",
   "scripts": {
     "test": "echo",
@@ -12,7 +12,7 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "mocha": "^6.2.0",
-    "polar-test": "^1.90.13",
+    "polar-test": "^1.90.14",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
