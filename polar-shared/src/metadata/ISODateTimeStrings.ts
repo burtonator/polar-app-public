@@ -34,9 +34,11 @@ export type ISODateString = ISODateYearMonthDayString;
  */
 export type UnixTimeMS = number;
 
+export type DateLike = Date | number | string;
+
 export class ISODateTimeStrings {
 
-    public static create(value?: Date | number): ISODateTimeString {
+    public static create(value?: DateLike): ISODateTimeString {
 
         let date: Date | undefined;
 
@@ -47,6 +49,10 @@ export class ISODateTimeStrings {
             }
 
             if (typeof value === 'number') {
+                date = new Date(value);
+            }
+
+            if (typeof value === 'string') {
                 date = new Date(value);
             }
 
@@ -88,6 +94,37 @@ export class ISODateTimeStrings {
         const day = Strings.lpad(ordDay, '0', 2);
 
         return `${year}-${month}-${day}`;
+
+    }
+
+    public static toPartialDay(date: DateLike) {
+        date = new Date(date);
+        return this.toISODateString(date);
+    }
+
+    public static toPartialMonth(date: DateLike) {
+        return this.toPartialDay(date)?.substring(0, 7);
+    }
+
+    /**
+     * Compute the ISO week per year as in 2020W25
+     */
+    public static toPartialWeek(date: DateLike): string {
+
+        date = new Date(date);
+
+        // Copy date so don't modify original
+        date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+        // Set to nearest Thursday: current date + 4 - current day number
+        // Make Sunday's day number 7
+        date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+        // Get first day of year
+        const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+        // Calculate full weeks to nearest Thursday
+        const weekNo = Math.ceil(( ( (date.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+
+        // Return array of year and week number
+        return date.getUTCFullYear() + 'W' + weekNo;
 
     }
 
