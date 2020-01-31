@@ -1,0 +1,12 @@
+#!/bin/bash
+
+name=${1}
+repo=${2}
+
+set -e
+
+git remote add ${name} ${repo}
+git fetch ${name}
+git merge -s ours --no-commit --allow-unrelated-histories ${name}/master
+git read-tree --prefix=packages/${name} -u ${name}/master
+git commit -m "Imported ${name} as a subtree."
