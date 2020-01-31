@@ -8,7 +8,7 @@ import {Percentage100} from "polar-shared/src/util/Percentages";
 
 const log = Logger.create();
 
-const MIN_DURATION = 5 * 1000; // FIXME: should be 15s in production.
+const MIN_DURATION = 10 * 1000;
 
 /**
  * A page ID greater than 1.
