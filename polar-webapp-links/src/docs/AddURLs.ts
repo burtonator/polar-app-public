@@ -4,67 +4,70 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export class AddURLs {
 
-    public static parse(url: URLStr): AddURL | undefined {
+    public static parseWithPathInfo(url: URLStr): AddURL | undefined {
 
-        const parseWithPathInfo = (): AddURL | undefined => {
+        const regexp = "(https://app\.getpolarized\.io)?/add/(http.*)";
 
-            const regexp = "(https://app\.getpolarized\.io)?/add/(http.*)";
+        const matches = url.match(regexp);
 
-            const matches = url.match(regexp);
+        if (matches) {
 
-            if (matches) {
+            const rawTarget = (matches[2] || "").trim();
 
-                const rawTarget = (matches[2] || "").trim();
-
-                if (rawTarget === "") {
-                    throw new Error("No URL given in path data: " + url);
-                }
-
-                const target = this.createCorrectedURL(rawTarget);
-
-                return {target};
-
+            if (rawTarget === "") {
+                throw new Error("No URL given in path data: " + url);
             }
 
-            return undefined;
+            const target = this.createCorrectedURL(rawTarget);
 
-        };
+            return {target};
 
-        const parseWithQuery = (): AddURL | undefined => {
+        }
 
-            const searchParams = URLParams.parse(url);
-
-            const parseDocInfo = (): IDocInfo | undefined => {
-
-                const json = searchParams.get('docInfo');
-
-                if (json) {
-                    return JSON.parse(json);
-                }
-
-                return undefined;
-
-            };
-
-            const file = searchParams.get('file');
-            const docInfo = parseDocInfo();
-
-            if (file) {
-
-                return {
-                    target: file,
-                    docInfo
-                };
-
-            }
-
-            return undefined;
-
-        };
-
-        return parseWithQuery() || parseWithPathInfo();
+        return undefined;
 
     }
+
+    public static parseWithQuery(url: URLStr): AddURL | undefined {
+
+        if (! url.startsWith("http")) {
+            return undefined;
+        }
+
+        const searchParams = URLParams.parse(url);
+
+        const parseDocInfo = (): IDocInfo | undefined => {
+
+            const json = searchParams.get('docInfo');
+
+            if (json) {
+                return JSON.parse(json);
+            }
+
+            return undefined;
+
+        };
+
+        const file = searchParams.get('file');
+        const docInfo = parseDocInfo();
+
+        if (file) {
+
+            return {
+                target: file,
+                docInfo
+            };
+
+        }
+
+        return undefined;
+
+    }
+
+    public static parse(url: URLStr): AddURL | undefined {
+        return this.parseWithQuery(url) || this.parseWithPathInfo(url);
+    }
+
 
     public static createCorrectedURL(url: string): string {
 
