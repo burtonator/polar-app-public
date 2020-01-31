@@ -1,0 +1,25 @@
+{
+  "name": "polar-dark-mode",
+  "version": "1.90.14",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "compile": "node-sass src/index.scss src/index.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "node-sass": "^4.13.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "**/*.css",
+    "package.json"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "polar-release-metadata",
+  "version": "1.90.14",
+  "description": "Provides support for parsing and working with markdown",
+  "main": "index.js",
+  "scripts": {
+    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "compile": "npm run-script tsc && npm run-script generate-release-metadata",
+    "build": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/",
+    "tsc": "tsc",
+    "generate-release-metadata": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/ > src/release-metadata.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.1",
+    "@types/mocha": "^5.2.7",
+    "@types/semver": "~6.2.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@types/node": "^12.11.1",
+    "@types/showdown": "^1.9.3",
+    "polar-markdown": "^1.90.14",
+    "polar-shared": "^1.90.14",
+    "polar-test": "^1.90.14",
+    "semver": "~6.3.0"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "src/**/*.json",
+    "package.json"
+  ]
+}

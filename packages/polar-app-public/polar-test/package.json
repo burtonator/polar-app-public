@@ -1,0 +1,26 @@
+{
+  "name": "polar-test",
+  "version": "1.90.14",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "_test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@types/node": "^12.11.1",
+    "chai": "^4.2.0"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
+}

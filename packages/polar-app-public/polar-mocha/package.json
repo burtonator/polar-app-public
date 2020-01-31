@@ -1,0 +1,14 @@
+{
+  "name": "polar-mocha",
+  "version": "1.90.14",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo no test",
+    "compile": "echo nothing to compile"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bin": ".bin/polar-mocha"
+}

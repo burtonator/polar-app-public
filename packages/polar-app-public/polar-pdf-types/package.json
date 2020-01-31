@@ -1,0 +1,14 @@
+{
+  "name": "polar-pdf-types",
+  "version": "1.90.14",
+  "description": "Typescript bindings for the latest PDFJS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo nothing to test",
+    "compile": "echo nothing to compile"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "types": "pdf"
+}

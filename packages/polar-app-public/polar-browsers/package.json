@@ -1,0 +1,25 @@
+{
+  "name": "polar-browsers",
+  "version": "1.90.14",
+  "description": "Determine which browser is being used.",
+  "main": "index.js",
+  "scripts": {
+    "_test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "test": "echo noop",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "mocha": "^6.2.0",
+    "polar-test": "^1.90.14",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@types/ua-parser-js": "0.7.33",
+    "ua-parser-js": "0.7.21"
+  }
+}

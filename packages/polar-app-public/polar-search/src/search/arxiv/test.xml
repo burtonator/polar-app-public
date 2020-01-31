@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <link href="http://arxiv.org/api/query?search_query%3Dbitcoin%26id_list%3D%26start%3D0%26max_results%3D10" rel="self" type="application/atom+xml"/>
+    <title type="html">ArXiv Query: search_query=bitcoin&amp;id_list=&amp;start=0&amp;max_results=10</title>
+    <id>http://arxiv.org/api/5Fmlr7j6lb0hCoGtM6VZa5ddMXI</id>
+    <updated>2019-10-04T00:00:00-04:00</updated>
+    <opensearch:totalResults xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">474</opensearch:totalResults>
+    <opensearch:startIndex xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">0</opensearch:startIndex>
+    <opensearch:itemsPerPage xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">10</opensearch:itemsPerPage>
+    <entry>
+        <id>http://arxiv.org/abs/1405.4498v1</id>
+        <updated>2014-05-18T12:59:05Z</updated>
+        <published>2014-05-18T12:59:05Z</published>
+        <title>The Economics of BitCoin Price Formation</title>
+        <summary>  This paper analyses the relationship between BitCoin price and supply-demand
+            fundamentals of BitCoin, global macro-financial indicators and BitCoin
+            attractiveness for investors. Using daily data for the period 2009-2014 and
+            applying time-series analytical mechanisms, we find that BitCoin market
+            fundamentals and BitCoin attractiveness for investors have a significant impact
+            on BitCoin price. Our estimates do not support previous findings that the
+            macro-financial developments are driving BitCoin price.
+        </summary>
+        <author>
+            <name>Pavel Ciaian</name>
+        </author>
+        <author>
+            <name>Miroslava Rajcaniova</name>
+        </author>
+        <author>
+            <name>d'Artis Kancs</name>
+        </author>
+        <arxiv:comment xmlns:arxiv="http://arxiv.org/schemas/atom">Key words: BitCoin, exchange rate, supply-demand fundamentals,
+            financial indicators, attractiveness JEL classification: E31; E42; G12</arxiv:comment>
+        <link href="http://arxiv.org/abs/1405.4498v1" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1405.4498v1" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="q-fin.EC" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="q-fin.EC" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="q-fin.GN" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+    <entry>
+        <id>http://arxiv.org/abs/1906.03430v1</id>
+        <updated>2019-06-08T09:38:28Z</updated>
+        <published>2019-06-08T09:38:28Z</published>
+        <title>The Effects of the Introduction of Bitcoin Futures on the Volatility of
+            Bitcoin Returns</title>
+        <summary>  This paper investigates the effects of the launch of Bitcoin futures on the
+            intraday volatility of Bitcoin. Based on one-minute price data collected from
+            four cryptocurrency exchanges, we first examine the change in realized
+            volatility after the introduction of Bitcoin futures to investigate their
+            aggregate effects on the intraday volatility of Bitcoin. We then analyze the
+            effects in more detail utilizing the discrete Fourier transform. We show that
+            although the Bitcoin market became more volatile immediately after the
+            introduction of Bitcoin futures, over time it has become more stable than it
+            was before the introduction.
+        </summary>
+        <author>
+            <name>Wonse Kim</name>
+        </author>
+        <author>
+            <name>Junseok Lee</name>
+        </author>
+        <author>
+            <name>Kyungwon Kang</name>
+        </author>
+        <arxiv:comment xmlns:arxiv="http://arxiv.org/schemas/atom">Accepted in Finance Research Letters</arxiv:comment>
+        <link href="http://arxiv.org/abs/1906.03430v1" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1906.03430v1" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+    <entry>
+        <id>http://arxiv.org/abs/1812.09452v1</id>
+        <updated>2018-12-22T05:25:15Z</updated>
+        <published>2018-12-22T05:25:15Z</published>
+        <title>The Price of BitCoin: GARCH Evidence from High Frequency Data</title>
+        <summary>  This is the first paper that estimates the price determinants of BitCoin in a
+            Generalised Autoregressive Conditional Heteroscedasticity framework using high
+            frequency data. Derived from a theoretical model, we estimate BitCoin
+            transaction demand and speculative demand equations in a GARCH framework using
+            hourly data for the period 2013-2018. In line with the theoretical model, our
+            empirical results confirm that both the BitCoin transaction demand and
+            speculative demand have a statistically significant impact on the BitCoin price
+            formation. The BitCoin price responds negatively to the BitCoin velocity,
+            whereas positive shocks to the BitCoin stock, interest rate and the size of the
+            BitCoin economy exercise an upward pressure on the BitCoin price.
+        </summary>
+        <author>
+            <name>Pavel Ciaian</name>
+        </author>
+        <author>
+            <name>d'Artis Kancs</name>
+        </author>
+        <author>
+            <name>Miroslava Rajcaniova</name>
+        </author>
+        <arxiv:comment xmlns:arxiv="http://arxiv.org/schemas/atom">Pavel Ciaian and d'Artis Kancs and Miroslava Rajcaniova The Price of
+            BitCoin: GARCH Evidence from High Frequency Data</arxiv:comment>
+        <link href="http://arxiv.org/abs/1812.09452v1" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1812.09452v1" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="q-fin.ST" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="q-fin.ST" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="q-fin.EC" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+    <entry>
+        <id>http://arxiv.org/abs/1412.7935v1</id>
+        <updated>2014-12-26T12:58:13Z</updated>
+        <published>2014-12-26T12:58:13Z</published>
+        <title>Bitcoin Meets Strong Consistency</title>
+        <summary>  The Bitcoin system only provides eventual consistency. For everyday life, the
+            time to confirm a Bitcoin transaction is prohibitively slow. In this paper we
+            propose a new system, built on the Bitcoin blockchain, which enables strong
+            consistency. Our system, PeerCensus, acts as a certification authority, manages
+            peer identities in a peer-to-peer network, and ultimately enhances Bitcoin and
+            similar systems with strong consistency. Our extensive analysis shows that
+            PeerCensus is in a secure state with high probability. We also show how
+            Discoin, a Bitcoin variant that decouples block creation and transaction
+            confirmation, can be built on top of PeerCensus, enabling real-time payments.
+            Unlike Bitcoin, once transactions in Discoin are committed, they stay
+            committed.
+        </summary>
+        <author>
+            <name>Christian Decker</name>
+        </author>
+        <author>
+            <name>Jochen Seidel</name>
+        </author>
+        <author>
+            <name>Roger Wattenhofer</name>
+        </author>
+        <link href="http://arxiv.org/abs/1412.7935v1" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1412.7935v1" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+    <entry>
+        <id>http://arxiv.org/abs/1510.02037v2</id>
+        <updated>2015-11-11T19:38:15Z</updated>
+        <published>2015-10-07T17:35:32Z</published>
+        <title>Bitcoin-NG: A Scalable Blockchain Protocol</title>
+        <summary>  Cryptocurrencies, based on and led by Bitcoin, have shown promise as
+            infrastructure for pseudonymous online payments, cheap remittance, trustless
+            digital asset exchange, and smart contracts. However, Bitcoin-derived
+            blockchain protocols have inherent scalability limits that trade-off between
+            throughput and latency and withhold the realization of this potential.
+            This paper presents Bitcoin-NG, a new blockchain protocol designed to scale.
+            Based on Bitcoin's blockchain protocol, Bitcoin-NG is Byzantine fault tolerant,
+            is robust to extreme churn, and shares the same trust model obviating
+            qualitative changes to the ecosystem.
+            In addition to Bitcoin-NG, we introduce several novel metrics of interest in
+            quantifying the security and efficiency of Bitcoin-like blockchain protocols.
+            We implement Bitcoin-NG and perform large-scale experiments at 15% the size of
+            the operational Bitcoin system, using unchanged clients of both protocols.
+            These experiments demonstrate that Bitcoin-NG scales optimally, with bandwidth
+            limited only by the capacity of the individual nodes and latency limited only
+            by the propagation time of the network.
+        </summary>
+        <author>
+            <name>Ittay Eyal</name>
+        </author>
+        <author>
+            <name>Adem Efe Gencer</name>
+        </author>
+        <author>
+            <name>Emin Gun Sirer</name>
+        </author>
+        <author>
+            <name>Robbert van Renesse</name>
+        </author>
+        <link href="http://arxiv.org/abs/1510.02037v2" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1510.02037v2" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+    <entry>
+        <id>http://arxiv.org/abs/1707.01284v1</id>
+        <updated>2017-07-05T09:39:04Z</updated>
+        <published>2017-07-05T09:39:04Z</published>
+        <title>The Bitcoin price formation: Beyond the fundamental sources</title>
+        <summary>  Much significant research has been done to investigate various facets of the
+            link between Bitcoin price and its fundamental sources. This study goes beyond
+            by looking into least to most influential factors-across the fundamental,
+            macroeconomic, financial, speculative and technical determinants as well as the
+            2016 events-which drove the value of Bitcoin in times of economic and
+            geopolitical chaos. We use a Bayesian quantile regression to inspect how the
+            structure of dependence of Bitcoin price and its determinants varies across the
+            entire conditional distribution of Bitcoin price movements. In doing so, three
+            groups of determinants were derived. The use of Bitcoin in trade and the
+            uncertainty surrounding China's deepening slowdown, Brexit and India's
+            demonetization were found to be the most potential contributors of Bitcoin
+            price when the market is improving. The intense anxiety over Donald Trump being
+            the president of United States was shown to be a positive determinant pushing
+            up the price of Bitcoin when the market is functioning around the normal mode.
+            The velocity of bitcoins in circulation, the gold price, the Venezuelan
+            currency demonetization and the hash rate were found to be the fundamentals
+            influencing the Bitcoin price when the market is heading into decline.
+        </summary>
+        <author>
+            <name>Jamal Bouoiyour</name>
+            <arxiv:affiliation xmlns:arxiv="http://arxiv.org/schemas/atom">CATT</arxiv:affiliation>
+        </author>
+        <author>
+            <name>Refk Selmi</name>
+            <arxiv:affiliation xmlns:arxiv="http://arxiv.org/schemas/atom">CATT</arxiv:affiliation>
+        </author>
+        <link href="http://arxiv.org/abs/1707.01284v1" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1707.01284v1" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="q-fin.CP" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="q-fin.CP" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+    <entry>
+        <id>http://arxiv.org/abs/1805.07610v1</id>
+        <updated>2018-05-19T15:30:29Z</updated>
+        <published>2018-05-19T15:30:29Z</published>
+        <title>Bitcoin price and its marginal cost of production: support for a
+            fundamental value</title>
+        <summary>  This study back-tests a marginal cost of production model proposed to value
+            the digital currency bitcoin. Results from both conventional regression and
+            vector autoregression (VAR) models show that the marginal cost of production
+            plays an important role in explaining bitcoin prices, challenging recent
+            allegations that bitcoins are essentially worthless. Even with markets pricing
+            bitcoin in the thousands of dollars each, the valuation model seems robust. The
+            data show that a price bubble that began in the Fall of 2017 resolved itself in
+            early 2018, converging with the marginal cost model. This suggests that while
+            bubbles may appear in the bitcoin market, prices will tend to this bound and
+            not collapse to zero.
+        </summary>
+        <author>
+            <name>Adam Hayes</name>
+        </author>
+        <arxiv:comment xmlns:arxiv="http://arxiv.org/schemas/atom">Forthcoming in Applied Economics Letters; 2 figures, 1 table</arxiv:comment>
+        <link href="http://arxiv.org/abs/1805.07610v1" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1805.07610v1" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="econ.EM" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="econ.EM" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+    <entry>
+        <id>http://arxiv.org/abs/1907.01538v1</id>
+        <updated>2019-07-02T17:42:54Z</updated>
+        <published>2019-07-02T17:42:54Z</published>
+        <title>Taint analysis of the Bitcoin network</title>
+        <summary>  Determining the trust of an individual Bitcoin wallet is a difficult problem.
+            There are no ratings, that offer vendors or exchanges meaningful information
+            about the level of the taint of Bitcoins they are receiving. Lack of such
+            information places exchanges liable in an event when the received Bitcoins are
+            stolen or ill-gotten. In this paper, we try to solve this problem by
+            introducing a Bitcoin address taint score called TaintRank. It provides insight
+            into a specific wallet by taking the addresses it interacted with throughout
+            history into consideration. This ranking method provides such Bitcoin exchange
+            companies insight with whom they are trading.
+        </summary>
+        <author>
+            <name>Uroš Hercog</name>
+        </author>
+        <author>
+            <name>Andraž Povše</name>
+        </author>
+        <link href="http://arxiv.org/abs/1907.01538v1" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1907.01538v1" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="cs.SI" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+    <entry>
+        <id>http://arxiv.org/abs/1706.00916v3</id>
+        <updated>2017-12-25T18:25:27Z</updated>
+        <published>2017-06-03T09:11:55Z</published>
+        <title>A Survey on Security and Privacy Issues of Bitcoin</title>
+        <summary>  Bitcoin is a popular cryptocurrency that records alltransactions in a
+            distributed append-only public ledger calledblockchain. The security of Bitcoin
+            heavily relies on the incentive-compatible proof-of-work (PoW) based
+            distributed consensus pro-tocol, which is run by network nodes called miners.
+            In exchangefor the incentive, the miners are expected to honestly maintainthe
+            blockchain. Since its launch in 2009, Bitcoin economy hasgrown at an enormous
+            rate, and it is now worth about 170 billions of dollars. This exponential
+            growth in the market valueof Bitcoin motivates adversaries to exploit
+            weaknesses for profit,and researchers to discover new vulnerabilities in the
+            system,propose countermeasures, and predict upcoming trends.In this paper, we
+            present a systematic survey that covers thesecurity and privacy aspects of
+            Bitcoin. We start by presenting anoverview of the Bitcoin protocol and its
+            major components alongwith their functionality and interactions within the
+            system. Wereview the existing vulnerabilities in Bitcoin and its
+            underlyingmajor technologies such as blockchain and PoW based
+            consensusprotocol. These vulnerabilities lead to the execution of
+            varioussecurity threats to the normal functionality of Bitcoin. Wethen discuss
+            the feasibility and robustness of the state-of-the-art security solutions.
+            Additionally, we present current privacyand anonymity considerations in Bitcoin
+            and discuss the privacy-related threats to Bitcoin users along with the
+            analysis of theexisting privacy-preserving solutions. Finally, we summarize
+            thecritical open challenges and suggest directions for future researchtowards
+            provisioning stringent security and privacy techniquesfor Bitcoin.
+        </summary>
+        <author>
+            <name>Mauro Conti</name>
+        </author>
+        <author>
+            <name>Sandeep Kumar E</name>
+        </author>
+        <author>
+            <name>Chhagan Lal</name>
+        </author>
+        <author>
+            <name>Sushmita Ruj</name>
+        </author>
+        <arxiv:doi xmlns:arxiv="http://arxiv.org/schemas/atom">10.1109/COMST.2018.2842460</arxiv:doi>
+        <link title="doi" href="http://dx.doi.org/10.1109/COMST.2018.2842460" rel="related"/>
+        <link href="http://arxiv.org/abs/1706.00916v3" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1706.00916v3" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+    <entry>
+        <id>http://arxiv.org/abs/1402.4778v1</id>
+        <updated>2014-02-19T19:25:15Z</updated>
+        <published>2014-02-19T19:25:15Z</published>
+        <title>Bitcoin: a Money-like Informational Commodity</title>
+        <summary>  The question "what is Bitcoin" allows for many answers depending on the
+            objectives aimed at when providing such answers. The question addressed in this
+            paper is to determine a top-level classification, or type, for Bitcoin. We will
+            classify Bitcoin as a system of type money-like informational commodity (MLIC).
+        </summary>
+        <author>
+            <name>Jan A. Bergstra</name>
+        </author>
+        <author>
+            <name>Peter Weijland</name>
+        </author>
+        <link href="http://arxiv.org/abs/1402.4778v1" rel="alternate" type="text/html"/>
+        <link title="pdf" href="http://arxiv.org/pdf/1402.4778v1" rel="related" type="application/pdf"/>
+        <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+        <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    </entry>
+</feed>
