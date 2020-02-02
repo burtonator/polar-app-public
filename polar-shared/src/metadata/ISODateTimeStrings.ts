@@ -97,19 +97,19 @@ export class ISODateTimeStrings {
 
     }
 
-    public static toPartialDay(date: DateLike) {
+    public static toPartialDay(date: DateLike = Date.now()) {
         date = new Date(date);
         return this.toISODateString(date);
     }
 
-    public static toPartialMonth(date: DateLike) {
+    public static toPartialMonth(date: DateLike = Date.now()) {
         return this.toPartialDay(date)?.substring(0, 7);
     }
 
     /**
      * Compute the ISO week per year as in 2020W25
      */
-    public static toPartialWeek(date: DateLike): string {
+    public static toPartialWeek(date: DateLike = Date.now()): string {
 
         date = new Date(date);
 
