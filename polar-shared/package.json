@@ -1,6 +1,6 @@
 {
   "name": "polar-shared",
-  "version": "1.90.14",
+  "version": "1.90.15",
   "description": "",
   "scripts": {
     "test": "scripts/test-runner.sh",
@@ -21,7 +21,7 @@
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "polar-test": "^1.90.14",
+    "polar-test": "^1.90.15",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2",
     "wait-for-expect": "~3.0.1"
