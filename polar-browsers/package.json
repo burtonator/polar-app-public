@@ -4,7 +4,7 @@
   "description": "Determine which browser is being used.",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit '**/*Test.js'",
+    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo noop",
     "compile": "tsc"
   },

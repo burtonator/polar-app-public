@@ -3,7 +3,7 @@
   "version": "1.90.15",
   "description": "",
   "scripts": {
-    "test": "mocha --timeout 20000 --exit '**/*Test.js'",
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "compile": "npx tsc"
   },
   "repository": {
