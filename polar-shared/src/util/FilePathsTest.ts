@@ -1,6 +1,7 @@
 import {assert} from 'chai';
 import {BrowserFilePaths, FilePaths} from './FilePaths';
 import {Files} from './Files';
+import {Platforms} from "./Platforms";
 
 describe('FilePaths', function() {
 
@@ -166,8 +167,15 @@ describe('FilePaths', function() {
         });
 
         it('with hash', function() {
-            assert.equal(FilePaths.toURL("/tmp/Test #1/chubby.pdf"), 'file:///tmp/Test%20%231/chubby.pdf');
-            assert.equal(FilePaths.toURL("/tmp/Test ?1/chubby.pdf"), 'file:///tmp/Test%20%3F1/chubby.pdf');
+
+            const expected =
+                process.platform === 'win32' ?
+                    'file:///C:/tmp/Test%20%231/chubby.pdf' :
+                    'file:///tmp/Test%20%231/chubby.pdf';
+
+            assert.equal(FilePaths.toURL("/tmp/Test #1/chubby.pdf"), expected);
+            assert.equal(FilePaths.toURL("/tmp/Test ?1/chubby.pdf"), expected);
+
         });
 
     });
