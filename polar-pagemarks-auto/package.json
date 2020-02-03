@@ -4,7 +4,7 @@
   "description": "Computes pagemarks within a parent while it scrolls.",
   "main": "index.js",
   "scripts": {
-    "test": "find src -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "compile": "tsc"
   },
   "keywords": [],

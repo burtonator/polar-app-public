@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "_test": "find ../../polar-backend-shared -name *Test.js | xargs mocha --timeout 20000 --exit ",
     "test": "echo no tests",
     "compile": "tsc",
     "dist": "echo noop"
