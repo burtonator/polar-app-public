@@ -168,13 +168,21 @@ describe('FilePaths', function() {
 
         it('with hash', function() {
 
-            const expected =
-                process.platform === 'win32' ?
-                    'file:///C:/tmp/Test%20%231/chubby.pdf' :
-                    'file:///tmp/Test%20%231/chubby.pdf';
+            const makePlatformSpecificPath = (path: string) => {
 
-            assert.equal(FilePaths.toURL("/tmp/Test #1/chubby.pdf"), expected);
-            assert.equal(FilePaths.toURL("/tmp/Test ?1/chubby.pdf"), expected);
+                if (process.platform === 'win32') {
+                    return path.replace('file:///tmp/', 'file:///C:/tmp/');
+                }
+
+                return path;
+
+            };
+
+            assert.equal(FilePaths.toURL("/tmp/Test #1/chubby.pdf"),
+                         makePlatformSpecificPath('file:///tmp/Test%20%231/chubby.pdf'));
+
+            assert.equal(FilePaths.toURL("/tmp/Test ?1/chubby.pdf"),
+                         makePlatformSpecificPath('file:///tmp/Test%20%3F1/chubby.pdf'));
 
         });
 
