@@ -4,7 +4,7 @@
 	"description": "Basic code to dump the browser DOM to a JSON object that we can use within Polar",
 	"main": "index.js",
 	"scripts": {
-		"test": "polar-mocha",
+		"test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
 		"compile": "tsc"
 	},
 	"keywords": [],
