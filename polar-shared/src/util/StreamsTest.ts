@@ -6,39 +6,43 @@ import {Strings} from "./Strings";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {Buffers} from "./Buffers";
 import {Latch} from "./Latch";
+import {Reducers} from "./Reducers";
 
 describe('StreamsTest', function() {
 
     it("Basic", async function() {
 
-        let path = FilePaths.createTempName('stream-progress.txt');
+        const path = FilePaths.createTempName('stream-progress.txt');
 
-        const data = Strings.generate(65536 * 3);
+        const len = 65536 * 3;
+
+        const data = Strings.generate(len);
 
         await Files.writeFileAsync(path, data);
 
         const stat = await Files.statAsync(path);
+        assert.equal(stat.size, len);
 
         const stream = await Files.createReadStream(path);
 
-        let init = {id: 'test', total: stat.size};
+        const init = {id: 'test', total: stat.size};
 
         const callbacks: number[] = [];
 
         const progressStream = await Streams.toProgressStream(stream, init, (progress) => {
+            console.log("completed: ", progress.completed);
             callbacks.push(progress.completed);
         });
 
         assertJSON(callbacks, []);
 
-        await Streams.toBuffer(progressStream);
+        const buff = await Streams.toBuffer(progressStream);
+        assert.equal(buff.toString('utf-8'), data, 'Buffers are not the same');
 
-        assertJSON(callbacks, [
-            0,
-            65536,
-            131072,
-            196608
-        ]);
+        // await Streams.toBuffer(progressStream);
+
+        console.log("Testing callbacks length");
+        assert.equal(callbacks.reduce(Reducers.MAX), len, "callback sum is not correct");
 
     });
 
@@ -59,7 +63,7 @@ describe('StreamsTest', function() {
         const onCompletion = (err?: Error) => {
 
             if  (err) {
-                latch.reject(err)
+                latch.reject(err);
             } else {
                 latch.resolve(null);
             }
