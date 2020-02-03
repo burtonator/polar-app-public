@@ -4,7 +4,7 @@
   "description": "Provides an API for searching 3rd party APIs",
   "main": "index.js",
   "scripts": {
-    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit ",
+    "test": "find . -name '*Test.js' | xargs mocha --timeout 20000 --exit ",
     "compile": "tsc"
   },
   "keywords": [],
