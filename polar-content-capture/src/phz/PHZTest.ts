@@ -10,9 +10,15 @@ import {PHZWriter} from "./PHZWriter";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assertJSON} from 'polar-test/src/test/Assertions';
 
-TestingTime.freeze();
+describe('PHZTest', function() {
 
-describe('PHZ functionality', function() {
+    beforeEach(() => {
+        TestingTime.freeze();
+    });
+
+    afterEach(() => {
+        TestingTime.unfreeze();
+    });
 
     it("JSZIP support", function() {
         console.log("JSZip support: " , JSZip.support);

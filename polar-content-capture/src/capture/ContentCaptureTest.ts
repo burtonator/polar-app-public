@@ -8,7 +8,7 @@ import {isPresent} from "polar-shared/src/Preconditions";
 
 declare var global: any;
 
-describe('ContentCapture', function() {
+xdescribe('ContentCapture', function() {
 
     it("test basic", function() {
 
