@@ -4,7 +4,7 @@
   "description": "Provides support for parsing and working with markdown",
   "main": "index.js",
   "scripts": {
-    "test": "find . -name '*Test.js' | xargs mocha --timeout 20000 --exit ",
+    "test": "mocha --timeout 20000 --exit '**/*Test.js'",
     "compile": "npm run-script tsc && npm run-script generate-release-metadata",
     "build": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/",
     "tsc": "tsc",

@@ -3,7 +3,7 @@
   "version": "1.90.15",
   "description": "Provides support for parsing and working with markdown",
   "scripts": {
-    "test": "find . -name '*Test.js' | xargs mocha --timeout 20000 --exit ",
+    "test": "mocha --timeout 20000 --exit '**/*Test.js'",
     "compile": "tsc"
   },
   "keywords": [],

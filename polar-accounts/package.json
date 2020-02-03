@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "_test": "find . -name '*Test.js' | xargs mocha --timeout 20000 --exit ",
+    "_test": "mocha --timeout 20000 --exit '**/*Test.js'",
     "test": "echo noop",
     "compile": "tsc"
   },
