@@ -347,7 +347,7 @@ describe('ARXIVSearchEngine', function() {
                 "page": 0,
                 "total": 10
             }
-        });
+        }, {ignoreWhitespace: true});
     });
 
 });

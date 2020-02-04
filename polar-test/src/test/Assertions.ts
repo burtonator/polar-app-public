@@ -6,14 +6,22 @@ import {Diffs} from "./Diffs";
 
 const {assert} = require("chai");
 
+export interface ToJSONOpts {
+    readonly ignoreWhitespace?: boolean;
+    readonly unsorted?: boolean;
+}
+
+export interface CompareOpts extends ToJSONOpts {
+    readonly message?: string;
+}
+
 export function assertJSON(actual: any,
                            expected: any,
-                           message?: string,
-                           unsorted?: boolean) {
+                           opts: CompareOpts = {}) {
 
     // first convert both to JSON if necessary.
-    actual = toJSON(actual, unsorted);
-    expected = toJSON(expected, unsorted);
+    actual = toJSON(actual, opts);
+    expected = toJSON(expected, opts);
 
     if ( actual !== expected) {
         console.error("BEGIN ACTUAL ==========");
@@ -31,7 +39,7 @@ export function assertJSON(actual: any,
 
     try {
 
-        assert.equal(actual, expected, message);
+        assert.equal(actual, expected, opts.message);
 
     } catch (e) {
         console.error(e.message);
@@ -49,8 +57,8 @@ export function equalsJSON(actual: any,
                            unsorted?: boolean): boolean {
 
     // first convert both to JSON if necessary.
-    actual = toJSON(actual, unsorted);
-    expected = toJSON(expected, unsorted);
+    actual = toJSON(actual, {unsorted});
+    expected = toJSON(expected, {unsorted});
 
     if ( actual !== expected) {
         console.error("BEGIN ACTUAL ==========");
@@ -63,8 +71,7 @@ export function equalsJSON(actual: any,
 
 }
 
-
-export function toJSON(obj: any, unsorted: boolean = false): string {
+export function toJSON(obj: any, opts: ToJSONOpts = {}): string {
 
     if (typeof obj === "string") {
         // first parse it as as JSON into an object so it's serialized using
@@ -93,7 +100,7 @@ export function toJSON(obj: any, unsorted: boolean = false): string {
 
     };
 
-    if (! Array.isArray(obj) && !unsorted) {
+    if (! Array.isArray(obj) && !opts.unsorted) {
 
         // TODO: because of the toJSON method we might want to call JSON
         // stringify, then parse it again, then sort, then stringify again.
@@ -101,7 +108,13 @@ export function toJSON(obj: any, unsorted: boolean = false): string {
         obj = sorted(obj);
     }
 
-    return JSON.stringify(obj, replacer, "  ");
+    const result = JSON.stringify(obj, replacer, "  ");
+
+    if (opts.ignoreWhitespace) {
+        return result.replace(/\\s+/g, ' ');
+    }
+
+    return result;
 
 }
 

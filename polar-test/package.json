@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "test": "echo noop",
     "compile": "tsc"
   },
   "keywords": [],
@@ -18,7 +19,8 @@
   "dependencies": {
     "@types/node": "^12.11.1",
     "chai": "^4.2.0",
-    "diff": "4.0.2"
+    "diff": "4.0.2",
+    "mocha": "^6.2.0"
   },
   "files": [
     "**/*.js",
