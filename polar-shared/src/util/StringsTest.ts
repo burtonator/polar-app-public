@@ -12,6 +12,15 @@ describe('Strings', function() {
 
     });
 
+    describe('canonicalizeWhitespace', function() {
+
+        it("basic", function () {
+            assert.equal(Strings.canonicalizeWhitespace("  hello \r\nworld"), " hello \nworld");
+        });
+
+    });
+
+
     describe('booleans', function() {
 
         it("basic", function () {

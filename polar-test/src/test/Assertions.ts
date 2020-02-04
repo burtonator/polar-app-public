@@ -71,6 +71,11 @@ export function equalsJSON(actual: any,
 
 }
 
+function canonicalizeWhitespace(str: string) {
+    return str.replace(/[ \t]+/g, ' ')
+              .replace(/\r\n/g, '\n' );
+}
+
 export function toJSON(obj: any, opts: ToJSONOpts = {}): string {
 
     if (typeof obj === "string") {
@@ -111,7 +116,7 @@ export function toJSON(obj: any, opts: ToJSONOpts = {}): string {
     const result = JSON.stringify(obj, replacer, "  ");
 
     if (opts.ignoreWhitespace) {
-        return result.replace(/\\s+/g, ' ');
+        return canonicalizeWhitespace(result);
     }
 
     return result;

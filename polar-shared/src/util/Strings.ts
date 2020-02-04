@@ -94,6 +94,11 @@ export class Strings {
         return text;
     }
 
+    public static canonicalizeWhitespace(str: string) {
+        return str.replace(/[ \t]+/g, ' ')
+                  .replace(/\r\n/g, '\n' );
+    }
+
     /**
      * Make the first character uppercase.
      */
