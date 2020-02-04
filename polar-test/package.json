@@ -12,11 +12,13 @@
   "license": "ISC",
   "devDependencies": {
     "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.2",
+    "@types/diff": "4.0.2"
   },
   "dependencies": {
     "@types/node": "^12.11.1",
-    "chai": "^4.2.0"
+    "chai": "^4.2.0",
+    "diff": "4.0.2"
   },
   "files": [
     "**/*.js",
