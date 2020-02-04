@@ -2,6 +2,8 @@
 // collision which makes it impossible to track down type collision across multiple
 // packages.  I'm not sure why this ALWAYS hit chai but it's really frustrating
 // and takes hours to fix and this is a 1 line resolution.
+import {Diffs} from "./Diffs";
+
 const {assert} = require("chai");
 
 export function assertJSON(actual: any,
@@ -21,6 +23,10 @@ export function assertJSON(actual: any,
         console.error("BEGIN EXPECTED ==========");
         console.error(expected);
         console.error("END EXPECTED   ==========");
+
+        console.error("====== BEGIN DIFF ");
+        console.error(Diffs.compute(actual, expected));
+        console.error("====== END DIFF ");
     }
 
     try {
