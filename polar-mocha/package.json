@@ -5,10 +5,23 @@
   "main": "index.js",
   "scripts": {
     "test": "echo no test",
-    "compile": "echo nothing to compile"
+    "compile": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bin": ".bin/polar-mocha"
+  "bin": "src/polar-mocha.js",
+  "dependencies": {
+    "polar-shared": "^1.90.15"
+  },
+  "devDependencies": {
+    "@types/node": "^12.11.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
 }
