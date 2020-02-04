@@ -3,7 +3,8 @@
   "version": "1.90.15",
   "description": "https://github.com/yeoman/generator-chrome-extension",
   "scripts": {
-    "test": "polar-mocha",
+    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "test": "echo no tests",
     "compile": "tsc",
     "webpack": "npx webpack --config=webpack.config.js"
   },
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@types/chrome": "0.0.91",
     "polar-mocha": "^1.90.15",
+    "mocha": "^6.2.0",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   }
