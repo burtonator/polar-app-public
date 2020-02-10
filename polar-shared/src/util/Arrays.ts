@@ -135,10 +135,6 @@ export class Arrays {
 
         Preconditions.assertPresent(arrayLikeObject, "arrayLikeObject");
 
-        /**
-         * {Array<ArrayPosition>}
-         * @type {Array}
-         */
         const result = [];
 
         for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
@@ -204,8 +200,6 @@ export class Arrays {
 
     /**
      * Shuffle the input as a new array.
-     *
-     * @param input
      */
     public static shuffle<T>(...input: T[]): T[] {
 
@@ -226,7 +220,6 @@ export class Arrays {
 
     /**
      * Get up to `limit` values from the given input.
-     * @param input
      */
     public static head<T>(input: ReadonlyArray<T>, limit: number): T[] {
 
