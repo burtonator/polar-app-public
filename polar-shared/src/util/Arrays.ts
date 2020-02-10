@@ -133,7 +133,7 @@ export class Arrays {
      */
     public static createSiblings<T>(arrayLikeObject: T[]) {
 
-        Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
+        Preconditions.assertPresent(arrayLikeObject, "arrayLikeObject");
 
         /**
          * {Array<ArrayPosition>}
