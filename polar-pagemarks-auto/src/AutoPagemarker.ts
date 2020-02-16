@@ -8,7 +8,7 @@ import {Percentage100} from "polar-shared/src/util/Percentages";
 
 const log = Logger.create();
 
-const MIN_DURATION = 10 * 1000;
+const MIN_DURATION = 30 * 1000;
 
 /**
  * A page ID greater than 1.
@@ -81,12 +81,25 @@ export type CreatePagemarkCallback = (extendPagemark: ExtendPagemark) => void;
  */
 export type AutoPagemarkerMode = 'full' | 'partial';
 
+export interface AutoPagemarkerOpts {
+    readonly mode: AutoPagemarkerMode;
+    readonly minDuration: number;
+}
+
 export class AutoPagemarker {
 
     private position?: Position;
 
+    private readonly opts: AutoPagemarkerOpts;
+
     constructor(private callback: CreatePagemarkCallback,
-                private mode: AutoPagemarkerMode = 'full') {
+                opts: Partial<AutoPagemarkerOpts> = {}) {
+
+        this.opts = {
+            mode: opts.mode || 'full',
+            minDuration: opts.minDuration || MIN_DURATION
+        };
+
     }
 
     public compute(viewVisibility: ViewVisibility): ComputeResult {
@@ -155,7 +168,7 @@ export class AutoPagemarker {
 
         }
 
-        if ((now - this.position.created) < MIN_DURATION) {
+        if ((now - this.position.created) < this.opts.minDuration) {
             return updatePosition('early');
         }
 
@@ -174,7 +187,7 @@ export class AutoPagemarker {
          */
         const computeCoverage = (): Coverage => {
 
-            switch (this.mode) {
+            switch (this.opts.mode) {
 
                 case "full":
 

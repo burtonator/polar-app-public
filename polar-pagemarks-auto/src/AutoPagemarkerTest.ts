@@ -66,7 +66,7 @@ const createTester = (nrPages: number = 10,
     let extendPagemark: ExtendPagemark | undefined;
 
     // tslint:disable-next-line:variable-name
-    const pagemarker = new AutoPagemarker(_extendPagemark => extendPagemark = _extendPagemark, mode);
+    const pagemarker = new AutoPagemarker(_extendPagemark => extendPagemark = _extendPagemark, {mode});
 
     return (viewport: Viewport, expected: any) => {
 
@@ -152,7 +152,7 @@ describe('AutoPagemarker', function() {
                 "strategy": "init"
             });
 
-        TestingTime.forward('15s');
+        TestingTime.forward('35s');
 
         doTest(
             {
@@ -169,13 +169,13 @@ describe('AutoPagemarker', function() {
                         "perc": 0.5454545454545454,
                         "top": 0
                     },
-                    "updated": 1330688344321
+                    "updated": 1330688364321
                 },
                 "strategy": "updated"
             }
         );
 
-        TestingTime.forward('15s');
+        TestingTime.forward('35s');
 
         const testResult = doTest(
             {
@@ -193,7 +193,7 @@ describe('AutoPagemarker', function() {
                         "perc": 1,
                         "top": 1100
                     },
-                    "updated": 1330688359321
+                    "updated": 1330688399321
                 },
                 "strategy": "created"
             }
@@ -224,13 +224,13 @@ describe('AutoPagemarker', function() {
                 "strategy": "init"
             });
 
-        TestingTime.forward('15s');
+        TestingTime.forward('35s');
 
         doTest(
             createViewportForPage(5, DEFAULT_PAGE_HEIGHT),
             {
                 "position": {
-                    "created": 1330688344321,
+                    "created": 1330688364321,
                     "origin": 5,
                     "pageVisibility": {
                         "bottom": 5500,
@@ -238,20 +238,20 @@ describe('AutoPagemarker', function() {
                         "perc": 1,
                         "top": 4400
                     },
-                    "updated": 1330688344321
+                    "updated": 1330688364321
                 },
                 "strategy": "jumped"
             }
         );
 
-        TestingTime.forward('15s');
+        TestingTime.forward('35s');
 
         const testResult = doTest(
             createViewportForPage(6, DEFAULT_PAGE_HEIGHT),
             {
                 "pagemarked": 5,
                 "position": {
-                    "created": 1330688344321,
+                    "created": 1330688364321,
                     "origin": 5,
                     "pageVisibility": {
                         "bottom": 6600,
@@ -259,7 +259,7 @@ describe('AutoPagemarker', function() {
                         "perc": 1,
                         "top": 5500
                     },
-                    "updated": 1330688359321
+                    "updated": 1330688399321
                 },
                 "strategy": "created"
             }
@@ -272,7 +272,7 @@ describe('AutoPagemarker', function() {
             {
                 "pagemarked": 6,
                 "position": {
-                    "created": 1330688344321,
+                    "created": 1330688364321,
                     "origin": 5,
                     "pageVisibility": {
                         "bottom": 7700,
@@ -280,7 +280,7 @@ describe('AutoPagemarker', function() {
                         "perc": 1,
                         "top": 6600
                     },
-                    "updated": 1330688359321
+                    "updated": 1330688399321
                 },
                 "strategy": "created"
             }
@@ -316,7 +316,7 @@ describe('AutoPagemarker', function() {
                 "strategy": "init"
             });
 
-        TestingTime.forward('15s');
+        TestingTime.forward('35s');
 
         const testResult = doTest(
             {
