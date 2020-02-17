@@ -12,7 +12,33 @@ export type ToArrayLike<T> = ReadonlyArray<T> |
                             undefined |
                             null;
 
+interface GroupedDict<V> {
+    [key: string]: ReadonlyArray<V>;
+}
+
+interface MutableGroupedDict<V> {
+    [key: string]: V[];
+}
+
 export class Arrays {
+
+    public static groupBy<V>(values: ReadonlyArray<V>,
+                             toKey: (value: V) => string): GroupedDict<V> {
+
+        const result: MutableGroupedDict<V> = {};
+
+        for (const value of values) {
+            const key = toKey(value);
+
+            const entry = result[key] || [];
+            entry.push(value);
+            result[key] = entry;
+
+        }
+
+        return result;
+
+    }
 
     public static toArray<T>(value: ToArrayLike<T>): ReadonlyArray<T> {
 
@@ -255,9 +281,17 @@ export class Arrays {
 
     public static equal(a: PrimitiveArray, b: PrimitiveArray) {
 
-        if (a === b) return true;
-        if (a == null || b == null) return false;
-        if (a.length != b.length) return false;
+        if (a === b) {
+            return true;
+        }
+
+        if (a == null || b == null) {
+            return false;
+        }
+
+        if (a.length !== b.length) {
+            return false;
+        }
 
         // If you don't care about the order of the elements inside
         // the array, you should sort both arrays here.
@@ -265,7 +299,9 @@ export class Arrays {
         // you might want to clone your array first.
 
         for (let i = 0; i < a.length; ++i) {
-            if (a[i] !== b[i]) return false;
+            if (a[i] !== b[i]) {
+                return false;
+            }
         }
 
         return true;
