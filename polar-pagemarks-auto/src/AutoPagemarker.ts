@@ -5,10 +5,9 @@ import {PageVisibility, ViewVisibility, ViewVisibilityCalculator} from "./ViewVi
 import {UnixTimeMS} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Percentage100} from "polar-shared/src/util/Percentages";
+import {DurationMS} from "polar-shared/src/util/TimeDurations";
 
 const log = Logger.create();
-
-const MIN_DURATION = 30 * 1000;
 
 /**
  * A page ID greater than 1.
@@ -81,10 +80,22 @@ export type CreatePagemarkCallback = (extendPagemark: ExtendPagemark) => void;
  */
 export type AutoPagemarkerMode = 'full' | 'partial';
 
+/**
+ * Number of pixels as an integer.
+ */
+export type Pixels = number;
+
 export interface AutoPagemarkerOpts {
     readonly mode: AutoPagemarkerMode;
-    readonly minDuration: number;
+    readonly minDuration: DurationMS;
+    readonly minPagemarkHeight: Pixels;
 }
+
+const DEFAULT_OPTS: AutoPagemarkerOpts = {
+    mode: 'full',
+    minDuration: 30 * 1000,
+    minPagemarkHeight: 200
+};
 
 export class AutoPagemarker {
 
@@ -96,8 +107,9 @@ export class AutoPagemarker {
                 opts: Partial<AutoPagemarkerOpts> = {}) {
 
         this.opts = {
-            mode: opts.mode || 'full',
-            minDuration: opts.minDuration || MIN_DURATION
+            mode: opts.mode || DEFAULT_OPTS.mode,
+            minDuration: opts.minDuration || DEFAULT_OPTS.minDuration,
+            minPagemarkHeight: opts.minPagemarkHeight || DEFAULT_OPTS.minPagemarkHeight
         };
 
     }
@@ -186,6 +198,9 @@ export class AutoPagemarker {
          * Compute what percentage of the page is covered and whether we should emit.
          */
         const computeCoverage = (): Coverage => {
+
+            // FIXME: use the viewVisibility along with this.position to recompute
+            // the pagemarks from this point.
 
             switch (this.opts.mode) {
 

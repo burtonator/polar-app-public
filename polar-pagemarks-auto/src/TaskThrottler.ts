@@ -1,6 +1,7 @@
 /**
- * A task scheduler that only executes a task once every interval and replaces the task that it should execute so that
-* the most recent task is the one that is executed (replacing stale tasks)
+ * A task scheduler that only executes a task once every interval and replaces
+ * the task that it should execute so that the most recent task is the one that
+ * is executed (replacing stale tasks)
  */
 import {Callback} from "polar-shared/src/util/Functions";
 
