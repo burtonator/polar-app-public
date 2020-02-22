@@ -1,10 +1,12 @@
-    /**
- * Methods for working with content preview URLs.
- */
+
 import {URLStr} from "polar-shared/src/util/Strings";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
-export class PreviewURLs {
+/**
+ * These load the raw pdf.js "pdfviewer" within a 'preview' where the document
+ * hasn't been added to Polar yet.
+ */
+export class PreviewViewerURLs {
 
     /**
      * True if the URL is a preview URL.

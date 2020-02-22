@@ -6,13 +6,13 @@ export class AddURLs {
 
     public static parseWithPathInfo(url: URLStr): AddURL | undefined {
 
-        const regexp = "(https://app\.getpolarized\.io)?/add/(http.*)";
+        const regexp = "(https://app\.getpolarized\.io)?/(add|d)/(http.*)";
 
         const matches = url.match(regexp);
 
         if (matches) {
 
-            const rawTarget = (matches[2] || "").trim();
+            const rawTarget = (matches[3] || "").trim();
 
             if (rawTarget === "") {
                 throw new Error("No URL given in path data: " + url);
