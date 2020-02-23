@@ -7,7 +7,7 @@ import {
 import {IDocDetail} from "polar-shared/src/metadata/IDocDetail";
 import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 
-export interface DocPreview extends IDocDetail {
+export interface BaseDocPreview extends IDocDetail {
 
     /**
      * The hashcode for the doc.
@@ -15,16 +15,29 @@ export interface DocPreview extends IDocDetail {
     readonly hashcode: IDStr;
 
     /**
-     * The URL for the doc cloud storage.
-     */
-    readonly datastoreURL: URLStr;
-
-    /**
      * The category for this doc.  Used to help SEO purposes
      */
     readonly category?: string;
 
 }
+
+export interface DocPreviewCached extends BaseDocPreview {
+    /**
+     * The URL for the doc cloud storage.
+     */
+    readonly datastoreURL: URLStr;
+
+    readonly cached: true;
+
+}
+
+export interface DocPreviewUncached extends BaseDocPreview {
+
+    readonly cached: false;
+
+}
+
+export type DocPreview = DocPreviewCached | DocPreviewUncached;
 
 export class DocPreviews {
 
