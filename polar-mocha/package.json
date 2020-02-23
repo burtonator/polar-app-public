@@ -1,6 +1,6 @@
 {
   "name": "polar-mocha",
-  "version": "1.90.20",
+  "version": "1.90.21",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "license": "ISC",
   "bin": "src/polar-mocha.js",
   "dependencies": {
-    "polar-shared": "^1.90.20"
+    "polar-shared": "^1.90.21"
   },
   "devDependencies": {
     "@types/node": "^12.11.1",
