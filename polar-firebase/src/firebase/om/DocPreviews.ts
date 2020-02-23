@@ -15,9 +15,15 @@ export interface DocPreview extends IDocDetail {
     readonly hashcode: IDStr;
 
     /**
-     * The URL for the doc in GCM
+     * The URL for the doc cloud storage.
      */
-    readonly storageURL: URLStr;
+    readonly datastoreURL: URLStr;
+
+    /**
+     * The category for this doc.  Used to help SEO purposes
+     */
+    readonly category?: string;
+
 }
 
 export class DocPreviews {
@@ -30,8 +36,13 @@ export class DocPreviews {
         return new Collections(this.firestoreProvider(), this.COLLECTION);
     }
 
-    public static async update() {
+    public static async set(doc: DocPreview) {
+        // only callable via firebase admin...
+        await this.collections().set(doc.hashcode, doc);
+    }
 
+    public static async get(id: IDStr): Promise<DocPreview | undefined> {
+        return this.collections().get(id);
     }
 
 }
