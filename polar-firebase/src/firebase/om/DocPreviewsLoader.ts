@@ -6,18 +6,34 @@ import {
 import {Files} from "polar-shared/src/util/Files";
 import {DocPreviews, DocPreviewUncached} from "./DocPreviews";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
+
+const LIMIT = 100;
+
+function getPath() {
+
+    if (process.argv.length !== 3) {
+        const command = process.argv[1];
+        console.error(`SYNTAX ${command} [path]`);
+        process.exit(1);
+    }
+
+    return process.argv[2];
+}
 
 export class DocPreviewsLoader {
 
     public static async load() {
 
-        const path = 'data.jsonl';
+        const path = getPath();
 
         const data = await Files.readFileAsync(path);
         const content = data.toString('utf-8');
 
-        const lines = content.split("\n")
-                             .filter(line => line.trim() !== '');
+        const lines = ArrayStreams.create(content.split("\n"))
+                                  .filter(line => line.trim() !== '')
+                                  .head(LIMIT)
+                                  .collect();
 
         for (const line of lines) {
 
