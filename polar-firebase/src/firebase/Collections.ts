@@ -87,6 +87,9 @@ export class Collections {
 
     private createQuery(clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
 
+        // TODO: should work without any clauses and just list all the records
+        // which is fine for small collections
+
         const clause = clauses[0];
         const [field, op, value] = clause;
 
