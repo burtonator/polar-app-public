@@ -8,6 +8,7 @@ export namespace Unpaywall {
 
     export interface Doc {
         readonly doi: DOIStr;
+        readonly doi_url: URLStr;
         readonly updated: string;
         readonly title: string;
         readonly publisher: string;

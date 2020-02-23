@@ -27,3 +27,18 @@ export interface IAuthor {
     readonly guest?: boolean;
 
 }
+
+/**
+ * An external author (not a Polar user).
+ */
+export interface IAuthorExternal {
+
+    readonly displayName: string;
+
+    readonly firstName?: string;
+
+    readonly lastName?: string;
+
+    readonly affiliation?: string;
+
+}

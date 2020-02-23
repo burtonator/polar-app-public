@@ -4,7 +4,7 @@ import {ISODateString, ISODateTimeString} from "./ISODateTimeStrings";
 import {IDocAuthor} from "./IDocAuthor";
 import {IText} from "./Text";
 import {IImage} from "./IImage";
-import {URLStr} from "../util/Strings";
+import {DOIStr, URLStr} from "../util/Strings";
 
 export interface IJournal {
     readonly name: string;
@@ -16,11 +16,6 @@ export interface IJournal {
  * DocInfo if necessary.
  */
 export interface IDocDetail {
-
-    /**
-     * A fingerprint for the document.
-     */
-    readonly fingerprint: string;
 
     /**
      * The title for the document.
@@ -58,7 +53,7 @@ export interface IDocDetail {
 
     readonly publisher?: string;
 
-    readonly doi?: string;
+    readonly doi?: DOIStr;
 
     readonly doiURL?: string;
 

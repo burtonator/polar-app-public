@@ -10,9 +10,14 @@ import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 export interface BaseDocPreview extends IDocDetail {
 
     /**
-     * The hashcode for the doc.
+     * The hashcode for the URL which we can lookup easily.
      */
-    readonly hashcode: IDStr;
+    readonly urlHash: IDStr;
+
+    /**
+     * The original URL for this doc (PDF, EPUB, etc)
+     */
+    readonly url: URLStr;
 
     /**
      * The category for this doc.  Used to help SEO purposes
@@ -22,6 +27,12 @@ export interface BaseDocPreview extends IDocDetail {
 }
 
 export interface DocPreviewCached extends BaseDocPreview {
+
+    /**
+     * The hashcode for the doc.
+     */
+    readonly docHash: IDStr;
+
     /**
      * The URL for the doc cloud storage.
      */
@@ -50,8 +61,7 @@ export class DocPreviews {
     }
 
     public static async set(doc: DocPreview) {
-        // only callable via firebase admin...
-        await this.collections().set(doc.hashcode, doc);
+        await this.collections().set(doc.urlHash, doc);
     }
 
     public static async get(id: IDStr): Promise<DocPreview | undefined> {

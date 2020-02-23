@@ -1,16 +1,16 @@
 import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 
 export interface DocPreviewURLWithHashcode {
-    readonly hashcode: IDStr;
+    readonly id: IDStr;
 }
 
 export interface DocPreviewURLWithHashcodeAndTitle {
-    readonly hashcode: IDStr;
+    readonly id: IDStr;
     readonly title: string;
 }
 
 export interface DocPreviewURLWithHashcodeCategoryAndTitle {
-    readonly hashcode: IDStr;
+    readonly id: IDStr;
     readonly category: string;
     readonly title: string;
 }
@@ -47,7 +47,7 @@ export class DocPreviewURLs {
             return undefined;
         }
 
-        function parseHashcode(rawHashcode: string) {
+        function parseRawID(rawHashcode: string) {
             return rawHashcode.substring(2);
         }
 
@@ -57,26 +57,26 @@ export class DocPreviewURLs {
         // console.log("DEBUG: 4: " + matches[4]);
         // console.log("DEBUG: 5: " + matches[5]);
 
-        const rawHashcode = matches[6];
-        const hashcode = parseHashcode(rawHashcode);
+        const rawID = matches[6];
+        const id = parseRawID(rawID);
 
         if (matches[3] && matches[4]) {
             // we have a category, title, and hashcode
             const category = decodeURIComponent(matches[3]);
             const title = decodeURIComponent(matches[5]);
 
-            return {category, title, hashcode};
+            return {category, title, id};
 
         }
 
         if (matches[2]) {
             // we have a title, and hashcode
             const title = decodeURIComponent(matches[3]);
-            return {title, hashcode};
+            return {title, id};
 
         }
 
-        return {hashcode};
+        return {id};
 
     }
 
@@ -85,14 +85,14 @@ export class DocPreviewURLs {
         const opts = <any> doc;
 
         if (opts.category && opts.title) {
-            return `https://app.getpolarized.io/d/${encodeURIComponent(opts.category)}/${encodeURIComponent(opts.title)}/0x${opts.hashcode}`;
+            return `https://app.getpolarized.io/d/${encodeURIComponent(opts.category)}/${encodeURIComponent(opts.title)}/0x${doc.id}`;
         }
 
         if (opts.title) {
-            return `https://app.getpolarized.io/d/${encodeURIComponent(opts.title)}/0x${opts.hashcode}`;
+            return `https://app.getpolarized.io/d/${encodeURIComponent(opts.title)}/0x${doc.id}`;
         }
 
-        return `https://app.getpolarized.io/d/0x${opts.hashcode}`;
+        return `https://app.getpolarized.io/d/0x${doc.id}`;
 
     }
 
