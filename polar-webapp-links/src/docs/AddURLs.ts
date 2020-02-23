@@ -6,7 +6,7 @@ export class AddURLs {
 
     public static parseWithPathInfo(url: URLStr): AddURL | undefined {
 
-        const regexp = "(https://app\.getpolarized\.io)?/(add|d)/(http.*)";
+        const regexp = "(https://app\.getpolarized\.io)?/(add|d|preview|doc-preview-import)/(http.*)";
 
         const matches = url.match(regexp);
 
