@@ -4,6 +4,7 @@ import {
     ISODateYearMonthString,
     ISODateYearString,
 } from "polar-shared/src/metadata/ISODateTimeStrings";
+import {DOIStr} from "polar-shared/src/util/Strings";
 
 export namespace search {
 
@@ -174,11 +175,6 @@ export namespace search {
     export type DocLinkDisposition = 'download' | 'landing';
 
     /**
-     * A string formatted as a DOI 10.1038/nature12373
-     */
-    export type DOIStr = string;
-
-    /**
      * PubMed ID string.
      */
     export type PMIDStr = string;
@@ -196,7 +192,7 @@ export namespace search {
                 total: entries.length,
                 itemsPerPage: entries.length,
                 page: 0
-            }
+            };
 
         }
 

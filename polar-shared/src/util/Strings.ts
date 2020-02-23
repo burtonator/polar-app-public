@@ -157,3 +157,8 @@ export type ReadableIDStr = IDStr;
  * An email address string.
  */
 export type EmailStr = string;
+
+/**
+ * A string formatted as a DOI 10.1038/nature12373
+ */
+export type DOIStr = string;

@@ -1,7 +1,7 @@
 import {search} from "polar-search-api/src/api/search/Search";
-import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Strings, URLStr} from "polar-shared/src/util/Strings";
+import {Strings} from "polar-shared/src/util/Strings";
 import {Fetches} from "polar-shared/src/util/Fetch";
+import {Unpaywall} from "./Unpaywall";
 
 const EMAIL = 'unpaywall@getpolarized.io';
 
@@ -24,25 +24,25 @@ export class UnpaywallSearchEngine implements search.Engine {
 
         const res = await Fetches.fetch(url);
 
-        const response: unpaywall.Response = await res.json();
+        const response: Unpaywall.Response = await res.json();
 
         return UnpaywallSearchEngine.handleResponse(response);
 
     }
 
-    public static async handleResponse(response: unpaywall.Response) {
+    public static async handleResponse(response: Unpaywall.Response) {
         const entries = [this.toEntry(response)];
         return new search.SinglePageResults(entries);
 
     }
 
-    private static toEntry(response: unpaywall.Response): search.Entry {
+    private static toEntry(response: Unpaywall.Response): search.Entry {
 
         const toLinks = (): ReadonlyArray<search.DocLink> => {
 
             const result: search.DocLink[] = [];
 
-            for(const current of response.oa_locations) {
+            for (const current of response.oa_locations) {
                 result.push({
                     type: 'application/pdf',
                     href: current.url_for_pdf,
@@ -95,7 +95,7 @@ export class UnpaywallSearchEngine implements search.Engine {
                     lastName: current.family
                 };
 
-            })
+            });
         };
 
         const id = response.doi;
@@ -119,34 +119,6 @@ export class UnpaywallSearchEngine implements search.Engine {
             doi
         };
 
-    }
-
-}
-
-export namespace unpaywall {
-
-    import DOIStr = search.DOIStr;
-
-    export interface Response {
-        readonly doi: DOIStr;
-        readonly updated: string;
-        readonly title: string;
-        readonly publisher: string;
-        readonly z_authors: ReadonlyArray<Author>;
-        readonly published_date: ISODateTimeString | ISODateString;
-        readonly oa_locations: ReadonlyArray<Location>;
-    }
-
-    export interface Author {
-        readonly family: string;
-        readonly given: string;
-    }
-
-    export interface Location {
-        readonly updated: ISODateTimeString;
-        readonly is_best: boolean;
-        readonly url_for_landing_page: URLStr;
-        readonly url_for_pdf: URLStr;
     }
 
 }

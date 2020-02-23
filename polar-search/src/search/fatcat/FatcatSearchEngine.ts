@@ -1,6 +1,7 @@
 import {search} from "polar-search-api/src/api/search/Search";
 import {ISODateYearString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Fetches} from "polar-shared/src/util/Fetch";
+import {DOIStr} from "polar-shared/src/util/Strings";
 
 /**
  * https://api.fatcat.wiki/v0/release/lookup?doi=10.1109/COMST.2018.2842460
@@ -46,7 +47,7 @@ export class FatcatSearchEngine implements search.Engine {
                     displayName,
                 };
 
-            })
+            });
 
         };
 
@@ -80,8 +81,6 @@ export class FatcatSearchEngine implements search.Engine {
 export namespace fatcat {
 
     // TODO: technically this is supposed to have files and filsets but I need to find an example.
-
-    import DOIStr = search.DOIStr;
 
     export interface Response {
         readonly publisher: string;

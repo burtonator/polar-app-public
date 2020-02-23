@@ -1,6 +1,6 @@
 import {search} from "polar-search-api/src/api/search/Search";
-import DOIStr = search.DOIStr;
 import {SearchClient} from "./SearchClient";
+import {DOIStr} from "polar-shared/src/util/Strings";
 
 /**
  * Lookup the metadata and download URL for a specific DOU

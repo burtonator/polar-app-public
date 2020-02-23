@@ -1,11 +1,12 @@
-import {unpaywall, UnpaywallSearchEngine} from "./UnpaywallSearchEngine";
+import {UnpaywallSearchEngine} from "./UnpaywallSearchEngine";
 import {assertJSON} from "polar-test/src/test/Assertions";
+import {Unpaywall} from "./Unpaywall";
 
 describe('UnpaywallSearchEngine', function() {
 
     it("basic", async function() {
 
-        const response: unpaywall.Response = RESPONSE;
+        const response: Unpaywall.Response = RESPONSE;
         const res = await UnpaywallSearchEngine.handleResponse(response);
 
         assertJSON(await res, {
