@@ -64,6 +64,10 @@ export class DocPreviews {
         await this.collections().set(doc.urlHash, doc);
     }
 
+    // public static async list() {
+    //     await this.collections().list();
+    // }
+
     public static async get(id: IDStr): Promise<DocPreview | undefined> {
         return this.collections().get(id);
     }
