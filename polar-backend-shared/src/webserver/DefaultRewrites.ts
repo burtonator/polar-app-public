@@ -31,6 +31,14 @@ export class DefaultRewrites {
                 "destination": "/apps/repository/index.html"
             },
             {
+                "source": [
+                    "/d/:category/:title/:hashcode",
+                    "/d/:title/:hashcode",
+                    "/d/:hashcode",
+                ],
+                "destination": "/apps/preview/index.html"
+            },
+            {
                 "source": "/group/:group/highlights",
                 "destination": "/apps/repository/index.html"
             },
