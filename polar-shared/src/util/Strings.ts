@@ -162,3 +162,8 @@ export type EmailStr = string;
  * A string formatted as a DOI 10.1038/nature12373
  */
 export type DOIStr = string;
+
+/**
+ * String of JSON data.
+ */
+export type JSONStr = string;

@@ -4,6 +4,9 @@ import {Arrays} from "./Arrays";
  * Similar to Java streams but for Javascript/Typescript arrays.
  *
  * This is also similar to lodash but a lot simpler and with fewer dependencies.
+ *
+ * One issue is that this doesn't do anything smart with head/collect which
+ * are some performance optimizations in Java streams.
  */
 export class ArrayStream<T> {
 
