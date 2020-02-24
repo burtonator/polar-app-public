@@ -1,6 +1,6 @@
 {
   "name": "polar-pagemarks-auto",
-  "version": "1.90.28",
+  "version": "1.90.29",
   "description": "Computes pagemarks within a parent while it scrolls.",
   "main": "index.js",
   "scripts": {
@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@types/node": "^12.11.1",
-    "polar-shared": "^1.90.28",
-    "polar-test": "^1.90.28"
+    "polar-shared": "^1.90.29",
+    "polar-test": "^1.90.29"
   },
   "files": [
     "**/*.js",
