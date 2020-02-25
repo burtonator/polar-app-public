@@ -24,6 +24,12 @@ export interface BaseDocPreview extends IDocDetail {
      */
     readonly category?: string;
 
+    // /**
+    //  * True if this entry is broken , IE the URL could not be fetched so that
+    //  * we can mark this dead and not show up in the UI.
+    //  */
+    // readonly broken?: true | undefined;
+
 }
 
 export interface DocPreviewCached extends BaseDocPreview {
