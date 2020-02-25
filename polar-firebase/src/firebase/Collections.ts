@@ -7,8 +7,13 @@ import {Arrays} from "polar-shared/src/util/Arrays";
  */
 export class Collections {
 
+    /**
+     *
+     * @param firestore  The firestore instance
+     * @param name The name of of the collection.
+     */
     public constructor(private readonly firestore: FirestoreLike,
-                       private readonly collection: CollectionNameStr) {
+                       private readonly name: CollectionNameStr) {
 
     }
 
@@ -41,12 +46,12 @@ export class Collections {
 
     public async set<T>(id: string, value: T) {
         value = Dictionaries.onlyDefinedProperties(value);
-        const ref = this.firestore.collection(this.collection).doc(id);
+        const ref = this.firestore.collection(this.name).doc(id);
         await ref.set(value);
     }
 
     public async get<T>(id: string): Promise<T | undefined> {
-        const ref = this.firestore.collection(this.collection).doc(id);
+        const ref = this.firestore.collection(this.name).doc(id);
         const doc = await ref.get();
         return <T> doc.data();
     }
@@ -76,7 +81,7 @@ export class Collections {
         } else if (results.length === 1) {
             return results[0];
         } else {
-            throw new Error(`Too many records on collection ${this.collection} for fields ${fields} ` + results.length);
+            throw new Error(`Too many records on collection ${this.name} for fields ${fields} ` + results.length);
         }
 
     }
@@ -96,7 +101,7 @@ export class Collections {
         Clauses.assertPresent(clause);
 
         let query = this.firestore
-            .collection(this.collection)
+            .collection(this.name)
             .where(field, op, value);
 
         for (const clause of clauses.slice(1)) {
@@ -131,6 +136,10 @@ export class Collections {
 
     private snapshotToRecords<T>(snapshot: QuerySnapshotLike) {
         return snapshot.docs.map(current => <T> current.data());
+    }
+
+    public collection() {
+        return this.firestore.collection(this.name);
     }
 
     public async list<T>(clauses: ReadonlyArray<Clause>,
@@ -201,7 +210,7 @@ export class Collections {
 
         for (const record of records) {
 
-            const doc = this.firestore.collection(this.collection)
+            const doc = this.firestore.collection(this.name)
                                       .doc(record.id);
 
             batch.delete(doc);
@@ -314,6 +323,7 @@ export interface DocumentSnapshotLike {
 export interface CollectionReferenceLike {
     doc(documentPath: string): DocumentReferenceLike;
     where(fieldPath: string, opStr: WhereFilterOpLike, value: any): QueryLike;
+    limit(size: number): QueryLike;
 }
 
 export type DocumentDataLike = {[field: string]: any};
