@@ -6,7 +6,6 @@ import {
 
 import {IDocDetail} from "polar-shared/src/metadata/IDocDetail";
 import {IDStr, URLStr} from "polar-shared/src/util/Strings";
-import {FirebaseAdmin} from "../../../../../polar-app-private/polar-hooks/functions/impl/util/FirebaseAdmin";
 
 export interface BaseDocPreview extends IDocDetail {
 
