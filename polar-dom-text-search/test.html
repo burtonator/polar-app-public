@@ -1,0 +1,195 @@
+<html>
+<body>
+<p>
+    this is <b>some <a href="http://cnn.com">text</a></b>
+</p>
+
+<script>
+
+    function createSiblings(arrayLikeObject) {
+
+        const result = [];
+
+        for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
+
+            result.push({
+                prev: arrayLikeObject[idx - 1] || undefined,
+                curr: arrayLikeObject[idx],
+                next: arrayLikeObject[idx + 1] || undefined
+            });
+
+        }
+
+        return result;
+
+    }
+
+    function groupBy1(values, keyProvider) {
+
+        if (values.length === 0) {
+            return [];
+        }
+
+        if (values.length === 1) {
+            return [values[0]];
+        }
+
+        let prev = values[0];
+
+        const result = [];
+
+        for (let idx = 1; idx < values.length; ++idx) {
+
+        }
+
+        return result;
+
+
+        // FIXME: group the values by key and return a list...
+
+    }
+
+    function groupBy(values, keyProvider) {
+
+        return values.reduce((r, a) => {
+            const key = keyProvider(a);
+
+            r[a.make] = r[a.make] || [];
+            r[a.make].push(a);
+            return r;
+
+        }, Object.create(null));
+
+    }
+
+    class ElementTextPointer {
+
+        constructor(offset, node, value) {
+            this.offset = offset;
+            this.node = node;
+            this.value = value;
+        }
+
+    }
+
+    class ElementTextRange {
+
+        constructor(start, end, node) {
+
+        }
+
+    }
+
+    function groupByNode(hits) {
+
+        for (const entry of createSiblings(hits)) {
+
+            const prevNode = hits.prev?.node;
+            const currNode = hits.curr.node;
+
+            if (prevNode !== currNode) {
+                result[result.length] = [];
+            }
+
+            result[result.length - 1].push(entry.curr);
+
+        }
+
+        return result;
+
+    }
+
+
+
+    /**
+     * Return true if the given character is whitespace.
+     */
+    function isWhitespace(c) {
+
+        switch (c) {
+
+            case ' ':
+            case '\f':
+            case '\r':
+            case '\n':
+            case '\v':
+            case '\t':
+            case '\u00A0':
+            case '\u2029':
+                return true;
+            default:
+                return false;
+        }
+
+    }
+
+    function computeTextIndex() {
+
+        const blacklist = ['script', 'iframe', 'link', 'style', 'head', 'object', 'video', 'img'];
+
+        const treeWalker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
+
+        const pointers = [];
+
+        let node;
+        while (true) {
+
+            node = treeWalker.nextNode();
+
+            if (! node) {
+                break;
+            }
+
+            const parentTagName = node.parentElement.tagName.toLowerCase();
+
+            if (blacklist.includes(parentTagName)) {
+                continue;
+            }
+
+            const nodeValue = node.nodeValue;
+
+            if (nodeValue && nodeValue !== '') {
+
+                const text = nodeValue;
+
+                console.log("'" + text + "'");
+
+                for (let idx = 0; idx < text.length; ++idx) {
+                    const c = text[idx];
+
+                    if (isWhitespace(c)) {
+                        continue;
+                    }
+
+                    const pointer = {
+                        offset: idx,
+                        node,
+                        value: c
+                    };
+
+                    pointers.push(pointer);
+                }
+
+            }
+
+        }
+
+        return new TextIndex(pointers);
+
+    }
+
+    const textIndex = computeTextIndex();
+
+    console.log(textIndex.pointers.map(current => current.value).join(""));
+
+    // console.log(document.documentElement.nodeValue);
+
+    // console.log(document.querySelector('p').childNodes);
+    //
+    // console.log(document.querySelector('script').textContent);
+    // console.log(document.querySelector('script').childNodes);
+
+</script>
+
+</body>
+</html>
