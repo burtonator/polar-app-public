@@ -1,0 +1,23 @@
+<html>
+<body>
+
+<div style="overflow: auto; height: 100%; margin: 20px;">
+    <div id="primary">This is my content</div>
+</div>
+
+<script>
+
+    const element = document.getElementById('primary');
+    const text = element.firstChild;
+    console.log(text);
+    var range = document.createRange();
+
+    range.selectNode(text);
+    const rect = range.getBoundingClientRect();
+    console.log(rect);
+    range.detach();
+
+</script>
+
+</body>
+</html>

@@ -20,7 +20,26 @@ interface MutableGroupedDict<V> {
     [key: string]: V[];
 }
 
+
+export interface IndexedValue<V> {
+    readonly index: number;
+    readonly value: V;
+}
+
 export class Arrays {
+
+
+    public static toIndexed<V>(values: ReadonlyArray<V>): ReadonlyArray<IndexedValue<V>> {
+
+        const result = [];
+
+        for (let index = 0; index < values.length; ++index) {
+            result.push({index, value: values[index]});
+        }
+
+        return result;
+
+    }
 
     public static groupBy<V>(values: ReadonlyArray<V>,
                              toKey: (value: V) => string): GroupedDict<V> {
