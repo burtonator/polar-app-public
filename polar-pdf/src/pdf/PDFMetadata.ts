@@ -46,7 +46,6 @@ export class PDFMetadata {
 
         const isPath = ! URLs.isURL(docPathOrURL);
 
-
         // FIXME: use URLs.toURL for this
 
         if (isPath && ! await Files.existsAsync(docPathOrURL)) {
