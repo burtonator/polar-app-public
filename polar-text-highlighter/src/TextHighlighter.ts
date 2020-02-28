@@ -20,7 +20,7 @@ export interface ITextHighlighterOpts {
 
 export class TextHighlighter {
 
-    private static applyHighlight(opts: ) {
+    private static applyHighlight(opts: ITextHighlighterOpts) {
 
     }
 
