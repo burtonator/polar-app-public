@@ -1,7 +1,5 @@
-
-
 import {createSiblings} from "polar-shared/src/util/Functions";
-import {Strings} from "polar-shared/src/util/Strings";
+import {CharPtrs} from "./CharPtrs";
 
 export interface Pointer {
 
@@ -48,7 +46,7 @@ export class TextIndex {
 
         const result = [];
 
-        for (let idx = start; idx <= end; ++idx) {
+        for (let idx = start; idx < end; ++idx) {
             const pointer = this.pointers[idx];
             result.push(pointer);
         }
@@ -64,7 +62,9 @@ export class TextIndex {
 
         const result: MutableNodeTextRegion[] = [];
 
-        for (const entry of createSiblings(pointers)) {
+        const siblings = createSiblings(pointers);
+
+        for (const entry of siblings) {
 
             const prevNode = entry.prev?.node;
             const currNode = entry.curr.node;
@@ -150,24 +150,38 @@ export class DOMTextSearch {
 
                 console.log("'" + text + "'");
 
-                for (let idx = 0; idx < text.length; ++idx) {
+                const charPointers = CharPtrs.collapse(text);
 
-                    const c = text[idx];
-
-                    // FIXME: we need to elide MULTIPLE characters not ignore all
-                    // whitespace
-                    if (Strings.isWhitespace(c)) {
-                        continue;
-                    }
+                for (const charPointer of charPointers) {
 
                     const pointer: Pointer = {
-                        offset: idx,
+                        offset: charPointer.offset,
                         node,
-                        value: c
+                        value: charPointer.value
                     };
 
                     pointers.push(pointer);
+
                 }
+
+                // for (let idx = 0; idx < text.length; ++idx) {
+                //
+                //     const c = text[idx];
+                //
+                //     // FIXME: we need to elide MULTIPLE characters not ignore all
+                //     // whitespace
+                //     if (Strings.isWhitespace(c)) {
+                //         continue;
+                //     }
+                //
+                //     const pointer: Pointer = {
+                //         offset: idx,
+                //         node,
+                //         value: c
+                //     };
+                //
+                //     pointers.push(pointer);
+                // }
 
             }
 

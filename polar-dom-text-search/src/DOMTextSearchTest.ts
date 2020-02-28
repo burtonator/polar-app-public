@@ -5,7 +5,7 @@ const jsdomGlobal = require('jsdom-global');
 
 describe('DOMTextSearch', function() {
 
-    xit("basic", function() {
+    it("basic", function() {
 
         const html = `<html><body><p>this is a basic test</p></body></html>`;
         jsdomGlobal(html);
@@ -14,13 +14,17 @@ describe('DOMTextSearch', function() {
 
         const index = DOMTextSearch.createIndex();
 
+        // console.log({index});
+
         assert.equal(index.toString(), 'this is a basic test');
 
         const result = index.find('this is a basic test');
 
-        console.log({result});
+        // console.log({result});
 
         assert.ok(result);
+        assert.equal(result!.length, 1);
+        assert.equal(result![0].node.textContent, 'this is a basic test');
 
     });
 

@@ -11,7 +11,7 @@ export interface CharPtr {
     /**
      * The offset into the string.
      */
-    readonly index: number;
+    readonly offset: number;
 
     /**
      * True if this is whitespace.
@@ -41,7 +41,7 @@ export class CharPtrs {
 
             result.push({
                 value: c,
-                index: idx,
+                offset: idx,
                 whitespace: Strings.isWhitespace(c)
             });
 
