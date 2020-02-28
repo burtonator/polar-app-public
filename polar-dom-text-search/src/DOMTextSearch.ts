@@ -148,7 +148,7 @@ export class DOMTextSearch {
 
                 const text = nodeValue;
 
-                console.log("'" + text + "'");
+                // console.log("'" + text + "'");
 
                 const charPointers = CharPtrs.collapse(text);
 

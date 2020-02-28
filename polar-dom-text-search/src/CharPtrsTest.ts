@@ -11,57 +11,57 @@ describe('CharPtrs', function() {
         assertJSON(CharPtrs.toArray('hello world'), [
             {
                 "value": "h",
-                "index": 0,
+                "offset": 0,
                 "whitespace": false
             },
             {
                 "value": "e",
-                "index": 1,
+                "offset": 1,
                 "whitespace": false
             },
             {
                 "value": "l",
-                "index": 2,
+                "offset": 2,
                 "whitespace": false
             },
             {
                 "value": "l",
-                "index": 3,
+                "offset": 3,
                 "whitespace": false
             },
             {
                 "value": "o",
-                "index": 4,
+                "offset": 4,
                 "whitespace": false
             },
             {
                 "value": " ",
-                "index": 5,
+                "offset": 5,
                 "whitespace": true
             },
             {
                 "value": "w",
-                "index": 6,
+                "offset": 6,
                 "whitespace": false
             },
             {
                 "value": "o",
-                "index": 7,
+                "offset": 7,
                 "whitespace": false
             },
             {
                 "value": "r",
-                "index": 8,
+                "offset": 8,
                 "whitespace": false
             },
             {
                 "value": "l",
-                "index": 9,
+                "offset": 9,
                 "whitespace": false
             },
             {
                 "value": "d",
-                "index": 10,
+                "offset": 10,
                 "whitespace": false
             }
         ]);
@@ -73,57 +73,57 @@ describe('CharPtrs', function() {
        assertJSON(CharPtrs.collapse('hello    world'), [
            {
                "value": "h",
-               "index": 0,
+               "offset": 0,
                "whitespace": false
            },
            {
                "value": "e",
-               "index": 1,
+               "offset": 1,
                "whitespace": false
            },
            {
                "value": "l",
-               "index": 2,
+               "offset": 2,
                "whitespace": false
            },
            {
                "value": "l",
-               "index": 3,
+               "offset": 3,
                "whitespace": false
            },
            {
                "value": "o",
-               "index": 4,
+               "offset": 4,
                "whitespace": false
            },
            {
                "value": " ",
-               "index": 8,
+               "offset": 8,
                "whitespace": true
            },
            {
                "value": "w",
-               "index": 9,
+               "offset": 9,
                "whitespace": false
            },
            {
                "value": "o",
-               "index": 10,
+               "offset": 10,
                "whitespace": false
            },
            {
                "value": "r",
-               "index": 11,
+               "offset": 11,
                "whitespace": false
            },
            {
                "value": "l",
-               "index": 12,
+               "offset": 12,
                "whitespace": false
            },
            {
                "value": "d",
-               "index": 13,
+               "offset": 13,
                "whitespace": false
            }
        ]);
