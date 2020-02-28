@@ -1,6 +1,6 @@
 {
   "name": "polar-epub",
-  "version": "1.90.34",
+  "version": "1.90.35",
   "description": "EPUB support in Polar.",
   "main": "index.js",
   "scripts": {
@@ -14,12 +14,12 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "mocha": "^6.2.0",
-    "polar-test": "^1.90.34",
+    "polar-test": "^1.90.35",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
   "dependencies": {
     "epubjs": "^0.3.85",
-    "polar-shared": "^1.90.34"
+    "polar-shared": "^1.90.35"
   }
 }
