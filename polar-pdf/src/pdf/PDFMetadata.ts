@@ -7,6 +7,7 @@ import {PathOrURLStr} from 'polar-shared/src/util/Strings';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {PDFProps} from "./PDFProps";
 import {StreamRangeFactory, Streams} from "polar-shared/src/util/Streams";
+import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 
 console.log("Running with pdf.js version: " + PDFJS.version);
 
@@ -41,9 +42,12 @@ export class PDFMetadata {
 
     }
 
-    public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<PDFMeta> {
+    public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<IParsedDocMeta> {
 
         const isPath = ! URLs.isURL(docPathOrURL);
+
+
+        // FIXME: use URLs.toURL for this
 
         if (isPath && ! await Files.existsAsync(docPathOrURL)) {
             throw new Error("File does not exist at path: " + docPathOrURL);
@@ -117,35 +121,4 @@ export class PDFMetadata {
     }
 
 }
-
-
-export interface PDFMeta {
-
-    readonly fingerprint: string;
-
-    readonly nrPages: number;
-
-    readonly title?: string;
-
-    readonly creator?: string;
-
-    readonly description?: string;
-
-    readonly doi?: string;
-
-    /**
-     * A link back to the page hosting the content.  This may not be the
-     * original resource though and might be a page overview of the resource.
-     *
-     * This is often used with PDFs to have a 'meta' page for it.
-     */
-    readonly link?: string;
-
-    /**
-     * Full / raw list of metadata properties.
-     */
-    readonly props: Readonly<PDFProps>;
-
-}
-
 
