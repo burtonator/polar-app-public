@@ -1,0 +1,257 @@
+<html>
+<body>
+
+<div style="overflow: auto; height: 100%; margin: 20px;">
+    <div id="primary">This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+    <div>This is my content</div>
+</div>
+
+<script>
+
+    // FIXME: use this to find the top and bottom so that we can clip the bounding rect..
+
+    function getScrollParent(node) {
+        if (node == null) {
+            return null;
+        }
+
+        if (node.scrollHeight > node.clientHeight) {
+            return node;
+        } else {
+            return getScrollParent(node.parentNode);
+        }
+    }
+
+    class Rects {
+
+        static intersectRect(a, b) {
+
+            const result = {
+                top: Math.max(a.top, b.top),
+                bottom: Math.min(a.bottom, b.bottom),
+                // bottom: a.bottom,
+                left: a.left,
+                right: a.right,
+                // left: Math.max(a.left, b.left),
+                // right: Math.min(a.right, b.right),
+            };
+
+            result.height = result.bottom - result.top;
+            result.width = result.right - result.left;
+
+            return result;
+
+        }
+
+    }
+
+    function test() {
+
+        let highlightElement = document.getElementById('highlight');
+
+        if (! highlightElement) {
+            highlightElement = document.createElement('div');
+            document.body.appendChild(highlightElement);
+        }
+
+        highlightElement.id = 'highlight';
+        highlightElement.style.position = 'fixed';
+        highlightElement.style.backgroundColor = 'rgba(255,255,0,0.5)';
+
+        // TODO insert it in the scroll parent with absolute positioning
+        // relative to the scroll parent
+
+        let element = document.querySelector("#primary");
+
+        // element.p
+
+        const scrollParent = getScrollParent(element);
+        const scrollParentRect = scrollParent.getBoundingClientRect();
+
+        const rect = element.getBoundingClientRect();
+
+        const intersectRect = Rects.intersectRect(rect, scrollParentRect);
+
+        console.log("rect: " , rect);
+        console.log("scroll parent rect: " , scrollParentRect);
+        console.log("intersectRect: " , intersectRect);
+
+        if (intersectRect.height > 0 && intersectRect.width > 0) {
+
+            highlightElement.style.display = 'block';
+
+            highlightElement.style.top = `${intersectRect.top}px`;
+            highlightElement.style.bottom = `${intersectRect.bottom}px`;
+            highlightElement.style.left = `${intersectRect.left}px`;
+            highlightElement.style.right = `${intersectRect.right}px`;
+            highlightElement.style.width = `${intersectRect.width}px`;
+            highlightElement.style.height = `${intersectRect.height}px`;
+
+        } else {
+            highlightElement.style.display = 'none';
+        }
+
+    }
+
+    test();
+
+    // FIXME: page resize too...
+    document.addEventListener('scroll', () => test(), true);
+
+    // const shadow = element.attachShadow({mode: 'open'});
+    //
+    // const highlightElement = document.createElement("div");
+    // highlightElement.style.position = 'absolute';
+    // highlightElement.style.left = '0';
+    // highlightElement.style.right = '0';
+    // highlightElement.style.width = '10px';
+    // highlightElement.style.height = '10px';
+    //
+    // shadow.appendChild(highlightElement);
+
+</script>
+
+</body>
+</html>
