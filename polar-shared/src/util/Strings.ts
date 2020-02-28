@@ -112,6 +112,28 @@ export class Strings {
 
     }
 
+    /**
+     * Return true if the given character is whitespace.
+     */
+    public static isWhitespace(c: string) {
+
+        switch (c) {
+
+            case ' ':
+            case '\f':
+            case '\r':
+            case '\n':
+            case '\v':
+            case '\t':
+            case '\u00A0':
+            case '\u2029':
+                return true;
+            default:
+                return false;
+        }
+
+    }
+
 }
 
 /**

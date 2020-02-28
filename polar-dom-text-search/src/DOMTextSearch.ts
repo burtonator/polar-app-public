@@ -1,32 +1,7 @@
-/**
- * Provides a framework to search text within a DOM and jump to to the elements
- * that contain that text.
- */
 
 
-import {createSiblings} from "../../polar-shared/src/util/Functions";
-
-/**
- * Return true if the given character is whitespace.
- */
-function isWhitespace(c: string) {
-
-    switch (c) {
-
-        case ' ':
-        case '\f':
-        case '\r':
-        case '\n':
-        case '\v':
-        case '\t':
-        case '\u00A0':
-        case '\u2029':
-            return true;
-        default:
-            return false;
-    }
-
-}
+import {createSiblings} from "polar-shared/src/util/Functions";
+import {Strings} from "polar-shared/src/util/Strings";
 
 export interface Pointer {
 
@@ -47,9 +22,19 @@ export interface Pointer {
 
 }
 
+
+export interface MutableNodeTextRegion {
+    start: number;
+    end: number;
+    node: Node;
+}
+
+export interface NodeTextRegion extends Readonly<MutableNodeTextRegion> {
+}
+
 export type PointerIndex = ReadonlyArray<Pointer>;
 
-class TextIndex {
+export class TextIndex {
 
     /**
      *
@@ -75,41 +60,45 @@ class TextIndex {
     /**
      * Join hits to get contiguous text on nodes that need highlights.
      */
-    // public join(hits: ReadonlyArray<Node>) {
-    //
-    //     for (const entry of createSiblings(hits)) {
-    //
-    //         const prevNode = hits.prev?.node;
-    //         const currNode = hits.curr.node;
-    //
-    //         if (prevNode !== currNode) {
-    //             result[result.length] = [];
-    //         }
-    //
-    //         result[result.length - 1].push(entry.curr);
-    //
-    //     }
-    //
-    //     return result;
-    //
-    // }
+    public join(pointers: ReadonlyArray<Pointer>): ReadonlyArray<NodeTextRegion> {
 
-    public find(text: string) {
+        const result: MutableNodeTextRegion[] = [];
 
-        const str = this.toString();
-        const idx = str.indexOf(text);
+        for (const entry of createSiblings(pointers)) {
 
-        if (idx !== -1) {
+            const prevNode = entry.prev?.node;
+            const currNode = entry.curr.node;
 
-            const hits = this.lookup(idx, idx + text.length);
-
-            for (const hit of hits) {
-                // FIXME: noop right now..
+            if (prevNode !== currNode) {
+                // should be true on the first one so that we create an empty
+                // array the first time for the first record
+                result.push({
+                    start: entry.curr.offset,
+                    end: entry.curr.offset,
+                    node: entry.curr.node
+                });
             }
+
+            result[result.length - 1].end = entry.curr.offset;
 
         }
 
-        // no match
+        return result;
+
+    }
+
+    public find(text: string, start: number = 0): ReadonlyArray<NodeTextRegion> | undefined {
+
+        const str = this.toString();
+        const idx = str.indexOf(text, start);
+
+        if (idx !== -1) {
+
+            const pointers = this.lookup(idx, idx + text.length);
+            return this.join(pointers);
+
+        }
+
         return undefined;
 
     }
@@ -120,6 +109,10 @@ class TextIndex {
 
 }
 
+/**
+ * Provides a framework to search text within a DOM and jump to to the elements
+ * that contain that text.
+ */
 export class DOMTextSearch {
 
     public static createIndex() {
@@ -158,9 +151,12 @@ export class DOMTextSearch {
                 console.log("'" + text + "'");
 
                 for (let idx = 0; idx < text.length; ++idx) {
+
                     const c = text[idx];
 
-                    if (isWhitespace(c)) {
+                    // FIXME: we need to elide MULTIPLE characters not ignore all
+                    // whitespace
+                    if (Strings.isWhitespace(c)) {
                         continue;
                     }
 
