@@ -115,16 +115,16 @@ export class TextIndex {
  */
 export class DOMTextSearch {
 
-    public static createIndex() {
+    public static createIndex(doc: Document = document,
+                              pointers: Pointer[] = []) {
 
         // TODO: we DO have to factor in iframe but we have to have a pointer
         // back to the element's view ... though I am not sure about that really
         // ... I think we would just need to compute BACKWARDS to the root view.
-        const blacklist = ['script', 'iframe', 'link', 'style', 'head', 'object', 'video', 'img'];
+        const blacklist = ['script', 'link', 'style', 'head', 'object', 'video', 'img'];
 
-        const treeWalker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
-
-        const pointers: Pointer[] = [];
+        // tslint:disable-next-line:no-bitwise
+        const treeWalker = doc.createTreeWalker(doc.documentElement, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
 
         let node;
         while (true) {
@@ -133,6 +133,11 @@ export class DOMTextSearch {
 
             if (! node) {
                 break;
+            }
+
+            if (node instanceof HTMLIFrameElement && node.contentDocument) {
+                this.createIndex(node.contentDocument, pointers);
+                continue;
             }
 
             if (! node.parentElement) {
@@ -166,25 +171,6 @@ export class DOMTextSearch {
                     pointers.push(pointer);
 
                 }
-
-                // for (let idx = 0; idx < text.length; ++idx) {
-                //
-                //     const c = text[idx];
-                //
-                //     // FIXME: we need to elide MULTIPLE characters not ignore all
-                //     // whitespace
-                //     if (Strings.isWhitespace(c)) {
-                //         continue;
-                //     }
-                //
-                //     const pointer: Pointer = {
-                //         offset: idx,
-                //         node,
-                //         value: c
-                //     };
-                //
-                //     pointers.push(pointer);
-                // }
 
             }
 
