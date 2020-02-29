@@ -117,6 +117,9 @@ export class DOMTextSearch {
 
     public static createIndex() {
 
+        // TODO: we DO have to factor in iframe but we have to have a pointer
+        // back to the element's view ... though I am not sure about that really
+        // ... I think we would just need to compute BACKWARDS to the root view.
         const blacklist = ['script', 'iframe', 'link', 'style', 'head', 'object', 'video', 'img'];
 
         const treeWalker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
