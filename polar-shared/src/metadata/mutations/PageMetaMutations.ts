@@ -1,6 +1,9 @@
 import {IDocMeta} from "../IDocMeta";
 import {IPageMeta} from "../IPageMeta";
 import {IDStr} from "../../util/Strings";
+import {Logger} from "../../logger/Logger";
+
+const log = Logger.create();
 
 export interface IDValue {
     readonly id: IDStr;
@@ -31,7 +34,7 @@ export abstract class MutatorDelegate<V extends IDValue> {
 
     public delete(docMeta: IDocMeta, value: V): boolean {
 
-        return this.forEachPageMeta(docMeta, (pageMeta, values) => {
+        const result = this.forEachPageMeta(docMeta, (pageMeta, values) => {
 
             if (values[value.id]) {
                 delete values[value.id];
@@ -41,6 +44,14 @@ export abstract class MutatorDelegate<V extends IDValue> {
             return false;
 
         });
+
+        if (! result) {
+            log.warn("Failed to delete value: ", value);
+        } else {
+            console.log("Deleted record: ", value);
+        }
+
+        return result;
 
     }
 

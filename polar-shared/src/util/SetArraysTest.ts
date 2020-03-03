@@ -35,13 +35,35 @@ describe('SetArrays', function() {
 
         });
 
+        it("production test", function () {
+
+            const currentAnnotationsIDs = [
+                "14SqXCxSH7",
+                "1u6HgNYwi1",
+                "12ei8khyNG",
+                "12ix7CTNgt"
+            ];
+
+            const newAnnotationIDs = [
+                "14SqXCxSH7",
+                "1u6HgNYwi1",
+                "12ei8khyNG"
+            ];
+
+            const deleteIDs = SetArrays.difference(currentAnnotationsIDs, newAnnotationIDs);
+
+            assert.equal(deleteIDs.length, 1);
+            assert.equal(deleteIDs[0], '12ix7CTNgt');
+
+        });
+
     });
 
     describe('union', function() {
 
         it("duplicates", function () {
 
-            assert.deepEqual(SetArrays.union([1], [1,2]), [1,2]);
+            assert.deepEqual(SetArrays.union([1], [1, 2]), [1, 2]);
 
         });
 

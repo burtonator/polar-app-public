@@ -23,6 +23,11 @@ export class ArrayStream<T> {
         return this;
     }
 
+    public sort(compareFn: (a: T, b: T) => number): ArrayStream<T> {
+        this.values = [...this.values].sort((a, b) => compareFn(a, b));
+        return this;
+    }
+
     // public tail(limit: number): ArrayStream<T> {
     //     this.values = Arrays.tail(this.values, limit);
     //     return this;
