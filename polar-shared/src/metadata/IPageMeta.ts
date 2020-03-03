@@ -15,6 +15,14 @@ import {IThumbnail} from "./IThumbnail";
  */
 export type PageNumber = number;
 
+export interface IFlashcardMap {
+    [id: string]: IFlashcard;
+}
+
+export interface ICommentMap {
+    [id: string]: IComment;
+}
+
 export interface IPageMeta {
 
     /**
@@ -48,7 +56,7 @@ export interface IPageMeta {
     /**
      *
      */
-    readonly flashcards: { [id: string]: IFlashcard };
+    readonly flashcards: IFlashcardMap;
 
     /**
      * An index of test highlights for the page.
