@@ -6,6 +6,7 @@ import {
 
 import {IDocDetail} from "polar-shared/src/metadata/IDocDetail";
 import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {SlugStr} from "polar-shared/src/util/Slugs";
 
 export interface BaseDocPreview extends IDocDetail {
 
@@ -45,6 +46,12 @@ export interface DocPreviewCached extends BaseDocPreview {
     readonly datastoreURL: URLStr;
 
     readonly cached: true;
+
+    /**
+     * The slug of the document that's computed from the title.  We use this
+     * to compute the full URL
+     */
+    readonly slug: SlugStr | undefined;
 
 }
 

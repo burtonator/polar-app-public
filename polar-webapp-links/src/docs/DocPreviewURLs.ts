@@ -1,23 +1,39 @@
 import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {Slugs, SlugStr} from "polar-shared/src/util/Slugs";
 
-export interface DocPreviewURLWithHashcode {
+// export interface DocPreviewURLWithHashcode {
+//     readonly id: IDStr;
+// }
+//
+// export interface DocPreviewURLWithHashcodeAndTitle {
+//     readonly id: IDStr;
+//     readonly title: string;
+//     readonly slug: SlugStr;
+// }
+//
+// export interface DocPreviewURLWithHashcodeCategoryAndTitle {
+//     readonly id: IDStr;
+//     readonly category: string;
+//     readonly title: string;
+//     readonly slug: SlugStr;
+// }
+//
+// export type DocPreviewURL = DocPreviewURLWithHashcode |
+//                             DocPreviewURLWithHashcodeAndTitle |
+//                             DocPreviewURLWithHashcodeCategoryAndTitle;
+
+export interface DocPreviewURL {
     readonly id: IDStr;
+    readonly category: string | undefined;
+    readonly title: string | undefined;
+    readonly slug: SlugStr | undefined;
 }
 
-export interface DocPreviewURLWithHashcodeAndTitle {
+export interface ParsedDocPreviewURL {
     readonly id: IDStr;
-    readonly title: string;
+    readonly category: string | undefined;
+    readonly slug: SlugStr | undefined;
 }
-
-export interface DocPreviewURLWithHashcodeCategoryAndTitle {
-    readonly id: IDStr;
-    readonly category: string;
-    readonly title: string;
-}
-
-export type DocPreviewURL = DocPreviewURLWithHashcode |
-                            DocPreviewURLWithHashcodeAndTitle |
-                            DocPreviewURLWithHashcodeCategoryAndTitle;
 
 export class DocPreviewURLs {
 
@@ -37,7 +53,7 @@ export class DocPreviewURLs {
      * This way the URL has metadata in it that MAY represent the category
      * but we can also include the title for SEO purposes too.
      */
-    public static parse(url: URLStr): DocPreviewURL | undefined {
+    public static parse(url: URLStr): ParsedDocPreviewURL | undefined {
 
         const regexp = "(https://app\.getpolarized\.io)?/d/(([^/]+)/)?(([^/]+)/)?(0x[^/]+)$";
 
@@ -63,20 +79,20 @@ export class DocPreviewURLs {
         if (matches[3] && matches[4]) {
             // we have a category, title, and hashcode
             const category = decodeURIComponent(matches[3]);
-            const title = decodeURIComponent(matches[5]);
+            const slug = decodeURIComponent(matches[5]);
 
-            return {category, title, id};
+            return {category, slug, id};
 
         }
 
         if (matches[2]) {
             // we have a title, and hashcode
-            const title = decodeURIComponent(matches[3]);
-            return {title, id};
+            const slug = decodeURIComponent(matches[3]);
+            return {slug, id, category: undefined};
 
         }
 
-        return {id};
+        return {id, slug: undefined, category: undefined};
 
     }
 
@@ -84,12 +100,42 @@ export class DocPreviewURLs {
 
         const opts = <any> doc;
 
-        if (opts.category && opts.title) {
-            return `https://app.getpolarized.io/d/${encodeURIComponent(opts.category)}/${encodeURIComponent(opts.title)}/0x${doc.id}`;
+        const createSlugParam = (): string | undefined => {
+
+            if (opts.slug) {
+                // use the raw slug but encode it of course
+                return encodeURIComponent(opts.slug);
+            }
+
+            if (opts.title) {
+                // there is no slug so use the old title mechanism.  This should
+                // not impact many URLs .... only about 700.
+                return encodeURIComponent(opts.title);
+            }
+
+            return undefined;
+
+        };
+
+        const slug = createSlugParam();
+
+        if (opts.category && slug) {
+
+            const params = {
+                category: encodeURIComponent(opts.category),
+                slug
+            };
+
+            return `https://app.getpolarized.io/d/${params.category}/${params.slug}/0x${doc.id}`;
         }
 
-        if (opts.title) {
-            return `https://app.getpolarized.io/d/${encodeURIComponent(opts.title)}/0x${doc.id}`;
+        if (slug) {
+
+            const params = {
+                slug
+            };
+
+            return `https://app.getpolarized.io/d/${params.slug}/0x${doc.id}`;
         }
 
         return `https://app.getpolarized.io/d/0x${doc.id}`;
