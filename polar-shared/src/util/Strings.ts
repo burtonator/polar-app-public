@@ -112,10 +112,38 @@ export class Strings {
 
     }
 
+    public static truncateOnWordBoundary(text: string,
+                                         length: number,
+                                         useEllipsis: boolean = true ) {
+
+        const truncated = text.substring(0, length);
+
+        const end = truncated.lastIndexOf(' ');
+
+        if (end > -1) {
+
+            const truncatedOnBoundary = truncated.substring(0, end);
+
+            if (useEllipsis) {
+                return truncatedOnBoundary  + ' ...';
+            }
+
+            return truncatedOnBoundary;
+
+        }
+
+        return truncated;
+
+    }
+
     /**
      * Return true if the given character is whitespace.
+     *
      */
     public static isWhitespace(c: string) {
+
+        // TODO: only one character works. If it's longer than one character
+        // this will break
 
         switch (c) {
 

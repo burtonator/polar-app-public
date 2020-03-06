@@ -3,6 +3,19 @@ import {Strings} from './Strings';
 
 describe('Strings', function() {
 
+    describe('truncateOnWordBoundary', function() {
+
+        it("basic", function () {
+            assert.equal(Strings.truncateOnWordBoundary("this is a test", 5), "this ...");
+            assert.equal(Strings.truncateOnWordBoundary("this is a test", 6), "this ...");
+            assert.equal(Strings.truncateOnWordBoundary("this is a test", 7), "this ...");
+            assert.equal(Strings.truncateOnWordBoundary("this is a test", 8), "this is ...");
+            assert.equal(Strings.truncateOnWordBoundary("0123456789", 5), "01234");
+        });
+
+    });
+
+
     describe('integers', function() {
 
         it("basic", function () {
@@ -39,7 +52,7 @@ describe('Strings', function() {
 
         it("basic", function() {
 
-            assert.equal(Strings.toUnixLineNewLines('this\r\nis\r\nlong\r\n'), 'this\nis\nlong\n')
+            assert.equal(Strings.toUnixLineNewLines('this\r\nis\r\nlong\r\n'), 'this\nis\nlong\n');
         });
 
     });

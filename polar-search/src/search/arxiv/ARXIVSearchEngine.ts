@@ -17,6 +17,10 @@ export class ARXIVSearchEngine implements search.Engine {
 
     public async executeQuery(): Promise<search.Results> {
 
+        //
+        //
+        // http://export.arxiv.org/api/query?search_query=10.1063/1.1383585
+
         const url = `http://export.arxiv.org/api/query?search_query=${this.request.q}`;
 
         const response = await Fetches.fetch(url);
