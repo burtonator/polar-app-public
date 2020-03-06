@@ -9,12 +9,12 @@ describe('DocPreviewURLs', function() {
         assertJSON(DocPreviewURLs.parse('https://app.getpolarized.io/d/linux/this%20is%20about%20the%20linux%20kernel/0x12345'), {
             "id": "12345",
             "category": "linux",
-            "title": "this is about the linux kernel"
+            "slug": "this is about the linux kernel"
         });
 
         assertJSON(DocPreviewURLs.parse('https://app.getpolarized.io/d/this%20is%20about%20the%20linux%20kernel/0x12345'), {
             "id": "12345",
-            "title": "this is about the linux kernel",
+            "slug": "this is about the linux kernel",
             category: undefined
         });
 
