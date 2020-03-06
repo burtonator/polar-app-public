@@ -31,7 +31,6 @@ export interface IVersionedObject {
      * id: 10102, guid: 10101
      *
      */
-
     guid: IDStr;
 
     /**
