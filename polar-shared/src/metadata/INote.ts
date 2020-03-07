@@ -1,7 +1,7 @@
 import {Text} from "./Text";
-import {IVersionedObject} from "./IVersionedObject";
+import {IAnnotation} from "./IAnnotation";
 
-export interface INote extends IVersionedObject {
+export interface INote extends IAnnotation {
 
     /**
      * The content of this note.

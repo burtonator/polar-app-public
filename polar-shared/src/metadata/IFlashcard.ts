@@ -1,8 +1,8 @@
-import {IVersionedObject} from "./IVersionedObject";
 import {FlashcardType} from "./FlashcardType";
 import {Text} from "./Text";
+import {IAnnotation} from "./IAnnotation";
 
-export interface IFlashcard extends IVersionedObject {
+export interface IFlashcard extends IAnnotation {
 
     /**
      * The type of this flashcard.
