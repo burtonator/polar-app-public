@@ -49,4 +49,12 @@ export class TagDescriptors {
 
     }
 
+    /**
+     * We filter out tags that only have members.
+     */
+    public static filterWithMembers(tags: ReadonlyArray<TagDescriptor>): ReadonlyArray<TagDescriptor> {
+        return tags.filter(tag => tag.count > 0);
+    }
+
+
 }

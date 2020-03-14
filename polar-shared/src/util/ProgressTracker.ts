@@ -143,6 +143,8 @@ export class ProgressStates {
 
 }
 
+export type ProgressCallback = (progress: Progress) => void;
+
 /**
  * A unique task ID for the job using the ProgressTracker.
  */

@@ -1,5 +1,21 @@
 import {Arrays} from "./Arrays";
 
+export type ToKeyFunction = (value: any) => string;
+
+function defaultToKey(value: any): string {
+
+    if (typeof value === 'string') {
+        return value;
+    }
+
+    if (typeof value === 'number') {
+        return '' + value;
+    }
+
+    throw new Error("Must be string or number");
+
+}
+
 /**
  * Similar to Java streams but for Javascript/Typescript arrays.
  *
@@ -26,6 +42,19 @@ export class ArrayStream<T> {
     public sort(compareFn: (a: T, b: T) => number): ArrayStream<T> {
         this.values = [...this.values].sort((a, b) => compareFn(a, b));
         return this;
+    }
+
+    public unique(toKey: ToKeyFunction = defaultToKey): ArrayStream<T> {
+
+        const set: {[key: string]: T} = {};
+
+        for (const value of this.values) {
+            const key = toKey(value);
+            set[key] = value;
+        }
+
+        return new ArrayStream(Object.values(set));
+
     }
 
     // public tail(limit: number): ArrayStream<T> {
