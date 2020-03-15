@@ -2,6 +2,8 @@ import {IDocMeta} from "../IDocMeta";
 import {IPageMeta} from "../IPageMeta";
 import {IDStr} from "../../util/Strings";
 import {Logger} from "../../logger/Logger";
+import {Hashcodes} from "../../util/Hashcodes";
+import {ISODateTimeStrings} from "../ISODateTimeStrings";
 
 const log = Logger.create();
 
@@ -21,8 +23,16 @@ export abstract class MutatorDelegate<V extends IDValue> {
 
         return this.forEachPageMeta(docMeta, (pageMeta, values) => {
 
+            // we have to delete the existing object by ID, then also set the
+            // lastUpdated field, then replace both of these fields, and update
+            // the object.
+
+            const id = Hashcodes.createRandomID();
+            const lastUpdated = ISODateTimeStrings.create();
+
             if (values[value.id]) {
-                values[value.id] = value;
+                delete values[value.id];
+                values[id] = {...value, id, lastUpdated};
                 return true;
             }
 
