@@ -57,6 +57,11 @@ export class ArrayStream<T> {
 
     }
 
+    public reverse(): ArrayStream<T> {
+        const reversed = [...this.values].reverse();
+        return new ArrayStream(reversed);
+    }
+
     // public tail(limit: number): ArrayStream<T> {
     //     this.values = Arrays.tail(this.values, limit);
     //     return this;
@@ -70,10 +75,24 @@ export class ArrayStream<T> {
         return new ArrayStream<V>(mapped);
     }
 
+    public first(): T | undefined {
+
+        if (this.values.length > 0) {
+            return this.values[0];
+        }
+
+        return undefined;
+
+    }
+
     public collect(): ReadonlyArray<T> {
         return [...this.values];
     }
 
+}
+
+export function arrayStream<T>(values: ReadonlyArray<T>): ArrayStream<T> {
+    return new ArrayStream<T>(values);
 }
 
 export class ArrayStreams {
