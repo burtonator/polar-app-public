@@ -107,6 +107,22 @@ export class ProgressTracker {
 
 }
 
+export class ProgressTrackers {
+
+    /**
+     * Create a single task, that's already terminated.
+     */
+    public static singleTaskTerminated(id: string) {
+        const progressTracker = new ProgressTracker({
+            id,
+            total: 1
+        });
+
+        return progressTracker.terminate();
+    }
+
+}
+
 export type ProgressListener = (progress: Progress) => void;
 
 export type UnixTimeMS = number;
