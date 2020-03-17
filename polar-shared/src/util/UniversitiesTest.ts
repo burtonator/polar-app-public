@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {arrayStream} from "./ArrayStreams";
-import {toUniversityTuple, Universities, University} from "./Universities";
+import {Universities, University} from "./Universities";
 
 describe('Universities', function() {
 
@@ -11,6 +11,10 @@ describe('Universities', function() {
                 .group(current => current.name)
                 .filter(current => current.length > 1)
                 .collect();
+
+        // FIXME: some of the domains are broken but not sure how many...
+        // FIXME: I need a unique id for each record so we can reference them
+        // properly
 
         for (const dupe of dupes) {
             const uniq = arrayStream(dupe)
@@ -49,13 +53,39 @@ describe('Universities', function() {
                 .collect();
 
         for (const university of universities) {
-            const tuple = toUniversityTuple(university);
+            const tuple = Universities.toTuple(university);
             const tupleWithDomain = [...tuple];
             const json = JSON.stringify(tupleWithDomain);
             console.log(`${json},`);
         }
 
-        // console.log(JSON.stringify(universities, null, '  '));
+    });
+
+    xit("sorted", function() {
+
+        interface UniversityWithDomain extends University {
+            readonly domain: string;
+        }
+
+        const toUniversityWithDomain = (university: University): UniversityWithDomain => {
+
+            const domain = university.domains[0];
+
+            return {...university, domain};
+
+        };
+
+        const universities =
+            arrayStream(Universities.get())
+                .map(toUniversityWithDomain)
+                .collect();
+
+        for (const university of universities) {
+            const tuple = Universities.toTuple(university);
+            const tupleWithDomain = [...tuple];
+            const json = JSON.stringify(tupleWithDomain);
+            console.log(`${json},`);
+        }
 
     });
 

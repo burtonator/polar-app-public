@@ -14,22 +14,11 @@ export interface DomainNameToUniversityMap {
 }
 
 export type UniversityName = string;
-export type UniversityDomains = ReadonlyArray<DomainNameStr>;
 export type UniversityDomain = DomainNameStr;
+export type UniversityDomains = ReadonlyArray<UniversityDomain>;
 
-export type UniversityTuple = [UniversityName, UniversityDomains, TwoLetterCountryCode, CountryNameStr, DomainNameStr];
+export type UniversityTuple = [UniversityName, UniversityDomains, TwoLetterCountryCode, CountryNameStr, UniversityDomain];
 
-export function toUniversityTuple(university: University): UniversityTuple {
-
-    return [
-        university.name,
-        university.domains,
-        university.country.code,
-        university.country.name,
-        university.domain
-    ];
-
-}
 
 export interface University {
     readonly name: string;
@@ -87,6 +76,24 @@ export class Universities {
     public static getByDomain(domain: DomainNameStr): University | undefined {
         return domainNameToUniversityMap[domain] || undefined;
     }
+
+    public static toTupleJSON(university: University) {
+        const tuple = this.toTuple(university);
+        return JSON.stringify(tuple);
+    }
+
+    public static toTuple(university: University): UniversityTuple {
+
+        return [
+            university.name,
+            university.domains,
+            university.country.code,
+            university.country.name,
+            university.domain
+        ];
+
+    }
+
 
 }
 
