@@ -6,7 +6,7 @@ import {Hashcodes} from "./Hashcodes";
 
 describe('Universities', function() {
 
-    it("require unique", function() {
+    xit("require unique", function() {
 
         const dupes =
             arrayStream(Universities.get())
