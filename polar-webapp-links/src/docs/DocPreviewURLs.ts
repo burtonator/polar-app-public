@@ -1,4 +1,4 @@
-import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {IDStr, PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {Slugs, SlugStr} from "polar-shared/src/util/Slugs";
 
 // export interface DocPreviewURLWithHashcode {
@@ -93,6 +93,28 @@ export class DocPreviewURLs {
         }
 
         return {id, slug: undefined, category: undefined};
+
+    }
+
+    public static canonicalize(url: URLStr | PathStr): string {
+
+        const parsed  = DocPreviewURLs.parse(url);
+
+        if (parsed) {
+
+            if (parsed.category && parsed.slug) {
+                return `/d/:category/:slug/:id`;
+            }
+
+            if (parsed.slug) {
+                return `/d/:slug/:id`;
+            }
+
+            return `/d/:id`;
+
+        }
+
+        return url;
 
     }
 

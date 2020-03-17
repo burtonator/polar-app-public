@@ -24,6 +24,20 @@ describe('DocPreviewURLs', function() {
 
     });
 
+
+    it("canonicalize", function() {
+
+        assert.equal(DocPreviewURLs.canonicalize('https://app.getpolarized.io/d/linux/this%20is%20about%20the%20linux%20kernel/0x12345'), '/d/:category/:slug/:id');
+        assert.equal(DocPreviewURLs.canonicalize('https://app.getpolarized.io/d/this%20is%20about%20the%20linux%20kernel/0x12345'), '/d/:slug/:id');
+        assert.equal(DocPreviewURLs.canonicalize('https://app.getpolarized.io/d/0x12345'), '/d/:id');
+
+        assert.equal(DocPreviewURLs.canonicalize('/d/linux/this%20is%20about%20the%20linux%20kernel/0x12345'), '/d/:category/:slug/:id');
+        assert.equal(DocPreviewURLs.canonicalize('/d/this%20is%20about%20the%20linux%20kernel/0x12345'), '/d/:slug/:id');
+        assert.equal(DocPreviewURLs.canonicalize('/d/0x12345'), '/d/:id');
+
+    });
+
+
     it("create", function() {
 
         assert.equal(DocPreviewURLs.create({
