@@ -1,4 +1,5 @@
 import {DATA} from "./UniversitiesData";
+import {IDStr} from "./Strings";
 
 export type CountryNameStr = string;
 export type TwoLetterCountryCode = string;
@@ -17,7 +18,14 @@ export type UniversityName = string;
 export type UniversityDomain = DomainNameStr;
 export type UniversityDomains = ReadonlyArray<UniversityDomain>;
 
-export type UniversityTuple = [UniversityName, UniversityDomains, TwoLetterCountryCode, CountryNameStr, UniversityDomain];
+export type UniversityTuple = [
+    UniversityName,
+    UniversityDomains,
+    TwoLetterCountryCode,
+    CountryNameStr,
+    UniversityDomain,
+    IDStr
+];
 
 
 export interface University {
@@ -25,6 +33,7 @@ export interface University {
     readonly domains: ReadonlyArray<DomainNameStr>;
     readonly country: Country;
     readonly domain: string;
+    readonly id: IDStr;
 }
 
 function createUniversities(): ReadonlyArray<University> {
@@ -35,6 +44,7 @@ function createUniversities(): ReadonlyArray<University> {
         const countryCode = uni[2];
         const countryName = uni[3];
         const domain = uni[4];
+        const id = uni[5];
 
         return {
             name, domains,
@@ -42,7 +52,8 @@ function createUniversities(): ReadonlyArray<University> {
                 code: countryCode,
                 name: countryName
             },
-            domain
+            domain,
+            id
         };
 
     };
@@ -89,7 +100,8 @@ export class Universities {
             university.domains,
             university.country.code,
             university.country.name,
-            university.domain
+            university.domain,
+            university.id
         ];
 
     }

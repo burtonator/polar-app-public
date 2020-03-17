@@ -1,6 +1,8 @@
 import {assert} from 'chai';
 import {arrayStream} from "./ArrayStreams";
 import {Universities, University} from "./Universities";
+import {IDStr} from "./Strings";
+import {Hashcodes} from "./Hashcodes";
 
 describe('Universities', function() {
 
@@ -33,17 +35,31 @@ describe('Universities', function() {
 
     });
 
-    xit("add domain", function() {
+    it("require unique ID", function() {
 
-        interface UniversityWithDomain extends University {
-            readonly domain: string;
+        const dupes =
+            arrayStream(Universities.get())
+                .group(current => current.id)
+                .filter(current => current.length > 1)
+                .collect();
+
+        console.log(JSON.stringify(dupes, null, '  '));
+        assert.equal(dupes.length, 0);
+
+    });
+
+
+    it("add ID", function() {
+
+        interface UniversityWithID extends University {
+            readonly id: IDStr;
         }
 
-        const toUniversityWithDomain = (university: University): UniversityWithDomain => {
+        const toUniversityWithDomain = (university: University): UniversityWithID => {
 
-            const domain = university.domains[0];
+            const id = Hashcodes.createID(university);
 
-            return {...university, domain};
+            return {...university, id};
 
         };
 
@@ -60,34 +76,5 @@ describe('Universities', function() {
         }
 
     });
-
-    xit("sorted", function() {
-
-        interface UniversityWithDomain extends University {
-            readonly domain: string;
-        }
-
-        const toUniversityWithDomain = (university: University): UniversityWithDomain => {
-
-            const domain = university.domains[0];
-
-            return {...university, domain};
-
-        };
-
-        const universities =
-            arrayStream(Universities.get())
-                .map(toUniversityWithDomain)
-                .collect();
-
-        for (const university of universities) {
-            const tuple = Universities.toTuple(university);
-            const tupleWithDomain = [...tuple];
-            const json = JSON.stringify(tupleWithDomain);
-            console.log(`${json},`);
-        }
-
-    });
-
 
 });
