@@ -1,6 +1,6 @@
 import {Arrays} from "./Arrays";
 
-export type ToKeyFunction = (value: any) => string;
+export type ToKeyFunction<T> = (value: T) => string;
 
 function defaultToKey(value: any): string {
 
@@ -44,7 +44,7 @@ export class ArrayStream<T> {
         return this;
     }
 
-    public unique(toKey: ToKeyFunction = defaultToKey): ArrayStream<T> {
+    public unique(toKey: ToKeyFunction<T> = defaultToKey): ArrayStream<T> {
 
         const set: {[key: string]: T} = {};
 
@@ -66,6 +66,24 @@ export class ArrayStream<T> {
     //     this.values = Arrays.tail(this.values, limit);
     //     return this;
     // }
+
+    /**
+     * Create groups by key and return the groups as a stream.
+     */
+    public group(toKey: ToKeyFunction<T> = defaultToKey): ArrayStream<ReadonlyArray<T>> {
+
+        const map: {[key: string]: ReadonlyArray<T>} = {};
+
+        for (const value of this.values) {
+            const key = toKey(value);
+
+            const entry = map[key] || [];
+            map[key] = [...entry, value];
+        }
+
+        return new ArrayStream<ReadonlyArray<T>>(Object.values(map));
+
+    }
 
     /**
      * Map over the values, returning a new ArrayStream.
