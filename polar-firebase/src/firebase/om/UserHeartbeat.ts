@@ -24,7 +24,7 @@ export class UserHeartbeats {
         return new Collections(this.firestoreProvider(), this.COLLECTION);
     }
 
-    public static create(uid: UserIDStr): UserHeartbeat {
+    public static create(uid: UserIDStr | undefined): UserHeartbeat {
 
         const id = Hashcodes.createRandomID();
         const created = ISODateTimeStrings.create();
