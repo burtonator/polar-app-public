@@ -13,6 +13,7 @@ import {
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
+import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
 
 export class UserHeartbeats {
 
@@ -31,9 +32,10 @@ export class UserHeartbeats {
         const platform = Platforms.toSymbol(Platforms.get())
         const machine = MachineIDs.get();
         const version = Version.get();
+        const runtime = AppRuntime.get();
 
         return {
-            id, created, uid, platform, machine, version
+            id, created, uid, platform, machine, version, runtime
         };
 
     }
@@ -66,7 +68,6 @@ export interface UserHeartbeat {
 
     readonly version: VersionStr;
 
-    // TODO we should add the appRuntimeType BUT we can't because it requires
-    // electron ...
+    readonly runtime: AppRuntimeID;
 
 }
