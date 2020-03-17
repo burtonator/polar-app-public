@@ -15,6 +15,39 @@ export class Version {
 
     }
 
+    public static parsed(version: VersionStr = Version.get()): IVersion {
+
+        const split = version.split(".");
+
+        return {
+            major: split[0],
+            minor: split[1],
+            sub: split[2]
+        };
+
+    }
+
+    public static tokenized(version: VersionStr = Version.get()): IVersionTokens {
+        const parsed = this.parsed(version);
+        return {
+            version_major: parsed.major,
+            version_minor: parsed.major + '.' + parsed.minor,
+            version,
+        };
+    }
+
+}
+
+export interface IVersion {
+    readonly major: string;
+    readonly minor: string;
+    readonly sub: string;
+}
+
+export interface IVersionTokens {
+    readonly version_major: string;
+    readonly version_minor: string;
+    readonly version: string;
 }
 
 export type VersionStr = string;

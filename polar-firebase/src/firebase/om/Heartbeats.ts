@@ -14,6 +14,8 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
 import {PlatformStr, Platforms} from "polar-shared/src/util/Platforms";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {Device, Devices} from "polar-shared/src/util/Devices";
 
 export class Heartbeats {
 
@@ -34,7 +36,7 @@ export class Heartbeats {
         const doc = firestore.collection(this.COLLECTION)
                              .doc(heartbeat.id);
 
-        await doc.set(heartbeat);
+        await doc.set(Dictionaries.onlyDefinedProperties(heartbeat));
 
     }
 
@@ -42,13 +44,15 @@ export class Heartbeats {
 
         const id = Hashcodes.createRandomID();
         const created = ISODateTimeStrings.create();
-        const platform = Platforms.toSymbol(Platforms.get())
         const machine = MachineIDs.get();
+
+        const platform = Platforms.toSymbol(Platforms.get());
         const version = Version.get();
         const runtime = AppRuntime.get();
+        const device = Devices.get();
 
         return {
-            id, created, uid, platform, machine, version, runtime
+            id, created, uid, platform, machine, version, runtime, device
         };
 
     }
@@ -83,6 +87,10 @@ export interface HeartbeatsInit {
 
     readonly runtime: AppRuntimeID;
 
+    /**
+     * phone/tablet/desktop
+     */
+    readonly device: Device;
 }
 
 export interface Heartbeat extends HeartbeatsInit {
