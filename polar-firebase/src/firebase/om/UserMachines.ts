@@ -1,8 +1,8 @@
 import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
-import {MachineID, MachineIDs} from "../../../../../polar-bookshelf/web/js/util/MachineIDs";
 import {CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
+import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 
 export class UserMachines {
 

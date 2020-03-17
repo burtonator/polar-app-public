@@ -1,9 +1,17 @@
-import {MachineID, MachineIDs} from "../../../../../polar-bookshelf/web/js/util/MachineIDs";
-import {CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
-import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {
+    CollectionNameStr,
+    Collections,
+    FirestoreProvider,
+    UserIDStr
+} from "../Collections";
+import {
+    ISODateTimeString,
+    ISODateTimeStrings
+} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 
 export class Heartbeats {
 

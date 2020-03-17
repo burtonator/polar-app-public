@@ -288,7 +288,7 @@ export interface WriteBatchLike {
 }
 
 export interface DocumentReferenceLike {
-    get():  Promise<DocumentSnapshotLike>;
+    get(): Promise<DocumentSnapshotLike>;
     set(data: DocumentDataLike, options?: SetOptionsLike): Promise<any>;
 }
 
