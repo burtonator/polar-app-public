@@ -12,6 +12,8 @@ import {Version, VersionStr} from "polar-shared/src/util/Version";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
+import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
+import {PlatformStr, Platforms} from "polar-shared/src/util/Platforms";
 
 export class Heartbeats {
 
@@ -38,17 +40,16 @@ export class Heartbeats {
 
     public static create(uid: UserIDStr | undefined): HeartbeatsInit {
 
-        const timestamp = ISODateTimeStrings.create();
-        const interval = ISODateTimeStrings.toISODateStringRoundedToHour(timestamp);
-
-        // tslint:disable-next-line:variable-name
-        const machine_id = MachineIDs.get();
-
-        const id = Hashcodes.create({machine_id, interval});
-
+        const id = Hashcodes.createRandomID();
+        const created = ISODateTimeStrings.create();
+        const platform = Platforms.toSymbol(Platforms.get())
+        const machine = MachineIDs.get();
         const version = Version.get();
+        const runtime = AppRuntime.get();
 
-        return {id, machine_id, version, interval, timestamp, uid};
+        return {
+            id, created, uid, platform, machine, version, runtime
+        };
 
     }
 
@@ -56,26 +57,31 @@ export class Heartbeats {
 
 export interface HeartbeatsInit {
 
+    /**
+     * The UD created which is just a random / unique ID
+     */
     readonly id: IDStr;
 
-    readonly machine_id: MachineID;
+    /**
+     * When this heartbeat was created and written to the database.
+     */
+    readonly created: ISODateTimeString;
+
+    /**
+     * The user UD that generated this heartbeat.
+     */
+    readonly uid: UserIDStr | undefined;
+
+    /**
+     * The user's platform .
+     */
+    readonly platform: PlatformStr;
+
+    readonly machine: MachineID;
 
     readonly version: VersionStr;
 
-    /**
-     * The rounded time interval (hour) that this event happened.
-     */
-    readonly interval: ISODateTimeString;
-
-    /**
-     * The actual timestamp that this happened.
-     */
-    readonly timestamp: ISODateTimeString;
-
-    /**
-     * The optional UID that generated this heartbeat.
-     */
-    readonly uid?: UserIDStr;
+    readonly runtime: AppRuntimeID;
 
 }
 
