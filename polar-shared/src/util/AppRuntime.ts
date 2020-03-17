@@ -8,6 +8,10 @@ export class AppRuntime {
 
     public static get(): AppRuntimeID {
 
+        if (! window) {
+            return 'node';
+        }
+
         if (window.process.type) {
             return 'electron';
         } else {
@@ -18,5 +22,5 @@ export class AppRuntime {
 
 }
 
-export type AppRuntimeID = 'electron' | 'browser';
+export type AppRuntimeID = 'electron' | 'browser' | 'node';
 
