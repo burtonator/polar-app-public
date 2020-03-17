@@ -8,7 +8,7 @@ export class AppRuntime {
 
     public static get(): AppRuntimeID {
 
-        if (! window) {
+        if (typeof window === 'undefined') {
             return 'node';
         }
 
