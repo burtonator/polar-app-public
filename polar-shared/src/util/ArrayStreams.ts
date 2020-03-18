@@ -16,6 +16,10 @@ function defaultToKey(value: any): string {
 
 }
 
+export interface TypedDictionary<T> {
+    [key: string]: T;
+}
+
 /**
  * Similar to Java streams but for Javascript/Typescript arrays.
  *
@@ -105,6 +109,20 @@ export class ArrayStream<T> {
 
     public collect(): ReadonlyArray<T> {
         return [...this.values];
+    }
+
+    // TODO: this result should be readonly
+    public toMap(toKey: ToKeyFunction<T> = defaultToKey): TypedDictionary<T> {
+
+        const map: TypedDictionary<T> = {};
+
+        for (const value of this.values) {
+            const key = toKey(value);
+            map[key] = value;
+        }
+
+        return map;
+
     }
 
 }
