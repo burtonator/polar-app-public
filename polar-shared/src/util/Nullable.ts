@@ -35,3 +35,13 @@ export class Nullable<T> {
     }
 
 }
+
+export function nullToUndefined<T>(value: T | null): T | undefined {
+
+    if (value === null) {
+        return undefined;
+    }
+
+    return value;
+
+}
