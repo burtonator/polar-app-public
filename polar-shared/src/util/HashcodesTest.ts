@@ -10,7 +10,7 @@ describe('Hashcodes', function() {
 
         it("basic", function () {
 
-            let hashcode = Hashcodes.create("asdf");
+            const hashcode = Hashcodes.create("asdf");
 
             assert.equal(hashcode, "1aibZzMnnHwqHd9cmMb2QrRdgyBj5ppNHgCTqxqggN8KRN4jtu");
 
