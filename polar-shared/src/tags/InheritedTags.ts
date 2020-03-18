@@ -15,6 +15,10 @@ export interface InheritedTag extends Tag {
 
 }
 
+export function isInheritedTag(tag: Tag | InheritedTag): tag is InheritedTag {
+    const anyTag = <any> tag;
+    return ['doc', 'self'].includes(anyTag.source);
+}
 
 export interface IInheritedTagMap {
     [id: string]: InheritedTag;
