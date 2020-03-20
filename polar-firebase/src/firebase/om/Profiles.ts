@@ -37,10 +37,11 @@ export interface ProfileInit {
      */
     readonly links?: ReadonlyArray<URLStr>;
 
-    // /**
-    //  * The physical location for the user.
-    //  */
-    // readonly location?: string;
+    /**
+     * The physical location for the user.
+     */
+    readonly location?: string;
+
     //
     //
     // readonly fieldOfStudy?: FieldOfStudy;
@@ -66,3 +67,4 @@ export interface ProfileIDRecord {
 }
 
 export type ProfileRecordTuple<T> = [T, Profile | undefined];
+
