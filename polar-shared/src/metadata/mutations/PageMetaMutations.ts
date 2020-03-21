@@ -27,7 +27,11 @@ export abstract class MutatorDelegate<V extends IDValue> {
             // lastUpdated field, then replace both of these fields, and update
             // the object.
 
-            const id = Hashcodes.createRandomID();
+            // TODO: this is probably wrong. I want to migrate to a way to make
+            // the annotations completely immutable so that every mutation
+            // creates a new annotation with a new ID but the same GUID but there
+            // are some serious bugs about implementing this.
+            const id = value.id;
             const lastUpdated = ISODateTimeStrings.create();
 
             if (values[value.id]) {
