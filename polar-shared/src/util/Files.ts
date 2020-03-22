@@ -7,6 +7,7 @@ import {FilePaths} from "./FilePaths";
 import {Providers} from "./Providers";
 import {DurationStr, TimeDurations} from './TimeDurations';
 import {StreamRangeFactory} from "./Streams";
+import { Latch } from "./Latch";
 
 const ENABLE_ATOMIC_WRITES = true;
 
@@ -36,6 +37,8 @@ class Promised {
     public linkAsync = promisify(fs.link);
 
 }
+
+const WRITE_FILE_MUTEXES: {[path: string]: Latch<boolean>} = {};
 
 export class Files {
 
@@ -359,7 +362,7 @@ export class Files {
 
         return (start: number, end: number) => {
             return fs.createReadStream(path, {start, end});
-        }
+        };
 
     }
 
@@ -417,6 +420,33 @@ export class Files {
 
         }
 
+        const acquireMutex = async () => {
+
+            // We need a mutex for this so that we don't attempt to write too the
+            // same file twice.  The writeFileAsync might happen in parallel for
+            // the same file so we need to prevent that from happening.
+
+            let mutex: Latch<boolean> | null;
+
+            // tslint:disable-next-line:no-conditional-assignment
+            while ((mutex = WRITE_FILE_MUTEXES[path])) {
+                // we have to first wait for the current one.
+                await mutex;
+            }
+
+            // now create a new latch that will act as our mutex
+            const latch = new Latch<boolean>();
+            WRITE_FILE_MUTEXES[path] = latch;
+            return latch;
+
+        };
+
+        const mutex = await acquireMutex();
+
+        const releaseMutex = () => {
+            mutex.resolve(true);
+        };
+
         try {
 
             await this._writeFileAsync(path, data, options);
@@ -430,9 +460,10 @@ export class Files {
 
             if (atomic && ! failed) {
                 await Files.renameAsync(path, targetPath);
+                // TODO: what if the rename fails, we need to remove the tmp file
             }
 
-            // TODO: what if the rename fails, we need to remove the tmp file
+            releaseMutex();
 
         }
 
@@ -453,7 +484,7 @@ export class Files {
 
             const existing = options.existing ? options.existing : 'copy';
 
-            const fileRef = <FileHandle>data;
+            const fileRef = <FileHandle> data;
 
             if (existing === 'link') {
 
