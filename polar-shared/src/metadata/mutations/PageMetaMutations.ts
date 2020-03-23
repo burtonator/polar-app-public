@@ -35,7 +35,7 @@ export abstract class MutatorDelegate<V extends IDValue> {
             const lastUpdated = ISODateTimeStrings.create();
 
             if (values[value.id]) {
-                delete values[value.id];
+                // delete values[value.id];
                 values[id] = {...value, id, lastUpdated};
                 return true;
             }
