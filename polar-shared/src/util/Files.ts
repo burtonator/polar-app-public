@@ -426,28 +426,41 @@ export class Files {
             // same file twice.  The writeFileAsync might happen in parallel for
             // the same file so we need to prevent that from happening.
 
-            let mutex: Latch<boolean> | null;
-
             // tslint:disable-next-line:no-conditional-assignment
-            while ((mutex = WRITE_FILE_MUTEXES[path])) {
-                // we have to first wait for the current one.
-                await mutex;
+            while (true) {
+
+                const mutex = WRITE_FILE_MUTEXES[path];
+
+                if (mutex) {
+                    // we have to first wait for the current one.
+                    await mutex;
+                } else {
+                    break;
+                }
+
             }
 
             // now create a new latch that will act as our mutex
-            const latch = new Latch<boolean>();
-            WRITE_FILE_MUTEXES[path] = latch;
-            return latch;
+            const mutex = new Latch<boolean>();
+            WRITE_FILE_MUTEXES[path] = mutex!;
+            return mutex;
 
         };
 
-        const mutex = await acquireMutex();
+        let mutex: Latch<boolean> | undefined;
 
         const releaseMutex = () => {
-            mutex.resolve(true);
+
+            if (mutex) {
+                mutex.resolve(true);
+                delete WRITE_FILE_MUTEXES[path];
+            }
+
         };
 
         try {
+
+            mutex = await acquireMutex();
 
             await this._writeFileAsync(path, data, options);
 
