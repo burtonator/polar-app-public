@@ -12,7 +12,7 @@ export class AppRuntime {
             return 'node';
         }
 
-        if (window.process.type) {
+        if (window?.process?.type) {
             return 'electron';
         } else {
             return 'browser';
