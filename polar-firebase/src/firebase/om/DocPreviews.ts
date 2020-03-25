@@ -63,6 +63,16 @@ export interface DocPreviewUncached extends BaseDocPreview {
 
 export type DocPreview = DocPreviewCached | DocPreviewUncached;
 
+export interface Range {
+    readonly start: IDStr;
+    readonly end: IDStr;
+}
+
+export interface ListOpts {
+    readonly size: number;
+    readonly range?: Range;
+}
+
 export class DocPreviews {
 
     public static firestoreProvider: FirestoreProvider;
@@ -77,8 +87,36 @@ export class DocPreviews {
         await this.collections().set(doc.urlHash, doc);
     }
 
-    public static async list(size: number): Promise<ReadonlyArray<DocPreview>> {
-        const snapshot = await this.collections().collection().limit(size).get();
+    public static async list(opts: ListOpts): Promise<ReadonlyArray<DocPreview>> {
+
+        const createQuery = () => {
+
+            if (opts.range) {
+
+                console.log("Using range query for: ", opts.range);
+
+                // go over a range so that we can specify a subset of the
+                // documents for faster response times.
+
+                this.collections()
+                    .collection()
+                    .limit(100)
+                    .orderBy('id', 'asc')
+                    .startAt(opts.range.start)
+                    .endBefore(opts.range.end);
+                
+            }
+
+            console.log("Using full list quuery");
+
+            return this.collections().collection().limit(opts.size);
+
+        };
+
+        const query = createQuery();
+
+        const snapshot = await query.get();
+
         return snapshot.docs.map(doc => doc.data() as DocPreview);
     }
 

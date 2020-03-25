@@ -199,7 +199,7 @@ export class Collections {
             hasNext(): boolean {
                 return hasNext;
             }
-        }
+        };
 
     }
 
@@ -334,8 +334,10 @@ export interface QueryLike {
     limit(limit: number): QueryLike;
     offset(offset: number): QueryLike;
     orderBy(fieldPath: string, directionStr?: OrderByDirectionLike): QueryLike;
+    // orderByKey(): QueryLike;
     startAt(...fieldValues: any[]): QueryLike;
     startAfter(...fieldValues: any[]): QueryLike;
+    endAt(...fieldValues: any[]): QueryLike;
     endBefore(...fieldValues: any[]): QueryLike;
 }
 export type WhereFilterOpLike = '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
