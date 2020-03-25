@@ -592,7 +592,7 @@ declare namespace _pdfjs {
   }
 
   class PDFFindController {
-    constructor(options: PDFFindControllerOptions);
+    constructor(options: PDFFindControllerOptions | any);
     reset(): void;
     nextMatch(): void;
     executeCommand(cmd: string, state: FindCommandState): void;
