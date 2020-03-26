@@ -20,6 +20,16 @@
 // and pick symbols from this namespace to export in a shape that
 // resembles the API for PDFJS.
 declare namespace _pdfjs {
+
+  export interface PDFTreeNode {
+    title: string;
+    bold: boolean;
+    italic: boolean;
+    color: number[]; // [r,g,b]
+    dest: any;
+    items: PDFTreeNode[];
+  }
+
   //
   // Convenience types
   //

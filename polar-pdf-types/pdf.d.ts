@@ -54,6 +54,7 @@ declare module 'pdfjs-dist' {
   export import addLinkAttributes = _pdfjs.addLinkAttributes;
   export import GlobalWorkerOptions = _pdfjs.GlobalWorkerOptions;
   export import apiCompatibilityParams = _pdfjs.apiCompatibilityParams;
+  export import PDFTreeNode = _pdfjs.PDFTreeNode;
 
   //
   // Convenience types that are used often.
