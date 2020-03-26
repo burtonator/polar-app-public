@@ -10,6 +10,8 @@ import {SlugStr} from "polar-shared/src/util/Slugs";
 
 export interface BaseDocPreview extends IDocDetail {
 
+    readonly id: IDStr;
+
     /**
      * The hashcode for the URL which we can lookup easily.
      */
@@ -84,7 +86,7 @@ export class DocPreviews {
     }
 
     public static async set(doc: DocPreview) {
-        await this.collections().set(doc.urlHash, doc);
+        await this.collections().set(doc.id, doc);
     }
 
     public static async list(opts: ListOpts): Promise<ReadonlyArray<DocPreview>> {
@@ -101,7 +103,7 @@ export class DocPreviews {
                 return this.collections()
                            .collection()
                            .limit(opts.size)
-                           .orderBy('id', 'asc')
+                           .orderBy('urlHash', 'asc')
                            .startAt(opts.range.start)
                            .endBefore(opts.range.end);
                 
