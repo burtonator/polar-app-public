@@ -98,16 +98,16 @@ export class DocPreviews {
                 // go over a range so that we can specify a subset of the
                 // documents for faster response times.
 
-                this.collections()
-                    .collection()
-                    .limit(100)
-                    .orderBy('id', 'asc')
-                    .startAt(opts.range.start)
-                    .endBefore(opts.range.end);
+                return this.collections()
+                           .collection()
+                           .limit(opts.size)
+                           .orderBy('id', 'asc')
+                           .startAt(opts.range.start)
+                           .endBefore(opts.range.end);
                 
             }
 
-            console.log("Using full list quuery");
+            console.log("Using full list query");
 
             return this.collections().collection().limit(opts.size);
 
