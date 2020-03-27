@@ -1,6 +1,6 @@
 {
   "name": "@types/polar-react-pdf",
-  "version": "1.100.9",
+  "version": "1.100.10",
   "bugs": {
     "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/issues"
   },
@@ -16,7 +16,7 @@
     }
   ],
   "dependencies": {
-    "@types/pdfjs-dist": "^1.100.9",
+    "@types/pdfjs-dist": "^1.100.10",
     "@types/react": "=16.9.17"
   },
   "deprecated": false,
