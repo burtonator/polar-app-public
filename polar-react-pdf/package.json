@@ -1,0 +1,133 @@
+{
+  "name": "polar-react-pdf",
+  "version": "1.100.8",
+  "description": "Display PDFs in your React app as easily as if they were images.",
+  "main": "dist/umd/entry.js",
+  "module": "dist/esm/entry.js",
+  "source": "src/entry.js",
+  "scripts": {
+    "build": "npm run-script build-js-all && npm run-script copy-styles",
+    "build-js-all": "npm run-script build-js-esm && npm run-script build-js-umd",
+    "build-js-esm": "cross-env BABEL_ENV=production-esm babel src -d dist/esm --ignore **/*.spec.js,**/*.spec.jsx",
+    "build-js-umd": "cross-env BABEL_ENV=production-umd babel src -d dist/umd --ignore **/*.spec.js,**/*.spec.jsx",
+    "clean": "rimraf dist",
+    "copy-styles": "node ./copy-styles.js",
+    "jest": "jest",
+    "jest-coverage": "jest --coverage",
+    "lint": "eslint sample/ src/ test/ --ext .jsx,.js",
+    "prepublishOnly": "yarn clean && yarn build",
+    "test": "yarn lint && yarn jest"
+  },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "collectCoverageFrom": [
+      "**/src/**.{js,jsx}",
+      "!**/src/entry.js",
+      "!**/src/entry.*.js",
+      "!**/src/pdf.worker.entry.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "testPathIgnorePatterns": [
+      "utils.js"
+    ]
+  },
+  "keywords": [
+    "pdf",
+    "pdf-viewer",
+    "react"
+  ],
+  "author": {
+    "name": "Wojciech Maj",
+    "email": "kontakt@wojtekmaj.pl"
+  },
+  "contributors": [
+    {
+      "name": "Anenth",
+      "email": "anenthvishnu@gmail.com"
+    },
+    {
+      "name": "Artur Termenji",
+      "email": "atermenji@gmail.com"
+    },
+    {
+      "name": "Bart Van Houtte",
+      "email": "bart.van.houtte@ading.be"
+    },
+    {
+      "name": "Felipe Lacerda",
+      "email": "fegolac@gmail.com"
+    },
+    {
+      "name": "Julia Kieserman",
+      "email": "kieserman.julia@gmail.com"
+    },
+    {
+      "name": "Lucas Simkins",
+      "email": "lucas.simkins@gmail.com"
+    },
+    {
+      "name": "Niklas Närhinen",
+      "email": "niklas@narhinen.net"
+    },
+    {
+      "name": "Robert Scott",
+      "email": "rs@robsco.info"
+    },
+    {
+      "name": "Thomas McCarthy",
+      "email": "tom@tomm.cc"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@babel/runtime": "^7.0.0",
+    "make-cancellable-promise": "^1.0.0",
+    "make-event-props": "^1.1.0",
+    "merge-class-names": "^1.1.1",
+    "pdfjs-dist": "2.2.228",
+    "prop-types": "^15.6.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.0",
+    "babel-jest": "^25.1.0",
+    "cross-env": "^7.0.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^25.1.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-test-renderer": "^16.7.0",
+    "rimraf": "^3.0.0",
+    "webpack": "^4.35.0"
+  },
+  "peerDependencies": {
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/",
+    "src/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wojtekmaj/react-pdf.git"
+  }
+}
