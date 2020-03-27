@@ -29,7 +29,13 @@ export class ReleaseMetadataParser {
             }
 
             const release = getFrontStr('release');
-            const date = Preconditions.assertPresent(getFrontStr('date'), 'date');
+            const date = getFrontStr('date');
+
+            if (! release || ! date) {
+                // TODO: use filters to process these in the future.
+                continue;
+            }
+
             const title = Preconditions.assertPresent(getFrontStr('title'), 'title');
             // tslint:disable-next-line:variable-name
             const video_embed = getFrontStr('video_embed');
