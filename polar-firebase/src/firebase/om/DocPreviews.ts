@@ -85,8 +85,9 @@ export class DocPreviews {
         return new Collections(this.firestoreProvider(), this.COLLECTION);
     }
 
-    public static async set(doc: DocPreview) {
+    public static async set(doc: DocPreview): Promise<DocPreview> {
         await this.collections().set(doc.id, doc);
+        return doc;
     }
 
     public static async list(opts: ListOpts): Promise<ReadonlyArray<DocPreview>> {

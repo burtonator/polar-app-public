@@ -17,7 +17,9 @@ export class Slugs {
 
         return Optional.of(text)
                 // first remove long runs of whitespace
-                .map(current => current.replace(/\\s+/g, ' '))
+                .map(current => current.replace(/[^a-zA-Z0-9]+/g, ' '))
+                // trim the string now
+                .map(current => current.trim())
                 // then split it by space
                 .map(current => current.split(' '))
                 // remove the stopwords
