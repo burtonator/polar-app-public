@@ -33,6 +33,15 @@ export class ArrayStream<T> {
     constructor(private values: ReadonlyArray<T>) {
     }
 
+    /**
+     * Debug handler to trace the state of the stream by giving you all the values
+     * to call a function and debug.
+     */
+    public debug(handler: (values: ReadonlyArray<T>) => void): ArrayStream<T> {
+        handler([...this.values]);
+        return this;
+    }
+
     public filter(predicate: (record: T) => boolean): ArrayStream<T> {
         this.values = this.values.filter(record => predicate(record));
         return this;
