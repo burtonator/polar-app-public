@@ -55,7 +55,7 @@ export class DocPreviewURLs {
      */
     public static parse(url: URLStr): ParsedDocPreviewURL | undefined {
 
-        const regexp = "(https://app\.getpolarized\.io)?/d/(([^/]+)/)?(([^/]+)/)?(0x[^/]+)$";
+        const regexp = "(https://app\.getpolarized\.io)?/d/(([^/]+)/)?(([^/]+)/)?(0x[^/?]+)$";
 
         const matches = url.match(regexp);
 
