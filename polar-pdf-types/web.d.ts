@@ -147,11 +147,14 @@ declare namespace _pdfjs {
       content: any;
     }): void;
 
+    setDocument(doc: PDFDocumentProxy, baseURL: string | null): void;
+
     /**
      * @param {number} pageNum - page number.
      * @param {Object} pageRef - reference to the page.
      */
     cachePageRef(pageNum: number, pageRef: Ref): void;
+
   }
 
   //
@@ -204,13 +207,17 @@ declare namespace _pdfjs {
     const ENABLE_ENHANCE: TextLayerMode;
   }
 
+  interface EventBusOpts {
+    readonly dispatchToDOM?: boolean;
+  }
+
   /**
    * Simple event bus for an application. Listeners are attached using the
    * `on` and `off` methods. To raise an event, the `dispatch` method shall be
    * used.
    */
   class EventBus {
-    constructor();
+    constructor(opts?: EventBusOpts);
     on(eventName: string, listener: (...args: any[]) => void): void;
     off(eventName: string, listener: (...args: any[]) => void): void;
     dispatch(eventName: string, ...args: any[]): void;

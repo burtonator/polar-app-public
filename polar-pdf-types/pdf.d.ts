@@ -86,7 +86,9 @@ declare module 'pdfjs-dist' {
 declare module 'pdfjs-dist/web/pdf_viewer' {
   //
   // web/pdf_viewer.component.js
-  //
+
+  // the rendering queue is NOT exported and not sure why.
+  export import PDFRenderingQueue = _pdfjs.PDFRenderingQueue;
   export import PDFViewer = _pdfjs.PDFViewer;
   export import PDFSinglePageViewer = _pdfjs.PDFSinglePageViewer;
   export import PDFPageView = _pdfjs.PDFPageView;
