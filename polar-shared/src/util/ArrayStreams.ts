@@ -43,18 +43,23 @@ export class ArrayStream<T> {
     }
 
     public filter(predicate: (record: T) => boolean): ArrayStream<T> {
-        this.values = this.values.filter(record => predicate(record));
-        return this;
+        const values = this.values.filter(record => predicate(record));
+        return new ArrayStream<T>(values);
     }
 
     public head(limit: number): ArrayStream<T> {
-        this.values = Arrays.head(this.values, limit);
-        return this;
+        const values = Arrays.head(this.values, limit);
+        return new ArrayStream<T>(values);
     }
 
     public sort(compareFn: (a: T, b: T) => number): ArrayStream<T> {
-        this.values = [...this.values].sort((a, b) => compareFn(a, b));
-        return this;
+        const values = [...this.values].sort((a, b) => compareFn(a, b));
+        return new ArrayStream<T>(values);
+    }
+
+    public shuffle(): ArrayStream<T> {
+        const values = Arrays.shuffle(...this.values);
+        return new ArrayStream<T>(values);
     }
 
     public unique(toKey: ToKeyFunction<T> = defaultToKey): ArrayStream<T> {
