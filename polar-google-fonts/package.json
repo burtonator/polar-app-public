@@ -1,0 +1,11 @@
+{
+  "name": "polar-google-fonts",
+  "version": "1.100.14",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
