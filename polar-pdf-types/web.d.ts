@@ -498,11 +498,17 @@ declare namespace _pdfjs {
     imageResourcesPath?: string;
     renderInteractiveForms?: boolean;
     enablePrintAutoRotate?: boolean;
-    renderer?: RendererType;
+    renderer?: RendererType | 'svg' | 'canvas';
     enableWebGL?: boolean;
     useOnlyCssZoom?: boolean;
     maxCanvasPixels?: number;
     l10n?: IL10n;
+    findController?: PDFFindController;
+    pdfBugEnabled?: boolean;
+    disableRange?: boolean;
+    disableStream?: boolean;
+    disableAutoFetch?: boolean;
+    disableFontFace?: boolean;
   }
 
   //

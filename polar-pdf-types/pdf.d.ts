@@ -106,6 +106,9 @@ declare module 'pdfjs-dist/web/pdf_viewer' {
   export import GenericL10n = _pdfjs.GenericL10n;
   export import NullL10n = _pdfjs.NullL10n;
   export import TextLayerMode = _pdfjs.TextLayerMode;
+  export import RendererType = _pdfjs.RendererType;
+  export import PDFViewerOptions = _pdfjs.PDFViewerOptions;
+
 }
 
 // Webpack version.
