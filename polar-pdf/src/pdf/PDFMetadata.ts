@@ -11,17 +11,33 @@ import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 
 console.log("Running with pdf.js version: " + PDFJS.version);
 
-// TODO: I'm not sure this is the safest way to find the worker path.
-PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
+function isNode() {
+    return typeof window === 'undefined';
+}
+
+function computeWorkerSrcPath() {
+
+    // https://github.com/mozilla/pdf.js/issues/11762
+    //
+    // The latest version of PDFJS splits legacy JS and modern and for node
+    // we don't have ReadableStream so we have to use the ES5 version.
+
+    if (isNode()) {
+        return '../es5/build/pdf.worker.js';
+    }
+
+    return '../build/pdf.worker.js';
+
+}
+
+PDFJS.GlobalWorkerOptions.workerSrc = computeWorkerSrcPath();
 
 console.log("Running with GlobalWorkerOptions workerSrc: " + PDFJS.GlobalWorkerOptions.workerSrc);
 
 export class PDFMetadata {
 
     /**
-     * Return true if this is a
-     *
-     * @param streamRangeFactory
+     * Return true if this is a PDF
      */
     public static async isPDF(streamRangeFactory: StreamRangeFactory) {
 
