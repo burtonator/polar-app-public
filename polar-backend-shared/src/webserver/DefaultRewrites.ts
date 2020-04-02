@@ -39,6 +39,15 @@ export class DefaultRewrites {
                 ],
                 "destination": "/apps/preview/index.html"
             },
+
+            {
+                "source": [
+                    "/pdf/[a-zA-Z0-9]+",
+                    "/apps/pdf/[a-zA-Z0-9]+",
+                ],
+                "destination": "/apps/pdf/index.html"
+            },
+
             {
                 "source": "/group/:group/highlights",
                 "destination": "/apps/repository/index.html"

@@ -169,7 +169,7 @@ declare namespace _pdfjs {
     pdfDocument: PDFDocumentProxy;
     pdfViewer: PDFViewer;
     pdfHistory: PDFHistory;
-    setDocument(pdfDocument: PDFDocumentProxy, baseUrl: string): void;
+    setDocument(pdfDocument: PDFDocumentProxy, baseUrl: string | null): void;
     setViewer(pdfViewer: PDFViewer): void;
     setHistory(pdfHistory: PDFHistory): void;
   }
@@ -609,6 +609,8 @@ declare namespace _pdfjs {
     reset(): void;
     nextMatch(): void;
     executeCommand(cmd: string, state: FindCommandState): void;
+    setDocument(pdfDocument: PDFDocumentProxy): void;
+
   }
 
   //
@@ -737,17 +739,20 @@ declare namespace _pdfjs {
     id: PageIndex;
     scale: number;
     defaultViewport: PageViewport;
-    renderingQueue: PDFRenderingQueue;
-    textLayerFactory: IPDFTextLayerFactory;
+    renderingQueue?: PDFRenderingQueue;
     textLayerMode: TextLayerMode;
-    annotationLayerFactory: IPDFAnnotationLayerFactory;
-    imageResourcesPath?: string;
     renderInteractiveForms: boolean;
-    renderer: RendererType;
+    renderer: RendererType | 'svg' | 'canvas';
+    annotationLayerFactory?: IPDFAnnotationLayerFactory;
+    textLayerFactory?: IPDFTextLayerFactory;
+    imageResourcesPath?: string;
     enableWebGL?: boolean;
     useOnlyCssZoom?: boolean;
     maxCanvasPixels?: number;
-    l10n: IL10n;
+
+    // TODO not sure if this is needed or not.
+    l10n?: IL10n;
+
   }
 
   class PDFPageView {

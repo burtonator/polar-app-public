@@ -108,6 +108,8 @@ declare module 'pdfjs-dist/web/pdf_viewer' {
   export import TextLayerMode = _pdfjs.TextLayerMode;
   export import RendererType = _pdfjs.RendererType;
   export import PDFViewerOptions = _pdfjs.PDFViewerOptions;
+  export import FindCommandState = _pdfjs.FindCommandState;
+  export import PDFPageViewOptions = _pdfjs.PDFPageViewOptions;
 
 }
 
