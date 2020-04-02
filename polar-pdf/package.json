@@ -4,7 +4,9 @@
   "description": "Provides support for parsing and working with PDFs.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "test": "npm run-script mocha",
+    "mocha": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "karma": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "compile": "tsc"
   },
   "keywords": [],
@@ -16,11 +18,17 @@
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
     "tslint": "=6.1.1",
-    "typescript": "=3.8.3"
+    "typescript": "=3.8.3",
+    "karma-chai": "=0.1.0",
+    "karma-chrome-launcher": "=3.1.0",
+    "karma-mocha": "=1.3.0",
+    "karma-typescript": "=5.0.1",
+    "karma-typescript-es6-transform": "=5.0.1"
   },
   "dependencies": {
     "@types/node": "^12.11.1",
     "@types/pdfjs-dist": "../polar-pdf-types",
+    "karma": "^4.4.1",
     "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
     "polar-shared": "^1.100.14",
     "polar-test": "^1.100.14"
