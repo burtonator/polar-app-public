@@ -19,8 +19,8 @@
   "devDependencies": {
     "@types/react": "~16.9.11",
     "@types/react-dom": "~16.9.4",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
+    "tslint": "=6.1.1",
+    "typescript": "=3.8.3"
   },
   "peerDependencies": {
     "react": "~16.11.0",

@@ -29,7 +29,7 @@
     "@types/chrome": "0.0.91",
     "mocha": "^6.2.0",
     "polar-mocha": "^1.100.14",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
+    "tslint": "=6.1.1",
+    "typescript": "=3.8.3"
   }
 }

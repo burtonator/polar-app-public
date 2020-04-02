@@ -24,7 +24,7 @@
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "typescript": "^3.7.2"
+    "typescript": "=3.8.3"
   },
   "dependencies": {
     "polar-shared-webserver": "^1.100.14",

@@ -49,6 +49,10 @@ function computePackageDependency(packageData: any, name: string): PackageDepend
 
     const compute = (dependencies: any, type: DependencyType): PackageDependency | undefined => {
 
+        if (! dependencies) {
+            return undefined;
+        }
+
         const version = dependencies[name] || undefined;
 
         if (version) {
@@ -94,7 +98,7 @@ function exec() {
             if (args.version !== packageDependency.version) {
                 packageDependency.dependencies[args.pkg] = args.version;
                 writePackageData(packageData);
-                console.log(`Package successfully upgrade to ${args.version} (${packageDependency.type})`);
+                console.log(`Package successfully upgraded to ${args.version} (${packageDependency.type})`);
             } else {
                 console.warn(`Not writing upgraded package: (versions identical)`);
             }

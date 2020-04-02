@@ -13,8 +13,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/diff": "4.0.2",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
+    "tslint": "=6.1.1",
+    "typescript": "=3.8.3"
   },
   "dependencies": {
     "@types/node": "^12.11.1",

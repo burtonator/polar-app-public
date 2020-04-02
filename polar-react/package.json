@@ -13,8 +13,8 @@
     "@types/mocha": "^5.2.7",
     "mocha": "^6.2.0",
     "polar-test": "^1.100.14",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
+    "tslint": "=6.1.1",
+    "typescript": "=3.8.3"
   },
   "peerDependencies": {
     "@types/react": "~16.9.11",
