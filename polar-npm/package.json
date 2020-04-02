@@ -1,0 +1,28 @@
+{
+  "name": "polar-npm",
+  "version": "1.100.14",
+  "description": "Basic internal NPM commnds",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo no test",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "hello": "src/hello.js",
+    "npm-upgrade-pkg": "src/npm-upgrade-pkg.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^12.11.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
+}
