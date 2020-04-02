@@ -69,6 +69,10 @@ function computePackageDependency(packageData: any, name: string): PackageDepend
 
 }
 
+function writePackageData(packageData: any) {
+    fs.writeFileSync("./package.json", JSON.stringify(packageData, null, '  '));
+}
+
 function exec() {
 
     if (! fs.existsSync('./package.json')) {
@@ -83,10 +87,24 @@ function exec() {
 
     console.log(`Found package dependency for ${args.pkg}: ${packageDependency?.version}`);
 
-    if (packageDependency && args.version && args.version !== packageDependency?.version) {
+    if (packageDependency) {
 
-        packageDependency.dependencies[args.pkg] = args.version;
+        if (args.version) {
 
+            if (args.version !== packageDependency.version) {
+                packageDependency.dependencies[args.pkg] = args.version;
+                writePackageData(packageData);
+                console.log(`Package successfully upgrade to ${args.version} (${packageDependency.type})`);
+            } else {
+                console.warn(`Not writing upgraded package: (versions identical)`);
+            }
+
+        } else {
+            console.warn("Not writing upgraded package: (no version given)");
+        }
+
+    } else {
+        console.warn("Not writing upgraded package: (no package dependency)");
     }
 
 }
