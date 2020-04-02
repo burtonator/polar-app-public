@@ -236,6 +236,11 @@ export function createSiblings(arrayLikeObject: any) {
  */
 export type Callback = () => void;
 
+/**
+ * A callback with one argument.
+ */
+export type Callback1<T> = (value: T) => void;
+
 export const NULL_FUNCTION = () => { /* no op */ };
 
 export const ASYNC_NULL_FUNCTION = async () => { /* no op */ };
