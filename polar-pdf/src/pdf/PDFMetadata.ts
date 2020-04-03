@@ -26,7 +26,8 @@ function computeWorkerSrcPath() {
         return '../es5/build/pdf.worker.js';
     }
 
-    return '../build/pdf.worker.js';
+    // this should be in the browser so this should work.
+    return '/node_modules/pdfjs-dist/build/pdf.worker.js';
 
 }
 
