@@ -8,7 +8,7 @@ module.exports = function(config) {
         ],
 
         preprocessors: {
-            "**/*.ts": ["karma-typescript"]
+            "src/**/*.ts": ["karma-typescript"]
         },
 
         reporters: ["karma-typescript"],
