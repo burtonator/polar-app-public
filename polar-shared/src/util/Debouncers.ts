@@ -12,7 +12,7 @@ export namespace Debouncers {
     }
 
     export function create(callback: Callback,
-                           opts: DebouncerOpts = {interval: 250}) {
+                           opts: DebouncerOpts = {interval: 100}) {
 
         let timeout: object | undefined;
 
