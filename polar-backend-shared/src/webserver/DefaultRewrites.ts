@@ -42,8 +42,9 @@ export class DefaultRewrites {
 
             {
                 "source": [
-                    "/pdf/[a-zA-Z0-9]+",
-                    "/apps/pdf/[a-zA-Z0-9]+",
+                    "/pdf",
+                    "/pdf/:id",
+                    "/apps/pdf/:id",
                 ],
                 "destination": "/apps/pdf/index.html"
             },
