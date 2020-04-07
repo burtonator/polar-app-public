@@ -111,6 +111,22 @@ export class ArrayStream<T> {
         return new ArrayStream<V>(mapped);
     }
 
+    /**
+     * Map over the values, returning a new ArrayStream.
+     */
+    public flatMap<V>(mapper: (currentValue: T, index: number) => ReadonlyArray<V>): ArrayStream<V> {
+
+        const result: V[] = [];
+
+        for (let idx = 0; idx < this.values.length; ++idx) {
+            const mapped = mapper(this.values[idx], idx);
+            result.push(...mapped);
+        }
+
+        return new ArrayStream<V>(result);
+
+    }
+
     public first(): T | undefined {
 
         if (this.values.length > 0) {
