@@ -1,37 +1,16 @@
 import {Files} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import PDFJS from 'pdfjs-dist';
+import PDFJS, {PDFWorker} from 'pdfjs-dist';
 import {DOIs} from './DOIs';
 import {PathOrURLStr} from 'polar-shared/src/util/Strings';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {PDFProps} from "./PDFProps";
 import {StreamRangeFactory, Streams} from "polar-shared/src/util/Streams";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
+import {PDFWorkers} from "./PDFWorkers";
 
-console.log("Running with pdf.js version: " + PDFJS.version);
-
-function isNode() {
-    return typeof window === 'undefined';
-}
-
-function computeWorkerSrcPath() {
-
-    // https://github.com/mozilla/pdf.js/issues/11762
-    //
-    // The latest version of PDFJS splits legacy JS and modern and for node
-    // we don't have ReadableStream so we have to use the ES5 version.
-
-    if (isNode()) {
-        return '../es5/build/pdf.worker.js';
-    }
-
-    // this should be in the browser so this should work.
-    return '/node_modules/pdfjs-dist/build/pdf.worker.js';
-
-}
-
-PDFJS.GlobalWorkerOptions.workerSrc = computeWorkerSrcPath();
+PDFJS.GlobalWorkerOptions.workerSrc = PDFWorkers.computeWorkerSrcPath();
 
 console.log("Running with GlobalWorkerOptions workerSrc: " + PDFJS.GlobalWorkerOptions.workerSrc);
 
@@ -100,7 +79,10 @@ export class PDFMetadata {
             const toProps = () => {
                 const result: PDFProps = {};
 
-                const keys = Object.keys((<any> metadata)._metadata);
+                const anyMetadata = <any> metadata;
+
+                // TODO: on PDFJS 2.4 it's _metadataMap
+                const keys = Object.keys(anyMetadata._metadata || anyMetadata._metadataMap);
 
                 for (const key of keys) {
                     const value = metadata.get(key);

@@ -1,12 +1,10 @@
 import PDFJS from 'pdfjs-dist';
+import { PDFWorkers } from './PDFWorkers';
 
 export class PDFs {
 
-    /**
-     *
-     */
     public static getPDFJS() {
-        PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
+        PDFJS.GlobalWorkerOptions.workerSrc = PDFWorkers.computeWorkerSrcPath();
         return PDFJS;
     }
 
