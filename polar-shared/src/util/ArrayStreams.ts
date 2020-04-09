@@ -141,6 +141,10 @@ export class ArrayStream<T> {
         return [...this.values];
     }
 
+    public transferTo(callback: (values: ReadonlyArray<T>) => void) {
+        callback(this.values);
+    }
+
     // TODO: this result should be readonly
     public toMap(toKey: ToKeyFunction<T> = defaultToKey): TypedDictionary<T> {
 
@@ -161,10 +165,14 @@ export function arrayStream<T>(values: ReadonlyArray<T>): ArrayStream<T> {
     return new ArrayStream<T>(values);
 }
 
-export class ArrayStreams {
+export namespace ArrayStreams {
 
-    public static create<T>(values: ReadonlyArray<T>): ArrayStream<T> {
+    export function create<T>(values: ReadonlyArray<T>): ArrayStream<T> {
         return new ArrayStream<T>(values);
+    }
+
+    export function ofMapValues<T>(values: {[key: string]: T} | null | undefined): ArrayStream<T> {
+        return new ArrayStream<T>(Object.values(values || {}));
     }
 
 }
