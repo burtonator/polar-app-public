@@ -231,6 +231,10 @@ export function createSiblings(arrayLikeObject: any) {
     return Functions.createSiblings(arrayLikeObject);
 }
 
+export function nullableCallback<T>(delegate: Callback1<T> | undefined) {
+    return delegate || NULL_FUNCTION;
+}
+
 /**
  * A basic callback function.  No params and void return type.
  */
