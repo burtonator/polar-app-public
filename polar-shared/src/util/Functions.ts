@@ -243,7 +243,9 @@ export type Callback = () => void;
 /**
  * A callback with one argument.
  */
-export type Callback1<T> = (value: T) => void;
+export type Callback1<A> = (value: A) => void;
+export type Callback2<A, B> = (a: A, b: B) => void;
+export type Callback3<A, B, C> = (a: A, b: B, c: C) => void;
 
 export const NULL_FUNCTION = () => { /* no op */ };
 
