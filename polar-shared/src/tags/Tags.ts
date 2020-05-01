@@ -5,6 +5,7 @@ import {Dictionaries} from '../util/Dictionaries';
 import {SetArrays} from "../util/SetArrays";
 import {IDStr} from "../util/Strings";
 import {Arrays} from "../util/Arrays";
+import {arrayStream} from "../util/ArrayStreams";
 
 export type TagType = 'tag' | 'folder';
 
@@ -226,6 +227,16 @@ export class Tags {
         }
 
         return Object.values(index);
+
+    }
+
+    public static lookup(tags: ReadonlyArray<Tag>,
+                         tagsLiterals: ReadonlyArray<string>): ReadonlyArray<Tag> {
+
+        const tagMap = arrayStream(tags).toMap(current => current.id);
+
+        return tagsLiterals.map(current => tagMap[current])
+                           .filter(isPresent);
 
     }
 
