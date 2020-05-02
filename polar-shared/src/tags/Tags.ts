@@ -9,16 +9,16 @@ import {arrayStream} from "../util/ArrayStreams";
 
 export type TagType = 'tag' | 'folder';
 
-export class Tags {
+export namespace Tags {
 
-    public static sortByLabel(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+    export function sortByLabel(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
         return [...tags].sort((a, b) => a.label.localeCompare(b.label));
     }
 
-    public static regularTagsThenFolderTagsSorted(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+    export function regularTagsThenFolderTagsSorted(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
 
-        const regularTags = this.sortByLabel(this.onlyRegular(tags));
-        const folderTags = this.sortByLabel(this.onlyFolderTags(tags));
+        const regularTags = sortByLabel(onlyRegular(tags));
+        const folderTags = sortByLabel(onlyFolderTags(tags));
 
         return [...regularTags, ...folderTags];
 
@@ -27,18 +27,18 @@ export class Tags {
     /**
      * Only folders (no tags).
      */
-    public static onlyFolderTags(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+    export function onlyFolderTags(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
         return tags.filter(tag => tag.label.startsWith('/'));
     }
 
     /**
      * Only tags (no folders).
      */
-    public static onlyRegular<T extends Tag>(tags: ReadonlyArray<T>): ReadonlyArray<T> {
+    export function onlyRegular<T extends Tag>(tags: ReadonlyArray<T>): ReadonlyArray<T> {
         return tags.filter(tag => ! tag.label.startsWith('/'));
     }
 
-    public static create(label: string): Tag {
+    export function create(label: string): Tag {
         return {id: label, label};
     }
 
@@ -46,19 +46,19 @@ export class Tags {
      * Get a basename for a label without the prefix.
      * @param label
      */
-    public static basename(label: string): string {
+    export function basename(label: string): string {
         return Arrays.last(label.split('/'))!;
     }
 
-    public static assertValid(label: string) {
+    export function assertValid(label: string) {
 
-        if (!this.validate(label).isPresent()) {
+        if (!validate(label).isPresent()) {
             throw new Error("Invalid tag: " + label);
         }
 
     }
 
-    public static validate(label: string): Optional<string> {
+    export function validate(label: string): Optional<string> {
 
         if (!isPresent(label)) {
             return Optional.empty();
@@ -68,7 +68,7 @@ export class Tags {
             label = '#' + label;
         }
 
-        const strippedLabel = this.stripTag(label);
+        const strippedLabel = stripTag(label);
 
         if ( ! strippedLabel.isPresent()) {
             return Optional.empty();
@@ -82,9 +82,9 @@ export class Tags {
 
     }
 
-    public static validateTag(tag: Tag): Optional<Tag> {
+    export function validateTag(tag: Tag): Optional<Tag> {
 
-        if (this.validate(tag.label).isPresent()) {
+        if (validate(tag.label).isPresent()) {
             return Optional.of(tag);
         }
 
@@ -96,9 +96,9 @@ export class Tags {
      * Return true if all the tags are valid.  If no tags are given we return
      * true as the input set had no valid tags.
      */
-    public static tagsAreValid(...tags: Tag[]): boolean {
+    export function tagsAreValid(...tags: Tag[]): boolean {
 
-        return tags.map(tag => this.validateTag(tag).isPresent())
+        return tags.map(tag => validateTag(tag).isPresent())
                    .reduce((acc, curr) => ! acc ? false : curr, true);
 
     }
@@ -107,15 +107,15 @@ export class Tags {
      * Return tags that are invalid.
      * @param tags
      */
-    public static findInvalidTags(...tags: Tag[]): Tag[] {
-        return tags.filter(tag => ! this.validateTag(tag).isPresent());
+    export function findInvalidTags(...tags: Tag[]): Tag[] {
+        return tags.filter(tag => ! validateTag(tag).isPresent());
     }
 
-    public static findValidTags(...tags: Tag[]): Tag[] {
-        return tags.filter(tag => this.validateTag(tag).isPresent());
+    export function findValidTags(...tags: Tag[]): Tag[] {
+        return tags.filter(tag => validateTag(tag).isPresent());
     }
 
-    public static toMap(tags: ReadonlyArray<Tag>) {
+    export function toMap(tags: ReadonlyArray<Tag>) {
 
         const result: { [id: string]: Tag } = {};
 
@@ -130,9 +130,9 @@ export class Tags {
     /**
      * From a union of the two tag arrays...
      *
-     * TODO: this is actually a toSet or a intersection but not a union.
+     * TODO: is actually a toSet or a intersection but not a union.
      */
-    public static union(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+    export function union(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
 
         const result: { [id: string]: Tag } = {};
 
@@ -148,17 +148,17 @@ export class Tags {
      * that are not in set b
      *
      */
-    public static difference(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+    export function difference(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
         const diff = b.map(current => current.id);
         return a.filter(current => ! diff.includes(current.id));
     }
 
-    public static toIDs(tags: ReadonlyArray<Tag>) {
+    export function toIDs(tags: ReadonlyArray<Tag>) {
         return tags.map(current => current.id);
     }
 
-    public static stripTag(tag: TagStr): Optional<string> {
-        return this.stripTypedTag(this.stripTagInvalidChars(tag));
+    export function stripTag(tag: TagStr): Optional<string> {
+        return stripTypedTag(stripTagInvalidChars(tag));
     }
 
 
@@ -167,7 +167,7 @@ export class Tags {
      * just not usable in other systems like Twitter tags so users have to be careful.  But many people insist upon
      * them.
      */
-    public static stripTagInvalidChars(tag: TagStr): string {
+    export function stripTagInvalidChars(tag: TagStr): string {
         return tag.replace(/[- ]+/g, '');
     }
 
@@ -179,7 +179,7 @@ export class Tags {
      *
      * @VisibleForTesting
      */
-    public static stripTypedTag(tag: TagStr): Optional<string> {
+    export function stripTypedTag(tag: TagStr): Optional<string> {
 
         const match = tag.match(/:/g);
 
@@ -199,7 +199,7 @@ export class Tags {
         return Optional.of(noslashes.replace(/^#([^:/]+):([^:]+)$/g, '#$1$2'));
     }
 
-    public static parseTypedTag(value: string): Optional<TypedTag> {
+    export function parseTypedTag(value: string): Optional<TypedTag> {
 
         value = value.replace("#", "");
         const split = value.split(":");
@@ -213,8 +213,8 @@ export class Tags {
     /**
      * Find any records in the given array with the given tags.
      */
-    public static computeRecordsTagged<R extends TaggedRecord>(records: ReadonlyArray<R>,
-                                                               tags: ReadonlyArray<TagStr>): ReadonlyArray<R> {
+    export function computeRecordsTagged<R extends TaggedRecord>(records: ReadonlyArray<R>,
+                                                                 tags: ReadonlyArray<TagStr>): ReadonlyArray<R> {
 
         const index: {[id: string]: R} = {};
 
@@ -230,13 +230,27 @@ export class Tags {
 
     }
 
-    public static lookup(tags: ReadonlyArray<Tag>,
-                         tagsLiterals: ReadonlyArray<string>): ReadonlyArray<Tag> {
+    export type TagID = IDStr;
 
-        const tagMap = arrayStream(tags).toMap(current => current.id);
+    export type TagLabel = string;
 
-        return tagsLiterals.map(current => tagMap[current])
-                           .filter(isPresent);
+    /**
+     * A tag literal is either the id or the label.
+     */
+    export type TagLiteral = TagID | TagLabel;
+
+    /**
+     * Lookup a tag by its literal.  The input can be either a tag id or a label
+     * but we lookup against the ID.
+     */
+    export function lookupByTagLiteral(tags: ReadonlyArray<Tag>,
+                                       tagLabels: ReadonlyArray<TagLiteral>): ReadonlyArray<Tag> {
+
+        const tagMap = arrayStream(tags)
+            .toMap(current => current.id);
+
+        return tagLabels.map(current => tagMap[current])
+                        .filter(isPresent);
 
     }
 
