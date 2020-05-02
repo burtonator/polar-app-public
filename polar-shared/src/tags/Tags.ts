@@ -34,7 +34,7 @@ export class Tags {
     /**
      * Only tags (no folders).
      */
-    public static onlyRegular(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+    public static onlyRegular<T extends Tag>(tags: ReadonlyArray<T>): ReadonlyArray<T> {
         return tags.filter(tag => ! tag.label.startsWith('/'));
     }
 
