@@ -104,7 +104,7 @@ export class Functions {
     /**
      * Calls the given callback as a promise which we can await.
      */
-    public static async withTimeout(callback: () => any, timeout: number = 1) {
+    public static withTimeout(callback: () => any, timeout: number = 1) {
 
         setTimeout(callback, timeout);
 
