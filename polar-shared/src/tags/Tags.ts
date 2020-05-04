@@ -254,6 +254,28 @@ export namespace Tags {
 
     }
 
+    /**
+     * When a tag operation is executed we can either set the tags one very item
+     * or add to the existing set.
+     */
+    export type ComputeNewTagsStrategy = 'set' | 'add'
+
+    export function computeNewTags(currentTags: Readonly<{[id: string]: Tag}> | undefined,
+                                   mutationTags: ReadonlyArray<Tag>,
+                                   strategy: ComputeNewTagsStrategy): ReadonlyArray<Tag> {
+
+        const currentTagsArray = Object.values(currentTags || {});
+
+        if (strategy === 'set') {
+            return mutationTags;
+        }
+
+        // add strategy...
+        return Tags.union(currentTagsArray, mutationTags);
+
+    }
+
+
 }
 
 export interface Tag {
