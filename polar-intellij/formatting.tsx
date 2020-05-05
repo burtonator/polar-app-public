@@ -6,6 +6,25 @@ interface IValue {
     readonly address: string;
 }
 
+class Chain {
+    public method1() {
+        return this;
+    }
+
+    public method2() {
+        return this;
+    }
+}
+
+// method chaining.
+
+new Chain().method1()
+           .method2();
+
+new Chain()
+    .method1()
+    .method2();
+
 function secondFunction(value: IValue) {
 
 }
