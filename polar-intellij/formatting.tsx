@@ -10,6 +10,12 @@ function secondFunction(value: IValue) {
 
 }
 
+function functionWithAlignedOptions(option1: string,
+                                    option2: string,
+                                    option3: string) {
+
+}
+
 function myFunction(rowsPerPage: number) {
 
     // FIXME: this is currently broken
