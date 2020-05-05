@@ -116,6 +116,11 @@ export class Strings {
                                          length: number,
                                          useEllipsis: boolean = true ) {
 
+        if (text.length < length) {
+            // we don't need to truncate.
+            return text;
+        }
+
         const truncated = text.substring(0, length);
 
         const end = truncated.lastIndexOf(' ');
