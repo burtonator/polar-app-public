@@ -35,6 +35,10 @@ function functionWithAlignedOptions(option1: string,
 
 }
 
+functionWithAlignedOptions('hello',
+                           'world',
+                           'dog');
+
 function myFunction(rowsPerPage: number) {
 
     // FIXME: this is currently broken
