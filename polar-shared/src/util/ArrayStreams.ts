@@ -20,6 +20,24 @@ export interface TypedDictionary<T> {
     [key: string]: T;
 }
 
+export type PartitionKey<K> = [string, K];
+
+export type ToPartitionKeyFunction<K, T> = (value: T) => PartitionKey<K>;
+
+export interface MutablePartition<K, V> {
+    readonly id: string;
+    readonly key: K;
+    readonly values: V[];
+}
+
+export interface Partition<K, V> {
+    readonly id: string;
+    readonly key: K;
+    readonly values: ReadonlyArray<V>;
+}
+
+export type PartitionMap<K, V> = Readonly<{[id: string]: MutablePartition<K, V>}>;
+
 /**
  * Similar to Java streams but for Javascript/Typescript arrays.
  *
@@ -102,6 +120,33 @@ export class ArrayStream<T> {
         return new ArrayStream<ReadonlyArray<T>>(Object.values(map));
 
     }
+
+    /**
+     * Similar ot 'group' but each partition has a key as a string, a value
+     * that represents that key, and a number of items under that key.
+     */
+    public partition<K>(toPartitionKey: ToPartitionKeyFunction<K, T>): PartitionMap<K, T> {
+
+        const map: {[id: string]: MutablePartition<K, T>} = {};
+
+        for (const value of this.values) {
+            const [id, key] = toPartitionKey(value);
+
+            const entry = map[id] || {
+                id,
+                key,
+                values: []
+            };
+
+            entry.values.push(value);
+
+            map[id] = entry;
+        }
+
+        return map;
+
+    }
+
 
     /**
      * Map over the values, returning a new ArrayStream.
