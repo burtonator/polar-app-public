@@ -1,15 +1,30 @@
 import {AnnotationType} from './AnnotationType';
+import {IDStr} from "../util/Strings";
+
+interface IReferencable {
+    readonly id: IDStr;
+    readonly annotationType: AnnotationType;
+}
 
 export class Refs {
+
+    public static createRef(referencable: IReferencable): IRef {
+        return {
+            value: referencable.id,
+            type: this.toRefType(referencable.annotationType)
+        };
+    }
 
     public static create(id: string, type: RefType): Ref {
         return `${type}:${id}`;
     }
 
+    public static format(ref: IRef): string {
+        return this.create(ref.value, ref.type);
+    }
+
     public static createFromAnnotationType(id: string, type: AnnotationType) {
-
         return this.create(id, this.toRefType(type));
-
     }
 
     public static parse(value: string): IRef {
@@ -22,7 +37,7 @@ export class Refs {
 
     }
 
-    private static toRefType(type: AnnotationType) {
+    public static toRefType(type: AnnotationType) {
 
         switch (type) {
 
@@ -35,6 +50,9 @@ export class Refs {
             case AnnotationType.FLASHCARD:
                 return 'flashcard';
 
+            case AnnotationType.COMMENT:
+                return 'comment';
+
         }
 
         throw new Error("Not handled yet: " + type);
@@ -45,6 +63,7 @@ export class Refs {
 
 export interface IRef {
     readonly type: RefType;
+    // TODO: probably should be 'id'
     readonly value: string;
 }
 
