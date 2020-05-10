@@ -186,13 +186,14 @@ export class AsyncProviders {
             try {
 
                 executing = true;
-                latch.resolve(await provider());
+                const result = await provider();
+                latch.resolve(result);
+                return result;
 
             } catch (e) {
                 latch.reject(e);
+                throw e;
             }
-
-            return latch.get();
 
         };
 
