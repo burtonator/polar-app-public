@@ -12,7 +12,7 @@ export namespace PagemarkColors {
 
         BLUE: {
             backgroundColor: "#00CCFF",
-            opacity: 0.3
+            opacity: 0.7
         },
 
         LIGHTBLUE: {
