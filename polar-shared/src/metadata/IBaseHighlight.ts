@@ -41,6 +41,9 @@ export interface IBaseHighlight extends IAnnotation {
      */
     color?: HighlightColor;
 
+    /**
+     * @see Position Documentation for this design is there.
+     */
     position?: Position;
 
     /**
