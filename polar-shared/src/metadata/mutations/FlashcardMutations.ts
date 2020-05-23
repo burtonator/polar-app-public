@@ -4,8 +4,8 @@ import {IFlashcard} from "../IFlashcard";
 
 class Delegate extends MutatorDelegate<IFlashcard> {
 
-    protected toValues(pageMeta: IPageMeta): IDValueMap<IFlashcard> | null | undefined {
-        return pageMeta.flashcards;
+    protected toValues(pageMeta: IPageMeta): IDValueMap<IFlashcard> {
+        return pageMeta.flashcards || {};
     }
 
 }

@@ -4,7 +4,7 @@ import {IComment} from "../IComment";
 
 class Delegate extends MutatorDelegate<IComment> {
 
-    protected toValues(pageMeta: IPageMeta): IDValueMap<IComment> | null | undefined {
+    protected toValues(pageMeta: IPageMeta): IDValueMap<IComment> {
         return pageMeta.comments;
     }
 

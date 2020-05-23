@@ -4,8 +4,8 @@ import {ITextHighlight} from "../ITextHighlight";
 
 class Delegate extends MutatorDelegate<ITextHighlight> {
 
-    protected toValues(pageMeta: IPageMeta): IDValueMap<ITextHighlight> | null | undefined {
-        return pageMeta.textHighlights;
+    protected toValues(pageMeta: IPageMeta): IDValueMap<ITextHighlight> {
+        return pageMeta.textHighlights || {};
     }
 
 }

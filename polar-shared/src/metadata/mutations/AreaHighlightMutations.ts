@@ -4,8 +4,8 @@ import {IAreaHighlight} from "../IAreaHighlight";
 
 class Delegate extends MutatorDelegate<IAreaHighlight> {
 
-    protected toValues(pageMeta: IPageMeta): IDValueMap<IAreaHighlight> | null | undefined {
-        return pageMeta.areaHighlights;
+    protected toValues(pageMeta: IPageMeta): IDValueMap<IAreaHighlight> {
+        return pageMeta.areaHighlights || {};
     }
 
 }
