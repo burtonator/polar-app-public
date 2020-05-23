@@ -4,13 +4,29 @@
 import {IDStr} from "../util/Strings";
 import {AnnotationType} from "./AnnotationType";
 import {PageNumber} from "./IPageMeta";
-import { IDocMeta } from "./IDocMeta";
-import { DocMetas } from "./DocMetas";
 
-export interface IAnnotationRef {
+/**
+ * References by ID.
+ */
+export interface IIDRef {
     readonly id: IDStr;
-    readonly annotationType: AnnotationType;
+}
+
+/**
+ * References a page
+ */
+export interface IPageRef {
     readonly pageNum: PageNumber;
+}
+
+/**
+ * References by annotation type.
+ */
+export interface IAnnotationTypeRef {
+    readonly annotationType: AnnotationType;
+}
+
+export interface IAnnotationRef extends IIDRef, IPageRef, IAnnotationTypeRef {
 }
 
 export namespace AnnotationRefs {
