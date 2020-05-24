@@ -9,6 +9,7 @@ import {TextHighlightMutations} from "./TextHighlightMutations";
 import {AreaHighlightMutations} from "./AreaHighlightMutations";
 import {IAnnotationRefWithDocMeta} from "../AnnotationRefs";
 import {IPagemark} from "../IPagemark";
+import {PagemarkMutations} from "./PagemarkMutations";
 
 export type AnnotationValueType = IPagemark | ITextHighlight | IAreaHighlight | IFlashcard | IComment
 
@@ -43,6 +44,8 @@ export class AnnotationMutations {
             TextHighlightMutations.instance.delete(ref);
         } else if (annotationType === AnnotationType.AREA_HIGHLIGHT) {
             AreaHighlightMutations.instance.delete(ref);
+        } else if (annotationType === AnnotationType.PAGEMARK) {
+            PagemarkMutations.instance.delete(ref);
         }
 
     }

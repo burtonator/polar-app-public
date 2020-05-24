@@ -4,6 +4,21 @@ import {IDStr} from "./Strings";
 
 export class Dictionaries {
 
+    public static filter<T>(dict: Readonly<{[key: string]: T}>, predicate: (key: string, value: T) => boolean): Readonly<{[key: string]: T}> {
+
+        const result: {[key: string]: T} = {};
+
+        for (const key of Object.keys(dict)) {
+            const value = dict[key];
+            if (predicate(key, value)) {
+                result[key] = value;
+            }
+        }
+
+        return result;
+
+    }
+
     /**
      * Return true if a is equal to be but using only the given keys.
      */
