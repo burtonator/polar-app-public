@@ -9,6 +9,7 @@ import { IComment } from "./IComment";
 import {IFlashcard} from "./IFlashcard";
 import {IAreaHighlight} from "./IAreaHighlight";
 import {ITextHighlight} from "./ITextHighlight";
+import {IPagemark} from "./IPagemark";
 
 /**
  * References by ID.
@@ -42,9 +43,17 @@ export interface IDocMetaHolder {
     readonly docMeta: IDocMeta;
 }
 
-export interface IAnnotationRef extends IIDRef, IPageRef, IAnnotationTypeRef {
-    readonly original: IComment | IFlashcard | IAreaHighlight | ITextHighlight;
+/**
+ * Basic metadata about an annotation, without any "structural" information like
+ * the DocMetaRef or the original annotation.
+ */
+export interface IAnnotationMeta extends IIDRef, IPageRef, IAnnotationTypeRef {
+
+}
+
+export interface IAnnotationRef extends IAnnotationMeta {
     readonly docMetaRef: IDocMetaRef;
+    readonly original: IPagemark | IComment | IFlashcard | IAreaHighlight | ITextHighlight;
 }
 
 export interface IAnnotationRefWithDocMeta extends IAnnotationRef, IDocMetaHolder {

@@ -8,8 +8,9 @@ import {CommentMutations} from "./CommentMutations";
 import {TextHighlightMutations} from "./TextHighlightMutations";
 import {AreaHighlightMutations} from "./AreaHighlightMutations";
 import {IAnnotationRefWithDocMeta} from "../AnnotationRefs";
+import {IPagemark} from "../IPagemark";
 
-export type AnnotationValueType = ITextHighlight | IAreaHighlight | IFlashcard | IComment
+export type AnnotationValueType = IPagemark | ITextHighlight | IAreaHighlight | IFlashcard | IComment
 
 export class AnnotationMutations {
 
