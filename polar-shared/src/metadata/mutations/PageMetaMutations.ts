@@ -2,16 +2,17 @@ import {IDocMeta} from "../IDocMeta";
 import {IPageMeta, PageNumber} from "../IPageMeta";
 import {Logger} from "../../logger/Logger";
 import {ISODateTimeStrings} from "../ISODateTimeStrings";
-import {IAnnotationTypeRef, IIDRef, IPageRef} from "../AnnotationRefs";
+import {
+    IAnnotationRefWithDocMeta,
+    IIDRef,
+    IPageRef
+} from "../AnnotationRefs";
 import {arrayStream} from "../../util/ArrayStreams";
+import {DocMetas} from "../DocMetas";
 
 const log = Logger.create();
 
 export interface IPageMetaMutationRef extends IIDRef, IPageRef {
-}
-
-export interface IAnnotationMutationRef extends IPageRef, IAnnotationTypeRef {
-    readonly docMeta: IDocMeta;
 }
 
 export namespace PageMetaMutations {
@@ -41,78 +42,54 @@ export type ValueCallback<V extends IIDRef> = (pageMeta: IPageMeta, values: IDVa
 
 export abstract class MutatorDelegate<V extends IIDRef> {
 
-    public update(ref: IAnnotationMutationRef, value: V): boolean {
+    public update(ref: IAnnotationRefWithDocMeta, value: V): boolean {
 
         const {docMeta} = ref;
 
-        // FIXME: with the pageNum we don't have to scan now.
+        const pageMeta = DocMetas.getPageMeta(docMeta, ref.pageNum);
+        const values = this.toValues(pageMeta) || {};
 
-        return this.forEachPageMeta(docMeta, (pageMeta, values) => {
+        // we have to delete the existing object by ID, then also set the
+        // lastUpdated field, then replace both of these fields, and update
+        // the object.
 
-            // we have to delete the existing object by ID, then also set the
-            // lastUpdated field, then replace both of these fields, and update
-            // the object.
+        // TODO: this is probably wrong. I want to migrate to a way to make
+        // the annotations completely immutable so that every mutation
+        // creates a new annotation with a new ID but the same GUID but there
+        // are some serious bugs about implementing this.
+        const id = value.id;
+        const lastUpdated = ISODateTimeStrings.create();
 
-            // TODO: this is probably wrong. I want to migrate to a way to make
-            // the annotations completely immutable so that every mutation
-            // creates a new annotation with a new ID but the same GUID but there
-            // are some serious bugs about implementing this.
-            const id = value.id;
-            const lastUpdated = ISODateTimeStrings.create();
-
-            if (values[value.id]) {
-                // delete values[value.id];
-                values[id] = {...value, id, lastUpdated};
-                return true;
-            }
-
-            return false;
-
-        });
-
-    }
-
-    public delete(ref: IAnnotationMutationRef, value: V): boolean {
-
-        const {docMeta} = ref;
-
-        const result = this.forEachPageMeta(docMeta, (pageMeta, values) => {
-
-            if (values[value.id]) {
-                delete values[value.id];
-                return true;
-            }
-
-            return false;
-
-        });
-
-        if (! result) {
-            log.warn("Failed to delete value: ", value);
-        } else {
-            console.log("Deleted record: ", value);
-        }
-
-        return result;
-
-    }
-
-    protected abstract toValues(pageMeta: IPageMeta): IDValueMap<V> | undefined;
-
-    private forEachPageMeta(docMeta: IDocMeta, callback: ValueCallback<V>): boolean {
-
-        for (const pageMeta of Object.values(docMeta.pageMetas)) {
-
-            const values = this.toValues(pageMeta) || {};
-
-            if (callback(pageMeta, values)) {
-                return true;
-            }
-
+        if (values[value.id]) {
+            // delete values[value.id];
+            values[id] = {...value, id, lastUpdated};
+            return true;
         }
 
         return false;
 
     }
+
+    public delete(ref: IAnnotationRefWithDocMeta): boolean {
+
+        const {docMeta} = ref;
+
+        const pageMeta = DocMetas.getPageMeta(docMeta, ref.pageNum);
+
+        const values = this.toValues(pageMeta) || {};
+
+        if (values[ref.id]) {
+            console.log("Deleted record: ", ref);
+            delete values[ref.id];
+            return true;
+        }
+
+        log.warn("Failed to delete value: ", ref);
+        return false;
+
+
+    }
+
+    protected abstract toValues(pageMeta: IPageMeta): IDValueMap<V> | undefined;
 
 }

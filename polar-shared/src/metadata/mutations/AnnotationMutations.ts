@@ -7,13 +7,13 @@ import {FlashcardMutations} from "./FlashcardMutations";
 import {CommentMutations} from "./CommentMutations";
 import {TextHighlightMutations} from "./TextHighlightMutations";
 import {AreaHighlightMutations} from "./AreaHighlightMutations";
-import {IAnnotationMutationRef} from "./PageMetaMutations";
+import {IAnnotationRefWithDocMeta} from "../AnnotationRefs";
 
 export type AnnotationValueType = ITextHighlight | IAreaHighlight | IFlashcard | IComment
 
 export class AnnotationMutations {
 
-    public static update(ref: IAnnotationMutationRef,
+    public static update(ref: IAnnotationRefWithDocMeta,
                          value: AnnotationValueType) {
 
         const {annotationType} = ref;
@@ -30,22 +30,20 @@ export class AnnotationMutations {
 
     }
 
-    public static delete(ref: IAnnotationMutationRef,
-                         value: AnnotationValueType) {
+    public static delete(ref: IAnnotationRefWithDocMeta) {
 
         const {annotationType} = ref;
 
         if (annotationType === AnnotationType.FLASHCARD) {
-            FlashcardMutations.instance.delete(ref, <IFlashcard> value);
+            FlashcardMutations.instance.delete(ref);
         } else if (annotationType === AnnotationType.COMMENT) {
-            CommentMutations.instance.delete(ref, <IComment> value);
+            CommentMutations.instance.delete(ref);
         } else if (annotationType === AnnotationType.TEXT_HIGHLIGHT) {
-            TextHighlightMutations.instance.delete(ref, <ITextHighlight> value);
+            TextHighlightMutations.instance.delete(ref);
         } else if (annotationType === AnnotationType.AREA_HIGHLIGHT) {
-            AreaHighlightMutations.instance.delete(ref, <IAreaHighlight> value);
+            AreaHighlightMutations.instance.delete(ref);
         }
 
     }
-
 
 }
