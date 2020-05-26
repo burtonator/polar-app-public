@@ -39,6 +39,15 @@ export interface Partition<K, V> {
 export type PartitionMap<K, V> = Readonly<{[id: string]: MutablePartition<K, V>}>;
 
 /**
+ * Takes a value, and maps it in the index, which allows us to push it through
+ * a stream and know the original index throughput the map.
+ */
+export interface IValueWithIndex<V> {
+    readonly index: number;
+    readonly value: V;
+}
+
+/**
  * Similar to Java streams but for Javascript/Typescript arrays.
  *
  * This is also similar to lodash but a lot simpler and with fewer dependencies.
@@ -60,8 +69,8 @@ export class ArrayStream<T> {
         return this;
     }
 
-    public filter(predicate: (record: T) => boolean): ArrayStream<T> {
-        const values = this.values.filter(record => predicate(record));
+    public filter(predicate: (record: T, index: number) => boolean): ArrayStream<T> {
+        const values = this.values.filter((record, index) => predicate(record, index));
         return new ArrayStream<T>(values);
     }
 
@@ -151,8 +160,8 @@ export class ArrayStream<T> {
     /**
      * Map over the values, returning a new ArrayStream.
      */
-    public map<V>(mapper: (record: T) => V): ArrayStream<V> {
-        const mapped = this.values.map(record => mapper(record));
+    public map<V>(mapper: (record: T, index: number) => V): ArrayStream<V> {
+        const mapped = this.values.map((record, index) => mapper(record, index));
         return new ArrayStream<V>(mapped);
     }
 
@@ -169,6 +178,16 @@ export class ArrayStream<T> {
         }
 
         return new ArrayStream<V>(result);
+
+    }
+
+    public withIndex(): ArrayStream<IValueWithIndex<T>> {
+
+        function toIndex(value: T, index: number): IValueWithIndex<T> {
+            return {value, index};
+        }
+
+        return this.map(toIndex);
 
     }
 
