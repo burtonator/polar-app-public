@@ -1,6 +1,6 @@
 {
   "name": "polar-web-extension-api",
-  "version": "1.100.14",
+  "version": "2.0.0-beta.1",
   "description": "Provides just the basic API that we can use in both the frontend and backend for API requests and responses.",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@types/node": "^12.11.1",
-    "polar-shared": "^1.100.14"
+    "polar-shared": "^2.0.0-beta.1"
   },
   "files": [
     "**/*.js",

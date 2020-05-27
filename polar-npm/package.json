@@ -1,6 +1,6 @@
 {
   "name": "polar-npm",
-  "version": "1.100.14",
+  "version": "2.0.0-beta.1",
   "description": "Basic internal NPM commnds",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,6 @@
     "hello": "src/hello.js",
     "npm-upgrade-pkg": "src/npm-upgrade-pkg.js"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^12.11.1",
     "tslint": "=6.1.1",
