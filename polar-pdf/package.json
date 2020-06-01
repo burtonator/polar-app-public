@@ -1,6 +1,6 @@
 {
   "name": "polar-pdf",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Provides support for parsing and working with PDFs.",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/chai": "^4.2.1",
     "@types/mocha": "^5.2.7",
+    "@types/pdfjs-dist": "^2.0.0-beta.2",
     "chai": "^4.2.0",
     "karma-chai": "=0.1.0",
     "karma-chrome-launcher": "=3.1.0",
@@ -27,15 +28,18 @@
   },
   "dependencies": {
     "@types/node": "^12.11.1",
-    "@types/pdfjs-dist": "../polar-pdf-types",
     "karma": "^4.4.1",
     "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
-    "polar-shared": "^2.0.0-beta.1",
-    "polar-test": "^2.0.0-beta.1"
+    "polar-pdf-types": "^2.0.0-beta.1",
+    "polar-shared": "^2.0.0-beta.2",
+    "polar-test": "^2.0.0-beta.2"
   },
   "files": [
     "**/*.js",
     "**/*.d.ts",
     "package.json"
+  ],
+  "typeRoots": [
+    "./node_modules/@types"
   ]
 }

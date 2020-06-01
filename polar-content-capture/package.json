@@ -1,6 +1,6 @@
 {
   "name": "polar-content-capture",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Basic code to dump the browser DOM to a JSON object that we can use within Polar",
   "main": "index.js",
   "scripts": {
@@ -17,8 +17,8 @@
     "chai": "^4.2.0",
     "jsdom": "^15.0.0",
     "mocha": "^6.2.0",
-    "polar-mocha": "^2.0.0-beta.1",
-    "polar-test": "^2.0.0-beta.1",
+    "polar-mocha": "^2.0.0-beta.2",
+    "polar-test": "^2.0.0-beta.2",
     "tslint": "=6.1.1",
     "typescript": "=3.8.3",
     "wait-for-expect": "~1.1.0"
@@ -26,7 +26,7 @@
   "dependencies": {
     "@types/jszip": "~3.1.4",
     "jszip": "~3.2.2",
-    "polar-shared": "^2.0.0-beta.1"
+    "polar-shared": "^2.0.0-beta.2"
   },
   "files": [
     "**/*.js",

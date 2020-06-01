@@ -1,8 +1,12 @@
 {
-  "name": "polar-pdf-types",
-  "version": "2.0.0-beta.1",
+  "name": "@types/pdfjs-dist",
+  "version": "2.0.0-beta.2",
   "description": "Typescript bindings for the latest PDFJS.",
   "main": "index.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@burtonator"
+  },
+  "repository": "https://github.com/burtonator/polar-app-public.git",
   "scripts": {
     "test": "echo nothing to test",
     "compile": "echo nothing to compile"
