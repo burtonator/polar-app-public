@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@polarapp-types/pdfjs-dist": "^2.0.0-beta.3",
+    "@polar-app-types/pdfjs-dist": "^2.0.0-beta.3",
     "@types/chai": "^4.2.1",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
@@ -40,6 +40,6 @@
   ],
   "typeRoots": [
     "./node_modules/@types",
-    "./node_modules/@polarapp-types"
+    "./node_modules/@polar-app-types"
   ]
 }
