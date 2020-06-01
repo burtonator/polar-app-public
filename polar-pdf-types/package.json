@@ -1,5 +1,5 @@
 {
-  "name": "@types/pdfjs-dist",
+  "name": "@polarapp-types/pdfjs-dist",
   "version": "2.0.0-beta.2",
   "description": "Typescript bindings for the latest PDFJS.",
   "main": "index.js",

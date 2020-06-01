@@ -35,7 +35,11 @@
         "paths": {
             "*": ["node_modules/*"]
         },
-        "lib": ["es2015", "dom", "es2017.object", "es2015.promise", "es2016.array.include"]
+        "lib": ["es2015", "dom", "es2017.object", "es2015.promise", "es2016.array.include"],
+        "typeRoots": [
+            "./node_modules/@types",
+            "./node_modules/@polarapp-types"
+        ]
 
     },
     "include": [
@@ -46,8 +50,5 @@
     "types": [
         "mocha",
         "reflect-metadata"
-    ],
-    "typeRoots": [
-        "./node_modules/@types"
     ]
 }
