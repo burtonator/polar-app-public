@@ -30,7 +30,6 @@
     "@types/node": "^12.11.1",
     "karma": "^4.4.1",
     "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
-    "polar-pdf-types": "^2.0.0-beta.1",
     "polar-shared": "^2.0.0-beta.2",
     "polar-test": "^2.0.0-beta.2"
   },
