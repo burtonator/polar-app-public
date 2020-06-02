@@ -42,11 +42,11 @@ export class DefaultRewrites {
 
             {
                 "source": [
-                    "/pdf",
-                    "/pdf/:id",
-                    "/apps/pdf/:id",
+                    "/doc",
+                    "/doc/:id",
+                    "/apps/doc/:id",
                 ],
-                "destination": "/apps/pdf/index.html"
+                "destination": "/apps/doc/index.html"
             },
 
             {
