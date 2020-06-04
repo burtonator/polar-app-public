@@ -113,10 +113,10 @@ export class TextIndex {
  * Provides a framework to search text within a DOM and jump to to the elements
  * that contain that text.
  */
-export class DOMTextSearch {
+export namespace DOMTextSearch {
 
-    public static createIndex(doc: Document = document,
-                              pointers: Pointer[] = []) {
+    export function createIndex(doc: Document = document,
+                                pointers: Pointer[] = []) {
 
         // TODO: we DO have to factor in iframe but we have to have a pointer
         // back to the element's view ... though I am not sure about that really
