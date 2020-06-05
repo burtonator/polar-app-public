@@ -50,7 +50,7 @@ export interface IVersionedObject {
     author?: IAuthor;
 
     /**
-     * A reference to the parent annotation.
+     * A reference to the parent annotation (if any).
      */
     ref?: Ref;
 
