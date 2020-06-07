@@ -17,6 +17,8 @@
     "polar-web-extension-api": "^2.0.0-beta.5"
   },
   "devDependencies": {
+    "karma": "=5.0.9",
+    "karma-webpack": "=4.0.2",
     "@types/node": "^12.11.7",
     "cache-loader": "^4.1.0",
     "fork-ts-checker-webpack-plugin": "^4.1.6",
