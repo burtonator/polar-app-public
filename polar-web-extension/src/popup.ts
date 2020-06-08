@@ -17,38 +17,6 @@ async function queryCurrentTabForLink(): Promise<string> {
 
 }
 
-function toggleVisibility(selector: string) {
-
-    const element = <HTMLElement> document.querySelector(selector);
-
-    if(! element) {
-        return;
-    }
-
-    if(element.style.display === 'none') {
-        element.style.display = 'block';
-    } else {
-        element.style.display = 'none';
-    }
-
-}
-
-
-function showError() {
-
-    toggleVisibility(".saving");
-    toggleVisibility(".failure");
-
-}
-
-
-function showSuccess() {
-
-    toggleVisibility(".saving");
-    toggleVisibility(".success");
-
-}
-
 function closeWindowAfterDelay() {
     setTimeout(() => window.close(), 7500);
 }
@@ -65,7 +33,6 @@ async function onExtensionActivated() {
 
     await ImportContentAPI.doImport(link!, document.contentType);
 
-    showSuccess();
     closeWindowAfterDelay();
     console.log("success");
 
@@ -86,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     onExtensionActivated()
         .catch(err => {
             console.log("failed");
-            showError();
             closeWindowAfterDelay();
             console.error("Unable to send URL to polar: ", err)
         });

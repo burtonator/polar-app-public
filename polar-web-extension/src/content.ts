@@ -1,45 +1,16 @@
-// allow communication with the outside world so we can do content captures.
-import {ContentCapture} from "polar-content-capture/src/capture/ContentCapture";
-import {Results} from "polar-shared/src/util/Results";
-import {Captured} from "polar-content-capture/src/capture/Captured";
-import {DirectPHZWriter} from "polar-content-capture/src/phz/DirectPHZWriter";
-import {CapturedPHZWriter} from "polar-content-capture/src/phz/CapturedPHZWriter";
+import {AuthHandlers} from "polar-bookshelf/web/js/apps/repository/auth_handler/AuthHandler";
 
-const MESSAGE_TYPE_CAPTURE = 'polar-capture';
+async function handleAsync() {
 
-console.log("Starting content capture script (4)");
+    // FIXME: firebase MAY NOT work here because there's no .html page to
+    // inject it with.
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    const authHandler = AuthHandlers.get();
 
-    const isCaptureRequest = () => {
-        return message && message.type === MESSAGE_TYPE_CAPTURE;
-    };
+    // make sure that we can authenticate properly
+    await authHandler.requireAuthentication();
 
-    const handler = async () => {
+}
 
-        console.log("Received a message.");
-
-        if (! isCaptureRequest()) {
-            console.log("Message is not a capture request: ", message);
-            return;
-        }
-
-        const result = ContentCapture.execute();
-        const captured = Results.create<Captured>(result).get();
-
-        const writer = new DirectPHZWriter();
-        const capturedPHZWriter = new CapturedPHZWriter(writer);
-        await capturedPHZWriter.convert(captured);
-
-        const data = await writer.toBase64();
-
-        sendResponse(Results.create({data}));
-
-    };
-
-    handler().catch(err => {
-        console.error("Unable to capture content: ", err);
-        sendResponse(Results.createError(err));
-    });
-
-});
+handleAsync()
+    .catch(err => console.error(err));

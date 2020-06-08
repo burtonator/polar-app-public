@@ -15,7 +15,8 @@
     "contextMenus",
     "unlimitedStorage",
     "declarativeContent",
-    "idle"
+    "idle",
+    "notifications"
   ],
   "optional_permissions": [
     "clipboardRead",
