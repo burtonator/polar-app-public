@@ -1,6 +1,6 @@
 declare module '@polar-app/readability' {
 
-    class Readability {
+    export class Readability {
 
         constructor(doc: Document, options?: Options);
 
@@ -10,7 +10,7 @@ declare module '@polar-app/readability' {
 
     }
 
-    interface Options {
+    export interface Options {
         debug?: boolean;
         maxElemsToParse?: number;
         nbTopCandidates?: number;
@@ -18,7 +18,7 @@ declare module '@polar-app/readability' {
         classesToPreserve?: string[];
     }
 
-    interface ParseResult {
+    export interface ParseResult {
         title: string;
         byline: string;
         dir: string;
