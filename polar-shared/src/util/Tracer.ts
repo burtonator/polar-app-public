@@ -42,4 +42,9 @@ export namespace Tracer {
         }
     }
 
+    export async function execAsync<T>(id: string, delegate: () => Promise<T>): Promise<T> {
+        return await async(id, delegate());
+    }
+
+
 }

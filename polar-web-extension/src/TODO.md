@@ -1,0 +1,3 @@
+- our firebase app needs to give the chrome extension the ability to authenticate
+- FirebaseDatastore needs a no-init method
+- 
