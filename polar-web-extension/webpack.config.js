@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const workers = require('os').cpus().length - 1;
 
@@ -11,6 +11,7 @@ module.exports = {
     // mode: 'development',
     entry: {
         "popup": [ "./src/popup.ts"],
+        "content": [ "./src/content.ts"],
         "background": [ "./src/background.ts"],
     },
     module: {
@@ -60,26 +61,37 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ]
+        extensions: [ '.tsx', '.ts', '.js' ],
+        alias: {
+            // TODO: this is used temporarily during our migration to using
+            // webpack everywhere.  We should eventually change our import to
+            // just 'firebase' but FB think's it's running in node and executes
+            // with the wrong strategy.
+            // N
+            './lib/firebase': path.resolve(__dirname, 'node_modules/polar-bookshelf/node_modules/firebase')
+        }
     },
     // devtool: "source-map",
     // devtool: "inline-source-map",
     output: {
         path: path.resolve(__dirname),
-        filename: '[name]-bundle.js',
+        filename: 'dist/[name]-bundle.js',
         // publicPath: '/web/js/apps'
     },
     node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
     },
     plugins: [
         // new BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
     ],
     optimization: {
-        minimize: false,
+        minimize: true,
         usedExports: true,
-        removeAvailableModules: false,
-        removeEmptyChunks: false,
+        removeAvailableModules: true,
+        removeEmptyChunks: true,
         splitChunks: false,
     }
 };
