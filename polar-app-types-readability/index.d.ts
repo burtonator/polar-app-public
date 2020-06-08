@@ -1,6 +1,6 @@
 declare module '@polar-app/readability' {
 
-    export class Readability {
+    class Readability {
 
         constructor(doc: Document, options?: Options);
 
@@ -27,4 +27,7 @@ declare module '@polar-app/readability' {
         length: number;
         excerpt: string;
     }
+
+    export default Readability;
+
 }
