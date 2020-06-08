@@ -8,6 +8,7 @@ describe('Hello World', function() {
         const parser = new DOMParser();
         const doc = parser.parseFromString('<html><body><p>this is some text</p></body></html>', 'text/html');
 
+        // TODO also parse out the HTML microdata.
         const readability = new Readability(doc);
         const parsed = readability.parse();
 
