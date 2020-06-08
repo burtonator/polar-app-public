@@ -1,14 +1,15 @@
+declare module '@polar-app/readability' {
 
-export = Readability;
+    class Readability {
 
-declare class Readability {
-    constructor(doc: Document, options?: Readability.Options);
+        constructor(doc: Document, options?: Options);
 
-    parse(): Readability.ParseResult;
-    isProbablyReaderable(helperIsVisible?: (node: any) => boolean): boolean;
-}
+        parse(): ParseResult;
 
-declare namespace Readability {
+        isProbablyReaderable(helperIsVisible?: (node: any) => boolean): boolean;
+
+    }
+
     interface Options {
         debug?: boolean;
         maxElemsToParse?: number;
