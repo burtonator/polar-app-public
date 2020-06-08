@@ -15,10 +15,12 @@
     "polar-content-capture": "^2.0.0-beta.5",
     "polar-shared": "^2.0.0-beta.5",
     "polar-web-extension-api": "^2.0.0-beta.5",
-    "@polar-app/readability": "=0.2.0"
+    "@polar-app/readability": "=0.2.0",
+    "page-metadata-parser": "=1.1.4"
   },
   "devDependencies": {
     "@polar-app-types/readability": "2.0.0-beta.5",
+    "@polar-app-types/page-metadata-parser": "2.0.0-beta.5",
     "karma": "=5.0.9",
     "karma-webpack": "=4.0.2",
     "karma-mocha": "=2.0.1",

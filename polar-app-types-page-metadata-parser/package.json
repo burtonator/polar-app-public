@@ -1,5 +1,5 @@
 {
-  "name": "@polar-app-types/readability",
+  "name": "@polar-app-types/page-metadata-parser",
   "version": "2.0.0-beta.5",
   "description": "",
   "main": "index.js",
