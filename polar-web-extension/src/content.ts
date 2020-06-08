@@ -7,13 +7,15 @@ async function handleAsync() {
     // FIXME: firebase MAY NOT work here because there's no .html page to
     // inject it with.
 
+    console.log("Verifying we're logged into Polar...");
+
     const authHandler = AuthHandlers.get();
 
     // make sure that we are authenticated and if not authenticate us and
     // redirect back to the current URL
     await authHandler.requireAuthentication(document.location.href);
-    // Firebase.init();
 
+    console.log("Verifying we're logged into Polar...done");
 
 }
 

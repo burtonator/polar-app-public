@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const workers = require('os').cpus().length - 1;
 
@@ -89,9 +90,14 @@ module.exports = {
     ],
     optimization: {
         minimize: true,
-        usedExports: true,
-        removeAvailableModules: true,
-        removeEmptyChunks: true,
-        splitChunks: false,
+        minimizer: [new TerserPlugin({
+            terserOptions: {
+                output: { ascii_only: true },
+            }})
+        ],
+        // usedExports: true,
+        // removeAvailableModules: true,
+        // removeEmptyChunks: true,
+        // splitChunks: false,
     }
 };
