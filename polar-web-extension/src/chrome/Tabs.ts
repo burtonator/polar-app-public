@@ -22,7 +22,6 @@ export namespace Tabs {
 
     }
 
-
     export function loadLinkInNewTab(link: string) {
         chrome.tabs.create({url: link});
     }

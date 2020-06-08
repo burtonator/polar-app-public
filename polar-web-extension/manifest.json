@@ -10,27 +10,18 @@
   "permissions": [
     "activeTab",
     "fileBrowserHandler",
-    "webRequest",
-    "webRequestBlocking",
-    "webNavigation",
-    "<all_urls>",
     "storage",
-    "tabs",
     "tabCapture",
-    "cookies",
-    "http://localhost:8500/rest/v1/capture/trigger",
     "contextMenus",
     "unlimitedStorage",
     "declarativeContent",
-    "idle",
-    "storage"
+    "idle"
   ],
   "optional_permissions": [
     "clipboardRead",
     "clipboardWrite",
     "history",
     "bookmarks",
-    "documentScan",
     "identity",
     "notifications",
     "tts",
@@ -51,18 +42,18 @@
     "matches": [
       "*://*.getpolarized.io/*",
       "*://app.getpolarized.io/*",
-      "*://localapp.getpolarized.io/*"
+      "*://beta.getpolarized.io/*"
     ]
   },
   "file_browser_handlers": [{
     "id": "open-as-pdf",
-    "default_title": "Open with Polar",
+    "default_title": "Save to Polar",
     "file_filters": [
       "filesystem:*.pdf"
     ]
   }],
   "browser_action": {
-    "name": "Click to save with Polar",
+    "name": "Save to Polar",
     "default_popup": "popup.html"
   },
   "icons": {
