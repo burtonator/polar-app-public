@@ -1,4 +1,4 @@
-declare module '@polar-app-types/page-metadata-parser' {
+declare module 'page-metadata-parser' {
 
     export function getMetadata(document: Document, location: string): PageMetadata;
 

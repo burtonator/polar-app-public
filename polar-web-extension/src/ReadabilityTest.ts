@@ -1,7 +1,7 @@
 import {assert} from 'chai';
-import Readability from "@polar-app/readability";
+import {Readability} from "@polar-app/readability";
 
-describe('Hello World', function() {
+describe('Readability', function() {
 
     it("basic", function() {
 
