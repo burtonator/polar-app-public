@@ -14,7 +14,8 @@
     "@fortawesome/fontawesome-free": "^5.13.0",
     "polar-content-capture": "^2.0.0-beta.5",
     "polar-shared": "^2.0.0-beta.5",
-    "polar-web-extension-api": "^2.0.0-beta.5"
+    "polar-web-extension-api": "^2.0.0-beta.5",
+    "readability": "=0.1.0"
   },
   "devDependencies": {
     "karma": "=5.0.9",
