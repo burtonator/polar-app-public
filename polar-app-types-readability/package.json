@@ -10,8 +10,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "types": "index",
-  "dependencies": {
-    "@types/mozilla-readability": "^0.1.4"
-  }
+  "types": "index"
 }
