@@ -2,9 +2,9 @@
   "name": "Polar - PDF, Web, and Document Annotation",
   "short_name": "Polar",
   "description": "Document manager for PDF, web content, books, and notes with tagging, annotations, and highlighting.",
-  "version": "1.40.0",
+  "version": "2.0.0-beta.5",
   "background": {
-    "scripts": ["dist/background-bundle.js"],
+    "scripts": ["background-bundle.js"],
     "persistent": true
   },
   "permissions": [
@@ -28,17 +28,6 @@
     "tts",
     "geolocation"
   ],
-  "content_scripts": [{
-    "matches": [
-      "http://*/*",
-      "https://*/*",
-      "ftp://*/*",
-      "file://*/*"
-    ],
-    "run_at": "document_start",
-    "all_frames": true,
-    "js": ["dist/content-bundle.js"]
-  }],
   "externally_connectable": {
     "matches": [
       "*://*.getpolarized.io/*",
