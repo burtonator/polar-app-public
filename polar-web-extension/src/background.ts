@@ -1,5 +1,5 @@
 import {InitialSplash} from './InitialSplash';
-import {ImportContentHandler} from './ImportContentHandler';
+import {ImportContentHandler} from './legacy/ImportContentHandler';
 import {BrowserScreenshotHandler} from './BrowserScreenshotHandler';
 import {ExtensionInstallHandler} from './ExtensionInstallHandler';
 

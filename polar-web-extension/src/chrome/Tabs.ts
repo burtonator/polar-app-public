@@ -1,7 +1,6 @@
-export class Tabs {
+export namespace Tabs {
 
-    public static activeTab(): Promise<chrome.tabs.Tab> {
-
+    export function activeTab(): Promise<chrome.tabs.Tab> {
 
         return new Promise<chrome.tabs.Tab>(((resolve, reject) => {
 
@@ -22,4 +21,23 @@ export class Tabs {
         }));
 
     }
+
+
+    export function loadLinkInNewTab(link: string) {
+        chrome.tabs.create({url: link});
+    }
+
+    export function queryCurrentTabForLink() {
+
+        return new Promise<string>(resolve => {
+
+            chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
+                const link = tabs[0].url;
+                resolve(link);
+            });
+
+        });
+
+    }
+
 }

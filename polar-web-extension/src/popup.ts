@@ -1,11 +1,10 @@
-import {ImportContentAPI} from './ImportContentAPI';
-import {ExtensionContentCaptureClient} from "./ExtensionContentCaptureClient";
+import {ImportContentAPI} from './legacy/ImportContentAPI';
 
 function loadLinkInNewTab(link: string) {
     chrome.tabs.create({url: link});
 }
 
-function queryCurrentTabForLink() {
+async function queryCurrentTabForLink(): Promise<string> {
 
     return new Promise<string>(resolve => {
 
@@ -69,16 +68,6 @@ async function onExtensionActivated() {
     showSuccess();
     closeWindowAfterDelay();
     console.log("success");
-
-}
-
-async function __onExtensionActivated() {
-
-    const captured = await ExtensionContentCaptureClient.capture();
-
-    // now that the data is captured from the browser we have to figure out how to
-    // store it in firebase.
-
 
 }
 

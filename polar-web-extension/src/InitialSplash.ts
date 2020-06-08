@@ -10,6 +10,9 @@ function loadLink(url: string) {
     chrome.tabs.create({ url });
 }
 
+/**
+ * Called the first time the chrome extension is installed on this machine.
+ */
 export class InitialSplash {
 
     public static register() {
