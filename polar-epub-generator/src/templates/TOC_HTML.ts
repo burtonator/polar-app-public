@@ -16,10 +16,10 @@ export namespace TOC_HTML {
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
 <head>
-
+<title>Table of Contents</title>
 </head>
 <body>
-<nav role="doc-toc" epub:type="toc" id="toc">
+<!-- <nav role="doc-toc" epub:type="toc" id="toc"> -->
 <h2><%= title %></h2>
 <ol>
 <% links.forEach(function(link){ %>
@@ -27,7 +27,7 @@ export namespace TOC_HTML {
 <% }); %>
 
 </ol>
-</nav>
+<!-- </nav> -->
 </body>
 </html>
 `

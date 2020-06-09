@@ -117,23 +117,56 @@ export namespace EPUBGenerator {
 
         function toManifest(): ReadonlyArray<TemplateLiterals.IManifestItem> {
 
-            function toManifestItem(content: EPUBContent): TemplateLiterals.IManifestItem {
+            function contentsToManifest(): ReadonlyArray<TemplateLiterals.IManifestItem> {
 
-                return {
-                    id: content.id,
-                    href: content.href,
-                    mediaType: content.mediaType
-                };
+                function toManifestItem(content: EPUBContent): TemplateLiterals.IManifestItem {
+
+                    return {
+                        id: content.id,
+                        href: content.href,
+                        mediaType: content.mediaType
+                    };
+
+                }
+
+                return doc.contents.map(toManifestItem);
 
             }
 
-            return doc.contents.map(toManifestItem);
+            function guideToManifest(): ReadonlyArray<TemplateLiterals.IManifestItem> {
+                return [
+                    {
+                        id: 'toc.html',
+                        href: 'toc.html',
+                        mediaType: "application/xhtml+xml"
+                    }
+                ]
+            }
+
+
+            return [
+                ...contentsToManifest(),
+                ...guideToManifest()
+            ];
+
+        }
+
+        function toGuide(): ReadonlyArray<TemplateLiterals.IGuideReference> {
+
+            return [
+                {
+                    type: 'toc',
+                    title: "Table of Contents",
+                    href: 'toc.html'
+                }
+            ]
 
         }
 
 
         const spine = toSpine();
         const manifest = toManifest();
+        const guide = toGuide();
 
         const content: TemplateLiterals.IContent = {
             id: doc.url,
@@ -150,10 +183,7 @@ export namespace EPUBGenerator {
 
             spine,
             manifest,
-
-            // we don't need a guid now as a cover and ToC are sort of redundant
-            // and unnecessary in HTML captures.
-            guide: []
+            guide
 
         }
 

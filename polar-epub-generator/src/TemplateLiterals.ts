@@ -51,7 +51,7 @@ export namespace TemplateLiterals {
         readonly mediaType: MediaType;
     }
 
-    interface IGuideReference {
+    export interface IGuideReference {
         readonly type: 'cover' | 'toc';
         readonly title: string;
         readonly href: string;
