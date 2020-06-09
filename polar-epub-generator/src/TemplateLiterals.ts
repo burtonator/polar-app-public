@@ -3,9 +3,11 @@ import {
     ISODateTimeString
 } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {EPUBGenerator} from "./EPUBGenerator";
 
 export namespace TemplateLiterals {
 
+    import MediaType = EPUBGenerator.MediaType;
     /**
      * The container file written to /META-INF/container.xml
      */
@@ -118,7 +120,7 @@ export namespace TemplateLiterals {
 
     export type UIDStr = string;
 
-    export interface ITableOfContents {
+    export interface ITOC {
         readonly uid: UIDStr;
         readonly title: string;
         readonly totalPageCount: number;
@@ -134,7 +136,7 @@ export namespace TemplateLiterals {
         readonly src: string;
     }
 
-    export const TABLE_OF_CONTENTS = `<?xml version='1.0' encoding='UTF-8'?>
+    export const TOC_NCX = `<?xml version='1.0' encoding='UTF-8'?>
 
 <!DOCTYPE ncx PUBLIC '-//NISO//DTD ncx 2005-1//EN' 'http://www.daisy.org/z3986/2005/ncx-2005-1.dtd'>
 <ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">

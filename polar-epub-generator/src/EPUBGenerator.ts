@@ -160,6 +160,37 @@ export namespace EPUBGenerator {
 
     }
 
+    export function renderTOCNCX(doc: EPUBDocumentOptions) {
+
+        function toPages(): ReadonlyArray<TemplateLiterals.IPage> {
+
+            function toPage(content: EPUBContent, idx: number): TemplateLiterals.IPage {
+
+                return {
+                    playOrder: idx,
+                    label: content.title,
+                    src: content.href
+                };
+
+            }
+            return doc.contents.map(toPage);
+
+        }
+
+        const pages = toPages();
+
+        const content: TemplateLiterals.ITOC = {
+            uid: doc.url,
+            title: doc.title,
+            totalPageCount: doc.contents.length,
+            maxPageNumber: doc.contents.length,
+            pages
+        }
+
+        return Templates.render(TemplateLiterals.TOC_NCX, content);
+
+    }
+
     /**
      *
      * Generate an EPUB and build the data into a zip buffer.
@@ -191,6 +222,7 @@ export namespace EPUBGenerator {
             zip.file('/mimetype', 'application/epub+zip');
             zip.file('/META-INF/container.xml', renderContainerXML());
             zip.file('/OEBPS/content.opf', renderContentOPF(doc));
+            zip.file('/OEBPS/toc.ncx', renderTOCNCX(doc));
         }
 
         function writeContents() {
