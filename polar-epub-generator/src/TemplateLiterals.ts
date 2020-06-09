@@ -155,6 +155,17 @@ export namespace TemplateLiterals {
   </docTitle>
   
   <navMap>
+    <% pages.forEach(function(page){ %>
+
+    <navPoint id="np-<%= page.playOrder %>" playOrder="<%= page.playOrder %>">
+      <navLabel>
+        <text><%= page.label %></text>
+      </navLabel>
+      <content src="<%= page.src %>"/>
+    </navPoint>
+
+    <% }); %>
+
   </navMap>
   
   <pageList id="pages" class="pagelist">
