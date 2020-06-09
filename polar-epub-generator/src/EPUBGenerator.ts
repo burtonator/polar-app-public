@@ -2,6 +2,25 @@ export namespace EPUBGenerator {
 
     export function generate(doc: EPUBDocumentOptions) {
 
+        /*
+         Files I have to generate
+
+         /mimetype
+
+            which is just `application/epub+zip` without \n at the end
+
+         /META-INF/container.xml
+
+            Templates.CONTAINER
+
+        /OEBPS/content.opf
+        /OEBPS/toc.ncs
+
+        FIXME:
+            - how do we add images
+
+        */
+
     }
 
     export type AuthorStr = string;
@@ -13,10 +32,16 @@ export namespace EPUBGenerator {
      */
     export type LangStr = string;
 
-    /**
-     * HTML string.
-     */
-    export type HTMLStr = string;
+    export type RawData = string | Uint8Array | ArrayBuffer | Blob;
+
+    export type ImageData = RawData;
+
+    export type HTMLData = RawData;
+
+    interface EPUBImage {
+        readonly path: string;
+        readonly data: ImageData;
+    }
 
     export interface EPUBDocumentOptions {
 
@@ -24,7 +49,7 @@ export namespace EPUBGenerator {
 
         readonly authors?: ReadonlyArray<AuthorStr>;
 
-        readonly cover?: URLStr;
+        readonly cover?: RawData;
 
         readonly lang?: LangStr;
 
@@ -40,7 +65,12 @@ export namespace EPUBGenerator {
 
         readonly authors?: ReadonlyArray<AuthorStr>;
 
-        readonly data: HTMLStr;
+        readonly data: HTMLData;
+
+        /**
+         * The images associated with this chapter.
+         */
+        readonly images: ReadonlyArray<EPUBImage>;
 
         // excludeFromToc: optional, if is not shown on Table of content, default: false;
         // beforeToc: optional, if is shown before Table of content, such like copyright pages. default: false;
