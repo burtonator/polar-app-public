@@ -30,14 +30,14 @@ export namespace EPUBGenerator {
     export type MediaType = 'text/html' | 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
 
     interface EPUBImage {
-        readonly path: string;
+        readonly href: string;
         readonly data: ImageData;
     }
 
     export interface EPUBDocument {
 
         /**
-         * URL representing this document.
+         * URL representing this document.c
          */
         readonly url: string;
 
@@ -230,10 +230,10 @@ export namespace EPUBGenerator {
 
             for (const content of contents) {
 
-                zip.file('OEBPS/'+ content.path, content.data);
+                zip.file('OEBPS/'+ content.href, content.data);
 
                 for (const image of content.images) {
-                    zip.file('OEBPS/' + image.path, image.data);
+                    zip.file('OEBPS/' + image.href, image.data);
                 }
 
             }
