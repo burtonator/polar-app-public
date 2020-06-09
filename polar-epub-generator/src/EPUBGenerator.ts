@@ -27,14 +27,14 @@ export namespace EPUBGenerator {
 
     export type HTMLData = RawData;
 
-    export type MediaType = 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
+    export type MediaType = 'text/html' | 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
 
     interface EPUBImage {
         readonly path: string;
         readonly data: ImageData;
     }
 
-    export interface EPUBDocumentOptions {
+    export interface EPUBDocument {
 
         /**
          * URL representing this document.
@@ -97,7 +97,7 @@ export namespace EPUBGenerator {
         return TemplateLiterals.CONTAINER;
     }
 
-    export function renderContentOPF(doc: EPUBDocumentOptions) {
+    export function renderContentOPF(doc: EPUBDocument) {
 
         function toSpine(): ReadonlyArray<TemplateLiterals.ISpineItem> {
 
@@ -105,7 +105,7 @@ export namespace EPUBGenerator {
 
                 return {
                     idref: content.id,
-                    linear: true
+                    linear: 'yes'
                 };
 
             }
@@ -160,7 +160,7 @@ export namespace EPUBGenerator {
 
     }
 
-    export function renderTOCNCX(doc: EPUBDocumentOptions) {
+    export function renderTOCNCX(doc: EPUBDocument) {
 
         function toPages(): ReadonlyArray<TemplateLiterals.IPage> {
 
@@ -198,7 +198,7 @@ export namespace EPUBGenerator {
      * @return ArrayBuffer Return an ArrayBuffer as we can convert this to either
      * a Blob for use in the browser or a Buffer for use in Node.
      */
-    export async function generate(doc: EPUBDocumentOptions): Promise<ArrayBuffer> {
+    export async function generate(doc: EPUBDocument): Promise<ArrayBuffer> {
 
         /*
          Files I have to generate
@@ -219,10 +219,10 @@ export namespace EPUBGenerator {
         const zip = new JSZip();
 
         function writeControlFiles() {
-            zip.file('/mimetype', 'application/epub+zip');
-            zip.file('/META-INF/container.xml', renderContainerXML());
-            zip.file('/OEBPS/content.opf', renderContentOPF(doc));
-            zip.file('/OEBPS/toc.ncx', renderTOCNCX(doc));
+            zip.file('mimetype', 'application/epub+zip');
+            zip.file('META-INF/container.xml', renderContainerXML());
+            zip.file('OEBPS/content.opf', renderContentOPF(doc));
+            zip.file('OEBPS/toc.ncx', renderTOCNCX(doc));
         }
 
         function writeContents() {

@@ -42,7 +42,7 @@ export namespace TemplateLiterals {
 
     export interface ISpineItem {
         readonly idref: string;
-        readonly linear?: boolean;
+        readonly linear: 'yes' | 'no';
     }
 
     export interface IManifestItem {
@@ -76,7 +76,7 @@ export namespace TemplateLiterals {
     <dc:title><%= title %></dc:title>
     <dc:language xsi:type="dcterms:RFC4646"><%= lang || 'en' %> </dc:language>
     
-    <% subjects.forEach(function(subject){ %>
+    <% subjects.forEach(function(subject) { %>
     <dc:subject><%= subject %></dc:subject>
     <% }); %>
 
@@ -87,7 +87,7 @@ export namespace TemplateLiterals {
   </metadata>
   <manifest>
   
-    <% manifest.forEach(function(manifestItem){ %>
+    <% manifest.forEach(function(manifestItem) { %>
     <item href="<%= manifestItem.href %>" id="<%= manifestItem.id %>" media-type="<%= manifestItem.mediaType %>"/>
     <% }); %>
     
@@ -99,8 +99,8 @@ export namespace TemplateLiterals {
 
     <!-- <itemref idref="coverpage-wrapper" linear="yes"/> -->
 
-    <% spine.forEach(function(spineItem){ %>
-    <itemref idref="<%= spineItem.idref %>" linear="<%= spineItem.linear ? 'yes' | 'no' %>"/>
+    <% spine.forEach(function(spineItem) { %>
+    <itemref idref="<%= spineItem.idref %>" linear="<%= spineItem.linear %>"/>
     <% }); %>
 
   </spine>
