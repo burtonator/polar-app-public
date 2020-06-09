@@ -17,14 +17,14 @@
     "unlimitedStorage",
     "declarativeContent",
     "idle",
-    "notifications"
+    "notifications",
+    "identity"
   ],
   "optional_permissions": [
     "clipboardRead",
     "clipboardWrite",
     "history",
-    "bookmarks",
-    "identity"
+    "bookmarks"
   ],
   "externally_connectable": {
     "matches": [
@@ -51,7 +51,14 @@
     "48": "icon-48.png",
     "128": "icon-128.png"
   },
-  "manifest_version": 2
+  "manifest_version": 2,
+  "oauth2": {
+    "client_id": "919499255851-blb795cbps1feap5iif7lmspuu90c409.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/firebase.database"
+    ]
+  }
 }
 
 
