@@ -7,6 +7,17 @@ describe('EPUBGenerator', function() {
 
     it("basic", async function() {
 
+        const data = `<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+<body>
+<p>hello</p>
+</body>
+</html>`;
+
         const doc: EPUBGenerator.EPUBDocument = {
             url: 'http://www.example.com',
             title: 'Hello World',
@@ -15,9 +26,9 @@ describe('EPUBGenerator', function() {
                 {
                     id: 'index.html',
                     href: 'index.html',
-                    mediaType: 'text/html',
+                    mediaType: 'application/xhtml+xml',
                     title: 'Hello World',
-                    data: '<html><body>hello</body></html>',
+                    data,
                     images: []
                 }
             ]

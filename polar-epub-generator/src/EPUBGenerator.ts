@@ -8,6 +8,7 @@ import {
 } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
+import {TOC_HTML} from "./templates/TOC_HTML";
 
 export namespace EPUBGenerator {
 
@@ -27,7 +28,7 @@ export namespace EPUBGenerator {
 
     export type HTMLData = RawData;
 
-    export type MediaType = 'text/html' | 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
+    export type MediaType = 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
 
     interface EPUBImage {
         readonly href: string;
@@ -167,7 +168,7 @@ export namespace EPUBGenerator {
             function toPage(content: EPUBContent, idx: number): TemplateLiterals.IPage {
 
                 return {
-                    playOrder: idx,
+                    playOrder: idx + 1,
                     label: content.title,
                     src: content.href
                 };
@@ -190,6 +191,34 @@ export namespace EPUBGenerator {
         return Templates.render(TemplateLiterals.TOC_NCX, content);
 
     }
+
+    export function renderTOCHTML(doc: EPUBDocument) {
+
+        function toLinks(): ReadonlyArray<TOC_HTML.ILink> {
+
+            function toLink(content: EPUBContent, idx: number): TOC_HTML.ILink {
+
+                return {
+                    href: content.href,
+                    title: content.title
+                };
+
+            }
+            return doc.contents.map(toLink);
+
+        }
+
+        const links = toLinks();
+
+        const toc: TOC_HTML.TOC = {
+            title: "Table of Contents",
+            links
+        }
+
+        return Templates.render(TOC_HTML.TEMPLATE, toc);
+
+    }
+
 
     /**
      *
@@ -219,10 +248,11 @@ export namespace EPUBGenerator {
         const zip = new JSZip();
 
         function writeControlFiles() {
-            zip.file('mimetype', 'application/epub+zip');
+            zip.file('mimetype', 'application/epub+zip', {compression: "STORE"});
             zip.file('META-INF/container.xml', renderContainerXML());
             zip.file('OEBPS/content.opf', renderContentOPF(doc));
             zip.file('OEBPS/toc.ncx', renderTOCNCX(doc));
+            zip.file('OEBPS/toc.html', renderTOCHTML(doc));
         }
 
         function writeContents() {

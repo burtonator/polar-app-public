@@ -30,7 +30,7 @@ export namespace TemplateLiterals {
 
         readonly subjects: ReadonlyArray<string>;
         readonly publication?: ISODateTimeString | ISODateString;
-        readonly conversion?: ISODateTimeString | ISODateString;
+        readonly conversion: ISODateTimeString | ISODateString;
 
         readonly spine: ReadonlyArray<ISpineItem>;
 
@@ -80,7 +80,10 @@ export namespace TemplateLiterals {
     <dc:subject><%= subject %></dc:subject>
     <% }); %>
 
+    <% if (publication) { %>
     <dc:date opf:event="publication"><%= publication %></dc:date>
+    <% } %>
+    
     <dc:date opf:event="conversion"><%= conversion %></dc:date>
     <dc:source><%= source %></dc:source>
     <!-- <meta name="cover" content="item1"/> -->
@@ -142,7 +145,7 @@ export namespace TemplateLiterals {
 <ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">
   <head>
     <meta name="dtb:uid" content="<%= uid %>"/>
-    <meta name="dtb:depth" content="1"/>
+    <meta name="dtb:depth" content="0"/>
     <meta name="dtb:generator" content="Polar EPUB Generator"/>
     <meta name="dtb:totalPageCount" content="<%= totalPageCount %>"/>
     <meta name="dtb:maxPageNumber" content="<%= maxPageNumber %>"/>
