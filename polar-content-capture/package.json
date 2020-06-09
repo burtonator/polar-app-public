@@ -21,11 +21,11 @@
     "polar-test": "^2.0.0-beta.5",
     "tslint": "=6.1.1",
     "typescript": "=3.8.3",
-    "wait-for-expect": "~1.1.0"
+    "wait-for-expect": "~1.1.0",
+    "@types/jszip": "~3.4.1"
   },
   "dependencies": {
-    "@types/jszip": "~3.1.4",
-    "jszip": "~3.2.2",
+    "jszip": "~3.4.0",
     "polar-shared": "^2.0.0-beta.5"
   },
   "files": [
