@@ -1,6 +1,13 @@
+import JSZip from "jszip";
+
 export namespace EPUBGenerator {
 
-    export function generate(doc: EPUBDocumentOptions) {
+    /**
+     *
+     * @return ArrayBuffer Return an ArrayBuffer as we can convert this to either
+     * a Blob for use in the browser or a Buffer for use in Node.
+     */
+    export async function generate(doc: EPUBDocumentOptions): Promise<ArrayBuffer> {
 
         /*
          Files I have to generate
@@ -20,6 +27,21 @@ export namespace EPUBGenerator {
             - how do we add images
 
         */
+
+        const zip = new JSZip();
+
+        zip.file('/mimetype', 'application/epub+zip');
+
+        const options: JSZip.JSZipGeneratorOptions<'arraybuffer'> = {
+            type: 'arraybuffer',
+            streamFiles: true,
+            compression: "DEFLATE",
+            compressionOptions: {
+                level: 9
+            }
+        };
+
+        return <ArrayBuffer> await zip.generateAsync(options);
 
     }
 
