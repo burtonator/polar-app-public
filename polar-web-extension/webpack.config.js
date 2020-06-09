@@ -5,6 +5,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 const workers = require('os').cpus().length - 1;
+const isDev = process.env.NODE_ENV === 'development';
 
 console.log("Using N workers: " + workers);
 
@@ -89,7 +90,7 @@ module.exports = {
         new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
     ],
     optimization: {
-        minimize: true,
+        minimize: ! isDev,
         minimizer: [new TerserPlugin({
             terserOptions: {
                 output: { ascii_only: true },

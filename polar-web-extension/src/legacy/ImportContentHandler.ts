@@ -1,8 +1,8 @@
 import {ImportContentAPI} from './ImportContentAPI';
 
-export class ImportContentHandler {
+export namespace ImportContentHandler {
 
-    public static register() {
+    export function register() {
 
         chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => {
 
