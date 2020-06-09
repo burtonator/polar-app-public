@@ -1,8 +1,37 @@
 import JSZip from "jszip";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {TemplateLiterals} from "./TemplateLiterals";
+import {Templates} from "./Templates";
 
 export namespace EPUBGenerator {
 
+    import IContent = TemplateLiterals.IContent;
+
+    function renderContainerXML(): string {
+        return TemplateLiterals.CONTAINER;
+    }
+
+    function renderContentOPF(doc: EPUBDocumentOptions) {
+
+        const content: IContent = {
+
+            title: doc.title,
+            source: doc.url,
+            lang: doc.lang || 'en',
+            subjects: [],
+            spine: [],
+            manifest: [],
+            guide: []
+
+        }
+
+
+        return Templates.render(TemplateLiterals.CONTENT_OPF)
+    }
+
     /**
+     *
+     * Generate an EPUB and build the data into a zip buffer.
      *
      * @return ArrayBuffer Return an ArrayBuffer as we can convert this to either
      * a Blob for use in the browser or a Buffer for use in Node.
@@ -23,14 +52,24 @@ export namespace EPUBGenerator {
         /OEBPS/content.opf
         /OEBPS/toc.ncs
 
-        FIXME:
-            - how do we add images
-
         */
 
         const zip = new JSZip();
 
         zip.file('/mimetype', 'application/epub+zip');
+        zip.file('/META-INF/container.xml', renderContainerXML());
+
+        const contents = withPath(doc.contents);
+
+        for (const content of contents) {
+
+            zip.file('OEBPS/'+ content.path, content.data);
+
+            for (const image of content.images) {
+                zip.file('OEBPS/' + image.path, image.data);
+            }
+
+        }
 
         const options: JSZip.JSZipGeneratorOptions<'arraybuffer'> = {
             type: 'arraybuffer',
@@ -44,6 +83,21 @@ export namespace EPUBGenerator {
         return <ArrayBuffer> await zip.generateAsync(options);
 
     }
+
+    function withPath(contents: ReadonlyArray<EPUBContent>): ReadonlyArray<EPUBContentWithPath> {
+
+        return arrayStream(contents)
+            .withIndex()
+            .map((current, idx) => {
+                return {
+                    path: `chap-${idx}.html`,
+                    ...current.value
+                }
+            })
+            .collect();
+
+    }
+
 
     export type AuthorStr = string;
 
@@ -67,7 +121,14 @@ export namespace EPUBGenerator {
 
     export interface EPUBDocumentOptions {
 
+        /**
+         * URL representing this document.
+         */
+        readonly url: string;
+
         readonly title: string;
+
+        readonly contents: ReadonlyArray<EPUBContent>;
 
         readonly authors?: ReadonlyArray<AuthorStr>;
 
@@ -77,7 +138,6 @@ export namespace EPUBGenerator {
 
         readonly tocTitle?: string;
 
-        readonly contents: ReadonlyArray<EPUBContent>;
 
     }
 
@@ -98,6 +158,10 @@ export namespace EPUBGenerator {
         // beforeToc: optional, if is shown before Table of content, such like copyright pages. default: false;
         // filename: optional, specify filename for each chapter, default: undefined;
 
+    }
+
+    interface EPUBContentWithPath extends EPUBContent {
+        readonly path: string;
     }
 
 }
