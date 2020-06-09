@@ -2,31 +2,162 @@ import JSZip from "jszip";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {TemplateLiterals} from "./TemplateLiterals";
 import {Templates} from "./Templates";
+import {
+    ISODateString,
+    ISODateTimeString
+} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {IDStr} from "polar-shared/src/util/Strings";
+import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 
 export namespace EPUBGenerator {
 
-    import IContent = TemplateLiterals.IContent;
+    import ISpineItem = TemplateLiterals.ISpineItem;
+    export type AuthorStr = string;
 
-    function renderContainerXML(): string {
+    export type URLStr = string;
+
+    /**
+     * ISO 2 char language code (defaults to en)
+     */
+    export type LangStr = string;
+
+    export type RawData = string | Uint8Array | ArrayBuffer | Blob;
+
+    export type ImageData = RawData;
+
+    export type HTMLData = RawData;
+
+    export type MediaType = 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
+
+    interface EPUBImage {
+        readonly path: string;
+        readonly data: ImageData;
+    }
+
+    export interface EPUBDocumentOptions {
+
+        /**
+         * URL representing this document.
+         */
+        readonly url: string;
+
+        readonly title: string;
+
+        readonly contents: ReadonlyArray<EPUBContent>;
+
+        readonly creator?: string;
+
+        readonly authors?: ReadonlyArray<AuthorStr>;
+
+        readonly cover?: RawData;
+
+        readonly lang?: LangStr;
+
+        readonly tocTitle?: string;
+
+        /**
+         * The time the document was published.
+         */
+        readonly publication?: ISODateTimeString | ISODateString;
+
+        readonly conversion: ISODateTimeString | ISODateString;
+
+    }
+
+    export interface EPUBContent {
+
+        readonly id: IDStr;
+
+        readonly href: URLPathStr;
+
+        readonly mediaType: MediaType;
+
+        readonly title: string;
+
+        readonly authors?: ReadonlyArray<AuthorStr>;
+
+        readonly data: HTMLData;
+
+        /**
+         * The images associated with this chapter.
+         */
+        readonly images: ReadonlyArray<EPUBImage>;
+
+        // excludeFromToc: optional, if is not shown on Table of content, default: false;
+        // beforeToc: optional, if is shown before Table of content, such like copyright pages. default: false;
+        // filename: optional, specify filename for each chapter, default: undefined;
+
+    }
+
+    interface EPUBContentWithPath extends EPUBContent {
+        readonly path: string;
+    }
+
+    export function renderContainerXML(): string {
         return TemplateLiterals.CONTAINER;
     }
 
-    function renderContentOPF(doc: EPUBDocumentOptions) {
+    export function renderContentOPF(doc: EPUBDocumentOptions) {
 
-        const content: IContent = {
+        function toSpine(): ReadonlyArray<TemplateLiterals.ISpineItem> {
 
-            title: doc.title,
-            source: doc.url,
-            lang: doc.lang || 'en',
-            subjects: [],
-            spine: [],
-            manifest: [],
-            guide: []
+            function toSpineItem(content: EPUBContent): TemplateLiterals.ISpineItem {
+
+                return {
+                    idref: content.id,
+                    linear: true
+                };
+
+            }
+
+            return doc.contents.map(toSpineItem);
+
+        }
+
+        function toManifest(): ReadonlyArray<TemplateLiterals.IManifestItem> {
+
+            function toManifestItem(content: EPUBContent): TemplateLiterals.IManifestItem {
+
+                return {
+                    id: content.id,
+                    href: content.href,
+                    mediaType: content.mediaType
+                };
+
+            }
+
+            return doc.contents.map(toManifestItem);
 
         }
 
 
-        return Templates.render(TemplateLiterals.CONTENT_OPF)
+        const spine = toSpine();
+        const manifest = toManifest();
+
+        const content: TemplateLiterals.IContent = {
+            id: doc.url,
+            title: doc.title,
+            source: doc.url,
+
+            creator: doc.creator,
+            lang: doc.lang || 'en',
+
+            // we don't need this now as there aren't many subjects there.
+            subjects: [],
+            publication: doc.publication,
+            conversion: doc.conversion,
+
+            spine,
+            manifest,
+
+            // we don't need a guid now as a cover and ToC are sort of redundant
+            // and unnecessary in HTML captures.
+            guide: []
+
+        }
+
+        return Templates.render(TemplateLiterals.CONTENT_OPF, content);
+
     }
 
     /**
@@ -56,31 +187,45 @@ export namespace EPUBGenerator {
 
         const zip = new JSZip();
 
-        zip.file('/mimetype', 'application/epub+zip');
-        zip.file('/META-INF/container.xml', renderContainerXML());
+        function writeControlFiles() {
+            zip.file('/mimetype', 'application/epub+zip');
+            zip.file('/META-INF/container.xml', renderContainerXML());
+            zip.file('/OEBPS/content.opf', renderContentOPF(doc));
+        }
 
-        const contents = withPath(doc.contents);
+        function writeContents() {
+            const contents = withPath(doc.contents);
 
-        for (const content of contents) {
+            for (const content of contents) {
 
-            zip.file('OEBPS/'+ content.path, content.data);
+                zip.file('OEBPS/'+ content.path, content.data);
 
-            for (const image of content.images) {
-                zip.file('OEBPS/' + image.path, image.data);
+                for (const image of content.images) {
+                    zip.file('OEBPS/' + image.path, image.data);
+                }
+
             }
+        }
+
+        async function toArrayBuffer() {
+
+            const options: JSZip.JSZipGeneratorOptions<'arraybuffer'> = {
+                type: 'arraybuffer',
+                streamFiles: true,
+                compression: "DEFLATE",
+                compressionOptions: {
+                    level: 9
+                }
+            };
+
+            return <ArrayBuffer> await zip.generateAsync(options);
 
         }
 
-        const options: JSZip.JSZipGeneratorOptions<'arraybuffer'> = {
-            type: 'arraybuffer',
-            streamFiles: true,
-            compression: "DEFLATE",
-            compressionOptions: {
-                level: 9
-            }
-        };
+        writeControlFiles();
+        writeContents();
 
-        return <ArrayBuffer> await zip.generateAsync(options);
+        return await toArrayBuffer();
 
     }
 
@@ -99,70 +244,6 @@ export namespace EPUBGenerator {
     }
 
 
-    export type AuthorStr = string;
-
-    export type URLStr = string;
-
-    /**
-     * ISO 2 char language code (defaults to en)
-     */
-    export type LangStr = string;
-
-    export type RawData = string | Uint8Array | ArrayBuffer | Blob;
-
-    export type ImageData = RawData;
-
-    export type HTMLData = RawData;
-
-    interface EPUBImage {
-        readonly path: string;
-        readonly data: ImageData;
-    }
-
-    export interface EPUBDocumentOptions {
-
-        /**
-         * URL representing this document.
-         */
-        readonly url: string;
-
-        readonly title: string;
-
-        readonly contents: ReadonlyArray<EPUBContent>;
-
-        readonly authors?: ReadonlyArray<AuthorStr>;
-
-        readonly cover?: RawData;
-
-        readonly lang?: LangStr;
-
-        readonly tocTitle?: string;
-
-
-    }
-
-    export interface EPUBContent {
-
-        readonly title: string;
-
-        readonly authors?: ReadonlyArray<AuthorStr>;
-
-        readonly data: HTMLData;
-
-        /**
-         * The images associated with this chapter.
-         */
-        readonly images: ReadonlyArray<EPUBImage>;
-
-        // excludeFromToc: optional, if is not shown on Table of content, default: false;
-        // beforeToc: optional, if is shown before Table of content, such like copyright pages. default: false;
-        // filename: optional, specify filename for each chapter, default: undefined;
-
-    }
-
-    interface EPUBContentWithPath extends EPUBContent {
-        readonly path: string;
-    }
 
 }
 

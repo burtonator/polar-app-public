@@ -2,6 +2,7 @@ import {
     ISODateString,
     ISODateTimeString
 } from "polar-shared/src/metadata/ISODateTimeStrings";
+import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 
 export namespace TemplateLiterals {
 
@@ -18,12 +19,13 @@ export namespace TemplateLiterals {
 `
 
     export interface IContent {
-        readonly id: string;
+        readonly id: URLStr | IDStr;
         readonly title: string;
         readonly source: string;
 
         readonly creator?: string;
         readonly lang?: string;
+
         readonly subjects: ReadonlyArray<string>;
         readonly publication?: ISODateTimeString | ISODateString;
         readonly conversion?: ISODateTimeString | ISODateString;
@@ -35,8 +37,6 @@ export namespace TemplateLiterals {
         readonly guide: ReadonlyArray<IGuideReference>;
 
     }
-
-    export type MediaType = 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
 
     export interface ISpineItem {
         readonly idref: string;
