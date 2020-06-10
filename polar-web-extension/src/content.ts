@@ -1,13 +1,17 @@
 import {ReadabilityCapture} from "./ReadabilityCapture";
 import {CaptureApp} from "./ui/CaptureApp";
 
+function clearDocument() {
+    document.documentElement.innerHTML = `<html><body></body></html>`;
+}
+
 function handleStartCapture() {
 
     console.log("got start-capture message");
 
     const capture = ReadabilityCapture.capture();
 
-    document.documentElement.innerHTML = `<html><body></body></html>`;
+    clearDocument();
 
     CaptureApp.start(capture);
 

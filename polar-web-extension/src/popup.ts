@@ -1,7 +1,6 @@
 import {AuthHandlers} from "polar-bookshelf/web/js/apps/repository/auth_handler/AuthHandler";
 import {FirebaseAuth} from "polar-bookshelf/web/js/firebase/FirebaseAuth";
 import {Identity} from "./chrome/Identity";
-import { Tabs } from "./chrome/Tabs";
 import {Tracer} from "polar-shared/src/util/Tracer";
 import {PopupScriptMessages} from "./PopupScriptMessages";
 
@@ -52,6 +51,9 @@ export function injectContentScript() {
 async function handleAsync() {
     await requireAuth();
     await injectContentScript();
+
+    // TODO: I think we have to await a 'ready' message here OR we just have to
+    // make the main() method start upon injection...
     await PopupScriptMessages.sendStartCapture();
 }
 
