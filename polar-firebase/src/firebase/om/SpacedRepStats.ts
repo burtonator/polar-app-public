@@ -28,8 +28,8 @@ export class SpacedRepStats {
 
         const spacedRepStatRecord: SpacedRepStatRecord = {
             id, uid,
+            ...spacedRepStat,
             created: ISODateTimeStrings.create(),
-            ...spacedRepStat
         };
 
         const collections = this.collections();

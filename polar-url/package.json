@@ -23,7 +23,7 @@
     "mocha": "^6.2.0",
     "polar-test": "^2.0.0-beta.5",
     "tslint": "=6.1.1",
-    "typescript": "=3.8.3"
+    "typescript": "3.9.5"
   },
   "dependencies": {
     "@types/whatwg-url": "^6.4.0",

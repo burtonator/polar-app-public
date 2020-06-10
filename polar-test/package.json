@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/diff": "4.0.2",
     "tslint": "=6.1.1",
-    "typescript": "=3.8.3"
+    "typescript": "3.9.5"
   },
   "dependencies": {
     "@types/node": "^12.11.1",
