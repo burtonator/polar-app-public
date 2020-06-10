@@ -2,6 +2,8 @@ import {AuthHandlers} from "polar-bookshelf/web/js/apps/repository/auth_handler/
 import {FirebaseAuth} from "polar-bookshelf/web/js/firebase/FirebaseAuth";
 import {Identity} from "./chrome/Identity";
 import { Tabs } from "./chrome/Tabs";
+import {Tracer} from "polar-shared/src/util/Tracer";
+import {PopupScriptMessages} from "./PopupScriptMessages";
 
 function loadLinkInNewTab(link: string) {
     chrome.tabs.create({url: link});
@@ -15,11 +17,11 @@ async function requireAuth() {
 
     console.log("Verifying we're logged into Polar...");
 
-    const authToken = await Identity.getAuthToken();
+    const authToken = await Tracer.async(Identity.getAuthToken, 'getAuthToken');
 
     const authHandler = AuthHandlers.get();
 
-    const userInfo = await authHandler.userInfo();
+    const userInfo = await Tracer.async(() => authHandler.userInfo(), 'userInfo');
 
     if (! userInfo.isPresent()) {
 
@@ -39,16 +41,6 @@ async function requireAuth() {
 
 }
 
-async function startCapture() {
-    const tab = await Tabs.activeTab()
-    if (tab) {
-        console.log("Sending start-capture");
-        chrome.tabs.sendMessage(tab.id!, {type: "start-capture"});
-    } else {
-        console.warn("No active tab");
-    }
-}
-
 export function injectContentScript() {
 
     chrome.tabs.executeScript({
@@ -60,13 +52,14 @@ export function injectContentScript() {
 async function handleAsync() {
     await requireAuth();
     await injectContentScript();
-    await startCapture();
+    await PopupScriptMessages.sendStartCapture();
 }
 
 /**
  * Called when the user clicks the button in the page to 'share' with Polar.
  */
 async function onExtensionActivated() {
+
     console.log("Injecting content script...");
 
     handleAsync()
