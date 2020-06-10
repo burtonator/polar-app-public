@@ -9,8 +9,14 @@ export const PreviewContent = () => {
             <h1>{captureContentContext.title}</h1>
 
             {captureContentContext.image && (
-                <div>
-                    <img src={captureContentContext.image}/>
+                <div style={{display: 'flex'}}>
+
+                    <img style={{
+                             maxHeight: '200px',
+                             margin: 'auto'
+                         }}
+                         src={captureContentContext.image}/>
+
                 </div>
             )}
 
