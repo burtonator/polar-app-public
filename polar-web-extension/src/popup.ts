@@ -3,6 +3,7 @@ import {FirebaseAuth} from "polar-bookshelf/web/js/firebase/FirebaseAuth";
 import {Identity} from "./chrome/Identity";
 import {Tracer} from "polar-shared/src/util/Tracer";
 import {PopupScriptMessages} from "./PopupScriptMessages";
+import {PopupApp} from "./ui/popup/PopupApp";
 
 function loadLinkInNewTab(link: string) {
     chrome.tabs.create({url: link});
@@ -16,11 +17,19 @@ async function requireAuth() {
 
     console.log("Verifying we're logged into Polar...");
 
-    const authToken = await Tracer.async(Identity.getAuthToken, 'getAuthToken');
+    console.log("Getting auth token...");
+
+    const authToken = await Tracer.async(() => Identity.getAuthToken(), 'getAuthToken');
+
+    console.log("Getting auth token...done");
 
     const authHandler = AuthHandlers.get();
 
+    console.log("Getting userInfo...");
+
     const userInfo = await Tracer.async(() => authHandler.userInfo(), 'userInfo');
+
+    console.log("Getting userInfo...done");
 
     if (! userInfo.isPresent()) {
 
@@ -34,6 +43,8 @@ async function requireAuth() {
 
         console.log("Authenticating ...done");
 
+    } else {
+        console.log("Already authenticated.");
     }
 
     console.log("Verifying we're logged into Polar...done");
@@ -42,19 +53,32 @@ async function requireAuth() {
 
 export function injectContentScript() {
 
+    console.log("Injecting content script...");
+
     chrome.tabs.executeScript({
         file: 'content-bundle.js'
     });
 
+    console.log("Injecting content script...done");
+
 }
 
-async function handleAsync() {
+export function startApp() {
+    console.log("Starting react app...");
+    PopupApp.start();
+    console.log("Starting react app...done");
+}
+
+async function handleExtensionActivated() {
+
+    startApp();
     await requireAuth();
     await injectContentScript();
 
     // TODO: I think we have to await a 'ready' message here OR we just have to
     // make the main() method start upon injection...
     await PopupScriptMessages.sendStartCapture();
+
 }
 
 /**
@@ -62,12 +86,8 @@ async function handleAsync() {
  */
 async function onExtensionActivated() {
 
-    console.log("Injecting content script...");
-
-    handleAsync()
-        .catch(err => console.error(err));
-
-    console.log("Injecting content script...done");
+    handleExtensionActivated()
+        .catch(err => console.error("Unable to handle popup: ", err));
 
 }
 

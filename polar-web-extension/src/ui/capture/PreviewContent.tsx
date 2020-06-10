@@ -5,7 +5,7 @@ export const PreviewContent = () => {
     const captureContentContext = useCaptureContentContext();
 
     return (
-        <div style={{padding: '5px'}}>
+        <div style={{padding: '5px', margin: '5px'}}>
             <h1>{captureContentContext.title}</h1>
 
             {captureContentContext.image && (
@@ -21,6 +21,7 @@ export const PreviewContent = () => {
             )}
 
             <div dangerouslySetInnerHTML={{__html: captureContentContext.content}}></div>
+
         </div>
     );
 }
