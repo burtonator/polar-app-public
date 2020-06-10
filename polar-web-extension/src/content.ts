@@ -1,4 +1,5 @@
 import {ReadabilityCapture} from "./ReadabilityCapture";
+import {CaptureApp} from "./ui/CaptureApp";
 
 function handleStartCapture() {
 
@@ -6,7 +7,9 @@ function handleStartCapture() {
 
     const capture = ReadabilityCapture.capture();
 
-    document.documentElement.innerHTML = capture.content;
+    document.documentElement.innerHTML = `<html><body></body></html>`;
+
+    CaptureApp.start(capture);
 
 }
 
