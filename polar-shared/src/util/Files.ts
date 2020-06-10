@@ -662,7 +662,7 @@ export class Files {
     }
 
     // noinspection TsLint
-    private static readonly promised = fs.readFile ? new Promised() : null!;
+    private static readonly promised = (fs && fs.readFile) ? new Promised() : null!;
 
 }
 
