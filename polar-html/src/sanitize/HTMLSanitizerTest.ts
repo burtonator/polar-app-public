@@ -4,11 +4,13 @@ import {HTMLSanitizer} from './HTMLSanitizer';
 describe('HTMLSanitizer', function () {
 
     it('basic', function () {
-
         assert.equal(HTMLSanitizer.sanitize('<p class="foo">'), '<p></p>');
-
     });
 
+
+    it('xhtml', function () {
+        assert.equal(HTMLSanitizer.sanitize('<br>'), '<br/>');
+    });
 
     it('with minimal CSS', function () {
 

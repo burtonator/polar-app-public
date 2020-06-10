@@ -17,7 +17,8 @@
     "polar-web-extension-api": "^2.0.0-beta.5",
     "polar-bookshelf": "^2.0.0-beta.5",
     "@polar-app/readability": "=0.2.0",
-    "page-metadata-parser": "=1.1.4"
+    "page-metadata-parser": "=1.1.4",
+    "polar-html": "^2.0.0-beta.5"
   },
   "devDependencies": {
     "terser-webpack-plugin": "=3.0.3",
