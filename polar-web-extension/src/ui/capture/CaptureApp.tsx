@@ -1,6 +1,6 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ReadabilityCapture} from "../ReadabilityCapture";
+import {ReadabilityCapture} from "../../ReadabilityCapture";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import ICapturedContent = ReadabilityCapture.ICapturedContent;

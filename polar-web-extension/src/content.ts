@@ -1,5 +1,5 @@
 import {ReadabilityCapture} from "./ReadabilityCapture";
-import {CaptureApp} from "./ui/CaptureApp";
+import {CaptureApp} from "./ui/capture/CaptureApp";
 
 function clearDocument() {
     document.documentElement.innerHTML = `<html><body></body></html>`;

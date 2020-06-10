@@ -5,7 +5,7 @@ export const PreviewContent = () => {
     const captureContentContext = useCaptureContentContext();
 
     return (
-        <div>
+        <div style={{padding: '5px'}}>
             <h1>{captureContentContext.title}</h1>
 
             {captureContentContext.image && (
