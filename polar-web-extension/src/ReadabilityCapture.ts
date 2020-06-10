@@ -13,6 +13,7 @@ export namespace ReadabilityCapture {
 
     export function capture(): ICapturedContent {
 
+        const url = document.location.href;
         const doc = <Document> document.cloneNode(true);
 
         function parseReadability() {
@@ -21,7 +22,7 @@ export namespace ReadabilityCapture {
         }
 
         function parseMetadata() {
-            return getMetadata(doc, doc.location.href);
+            return getMetadata(doc, url);
         }
 
         const readable = parseReadability();

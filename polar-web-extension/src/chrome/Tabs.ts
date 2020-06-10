@@ -1,13 +1,13 @@
 export namespace Tabs {
 
-    export function activeTab(): Promise<chrome.tabs.Tab> {
+    export function activeTab(): Promise<chrome.tabs.Tab | undefined> {
 
         return new Promise<chrome.tabs.Tab>(((resolve, reject) => {
 
-            chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
+            chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
 
                 if (tabs.length === 0) {
-                    reject(new Error("No active tab"));
+                    resolve(undefined);
                 }
 
                 if (tabs.length > 1) {
