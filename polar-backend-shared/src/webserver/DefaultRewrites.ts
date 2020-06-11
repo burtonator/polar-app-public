@@ -20,6 +20,7 @@ export class DefaultRewrites {
                     "/whats-new",
                     "/logout",
                     "/login",
+                    "/login.html",
                     "/logs",
                     "/configured",
                     "/invite",
@@ -76,10 +77,6 @@ export class DefaultRewrites {
             {
                 "source": "/user/:user",
                 "destination": "/apps/repository/index.html"
-            },
-            {
-                "source": "/login.html",
-                "destination": "/apps/repository/login.html"
             },
             {
                 "source": "/logout.html",
