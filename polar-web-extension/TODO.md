@@ -1,3 +1,24 @@
+- new design of the 'post' strategy.
+    the user is given a CSRF code for every request.  A new one is given every 
+    time they login.
+    
+    If an existing one exists, it's cleared.
+    
+    the csrf token maps to an uid and other metadata for that user.
+    
+    - when a user does a PUT it includs the csrf token, we fetch the UID for 
+      that token, then we write the doc to storage, and write ten epub file.
+      
+    - the payload is just JSON 
+    
+    - FIXME: the BINARY data for the PDF/epub is a problem though... 
+    
+        - I could do TWO requests.  One is for the binary data... the other is
+          for the JSON data and each is given a document id.
+          
+        - 
+
+
 - The main browser doesn't have access to my secondary authentication tokens 
   under my main account. I don't like that.  It's not the end of the world 
   though.
