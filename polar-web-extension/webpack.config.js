@@ -4,15 +4,20 @@ const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const workers = require('os').cpus().length - 1;
+const mode = process.env.NODE_ENV || 'production';
 const isDev = process.env.NODE_ENV === 'development';
+const target = process.env.WEBPACK_TARGET || 'web';
+
+const workers = require('os').cpus().length - 1;
 
 console.log("Using N workers: " + workers);
 
 module.exports = {
-    // mode: 'development',
+    mode,
+    target: 'web',
     entry: {
         "popup": [ "./src/popup.ts"],
+        "login": [ "./src/login.ts"],
         "content": [ "./src/content.ts"],
         "background": [ "./src/background.ts"],
     },
@@ -21,6 +26,14 @@ module.exports = {
         rules: [
 
             { loader: 'cache-loader' },
+            {
+                test: path.resolve(__dirname, 'node_modules/polar-bookshelf/node_modules/electron/index.js'),
+                use: 'null-loader'
+            },
+            {
+                test: /node_modules\/electron/,
+                use: 'null-loader'
+            },
             {
                 test: path.resolve(__dirname, 'node_modules/electron/index.js'),
                 use: 'null-loader'
@@ -73,8 +86,7 @@ module.exports = {
             './lib/firebase': path.resolve(__dirname, 'node_modules/polar-bookshelf/node_modules/firebase')
         }
     },
-    // devtool: "source-map",
-    // devtool: "inline-source-map",
+    devtool: isDev ? "inline-source-map" : false,
     output: {
         path: path.resolve(__dirname),
         filename: 'dist/[name]-bundle.js',
@@ -84,13 +96,15 @@ module.exports = {
         fs: 'empty',
         net: 'empty',
         tls: 'empty',
+        electron: 'empty',
     },
     plugins: [
         // new BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
     ],
     optimization: {
-        minimize: ! isDev,
+        // minimize: ! isDev,
+        minimize: true,
         minimizer: [new TerserPlugin({
             terserOptions: {
                 output: { ascii_only: true },

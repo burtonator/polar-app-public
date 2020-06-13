@@ -20,6 +20,14 @@ export class AppRuntime {
 
     }
 
+    public static isElectron() {
+        return this.get() === 'electron'
+    }
+
+    public static isBrowser() {
+        return this.get() === 'browser';
+    }
+
 }
 
 export type AppRuntimeID = 'electron' | 'browser' | 'node';

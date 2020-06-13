@@ -1,3 +1,6 @@
+- now the fucking problem is I have TWO copies of react embedded and I'm 
+  getting hook errors..
+
 - new design of the 'post' strategy.
     the user is given a CSRF code for every request.  A new one is given every 
     time they login.

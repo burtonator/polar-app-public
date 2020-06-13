@@ -1,22 +1,17 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import {MUIAppRoot} from "../mui/MUIAppRoot";
-import {FirestoreProvider} from "polar-bookshelf/apps/repository/js/FirestoreProvider";
-import {UserInfoProvider} from "polar-bookshelf/web/js/apps/repository/auth_handler/UserInfoProvider";
+import {MUIAppRoot} from "polar-bookshelf/web/js/mui/MUIAppRoot";
+import {LoginScreen} from "polar-bookshelf/apps/repository/js/login/LoginScreen";
 
 export class LoginApp {
 
     public static start() {
         ReactDOM.render(
             <MUIAppRoot>
-                <FirestoreProvider>
-                    <UserInfoProvider>
-                        {/*<LoginScreen/>*/}
-                    </UserInfoProvider>
-                </FirestoreProvider>
+                <LoginScreen/>
             </MUIAppRoot>
             ,
-            document.body
+            document.getElementById('root')!
         );
 
     }
