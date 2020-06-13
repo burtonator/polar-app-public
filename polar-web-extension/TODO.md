@@ -16,7 +16,24 @@
         - I could do TWO requests.  One is for the binary data... the other is
           for the JSON data and each is given a document id.
           
-        - 
+    - use the infra from DatastoreImportFileFunctions
+    
+        - FIXME: this can compute the storage file path
+        - FIXME how do we write the DocMeta... 
+        
+    - then 
+        polar-bookshelf/web/js/datastore/sharing/GroupDatastores.ts
+        
+        ... will import the doc into the datastore copy copying the data 
+        between two endpoints
+        
+        
+    - OR, just go through the normal Polar login flow, just within the chrome 
+      extension... 
+        
+ - I might not need the identity permission
+         
+        
 
 
 - The main browser doesn't have access to my secondary authentication tokens 

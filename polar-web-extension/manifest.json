@@ -18,7 +18,8 @@
     "declarativeContent",
     "idle",
     "notifications",
-    "identity"
+    "identity",
+    "*://*.getpolarized.io/*"
   ],
   "optional_permissions": [
     "clipboardRead",
