@@ -1,6 +1,25 @@
 - now the fucking problem is I have TWO copies of react embedded and I'm 
   getting hook errors..
-
+    - yup.. that's definitely the problem... with lerna it's importing from the 
+      wrong directory.
+      
+    - If lerna is just linking to the package... I don't like this because I'd 
+      rather it do PROPER package resolution like/if it was a normal package
+    
+    - my only solutions are:
+        - Fix this with webpack
+        - TRY with peerDependencies?
+        
+    - migrate to using a central polar-react package that handles our core dependencies.
+    
+        a find -1 node_modules , then find -1 node_modules/polar-bookshelf 
+        
+        .. then sort + uniq then to find duplicate imports... 
+        
+    - 
+    
+    
+    
 - new design of the 'post' strategy.
     the user is given a CSRF code for every request.  A new one is given every 
     time they login.
