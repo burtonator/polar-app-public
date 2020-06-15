@@ -1,7 +1,6 @@
 import JSZip from "jszip";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {TemplateLiterals} from "./TemplateLiterals";
-import {Templates} from "./Templates";
 import {
     ISODateString,
     ISODateTimeString
@@ -11,6 +10,7 @@ import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {TOC_HTML} from "./templates/TOC_HTML";
 import {ContainerXML} from "./templates/ContainerXML";
 import {ContainerOPF} from "./templates/ContainerOPF";
+import {TOC_NCX} from "./templates/TOC_NCX";
 
 export namespace EPUBGenerator {
 
@@ -18,6 +18,8 @@ export namespace EPUBGenerator {
     import IManifestItem = ContainerOPF.IManifestItem;
     import IGuideReference = ContainerOPF.IGuideReference;
     import IContent = ContainerOPF.IContent;
+    import ITOC = TOC_NCX.ITOC;
+    import IPage = TOC_NCX.IPage;
     export type AuthorStr = string;
 
     export type URLStr = string;
@@ -200,9 +202,9 @@ export namespace EPUBGenerator {
 
     export function renderTOCNCX(doc: EPUBDocument) {
 
-        function toPages(): ReadonlyArray<TemplateLiterals.IPage> {
+        function toPages(): ReadonlyArray<IPage> {
 
-            function toPage(content: EPUBContent, idx: number): TemplateLiterals.IPage {
+            function toPage(content: EPUBContent, idx: number): IPage {
 
                 return {
                     playOrder: idx + 1,
@@ -217,7 +219,7 @@ export namespace EPUBGenerator {
 
         const pages = toPages();
 
-        const content: TemplateLiterals.ITOC = {
+        const content: ITOC = {
             uid: doc.url,
             title: doc.title,
             totalPageCount: doc.contents.length,
@@ -225,7 +227,7 @@ export namespace EPUBGenerator {
             pages
         }
 
-        return Templates.render(TemplateLiterals.TOC_NCX, content);
+        return TOC_NCX.generate(content);
 
     }
 
