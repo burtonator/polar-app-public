@@ -35,7 +35,7 @@
         "paths": {
             "*": ["node_modules/*"]
         },
-        "lib": ["es2019", "dom", "es2017.object", "es2015.promise", "es2016.array.include"],
+        "lib": ["es2019", "dom"],
         "types": [
             "node",
             "mocha"
@@ -45,8 +45,5 @@
         "src/**/*"
     ],
     "exclude": [
-    ],
-    "typeRoots": [
-        "./node_modules/@types"
     ]
 }

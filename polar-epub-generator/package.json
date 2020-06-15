@@ -12,11 +12,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^12.11.1",
-    "@types/mocha": "^7.0.2",
-    "mocha": "^7.2.0",
+    "@types/node": "12.12.32",
+    "@types/mocha": "7.0.2",
+    "mocha": "8.0.1",
     "polar-test": "^2.0.0-beta.5",
-    "tslint": "=6.1.1",
+    "tslint": "6.1.2",
     "typescript": "3.9.5",
     "@types/jszip": "~3.4.1",
     "@types/ejs": "3.0.4"

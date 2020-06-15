@@ -49,7 +49,6 @@ module.exports = {
                             // there should be 1 cpu for the fork-ts-checker-webpack-plugin
                             workers: 15,
                             // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
-                            poolTimeout: Infinity,
                             workerParallelJobs: 100,
                             poolTimeout: 2000,
                         }
@@ -76,15 +75,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ],
-        alias: {
-            // TODO: this is used temporarily during our migration to using
-            // webpack everywhere.  We should eventually change our import to
-            // just 'firebase' but FB think's it's running in node and executes
-            // with the wrong strategy.
-            // N
-            './lib/firebase': path.resolve(__dirname, 'node_modules/polar-bookshelf/node_modules/firebase')
-        }
+        extensions: [ '.tsx', '.ts', '.js' ]
     },
     devtool: isDev ? "inline-source-map" : false,
     output: {

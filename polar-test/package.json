@@ -13,14 +13,14 @@
   "license": "ISC",
   "devDependencies": {
     "@types/diff": "4.0.2",
-    "tslint": "=6.1.1",
+    "tslint": "6.1.2",
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "@types/node": "^12.11.1",
-    "chai": "^4.2.0",
+    "@types/node": "12.12.32",
+    "chai": "4.2.0",
     "diff": "4.0.2",
-    "mocha": "^7.2.0"
+    "mocha": "8.0.1"
   },
   "files": [
     "**/*.js",

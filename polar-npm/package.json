@@ -15,8 +15,8 @@
     "npm-upgrade-pkg": "src/npm-upgrade-pkg.js"
   },
   "devDependencies": {
-    "@types/node": "^12.11.1",
-    "tslint": "=6.1.1",
+    "@types/node": "12.12.32",
+    "tslint": "6.1.2",
     "typescript": "3.9.5"
   },
   "files": [

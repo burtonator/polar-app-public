@@ -35,20 +35,12 @@
         "paths": {
             "*": ["node_modules/*"]
         },
-        "lib": ["es2015", "dom", "es2017.object", "es2015.promise", "es2016.array.include"],
-        "typeRoots": [
-            "./node_modules/@types",
-            "./node_modules/@polar-app-types"
-        ]
+        "lib": ["es2019", "dom"]
 
     },
     "include": [
         "src/**/*"
     ],
     "exclude": [
-    ],
-    "types": [
-        "mocha",
-        "reflect-metadata"
     ]
 }

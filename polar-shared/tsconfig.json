@@ -32,25 +32,12 @@
         "allowSyntheticDefaultImports": true,
 
         "baseUrl": ".",
-        "paths": {
-            "*": [
-                "node_modules/@types/*", "*",
-                "node_modules/@polar-app-types/*", "*"
-            ]
-        },
-        "lib": ["es2015", "dom", "es2017.object", "es2015.promise", "es2016.array.include"]
+        "lib": ["es2019", "dom"]
 
     },
     "include": [
         "src/**/*"
     ],
     "exclude": [
-    ],
-    "types": [
-        "mocha",
-        "reflect-metadata"
-    ],
-    "typeRoots": [
-        "./node_modules/@types"
     ]
 }
