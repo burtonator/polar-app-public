@@ -9,6 +9,7 @@ import {BackendFileRefData} from "polar-bookshelf/web/js/datastore/Datastore";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DefaultPersistenceLayer} from "polar-bookshelf/web/js/datastore/DefaultPersistenceLayer";
 import {Firestore} from "polar-bookshelf/web/js/firebase/Firestore";
+import {WriteOpts} from "polar-bookshelf/web/js/datastore/PersistenceLayer";
 
 export namespace DatastoreWriter {
 
@@ -16,6 +17,7 @@ export namespace DatastoreWriter {
         readonly epub: ArrayBuffer,
         readonly title: string;
         readonly description: string;
+        readonly url: string;
     }
 
     export interface WrittenDoc {
@@ -23,8 +25,9 @@ export namespace DatastoreWriter {
     }
 
     function createRandomID() {
-        const rnd = Math.random();
-        return Hashcodes.createID(rnd);
+        // const rnd = '' + (Math.random() * 1000000);
+        // return Hashcodes.createID(rnd);
+        return Hashcodes.createRandomID();
     }
 
     export async function write(opts: IWriteOpts): Promise<WrittenDoc> {
@@ -37,8 +40,10 @@ export namespace DatastoreWriter {
         const persistenceLayer = new DefaultPersistenceLayer(datastore);
 
         const fingerprint = createRandomID();
-        const filename = createRandomID() + '.epub'
+        const filename = createRandomID() + '.epub';
         const hashcode = Hashcodes.createHashcode(opts.epub);
+
+        console.log("Writing document: " + filename);
 
         const docMeta = DocMetas.create(fingerprint, 1, filename);
 
@@ -46,6 +51,9 @@ export namespace DatastoreWriter {
                                         .getOrElse("Untitled");
 
         docMeta.docInfo.description = opts.description;
+        docMeta.docInfo.filename = filename;
+        docMeta.docInfo.backend = Backend.STASH;
+        docMeta.docInfo.url = opts.url;
         docMeta.docInfo.hashcode = hashcode;
 
         const fileRef: FileRef = {
@@ -60,7 +68,11 @@ export namespace DatastoreWriter {
             ...fileRef
         };
 
-        await persistenceLayer.write(fingerprint, docMeta, {writeFile});
+        const writeOpts: WriteOpts = {
+            writeFile
+        };
+
+        await persistenceLayer.write(fingerprint, docMeta, writeOpts);
         await persistenceLayer.stop();
 
         return {id: fingerprint};

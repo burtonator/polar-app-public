@@ -16,9 +16,32 @@ export class Hashcodes {
     public static create(data: any): string {
         Preconditions.assertPresent(data, "data");
 
-        data = typeof data === 'string' ? data : JSON.stringify(data);
+        function toRawData(): string | ArrayBuffer | Uint8Array {
 
-        return base58check.encode(keccak256(data));
+            if (typeof data === 'string') {
+                return data;
+            }
+
+            if (data instanceof ArrayBuffer) {
+                return data;
+            }
+
+            if (data instanceof Uint8Array) {
+                return data;
+            }
+
+            if (typeof data === 'object') {
+                // we were given an object and convert it to JSON first.
+                return JSON.stringify(data);
+            }
+
+            return data;
+
+        }
+
+        const rawData = toRawData();
+
+        return base58check.encode(keccak256(rawData));
     }
 
     public static createHashcode(data: any): Hashcode {

@@ -11,9 +11,11 @@ function clearDocument() {
 
 function handleStartCapture() {
 
-    console.log("got start-capture message");
+    console.log("Starting capture...");
 
     const capture = ReadabilityCapture.capture();
+
+    console.log("Captured: ", capture);
 
     clearDocument();
 

@@ -26,11 +26,13 @@ export namespace SaveToPolarHandler {
             const opts: IWriteOpts = {
                 epub,
                 title: capture.title,
-                description: capture.description
+                description: capture.description,
+                url: capture.url
             }
 
             const writtenDoc = await DatastoreWriter.write(opts)
             doLoadWrittenDoc(writtenDoc);
+
         }
 
         // FIXME: report the error to the chrome extension...
