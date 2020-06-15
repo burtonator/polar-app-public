@@ -247,7 +247,7 @@ export namespace EPUBGenerator {
             links
         }
 
-        return Templates.render(TOC_HTML.TEMPLATE, toc);
+        return TOC_HTML.generate(toc);
 
     }
 
