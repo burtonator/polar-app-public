@@ -199,4 +199,34 @@ export class AsyncProviders {
 
     }
 
+    public static memoize1<A, T>(provider: (arg0: A) => Promise<T>): (arg0: A) => Promise<T>  {
+
+        const latch: Latch<T> = new Latch();
+
+        // true when the first provider is executing.
+        let executing: boolean = false;
+
+        return async (arg0: A) => {
+
+            if (executing) {
+                // if we're executing we just return the latch and it will block
+                // until the first caller returns.
+                return latch.get();
+            }
+
+            try {
+
+                executing = true;
+                const result = await provider(arg0);
+                latch.resolve(result);
+                return result;
+
+            } catch (e) {
+                latch.reject(e);
+                throw e;
+            }
+
+        };
+    }
+
 }
