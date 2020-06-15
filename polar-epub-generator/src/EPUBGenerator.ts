@@ -10,10 +10,14 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {TOC_HTML} from "./templates/TOC_HTML";
 import {ContainerXML} from "./templates/ContainerXML";
+import {ContainerOPF} from "./templates/ContainerOPF";
 
 export namespace EPUBGenerator {
 
-    import ISpineItem = TemplateLiterals.ISpineItem;
+    import ISpineItem = ContainerOPF.ISpineItem;
+    import IManifestItem = ContainerOPF.IManifestItem;
+    import IGuideReference = ContainerOPF.IGuideReference;
+    import IContent = ContainerOPF.IContent;
     export type AuthorStr = string;
 
     export type URLStr = string;
@@ -101,9 +105,9 @@ export namespace EPUBGenerator {
 
     export function renderContentOPF(doc: EPUBDocument) {
 
-        function toSpine(): ReadonlyArray<TemplateLiterals.ISpineItem> {
+        function toSpine(): ReadonlyArray<ISpineItem> {
 
-            function toSpineItem(content: EPUBContent): TemplateLiterals.ISpineItem {
+            function toSpineItem(content: EPUBContent): ISpineItem {
 
                 return {
                     idref: content.id,
@@ -116,11 +120,11 @@ export namespace EPUBGenerator {
 
         }
 
-        function toManifest(): ReadonlyArray<TemplateLiterals.IManifestItem> {
+        function toManifest(): ReadonlyArray<IManifestItem> {
 
-            function contentsToManifest(): ReadonlyArray<TemplateLiterals.IManifestItem> {
+            function contentsToManifest(): ReadonlyArray<IManifestItem> {
 
-                function toManifestItem(content: EPUBContent): TemplateLiterals.IManifestItem {
+                function toManifestItem(content: EPUBContent): IManifestItem {
 
                     return {
                         id: content.id,
@@ -134,7 +138,7 @@ export namespace EPUBGenerator {
 
             }
 
-            function guideToManifest(): ReadonlyArray<TemplateLiterals.IManifestItem> {
+            function guideToManifest(): ReadonlyArray<IManifestItem> {
                 return [
                     {
                         id: 'toc.html',
@@ -152,7 +156,7 @@ export namespace EPUBGenerator {
 
         }
 
-        function toGuide(): ReadonlyArray<TemplateLiterals.IGuideReference> {
+        function toGuide(): ReadonlyArray<IGuideReference> {
 
             return [
                 {
@@ -171,7 +175,7 @@ export namespace EPUBGenerator {
 
         // FIXME: ejs ues eval!!!
 
-        const content: TemplateLiterals.IContent = {
+        const content: IContent = {
             id: doc.url,
             title: doc.title,
             source: doc.url,
@@ -190,7 +194,7 @@ export namespace EPUBGenerator {
 
         }
 
-        return Templates.render(TemplateLiterals.CONTENT_OPF, content);
+        return ContainerOPF.generate(content);
 
     }
 
