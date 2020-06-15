@@ -26,6 +26,8 @@ export namespace Tabs {
         chrome.tabs.create({url: link});
     }
 
+
+
     export function queryCurrentTabForLink() {
 
         return new Promise<string>(resolve => {

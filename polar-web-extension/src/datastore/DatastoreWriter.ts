@@ -22,6 +22,11 @@ export namespace DatastoreWriter {
         readonly id: string;
     }
 
+    function createRandomID() {
+        const rnd = Math.random();
+        return Hashcodes.create(rnd);
+    }
+
     export async function write(opts: IWriteOpts): Promise<WrittenDoc> {
 
         await Firestore.init({enablePersistence: false});
@@ -31,8 +36,8 @@ export namespace DatastoreWriter {
         await datastore.init(NULL_FUNCTION, {noInitialSnapshot: true, noSync: true});
         const persistenceLayer = new DefaultPersistenceLayer(datastore);
 
-        const fingerprint = Hashcodes.createRandomID();
-        const filename = Hashcodes.createRandomID() + '.epub'
+        const fingerprint = createRandomID();
+        const filename = createRandomID() + '.epub'
         const hashcode = Hashcodes.createHashcode(opts.epub);
 
         const docMeta = DocMetas.create(fingerprint, 1, filename);
