@@ -3,7 +3,10 @@ import {CaptureApp} from "./ui/capture/CaptureApp";
 
 function clearDocument() {
     // clear the document so that we can render to it directly.
-    document.documentElement.innerHTML = `<html><body></body></html>`;
+
+    const title = document.title;
+
+    document.documentElement.innerHTML = `<html><head><title>${title}</title></head><body></body></html>`;
 }
 
 function handleStartCapture() {
