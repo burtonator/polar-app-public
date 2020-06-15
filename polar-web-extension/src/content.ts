@@ -2,6 +2,7 @@ import {ReadabilityCapture} from "./ReadabilityCapture";
 import {CaptureApp} from "./ui/capture/CaptureApp";
 
 function clearDocument() {
+    // clear the document so that we can render to it directly.
     document.documentElement.innerHTML = `<html><body></body></html>`;
 }
 
@@ -17,22 +18,23 @@ function handleStartCapture() {
 
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//
+//     console.log("got message: ", message);
+//
+//     if (! message.type) {
+//         return;
+//     }
+//
+//     switch (message.type) {
+//
+//         case 'start-capture':
+//             break;
+//
+//     }
+//
+// });
 
-    console.log("got message: ", message);
-
-    if (! message.type) {
-        return;
-    }
-
-    switch (message.type) {
-
-        case 'start-capture':
-            handleStartCapture();
-            break;
-
-    }
-
-});
+handleStartCapture();
 
 console.log("Content script loaded");

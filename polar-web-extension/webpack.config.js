@@ -90,7 +90,7 @@ module.exports = {
         electron: 'empty',
     },
     plugins: [
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
     ],
     optimization: {

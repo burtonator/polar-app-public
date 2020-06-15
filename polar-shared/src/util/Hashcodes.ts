@@ -2,7 +2,8 @@ import {keccak256} from 'js-sha3';
 import uuid from 'uuid';
 import {InputSource} from './input/InputSource';
 import {InputData, InputSources} from './input/InputSources';
-import { Preconditions } from '../Preconditions';
+import {Preconditions} from '../Preconditions';
+import {HashAlgorithm, Hashcode, HashEncoding} from "../metadata/Hashcode";
 
 // TODO: migrate this to use types or build our own API for base58check direclty.
 const base58check = require("base58check");
@@ -18,6 +19,15 @@ export class Hashcodes {
         data = typeof data === 'string' ? data : JSON.stringify(data);
 
         return base58check.encode(keccak256(data));
+    }
+
+    public static createHashcode(data: any): Hashcode {
+
+        return {
+            enc: HashEncoding.BASE58CHECK,
+            alg: HashAlgorithm.KECCAK256,
+            data: this.create(data)
+        }
     }
 
     /**

@@ -168,6 +168,8 @@ export namespace EPUBGenerator {
         const manifest = toManifest();
         const guide = toGuide();
 
+        // FIXME: ejs ues eval!!!
+
         const content: TemplateLiterals.IContent = {
             id: doc.url,
             title: doc.title,

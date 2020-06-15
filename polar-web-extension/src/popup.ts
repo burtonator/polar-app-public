@@ -1,9 +1,12 @@
 import {AuthHandlers} from "polar-bookshelf/web/js/apps/repository/auth_handler/AuthHandler";
-import {FirebaseAuth} from "polar-bookshelf/web/js/firebase/FirebaseAuth";
-import {Identity} from "./chrome/Identity";
 import {Tracer} from "polar-shared/src/util/Tracer";
-import {PopupScriptMessages} from "./PopupScriptMessages";
 import {PopupApp} from "./ui/popup/PopupApp";
+import {CapturedContentEPUBGenerator} from "./captured/CapturedContentEPUBGenerator";
+import {DatastoreWriter} from "./datastore/DatastoreWriter";
+import {ReadabilityCapture} from "./ReadabilityCapture";
+import ICapturedContent = ReadabilityCapture.ICapturedContent;
+import WrittenDoc = DatastoreWriter.WrittenDoc;
+import IWriteOpts = DatastoreWriter.IWriteOpts;
 
 function loadLinkInNewTab(link: string) {
     chrome.tabs.create({url: link});
@@ -16,12 +19,6 @@ function closeWindowAfterDelay() {
 async function requireAuth() {
 
     console.log("Verifying we're logged into Polar...");
-
-    console.log("Getting auth token...");
-
-    const authToken = await Tracer.async(() => Identity.getAuthToken(), 'getAuthToken');
-
-    console.log("Getting auth token...done");
 
     const authHandler = AuthHandlers.get();
 
@@ -39,7 +36,7 @@ async function requireAuth() {
         // https://firebase.google.com/docs/auth/web/google-signin
         // https://developer.chrome.com/apps/app_identity
 
-        await FirebaseAuth.signInWithAuthToken(authToken);
+        // await FirebaseAuth.signInWithAuthToken(authToken);
 
         console.log("Authenticating ...done");
 
@@ -75,9 +72,7 @@ async function handleExtensionActivated() {
     await requireAuth();
     await injectContentScript();
 
-    // TODO: I think we have to await a 'ready' message here OR we just have to
-    // make the main() method start upon injection...
-    await PopupScriptMessages.sendStartCapture();
+    window.close();
 
 }
 
@@ -99,5 +94,49 @@ document.addEventListener("DOMContentLoaded", () => {
             closeWindowAfterDelay();
             console.error("Unable to send URL to polar: ", err)
         });
+
+});
+
+function saveToPolar(capture: ICapturedContent) {
+
+    function doLoadWrittenDoc(writtenDoc: WrittenDoc) {
+        const url = 'https://beta.getpolarized.io/doc/' + writtenDoc.id;
+        document.location.href = url;
+    }
+
+    async function doAsync() {
+
+        const epub = await CapturedContentEPUBGenerator.generate(capture);
+
+        const opts: IWriteOpts = {
+            epub,
+            title: capture.title,
+            description: capture.description
+        }
+
+        const writtenDoc = await DatastoreWriter.write(opts)
+        doLoadWrittenDoc(writtenDoc);
+    }
+
+    // FIXME: report the error to the chrome extension...  
+    doAsync()
+        .catch(err => console.error(err));
+
+}
+
+chrome.runtime.onMessage.addListener((message) => {
+
+    if (! message.type) {
+        return;
+    }
+
+    switch (message.type) {
+
+        case 'save-to-polar':
+            const capture = <ICapturedContent> message.value;
+            saveToPolar(capture)
+            break;
+
+    }
 
 });

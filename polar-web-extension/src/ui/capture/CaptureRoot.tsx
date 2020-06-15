@@ -3,39 +3,58 @@ import Paper from "@material-ui/core/Paper";
 import {PreviewContent} from './PreviewContent';
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Container from "@material-ui/core/Container";
+import {useCaptureContentContext} from './CaptureApp';
+import {ReadabilityCapture} from "../../ReadabilityCapture";
+import ICapturedContent = ReadabilityCapture.ICapturedContent;
 
-export const CaptureRoot = () => (
-    <Paper style={{
-               margin: 'auto',
-               maxWidth: '800px',
-               overflow: 'hidden',
-           }}>
+function saveToPolar(capture: ICapturedContent) {
 
-        <Container maxWidth="lg">
-        <AppBar position="fixed">
-                <Toolbar>
+    const message = {
+        type: 'save-to-polar',
+        value: capture
+    }
 
-                    <Typography variant="h6">
-                    </Typography>
+    chrome.runtime.sendMessage(message);
 
-                    <Button
-                        variant="contained"
-                        color="default"
-                        startIcon={<CloudUploadIcon />}>
+}
 
-                        Save to Polar
+export const CaptureRoot = () => {
 
-                    </Button>
+    const captureContentContext = useCaptureContentContext();
 
-                </Toolbar>
-        </AppBar>
-        </Container>
+    return (
+        <Paper style={{
+            margin: 'auto',
+            maxWidth: '800px',
+            overflow: 'hidden',
+        }}>
 
-        <PreviewContent/>
-    </Paper>
-);
+            <Container maxWidth="lg">
+                <AppBar position="fixed">
+                    <Toolbar>
+
+                        <Typography variant="h6">
+                        </Typography>
+
+                        <Button
+                            variant="contained"
+                            color="default"
+                            onClick={() => saveToPolar(captureContentContext)}
+                            startIcon={<CloudUploadIcon/>}>
+
+                            Save to Polar
+
+                        </Button>
+
+                    </Toolbar>
+                </AppBar>
+            </Container>
+
+            <PreviewContent/>
+        </Paper>
+    );
+}
