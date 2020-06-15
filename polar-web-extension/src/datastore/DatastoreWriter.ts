@@ -24,7 +24,7 @@ export namespace DatastoreWriter {
 
     function createRandomID() {
         const rnd = Math.random();
-        return Hashcodes.create(rnd);
+        return Hashcodes.createID(rnd);
     }
 
     export async function write(opts: IWriteOpts): Promise<WrittenDoc> {
