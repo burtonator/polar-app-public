@@ -9,6 +9,7 @@ import {
 import {IDStr} from "polar-shared/src/util/Strings";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {TOC_HTML} from "./templates/TOC_HTML";
+import {ContainerXML} from "./templates/ContainerXML";
 
 export namespace EPUBGenerator {
 
@@ -95,7 +96,7 @@ export namespace EPUBGenerator {
     }
 
     export function renderContainerXML(): string {
-        return TemplateLiterals.CONTAINER;
+        return ContainerXML.generate();
     }
 
     export function renderContentOPF(doc: EPUBDocument) {
