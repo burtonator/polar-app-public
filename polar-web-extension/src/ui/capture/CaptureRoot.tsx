@@ -10,6 +10,9 @@ import Container from "@material-ui/core/Container";
 import {useCaptureContentContext} from './CaptureApp';
 import {ReadabilityCapture} from "../../ReadabilityCapture";
 import ICapturedContent = ReadabilityCapture.ICapturedContent;
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import createStyles from '@material-ui/core/styles/createStyles';
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
 
 function saveToPolar(capture: ICapturedContent) {
 
@@ -22,39 +25,53 @@ function saveToPolar(capture: ICapturedContent) {
 
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+    title: {
+      flexGrow: 1,
+    },
+  }),
+);
+
 export const CaptureRoot = () => {
 
     const captureContentContext = useCaptureContentContext();
 
+    const classes = useStyles();
+
     return (
-        <Paper style={{
-            margin: 'auto',
-            maxWidth: '800px',
-            overflow: 'hidden',
-        }}>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
 
-            <Container maxWidth="lg">
-                <AppBar position="fixed">
-                    <Toolbar>
+            <AppBar position="static" color="inherit">
+                <Toolbar>
 
-                        <Typography variant="h6">
-                        </Typography>
+                    <Typography variant="h6" className={classes.title}>
+                        Polar
+                    </Typography>
 
-                        <Button
-                            variant="contained"
-                            color="default"
-                            onClick={() => saveToPolar(captureContentContext)}
-                            startIcon={<CloudUploadIcon/>}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => saveToPolar(captureContentContext)}
+                        startIcon={<CloudUploadIcon/>}>
 
-                            Save to Polar
+                        Save to Polar
 
-                        </Button>
+                    </Button>
 
-                    </Toolbar>
-                </AppBar>
-            </Container>
+                </Toolbar>
+            </AppBar>
 
-            <PreviewContent/>
-        </Paper>
+            <div style={{display: 'flex'}}>
+                <PreviewContent/>
+            </div>
+
+        </div>
     );
 }

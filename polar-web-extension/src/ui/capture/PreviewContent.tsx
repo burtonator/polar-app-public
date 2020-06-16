@@ -5,7 +5,14 @@ export const PreviewContent = () => {
     const captureContentContext = useCaptureContentContext();
 
     return (
-        <div style={{padding: '5px', margin: '5px'}}>
+
+        <div style={{
+                 margin: 'auto',
+                 maxWidth: '850px',
+                 flexGrow: 1,
+                 padding: '5px'
+             }}>
+
             <h1>{captureContentContext.title}</h1>
 
             {captureContentContext.image && (
@@ -15,6 +22,7 @@ export const PreviewContent = () => {
                              maxHeight: '200px',
                              margin: 'auto'
                          }}
+                         alt="Preview image"
                          src={captureContentContext.image}/>
 
                 </div>
