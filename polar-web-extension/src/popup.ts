@@ -66,7 +66,7 @@ async function handleExtensionActivated() {
     await requireAuth();
     await injectContentScript();
 
-    // FIXME  window.close();
+    window.close();
 
 }
 
