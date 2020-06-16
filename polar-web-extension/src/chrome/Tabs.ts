@@ -22,11 +22,62 @@ export namespace Tabs {
 
     }
 
+    /**
+     * I think this is the same as activeTab but just calls a different API.
+     */
+    export function currentTab(): Promise<chrome.tabs.Tab | undefined> {
+
+        return new Promise<chrome.tabs.Tab>(((resolve, reject) => {
+
+            chrome.tabs.getCurrent((tab) => {
+
+                if (! tab) {
+                    reject(new Error("No current tab"));
+                }
+
+                resolve(tab)
+
+            });
+
+        }));
+
+    }
+
     export function loadLinkInNewTab(link: string) {
         chrome.tabs.create({url: link});
     }
 
+    export async function loadLinkInActiveTab(link: string) {
 
+        const tab = await activeTab();
+
+        if (! tab) {
+            throw new Error("No active tab");
+        }
+
+        await loadLinkInTab(tab, link);
+
+    }
+
+    export async function loadLinkInCurrentTab(link: string) {
+
+        const tab = await currentTab();
+
+        if (! tab) {
+            throw new Error("No current tab");
+        }
+
+        await loadLinkInTab(tab, link);
+
+    }
+
+    async function loadLinkInTab(tab: chrome.tabs.Tab, link: string) {
+
+        const {id} = tab;
+
+        chrome.tabs.update(tab.id!, {url: link});
+
+    }
 
     export function queryCurrentTabForLink() {
 

@@ -12,10 +12,10 @@ export namespace SaveToPolarHandler {
 
         console.log("Saving to Polar...");
 
-        function doLoadWrittenDoc(writtenDoc: WrittenDoc) {
+        async function doLoadWrittenDoc(writtenDoc: WrittenDoc) {
             const url = 'https://beta.getpolarized.io/doc/' + writtenDoc.id;
 
-            Tabs.loadLinkInNewTab(url);
+            await Tabs.loadLinkInActiveTab(url);
             // document.location.href = url;
         }
 
@@ -31,7 +31,7 @@ export namespace SaveToPolarHandler {
             }
 
             const writtenDoc = await DatastoreWriter.write(opts)
-            doLoadWrittenDoc(writtenDoc);
+            await doLoadWrittenDoc(writtenDoc);
 
         }
 

@@ -19,8 +19,9 @@ export const PreviewContent = () => {
                 <div style={{display: 'flex'}}>
 
                     <img style={{
-                             maxHeight: '200px',
-                             margin: 'auto'
+                             margin: 'auto',
+                             maxHeight: '100%',
+                             maxWidth: '100%'
                          }}
                          alt="Preview image"
                          src={captureContentContext.image}/>
