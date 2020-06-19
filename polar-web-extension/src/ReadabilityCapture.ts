@@ -27,7 +27,7 @@ export namespace ReadabilityCapture {
 
         const readable = parseReadability();
         const metadata = parseMetadata();
-        const sanitized = HTMLSanitizer.sanitize(readable.content);
+        const sanitized = HTMLSanitizer.sanitizePortableDocument(readable.content);
 
         return {
             ...metadata,
