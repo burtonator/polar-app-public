@@ -1,6 +1,6 @@
 import {PathOrURLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
-import ePub from "epubjs";
+import ePub from "@polar-app/epubjs";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 
