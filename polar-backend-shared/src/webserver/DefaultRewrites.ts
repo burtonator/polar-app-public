@@ -47,7 +47,7 @@ export class DefaultRewrites {
                     "/doc/:id",
                     "/apps/doc/:id",
                 ],
-                "destination": "/apps/doc/index.html"
+                "destination": "/apps/repository/index.html"
             },
 
             {
