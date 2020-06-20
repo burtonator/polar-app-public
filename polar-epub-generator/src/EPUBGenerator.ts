@@ -36,7 +36,7 @@ export namespace EPUBGenerator {
 
     export type MediaType = 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
 
-    interface EPUBImage {
+    export interface EPUBImage {
         readonly href: string;
         readonly data: ImageData;
     }

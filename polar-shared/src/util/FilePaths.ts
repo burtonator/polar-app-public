@@ -10,12 +10,12 @@ import {isPresent, Preconditions} from '../Preconditions';
  * DO NOT call this for URI paths that are always / no matter what OS you are
  * on.
  */
-export class FilePaths {
+export namespace FilePaths {
 
     /**
      * The OS specific file separator.
      */
-    public static readonly SEP = libpath.sep;
+    export const SEP = libpath.sep;
 
     /**
      * Create a path from the given parts regardless of their structure.
@@ -25,8 +25,8 @@ export class FilePaths {
      * @param dirname
      * @param basename
      */
-    public static create(dirname: string, basename: string) {
-        let result = this.join(dirname, basename);
+    export function create(dirname: string, basename: string) {
+        let result = join(dirname, basename);
 
         if (result.endsWith(libpath.sep)) {
             result = result.substring(0, result.length - 1);
@@ -43,7 +43,7 @@ export class FilePaths {
      *
      * @param paths paths to join.
      */
-    public static join(...paths: string[]): string {
+    export function join(...paths: string[]): string {
         return libpath.join(...paths);
     }
 
@@ -64,7 +64,7 @@ export class FilePaths {
      * @param pathSegments string paths to join.  Non-string arguments are
      *     ignored.
      */
-    public static resolve(...pathSegments: string[]) {
+    export function resolve(...pathSegments: string[]) {
         return libpath.resolve(...pathSegments);
     }
 
@@ -78,7 +78,7 @@ export class FilePaths {
      * @param path the path to evaluate.
      * @param ext optionally, an extension to remove from the result.
      */
-    public static basename(path: string, ext?: string) {
+    export function basename(path: string, ext?: string) {
 
         if (libpath) {
             return libpath.basename(path, ext);
@@ -88,32 +88,32 @@ export class FilePaths {
 
     }
 
-    public static dirname(path: string) {
+    export function dirname(path: string) {
         return libpath.dirname(path);
     }
 
-    public static tmpdir() {
+    export function tmpdir() {
         return os.tmpdir();
     }
 
     /**
      * @deprecated use createTempName
      */
-    public static tmpfile(name: string) {
-        return this.join(os.tmpdir(), name);
+    export function tmpfile(name: string) {
+        return join(os.tmpdir(), name);
     }
 
     /**
      * Create a named path entry in /tmp
      */
-    public static createTempName(name: string) {
-        return this.join(os.tmpdir(), name);
+    export function createTempName(name: string) {
+        return join(os.tmpdir(), name);
     }
 
     /**
      * Create a windows path from unix path.  Mostly used for testing.
      */
-    public static toWindowsPath(path: string) {
+    export function toWindowsPath(path: string) {
         path = path.replace(/\//g, '\\' );
         return 'C:' + path;
     }
@@ -123,10 +123,10 @@ export class FilePaths {
      *
      * Used for testing.
      */
-    public static textToWindowsPath(text: string) {
+    export function textToWindowsPath(text: string) {
 
         return text.replace(/(\/[a-zA-Z0-9_-]+)+(\/[a-zA-Z0-9_-]+\.[a-z]{2,3})/g, (substr: string) => {
-            return this.toWindowsPath(substr);
+            return toWindowsPath(substr);
         });
 
     }
@@ -135,7 +135,7 @@ export class FilePaths {
      * If the file ends with .txt, .pdf, .html then return the extension.
      * @param path
      */
-    public static toExtension(path: string): Optional<string> {
+    export function toExtension(path: string): Optional<string> {
 
         if (! isPresent(path)) {
             return Optional.empty();
@@ -154,7 +154,7 @@ export class FilePaths {
     /**
      * Return true if the file has the the given extension.  Case insensitive.
      */
-    public static hasExtension(path: string, ext: string) {
+    export function hasExtension(path: string, ext: string) {
         Preconditions.assertPresent(path);
         Preconditions.assertPresent(ext);
 
@@ -168,7 +168,7 @@ export class FilePaths {
      * Convert this path to a file URL so that we can use it in an API that
      * expects a URL.
      */
-    public static toURL(path: string) {
+    export function toURL(path: string) {
 
         // https://stackoverflow.com/questions/20619488/how-to-convert-local-file-path-to-a-file-url-safely-in-node-js
 
@@ -202,7 +202,7 @@ export class FilePaths {
 
     }
 
-    public static fromURL(url: string) {
+    export function fromURL(url: string) {
 
         if (! url.startsWith("file:")) {
             throw new Error("Not a file URL: " + url);
@@ -237,9 +237,9 @@ export class FilePaths {
 
 }
 
-export class BrowserContext {
+export namespace BrowserContext {
 
-    public static separator() {
+    export function separator() {
         const isWindows = ["Win32", "Win64"].includes(navigator.platform);
         return isWindows ? "\\" : "/";
     }
@@ -249,21 +249,14 @@ export class BrowserContext {
 /**
  * Browser implementations of some functions in node.
  */
-export class BrowserFilePaths {
+export namespace BrowserFilePaths {
 
-    public static SEP =
+    export let SEP =
         typeof navigator !== 'undefined' && navigator.platform ? BrowserContext.separator() : '/';
 
-    /**
-     *
-     * @param path
-     * @param ext
-     * @param sep Use a specific separator when given (not determined by
-     *     platform)
-     */
-    public static basename(path: string, ext?: string) {
+    export function basename(path: string, ext?: string) {
 
-        const lastIndexOf = path.lastIndexOf(this.SEP);
+        const lastIndexOf = path.lastIndexOf(SEP);
 
         const result = lastIndexOf >= 0 ? path.substring(lastIndexOf + 1) : path;
 

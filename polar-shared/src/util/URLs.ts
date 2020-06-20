@@ -3,14 +3,14 @@ import {PathOrURLStr, Strings, URLStr} from "./Strings";
 import {ArrayBuffers} from "./ArrayBuffers";
 import {Blobs} from "./Blobs";
 import {Files} from "./Files";
-import {FilePaths} from "./FilePaths";
+import {BrowserContext, FilePaths} from "./FilePaths";
 import { Logger } from "../logger/Logger";
 
 const log = Logger.create();
 
-export class URLs {
+export namespace URLs {
 
-    public static async toBuffer(url: URLStr): Promise<Buffer> {
+    export async function toBuffer(url: URLStr): Promise<Buffer> {
 
         const response = await fetch(url);
         const blob = await response.blob();
@@ -19,7 +19,7 @@ export class URLs {
 
     }
 
-    public static async toBlob(url: URLStr): Promise<Blob> {
+    export async function toBlob(url: URLStr): Promise<Blob> {
 
         const response = await fetch(url);
 
@@ -35,7 +35,7 @@ export class URLs {
      * Return true if the URL is a web scheme (http or https)
      * @param url
      */
-    public static isWebScheme(url: URLStr) {
+    export function isWebScheme(url: URLStr) {
 
         return url.startsWith('http:') || url.startsWith('https:');
 
@@ -45,7 +45,7 @@ export class URLs {
      * Get the site base URL including the scheme, domain, and optionally the
      * port.
      */
-    public static toBase(url: URLStr) {
+    export function toBase(url: URLStr) {
 
         const parsedURL = new URL(url);
 
@@ -57,7 +57,7 @@ export class URLs {
 
     }
 
-    public static absolute(url: string, base: string): string {
+    export function absolute(url: string, base: string): string {
 
         // WARN: this is correct BUT for some reason it broke on google cloud
         // storage so I need to figure out why this is happening.
@@ -79,7 +79,7 @@ export class URLs {
     /**
      * Return true if this is a URL
      */
-    public static isURL(path: string) {
+    export function isURL(path: string) {
 
         if (!path) {
             return false;
@@ -95,7 +95,7 @@ export class URLs {
     /**
      * Return the path component of a URL.
      */
-    public static pathname(url: string) {
+    export function pathname(url: string) {
 
         if (url.startsWith('/')) {
             // it's already a pathname
@@ -117,10 +117,32 @@ export class URLs {
 
     }
 
+    export function basename(url: string, ext?: string) {
+
+        const SEP = '/';
+
+        const lastIndexOf = url.lastIndexOf(SEP);
+
+        const result = lastIndexOf >= 0 ? url.substring(lastIndexOf + 1) : url;
+
+        if (ext) {
+
+            if (result.endsWith(ext)) {
+                return result.substring(0, result.length - ext.length);
+            } else {
+                return result;
+            }
+
+        } else {
+            return result;
+        }
+
+    }
+
     /**
      * Return true if the given URL exists by performing a HEAD request on it.
      */
-    public static async existsWithHEAD(url: URLStr): Promise<boolean> {
+    export async function existsWithHEAD(url: URLStr): Promise<boolean> {
         const response = await fetch(url, {method: 'HEAD'});
         return response.ok;
     }
@@ -128,7 +150,7 @@ export class URLs {
     /**
      * Test if a file exists by performing a range request on it for zero bytes.
      */
-    public static async existsWithGETUsingRange(url: URLStr): Promise<boolean> {
+    export async function existsWithGETUsingRange(url: URLStr): Promise<boolean> {
 
         const headers = {
             Range: "bytes=0-0"
@@ -139,7 +161,7 @@ export class URLs {
 
     }
 
-    public static async toURL(docPathOrURL: PathOrURLStr): Promise<URLStr> {
+    export async function toURL(docPathOrURL: PathOrURLStr): Promise<URLStr> {
 
         const isPath = ! URLs.isURL(docPathOrURL);
 

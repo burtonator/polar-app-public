@@ -75,7 +75,7 @@ export class AsyncArrayStream<T> {
 
             const values = await this.provider();
 
-            const result: Array<NonNullable<T>> = [];
+            const result: NonNullable<T>[] = [];
 
             for (const value of values) {
                 if (value !== null && value !== undefined) {
