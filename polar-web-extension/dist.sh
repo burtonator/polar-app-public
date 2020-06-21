@@ -7,4 +7,4 @@ cp assets/* ${DEST}
 cp src/*.html ${DEST}
 cp manifest.json ${DEST}
 
-zip -r save-to-polar.zip dist
+zip -r polar-web-extension.zip dist
