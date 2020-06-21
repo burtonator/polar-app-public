@@ -2,7 +2,7 @@
   "name": "Polar - PDF, Web, and Document Annotation",
   "short_name": "Polar",
   "description": "Document manager for PDF, web content, books, and notes with tagging, annotations, and highlighting.",
-  "version": "2.0.0.5",
+  "version": "__VERSION__",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAz2a8p8uv41X3fndJZhoetT6PKYDqjPzZ7tffFrXmZCcImdGzukSe02iihAImsEkx3clfrj+ZBSfV5qScT9kpSSKBGUI7vVJJRNMQkcnfM7sBQHOS/ctQny5C8UM54OW0ZfBJysyjUbD0MiqUiLC8JZ2/UVIzL1Nq4JzW7eDQ2nBgYOoXUJ3i8IEYy9lvIw273nRyepFPlHtmaoqe6mRDLvnfUFkasEfJsIba+nCvkk/rRS+zcjIhdO/AKJEWSwDdkjh3CaHgHrWJEETbWa/m44xT5xgbZfbYTVGIPwWFvXnYlujQMPXd2W5FmbUoMSI3rSZ/CTQuE4zFaTOD3Mso6wIDAQAB",
   "background": {
     "scripts": ["background-bundle.js"],
