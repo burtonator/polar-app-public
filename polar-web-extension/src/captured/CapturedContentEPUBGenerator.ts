@@ -67,9 +67,55 @@ export namespace CapturedContentEPUBGenerator {
 
     }
 
+    function convertToHumanReadableContent(capture: ReadabilityCapture.ICapturedContent) {
+
+        function createFigure() {
+
+            if (capture.image) {
+                return `<figure><img src="${capture.image}" alt="${capture.title}"></figure>`;
+            }
+
+            return "";
+
+        }
+
+        function createH1() {
+            return `<h1>${capture.title}</h1>`;
+        }
+
+        function createH2() {
+
+            if (capture.description) {
+                return `<h2>${capture.title}</h2>`;
+            }
+
+            return "";
+
+        }
+
+        const figure = createFigure();
+        const h1 = createH1();
+        const h2 = createH2();
+
+
+        return `<div>
+            <header>
+                ${h1}
+                ${h2}
+                ${figure}
+            </header>
+            <main>
+                ${capture.content}
+            </main>
+            </div>`;
+
+    }
+
     async function convertToEPUBDocument(capture: ReadabilityCapture.ICapturedContent) {
 
-        const {title, url, content} = capture;
+        const {title, url} = capture;
+
+        const content = convertToHumanReadableContent(capture);
 
         const parser = new DOMParser();
         const contentDoc = parser.parseFromString(content, "text/html");

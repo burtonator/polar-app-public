@@ -25,7 +25,12 @@ module.exports = {
 
         rules: [
 
-            { loader: 'cache-loader' },
+            {
+                loader: 'cache-loader',
+                options: {
+                    cacheDirectory: '.webpack-cache-loader'
+                }
+            },
             {
                 test: path.resolve(__dirname, 'node_modules/polar-bookshelf/node_modules/electron/index.js'),
                 use: 'null-loader'
@@ -72,33 +77,43 @@ module.exports = {
 
             },
             {
-                test: /\.css$/i,
-                include: /node_modules/,
-                use: ['style-loader', 'css-loader'],
-            },
-            {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
                 use: [
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[name].[ext]',
-                            outputPath: 'fonts/'
+                            name: '[name]-[contenthash].[ext]',
+                            outputPath: 'fonts'
                         }
+                    }
+                ]
+            },
+            {
+                test: /\.(png|jpe?g|gif|bmp|svg|ico|webp)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name]-[contenthash].[ext]',
+                            outputPath: 'images',
+                        }
+                    },
+                ],
+            },
+            {
+                test: /\.css$/i,
+                use: [
+                    {
+                        loader: 'style-loader',
+                    },
+                    {
+                        loader: 'css-loader'
                     }
                 ]
             },
             {
                 test: /\.scss$/,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
-            },
-            {
-                test: /\.(png|jpe?g|gif)$/i,
-                use: [
-                    {
-                        loader: 'file-loader',
-                    },
-                ],
             },
 
         ]
