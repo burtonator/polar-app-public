@@ -1,12 +1,12 @@
-import {AnnotationType} from 'src/metadata/AnnotationType';
-import {IDocInfo} from "src/metadata/IDocInfo";
-import {IDocMeta} from "src/metadata/IDocMeta";
-import {IPageInfo} from "src/metadata/IPageInfo";
-import {IComment} from "src/metadata/IComment";
-import {IFlashcard} from "src/metadata/IFlashcard";
-import {ITextHighlight} from "src/metadata/ITextHighlight";
-import {IAreaHighlight} from "src/metadata/IAreaHighlight";
-import {AnnotationHolder} from "src/metadata/AnnotationHolder";
+import {AnnotationType} from './AnnotationType';
+import {IDocInfo} from "./IDocInfo";
+import {IDocMeta} from "./IDocMeta";
+import {IPageInfo} from "./IPageInfo";
+import {IComment} from "./IComment";
+import {IFlashcard} from "./IFlashcard";
+import {ITextHighlight} from "./ITextHighlight";
+import {IAreaHighlight} from "./IAreaHighlight";
+import {AnnotationHolder} from "./AnnotationHolder";
 
 export class AnnotationHolders {
 
@@ -40,7 +40,6 @@ export class AnnotationHolders {
     public static fromAreaHighlight(value: IAreaHighlight, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
         return {annotationType: AnnotationType.AREA_HIGHLIGHT, original: value, docInfo, pageInfo};
     }
-
 
     public static fromTextHighlight(value: ITextHighlight, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
         return {annotationType: AnnotationType.TEXT_HIGHLIGHT, original: value, docInfo, pageInfo};
