@@ -57,3 +57,5 @@ export interface GetFileOpts {
     readonly networkLayer?: NetworkLayer;
 
 }
+
+export type ReadableBinaryDatastoreProvider = () => ReadableBinaryDatastore;
