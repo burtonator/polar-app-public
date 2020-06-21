@@ -63,7 +63,8 @@ function computeNewManifest() {
 
     if (POLAR_EXTENSION_TYPE === 'BETA') {
         manifest.name = manifest.name + " - BETA";
-        manifest.description = manifest.description + " - THIS EXTENSION IS FOR BETA TESTING - Our production extension is located at https://chrome.google.com/webstore/detail/polar-pdf-web-and-documen/jkfdkjomocoaljglgddnmhcbolldcafd?hl=en"
+        // manifest.description = manifest.description + " THIS EXTENSION IS FOR BETA TESTING - Our production extension is located at https://chrome.google.com/webstore/detail/polar-pdf-web-and-documen/jkfdkjomocoaljglgddnmhcbolldcafd?hl=en"
+        manifest.description = manifest.description + " THIS EXTENSION IS FOR BETA TESTING."
     }
 
     writeJSON('dist/manifest.json', manifest);

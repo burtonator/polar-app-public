@@ -1,6 +1,9 @@
 import {AuthHandlers} from "polar-bookshelf/web/js/apps/repository/auth_handler/AuthHandler";
 import {Tracer} from "polar-shared/src/util/Tracer";
 import {PopupApp} from "./ui/popup/PopupApp";
+import {Tabs} from "./chrome/Tabs";
+import loadLinkInActiveTab = Tabs.loadLinkInActiveTab;
+import {SignInSuccessURLs} from "polar-bookshelf/apps/repository/js/login/SignInSuccessURLs";
 
 function loadLinkInNewTab(link: string) {
     chrome.tabs.create({url: link});
@@ -10,7 +13,7 @@ function closeWindowAfterDelay() {
     setTimeout(() => window.close(), 7500);
 }
 
-async function requireAuth() {
+async function requireAuth(): Promise<boolean> {
 
     console.log("Verifying we're logged into Polar...");
 
@@ -26,19 +29,33 @@ async function requireAuth() {
 
         console.log("Authenticating ...");
 
+        async function createSignInURL(): Promise<string> {
+
+            const baseURL = `${document.location.origin}/login.html`;
+            const signInSuccessUrl = await Tabs.queryCurrentTabForLink();
+            console.log("Using signInSuccessUrl: ", signInSuccessUrl);
+            return SignInSuccessURLs.createSignInURL(signInSuccessUrl, baseURL);
+
+        }
+
+        const signInURL = await createSignInURL();
+        await loadLinkInActiveTab(signInURL);
+
         // https://firebaseopensource.com/projects/firebase/quickstart-js/auth/chromextension/readme/
         // https://firebase.google.com/docs/auth/web/google-signin
         // https://developer.chrome.com/apps/app_identity
 
-        // await FirebaseAuth.signInWithAuthToken(authToken);
-
         console.log("Authenticating ...done");
+
+        return false;
 
     } else {
         console.log("Already authenticated.");
     }
 
     console.log("Verifying we're logged into Polar...done");
+
+    return true;
 
 }
 
@@ -63,8 +80,11 @@ export function startApp() {
 async function handleExtensionActivated() {
 
     startApp();
-    await requireAuth();
-    await injectContentScript();
+    const authenticated = await requireAuth();
+
+    if (authenticated) {
+        await injectContentScript();
+    }
 
     window.close();
 

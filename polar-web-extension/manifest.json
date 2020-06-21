@@ -1,7 +1,7 @@
 {
-  "name": "Polar - PDF, Web, and Document Annotation",
+  "name": "Save to Polar",
   "short_name": "Polar",
-  "description": "Document manager for PDF, web content, books, and notes with tagging, annotations, and highlighting.",
+  "description": "Save PDFs and EPUBs to Polar.",
   "version": "__VERSION__",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAz2a8p8uv41X3fndJZhoetT6PKYDqjPzZ7tffFrXmZCcImdGzukSe02iihAImsEkx3clfrj+ZBSfV5qScT9kpSSKBGUI7vVJJRNMQkcnfM7sBQHOS/ctQny5C8UM54OW0ZfBJysyjUbD0MiqUiLC8JZ2/UVIzL1Nq4JzW7eDQ2nBgYOoXUJ3i8IEYy9lvIw273nRyepFPlHtmaoqe6mRDLvnfUFkasEfJsIba+nCvkk/rRS+zcjIhdO/AKJEWSwDdkjh3CaHgHrWJEETbWa/m44xT5xgbZfbYTVGIPwWFvXnYlujQMPXd2W5FmbUoMSI3rSZ/CTQuE4zFaTOD3Mso6wIDAQAB",
   "background": {
@@ -16,16 +16,11 @@
     "contextMenus",
     "unlimitedStorage",
     "declarativeContent",
-    "idle",
-    "notifications",
-    "identity",
-    "*://*.getpolarized.io/*"
+    "notifications"
   ],
   "optional_permissions": [
     "clipboardRead",
-    "clipboardWrite",
-    "history",
-    "bookmarks"
+    "clipboardWrite"
   ],
   "externally_connectable": {
     "matches": [
@@ -52,14 +47,7 @@
     "48": "icon-48.png",
     "128": "icon-128.png"
   },
-  "manifest_version": 2,
-  "oauth2": {
-    "client_id": "919499255851-blb795cbps1feap5iif7lmspuu90c409.apps.googleusercontent.com",
-    "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/firebase.database"
-    ]
-  }
+  "manifest_version": 2
 }
 
 
