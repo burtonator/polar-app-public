@@ -1,7 +1,6 @@
 import {FirebaseDatastore} from "polar-bookshelf/web/js/datastore/FirebaseDatastore";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Backend} from "polar-shared/src/datastore/Backend";
-import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
@@ -13,8 +12,13 @@ import {WriteOpts} from "polar-bookshelf/web/js/datastore/PersistenceLayer";
 
 export namespace DatastoreWriter {
 
+    export interface IData {
+
+    }
+
     export interface IWriteOpts {
-        readonly epub: ArrayBuffer,
+        readonly doc: Blob,
+        readonly type: 'pdf' | 'epub';
         readonly title: string;
         readonly description: string;
         readonly url: string;
@@ -25,8 +29,6 @@ export namespace DatastoreWriter {
     }
 
     function createRandomID() {
-        // const rnd = '' + (Math.random() * 1000000);
-        // return Hashcodes.createID(rnd);
         return Hashcodes.createRandomID();
     }
 
@@ -40,8 +42,8 @@ export namespace DatastoreWriter {
         const persistenceLayer = new DefaultPersistenceLayer(datastore);
 
         const fingerprint = createRandomID();
-        const filename = createRandomID() + '.epub';
-        const hashcode = Hashcodes.createHashcode(opts.epub);
+        const filename = createRandomID() + '.' + opts.type;
+        const hashcode = Hashcodes.createHashcode(opts.doc);
 
         console.log("Writing document: " + filename);
 
@@ -60,11 +62,9 @@ export namespace DatastoreWriter {
             name: filename,
             hashcode
         }
-        const blob = ArrayBuffers.toBlob(opts.epub);
-
         const writeFile: BackendFileRefData = {
             backend: Backend.STASH,
-            data: blob,
+            data: opts.doc,
             ...fileRef
         };
 
