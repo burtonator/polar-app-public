@@ -4,7 +4,7 @@ import {IImage} from "./IImage";
 export interface IThumbnail extends IImage {
 
     /**
-     * The unique ID for this object.
+     * The unique ID for this thumbnail
      */
     readonly id: string;
 
