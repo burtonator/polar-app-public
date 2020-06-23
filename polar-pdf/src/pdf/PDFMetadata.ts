@@ -1,18 +1,13 @@
 import {Files} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import PDFJS, {PDFWorker} from 'pdfjs-dist';
 import {DOIs} from './DOIs';
 import {PathOrURLStr} from 'polar-shared/src/util/Strings';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {PDFProps} from "./PDFProps";
 import {StreamRangeFactory, Streams} from "polar-shared/src/util/Streams";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
-import {PDFWorkers} from "./PDFWorkers";
-
-PDFJS.GlobalWorkerOptions.workerSrc = PDFWorkers.computeWorkerSrcPath();
-
-console.log("Running with GlobalWorkerOptions workerSrc: " + PDFJS.GlobalWorkerOptions.workerSrc);
+import {PDFDocs} from "./PDFDocs";
 
 export class PDFMetadata {
 
@@ -60,7 +55,7 @@ export class PDFMetadata {
 
         const docURL = toURL(docPathOrURL);
 
-        const pdfLoadingTask = PDFJS.getDocument(docURL);
+        const pdfLoadingTask = PDFDocs.getDocument({url: docURL});
         const doc = await pdfLoadingTask.promise;
 
         const metaHolder = await doc.getMetadata();

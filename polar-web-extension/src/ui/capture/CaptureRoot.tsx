@@ -10,8 +10,11 @@ import {ReadabilityCapture} from "../../ReadabilityCapture";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {Theme} from '@material-ui/core/styles/createMuiTheme';
-import ICapturedContent = ReadabilityCapture.ICapturedContent;
+import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
 import LinearProgress from '@material-ui/core/LinearProgress';
+import {SaveToPolarHandler} from "../../services/SaveToPolarHandler";
+import SaveToPolarMessage = SaveToPolarHandler.SaveToPolarRequest;
+import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,14 +38,14 @@ export const CaptureRoot = () => {
 
     const [saving, setSaving]= React.useState(false);
 
-
     // FIXME: move this to a script to send varrious messages to trigger the capture
     function saveToPolar(capture: ICapturedContent) {
 
         setSaving(true);
 
-        const message = {
+        const message: SaveToPolarRequestWithEPUB = {
             type: 'save-to-polar',
+            strategy: 'epub',
             value: capture
         }
 

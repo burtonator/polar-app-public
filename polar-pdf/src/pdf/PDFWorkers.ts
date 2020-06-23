@@ -20,7 +20,7 @@ export namespace PDFWorkers {
         }
 
         // this should be in the browser so this should work.
-        return '/node_modules/pdfjs-dist/build/pdf.worker.js';
+        return '/web/dist/pdf.worker.js';
 
     }
 }

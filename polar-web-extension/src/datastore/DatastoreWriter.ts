@@ -1,35 +1,24 @@
 import {FirebaseDatastore} from "polar-bookshelf/web/js/datastore/FirebaseDatastore";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Backend} from "polar-shared/src/datastore/Backend";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
-import {BackendFileRefData} from "polar-bookshelf/web/js/datastore/Datastore";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DefaultPersistenceLayer} from "polar-bookshelf/web/js/datastore/DefaultPersistenceLayer";
 import {Firestore} from "polar-bookshelf/web/js/firebase/Firestore";
-import {WriteOpts} from "polar-bookshelf/web/js/datastore/PersistenceLayer";
+import {DocInfo} from "polar-bookshelf/web/js/metadata/DocInfo";
+import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocImporter";
 
 export namespace DatastoreWriter {
-
-    export interface IData {
-
-    }
 
     export interface IWriteOpts {
         readonly doc: Blob,
         readonly type: 'pdf' | 'epub';
-        readonly title: string;
-        readonly description: string;
         readonly url: string;
+        readonly basename: string;
+        readonly title?: string;
+        readonly description?: string;
     }
 
     export interface WrittenDoc {
         readonly id: string;
-    }
-
-    function createRandomID() {
-        return Hashcodes.createRandomID();
     }
 
     export async function write(opts: IWriteOpts): Promise<WrittenDoc> {
@@ -40,43 +29,22 @@ export namespace DatastoreWriter {
         // TODO add back in the error listener I think.
         await datastore.init(NULL_FUNCTION, {noInitialSnapshot: true, noSync: true});
         const persistenceLayer = new DefaultPersistenceLayer(datastore);
+        const persistenceLayerProvider = () => persistenceLayer;
 
-        const fingerprint = createRandomID();
-        const filename = createRandomID() + '.' + opts.type;
-        const hashcode = Hashcodes.createHashcode(opts.doc);
+        const docInfo: Partial<DocInfo> = {
+            title: Optional.of(opts.title).getOrElse("Untitled"),
+            description: opts.description,
+            url: opts.url
 
-        console.log("Writing document: " + filename);
-
-        const docMeta = DocMetas.create(fingerprint, 1, filename);
-
-        docMeta.docInfo.title = Optional.of(opts.title)
-                                        .getOrElse("Untitled");
-
-        docMeta.docInfo.description = opts.description;
-        docMeta.docInfo.filename = filename;
-        docMeta.docInfo.backend = Backend.STASH;
-        docMeta.docInfo.url = opts.url;
-        docMeta.docInfo.hashcode = hashcode;
-
-        const fileRef: FileRef = {
-            name: filename,
-            hashcode
         }
-        const writeFile: BackendFileRefData = {
-            backend: Backend.STASH,
-            data: opts.doc,
-            ...fileRef
-        };
 
-        const writeOpts: WriteOpts = {
-            writeFile
-        };
+        const url = URL.createObjectURL(opts.doc);
 
-        await persistenceLayer.write(fingerprint, docMeta, writeOpts);
+        const imported = await DocImporter.importFile(persistenceLayerProvider, url, opts.basename, {docInfo});
+
         await persistenceLayer.stop();
 
-        return {id: fingerprint};
-
+        return {id: imported.docInfo.fingerprint};
 
     }
 

@@ -67,7 +67,7 @@ export namespace CapturedContentEPUBGenerator {
 
     }
 
-    function convertToHumanReadableContent(capture: ReadabilityCapture.ICapturedContent) {
+    function convertToHumanReadableContent(capture: ReadabilityCapture.ICapturedEPUB) {
 
         function createFigure() {
 
@@ -111,7 +111,7 @@ export namespace CapturedContentEPUBGenerator {
 
     }
 
-    async function convertToEPUBDocument(capture: ReadabilityCapture.ICapturedContent) {
+    async function convertToEPUBDocument(capture: ReadabilityCapture.ICapturedEPUB) {
 
         const {title, url} = capture;
 
@@ -154,7 +154,7 @@ export namespace CapturedContentEPUBGenerator {
 
     }
 
-    export async function generate(capture: ReadabilityCapture.ICapturedContent): Promise<ArrayBuffer> {
+    export async function generate(capture: ReadabilityCapture.ICapturedEPUB): Promise<ArrayBuffer> {
         const doc = await convertToEPUBDocument(capture);
         return await EPUBGenerator.generate(doc);
     }

@@ -16,6 +16,7 @@
     "polar-content-capture": "^2.0.0-beta.5",
     "polar-epub-generator": "^2.0.0-beta.5",
     "polar-shared": "^2.0.0-beta.5",
+    "polar-assets": "^2.0.0-beta.5",
     "polar-web-extension-api": "^2.0.0-beta.5",
     "polar-bookshelf": "^2.0.0-beta.5",
     "polar-react": "^2.0.0-beta.5",
@@ -56,6 +57,8 @@
     "css-loader": "=3.6.0",
     "file-loader": "=6.0.0",
     "sass-loader": "=8.0.2",
-    "node-sass": "=4.14.1"
+    "node-sass": "=4.14.1",
+    "worker-loader": "=2.0.0",
+    "copy-webpack-plugin": "=6.0.2"
   }
 }

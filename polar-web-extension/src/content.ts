@@ -1,5 +1,7 @@
 import {ReadabilityCapture} from "./ReadabilityCapture";
 import {CaptureApp} from "./ui/capture/CaptureApp";
+import {SaveToPolarHandler} from "./services/SaveToPolarHandler";
+import SaveToPolarRequestWithPDF = SaveToPolarHandler.SaveToPolarRequestWithPDF;
 
 const PDF_CONTENT_TYPE = 'application/pdf';
 
@@ -12,13 +14,7 @@ function clearDocument() {
 
 }
 
-function handleStartCapture() {
-
-    console.log("Starting capture...");
-
-    if (document.contentType === PDF_CONTENT_TYPE) {
-        // this is just a raw PDF... so start the import.
-    }
+function handleStartCaptureWithEPUB() {
 
     const capture = ReadabilityCapture.capture();
 
@@ -30,22 +26,37 @@ function handleStartCapture() {
 
 }
 
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//
-//     console.log("got message: ", message);
-//
-//     if (! message.type) {
-//         return;
-//     }
-//
-//     switch (message.type) {
-//
-//         case 'start-capture':
-//             break;
-//
-//     }
-//
-// });
+function handleStartCaptureWithPDF() {
+
+    console.log("handleStartCaptureWithPDF");
+
+    const message: SaveToPolarRequestWithPDF = {
+        type: 'save-to-polar',
+        strategy: 'pdf',
+        value: {
+            url: document.location.href
+        }
+    }
+
+    chrome.runtime.sendMessage(message);
+
+}
+
+function handleStartCapture() {
+
+    console.log("Starting capture...");
+
+    if (document.contentType === PDF_CONTENT_TYPE) {
+        // this is just a raw PDF... so start the import.
+        handleStartCaptureWithPDF();
+        return;
+    } else {
+
+        handleStartCaptureWithEPUB();
+
+    }
+
+}
 
 handleStartCapture();
 

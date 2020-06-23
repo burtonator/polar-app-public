@@ -2,7 +2,7 @@ import {ReadabilityCapture} from "./ReadabilityCapture";
 
 export namespace ContentScriptMessages {
 
-    import ICapturedContent = ReadabilityCapture.ICapturedContent;
+    import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
 
     /**
      * Send a 'capture-content' message that will trigger creating the

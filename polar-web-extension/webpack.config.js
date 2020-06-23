@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'production';
 const isDev = process.env.NODE_ENV === 'development';
@@ -85,8 +86,8 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             name: '[name]-[contenthash].[ext]',
-                            outputPath: 'assets',
-                            publicPath: '/web/dist/assets'
+                            outputPath: 'dist/assets',
+                            publicPath: 'dist/assets'
                         }
                     },
                 ],
@@ -126,7 +127,15 @@ module.exports = {
     },
     plugins: [
         // new BundleAnalyzerPlugin(),
-        new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
+        new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
+        new CopyPlugin({
+            patterns: [
+                // this is a bit of a hack and it would be better if we supported
+                // this better and managed as part of the build system
+                { from: '../../../node_modules/pdfjs-dist/cmaps', to: './dist/web/dist/pdfjs-dist/cmaps' },
+                { from: '../../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './dist/web/dist/pdfjs-dist' }
+            ],
+        }),
     ],
     optimization: {
         // minimize: ! isDev,

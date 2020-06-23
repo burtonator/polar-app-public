@@ -5,13 +5,13 @@ import {getMetadata, PageMetadata} from "page-metadata-parser";
 
 export namespace ReadabilityCapture {
 
-    export interface ICapturedContent extends PageMetadata {
+    export interface ICapturedEPUB extends PageMetadata {
         readonly content: HTMLStr;
         readonly text: PlainTextStr;
         readonly excerpt: PlainTextStr;
     }
 
-    export function capture(): ICapturedContent {
+    export function capture(): ICapturedEPUB {
 
         const url = document.location.href;
         const doc = <Document> document.cloneNode(true);

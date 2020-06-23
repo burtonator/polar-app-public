@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {ReadabilityCapture} from "../../ReadabilityCapture";
 import {CaptureRoot} from "./CaptureRoot";
 import {MUIAppRoot} from 'polar-bookshelf/web/js/mui/MUIAppRoot';
-import ICapturedContent = ReadabilityCapture.ICapturedContent;
+import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
 
 const CaptureContentContext = React.createContext<ICapturedContent>(null!);
 
