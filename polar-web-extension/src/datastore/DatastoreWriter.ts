@@ -8,6 +8,8 @@ import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocI
 
 export namespace DatastoreWriter {
 
+    import IDocImport = DocImporter.IDocImport;
+
     export interface IWriteOpts {
         readonly doc: Blob,
         readonly type: 'pdf' | 'epub';
@@ -15,6 +17,9 @@ export namespace DatastoreWriter {
         readonly basename: string;
         readonly title?: string;
         readonly description?: string;
+
+        readonly fingerprint?: string;
+        readonly nrPages?: number;
     }
 
     export interface WrittenDoc {
@@ -31,16 +36,42 @@ export namespace DatastoreWriter {
         const persistenceLayer = new DefaultPersistenceLayer(datastore);
         const persistenceLayerProvider = () => persistenceLayer;
 
+        const title = Optional.of(opts.title).getOrElse("Untitled");
+        const description = Optional.of(opts.description).getOrElse("");
+
         const docInfo: Partial<DocInfo> = {
-            title: Optional.of(opts.title).getOrElse("Untitled"),
-            description: opts.description,
+            title,
+            description,
             url: opts.url
 
         }
 
         const url = URL.createObjectURL(opts.doc);
 
-        const imported = await DocImporter.importFile(persistenceLayerProvider, url, opts.basename, {docInfo});
+        function createDocImport(): IDocImport | undefined {
+
+            if (opts.fingerprint !== undefined &&
+                opts.nrPages !== undefined) {
+
+                return {
+                    fingerprint: opts.fingerprint,
+                    nrPages: opts.nrPages,
+                    title,
+                    description,
+                }
+
+            }
+
+            return undefined;
+
+        }
+
+        const docImport = createDocImport();
+
+        const imported = await DocImporter.importFile(persistenceLayerProvider,
+                                                      url,
+                                                      opts.basename,
+                                                      {docInfo, docImport});
 
         await persistenceLayer.stop();
 

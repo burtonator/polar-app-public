@@ -20,7 +20,9 @@ export class EPUBMetadata {
         const title = metadata.title;
         const description = metadata.description;
         const creator = metadata.creator;
-        const nrPages = spine.length;
+
+        const pages = spine.filter(current => current.linear);
+        const nrPages = pages.length;
 
         return {
             fingerprint,

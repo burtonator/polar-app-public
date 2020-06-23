@@ -8,10 +8,12 @@ import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import WrittenDoc = DatastoreWriter.WrittenDoc;
 import IWriteOpts = DatastoreWriter.IWriteOpts;
+import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocImporter";
 
 export namespace SaveToPolarHandler {
 
     import ICapturedEPUB = ReadabilityCapture.ICapturedEPUB;
+    import IDocImport = DocImporter.IDocImport;
 
     export interface ICapturedPDF {
         readonly url: URLStr;
@@ -73,6 +75,8 @@ export namespace SaveToPolarHandler {
 
             const doc = ArrayBuffers.toBlob(epub);
 
+            const fingerprint = Hashcodes.createRandomID();
+
             const basename = Hashcodes.createRandomID() + '.' + 'epub';
 
             const opts: IWriteOpts = {
@@ -81,7 +85,9 @@ export namespace SaveToPolarHandler {
                 title: capture.title,
                 description: capture.description,
                 url: capture.url,
-                basename
+                basename,
+                fingerprint,
+                nrPages: 1
             }
 
             const writtenDoc = await DatastoreWriter.write(opts)
