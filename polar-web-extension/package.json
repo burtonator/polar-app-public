@@ -5,6 +5,7 @@
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo no tests",
+    "clean": "rm -rf .webpack-cache-loader ; rm -rf dist",
     "compile": "tsc",
     "dist": "unset NODE_ENV && unset WEBPACK_TARGET && npm run-script webpack && ./dist.sh",
     "webpack": "npx webpack --config=webpack.config.js"
