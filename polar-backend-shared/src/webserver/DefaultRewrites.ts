@@ -45,6 +45,7 @@ export class DefaultRewrites {
                 "source": [
                     "/doc",
                     "/doc/:id",
+                    "/doc/:id/:title",
                     "/apps/doc/:id",
                 ],
                 "destination": "/apps/repository/index.html"
