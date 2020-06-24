@@ -147,6 +147,37 @@ export interface Progress extends Readonly<MutableProgress> {
 
 }
 
+export interface BaseProgress<V> {
+    readonly task: TaskID;
+    readonly completed: number;
+    readonly total: number;
+    readonly duration: number;
+    readonly progress: Percentage;
+    readonly id: string;
+    readonly timestamp: UnixTimeMS;
+
+    /**
+     *  An optional human readable name for the task being completed.
+     */
+    readonly name?: string;
+
+}
+
+/**
+ * A determinate progress message with a percentage complete
+ */
+export interface DeterminateProgress extends BaseProgress<Progress>{
+
+}
+
+/**
+ * A indeterminate progress message with progress 'indeterminate'
+ */
+export interface IndeterminateProgress extends BaseProgress<'indeterminate'>{
+
+}
+
+
 export class ProgressStates {
 
     // public static calculate(completed: number, total: number, duration: number, id: string): Readonly<ProgressState> {
