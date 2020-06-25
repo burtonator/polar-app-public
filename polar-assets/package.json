@@ -7,6 +7,12 @@
     "compile": "true",
     "dist": "echo noop"
   },
+  "devDependencies": {
+    "@types/sharp": "^0.25.0"
+  },
+  "dependencies": {
+    "sharp": "^0.25.4"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/burtonator/polar-app-public.git"
