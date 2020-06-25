@@ -20,13 +20,28 @@ async function doAsync() {
     //     .resize(258, 209)
     //     .toFile(`icon-256-manual.png`);
 
+    // await sharp('icon.svg', {density: 1000})
+    //     // .flatten({ background: { r: 255, g: 255, b: 255, alpha: 1 } })
+    //
+    //     // .resize(258, 209)
+    //     .png()
+    //     .resize(32)
+    //     .toFile(`icon-test-32.png`);
+    //
+
     await sharp('icon.svg', {density: 1000})
         // .flatten({ background: { r: 255, g: 255, b: 255, alpha: 1 } })
 
         // .resize(258, 209)
         .png()
-        .resize(32)
-        .toFile(`icon-test-32.png`);
+
+        //         contain: "contain";
+        //         cover: "cover";
+        //         fill: "fill";
+        //         inside: "inside";
+        //         outside: "outside";
+        .resize(128, 128, {fit: sharp.fit.contain})
+        .toFile(`icon-test-128.png`);
 
     //
     // const semiTransparentRedPng = await sharp({
