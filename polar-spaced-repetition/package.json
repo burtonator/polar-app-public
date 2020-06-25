@@ -1,6 +1,6 @@
 {
   "name": "polar-spaced-repetition",
-  "version": "2.0.0-beta.6",
+  "version": "2.0.0-beta.7",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,13 +16,13 @@
     "@types/node": "12.12.32",
     "chai": "4.2.0",
     "mocha": "8.0.1",
-    "polar-test": "^2.0.0-beta.6",
+    "polar-test": "^2.0.0-beta.7",
     "tslint": "6.1.2",
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "polar-shared": "^2.0.0-beta.6",
-    "polar-spaced-repetition-api": "^2.0.0-beta.6"
+    "polar-shared": "^2.0.0-beta.7",
+    "polar-spaced-repetition-api": "^2.0.0-beta.7"
   },
   "files": [
     "**/*.js",
