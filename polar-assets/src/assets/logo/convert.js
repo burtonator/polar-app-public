@@ -2,17 +2,35 @@ const sharp = require('sharp');
 
 async function doAsync() {
 
-    const sizes = [16, 32, 64, 128, 256];
+    // 192 is the apple touch icon...
+    const sizes = [16, 32, 64, 128, 192, 256, 512, 1024];
 
-    // for (const size of sizes) {
-    //
-    //     // FIXME: svg looks fine but png is broke and looks blurry.
-    //     await sharp('icon.svg', {density: 1000})
-    //         .flatten({ background: { r: 255, g: 255, b: 255, alpha: 1 } })
-    //         .resize(size)
-    //         .toFile(`icon-${size}.jpg`);
-    //
-    // }
+    for (const size of sizes) {
+
+        const dest = `icon-${size}.png`;
+        console.log(dest);
+
+        // fit options:
+        //         contain: "contain";
+        //         cover: "cover";
+        //         fill: "fill";
+        //         inside: "inside";
+        //         outside: "outside";
+        // kernel options (default: lanczos3)
+        //         nearest: "nearest";
+        //         cubic: "cubic";              // looks decent
+        //         mitchell: "mitchell";
+        //         lanczos2: "lanczos2";
+        //         lanczos3: "lanczos3";
+
+        await sharp('icon.svg', {density: 1000})
+            .resize(size, size, {
+                fit: sharp.fit.contain,
+                kernel: sharp.kernel.lanczos3,
+            })
+            .toFile(dest);
+
+    }
     //
     // // FIXME: svg looks fine but png is broke and looks blurry.
     // await sharp('icon.svg', {density: 1000})
