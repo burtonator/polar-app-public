@@ -3,8 +3,6 @@ import {URLs} from "polar-shared/src/util/URLs";
 import ePub from "@polar-app/epubjs";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
-import {ContainerOPF} from "../../polar-epub-generator/src/templates/ContainerOPF";
-import ISpineItem = ContainerOPF.ISpineItem;
 
 export class EPUBMetadata {
 
@@ -47,4 +45,9 @@ export class EPUBMetadata {
         };
 
     }
+}
+
+interface ISpineItem {
+    readonly idref: string;
+    readonly linear: 'yes' | 'no';
 }

@@ -9,7 +9,6 @@ export namespace ContainerOPF {
 
     import MediaType = EPUBGenerator.MediaType;
 
-
     export interface IContent {
 
         readonly id: URLStr | IDStr;
