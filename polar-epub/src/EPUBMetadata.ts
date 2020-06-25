@@ -3,6 +3,8 @@ import {URLs} from "polar-shared/src/util/URLs";
 import ePub from "@polar-app/epubjs";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
+import {ContainerOPF} from "../../polar-epub-generator/src/templates/ContainerOPF";
+import ISpineItem = ContainerOPF.ISpineItem;
 
 export class EPUBMetadata {
 
@@ -15,13 +17,24 @@ export class EPUBMetadata {
         const metadata = await book.loaded.metadata;
         const spine = await book.loaded.spine;
 
+        if (! spine) {
+            throw new Error("EPUB has no spine");
+        }
+
         const id = `${metadata.identifier}#${metadata.pubdate}`;
         const fingerprint = Hashcodes.create(id);
         const title = metadata.title;
         const description = metadata.description;
         const creator = metadata.creator;
 
-        const pages = spine.filter(current => current.linear);
+        function computePages() {
+            // epub.js has horrible types...
+            const spineItems: ReadonlyArray<ISpineItem> = (<any> spine).spineItems;
+            return spineItems.filter(current => current.linear);
+        }
+
+        const pages = computePages();
+
         const nrPages = pages.length;
 
         return {
