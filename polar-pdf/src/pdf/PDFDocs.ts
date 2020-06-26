@@ -1,4 +1,7 @@
-import PDFJS, {DocumentInitParameters} from "pdfjs-dist";
+import PDFJS, {
+    DocumentInitParameters,
+    PDFDocumentLoadingTask
+} from "pdfjs-dist";
 
 PDFJS.GlobalWorkerOptions.workerSrc = '/web/dist/pdfjs-dist/pdf.worker.js';
 
@@ -14,7 +17,8 @@ export namespace PDFDocs {
         readonly url: htmlString;
     }
 
-    export function getDocument(opts: Opts) {
+    export function getDocument(opts: Opts): PDFDocumentLoadingTask {
+
         const init: DocumentInitParameters = {
             ...opts,
             cMapPacked: true,
