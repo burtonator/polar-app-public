@@ -24,7 +24,7 @@ export type ImageData = ArrayBuffer | DataURL | HTMLImageElement;
 /**
  * Functions for working with canvas objects, extracting screenshots, etc.
  */
-export class Canvases {
+export namespace Canvases {
 
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/pdf-loader.js
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/extractor.js
@@ -34,22 +34,22 @@ export class Canvases {
      * Take a canvas or an ArrayBuffer and convert it to a data URL without
      * limitations on the size of the URL.
      */
-    public static async toDataURL(data: HTMLCanvasElement | ArrayBuffer,
-                                  opts: ImageOpts = new DefaultImageOpts()): Promise<string> {
+    export async function toDataURL(data: HTMLCanvasElement | ArrayBuffer,
+                                   opts: ImageOpts = new DefaultImageOpts()): Promise<string> {
 
         // https://developer.mozilla.org/en-US/docs/Web/API/Blob
 
-        const toArrayBuffer = async (): Promise<ArrayBuffer> => {
+        const dataToArrayBuffer = async (): Promise<ArrayBuffer> => {
 
             if (data instanceof HTMLCanvasElement) {
-                return await this.toArrayBuffer(data, opts);
+                return await toArrayBuffer(data, opts);
             }
 
             return data;
 
         };
 
-        const ab = await toArrayBuffer();
+        const ab = await dataToArrayBuffer();
 
         const encoded = ArrayBuffers.toBase64(ab);
 
@@ -57,8 +57,8 @@ export class Canvases {
 
     }
 
-    public static toArrayBuffer(canvas: HTMLCanvasElement,
-                                opts: ImageOpts = new DefaultImageOpts()): Promise<ArrayBuffer> {
+    export function toArrayBuffer(canvas: HTMLCanvasElement,
+                                  opts: ImageOpts = new DefaultImageOpts()): Promise<ArrayBuffer> {
 
         // https://developer.mozilla.org/en-US/docs/Web/API/Blob
         //
@@ -99,7 +99,7 @@ export class Canvases {
 
     }
 
-    private static async createImageElementFromDataURL(image: DataURL): Promise<HTMLImageElement> {
+    async function createImageElementFromDataURL(image: DataURL): Promise<HTMLImageElement> {
 
         return new Promise<HTMLImageElement>((resolve, reject) => {
 
@@ -116,26 +116,26 @@ export class Canvases {
         });
     }
 
-    private static async createImageElement(image: ImageData): Promise<HTMLImageElement> {
+    async function createImageElement(image: ImageData): Promise<HTMLImageElement> {
 
         if (image instanceof HTMLImageElement) {
             return image;
         }
 
         if (image instanceof ArrayBuffer) {
-            const dataURL = await this.toDataURL(image);
-            return this.createImageElementFromDataURL(dataURL);
+            const dataURL = await toDataURL(image);
+            return createImageElementFromDataURL(dataURL);
         }
 
-        return this.createImageElementFromDataURL(image);
+        return createImageElementFromDataURL(image);
 
     }
 
-    public static async crop(image: ImageData,
-                             rect: ILTRect,
-                             opts: CropOpts = new DefaultImageOpts()): Promise<DataURL> {
+    export async function crop(image: ImageData,
+                               rect: ILTRect,
+                               opts: CropOpts = new DefaultImageOpts()): Promise<DataURL> {
 
-        const src = await this.createImageElement(image);
+        const src = await createImageElement(image);
 
         const canvas = opts.canvas || document.createElement("canvas");
 
@@ -154,11 +154,11 @@ export class Canvases {
 
     }
 
-    public static async resize(image: ImageData,
-                               dimensions: IDimensions,
-                               opts: ResizeOpts = new DefaultImageOpts()): Promise<ResizedImage> {
+    export async function resize(image: ImageData,
+                                 dimensions: IDimensions,
+                                 opts: ResizeOpts = new DefaultImageOpts()): Promise<ResizedImage> {
 
-        const src = await this.createImageElement(image);
+        const src = await createImageElement(image);
 
         const canvas = opts.canvas || document.createElement("canvas");
 
@@ -203,9 +203,9 @@ export class Canvases {
      * @param rect The rect within the given canvas
      * @param opts The options for the image extraction
      */
-    public static async extract(canvas: HTMLCanvasElement,
-                                rect: ILTRect,
-                                opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
+    export async function extract(canvas: HTMLCanvasElement,
+                                  rect: ILTRect,
+                                  opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
 
         Preconditions.assertPresent(canvas, "canvas");
 
@@ -234,7 +234,7 @@ export class Canvases {
                                canvasRect.left, canvasRect.top, canvasRect.width, canvasRect.height,
                                0, 0, canvasRect.width, canvasRect.height);
 
-        const data = await this.toArrayBuffer(tmpCanvas, opts);
+        const data = await toArrayBuffer(tmpCanvas, opts);
 
         const result = {
             data,

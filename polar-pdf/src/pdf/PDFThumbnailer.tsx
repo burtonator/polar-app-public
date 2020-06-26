@@ -7,9 +7,10 @@ export namespace PDFThumbnailer {
 
     export async function generate(pathOrURLStr: PathOrURLStr) {
 
+        // https://stackoverflow.com/questions/19262141/resize-image-with-javascript-canvas-smoothly¡
+
         function createCanvas(width: number, height: number) {
             const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
             canvas.height = height;
             canvas.width = width;
             return canvas;

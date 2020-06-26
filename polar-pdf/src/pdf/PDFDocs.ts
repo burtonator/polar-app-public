@@ -2,8 +2,9 @@ import PDFJS, {
     DocumentInitParameters,
     PDFDocumentLoadingTask
 } from "pdfjs-dist";
+import {PDFWorkers} from "./PDFWorkers";
 
-PDFJS.GlobalWorkerOptions.workerSrc = '/web/dist/pdfjs-dist/pdf.worker.js';
+PDFJS.GlobalWorkerOptions.workerSrc = PDFWorkers.computeWorkerSrcPath();
 
 /**
  * This code is bound/coupled to our webpack configuration whereby we always

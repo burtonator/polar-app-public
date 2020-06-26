@@ -1,4 +1,5 @@
 import PDFJS from "pdfjs-dist";
+import {Paths} from "polar-shared/src/util/Paths";
 
 export namespace PDFWorkers {
 
@@ -16,7 +17,11 @@ export namespace PDFWorkers {
         // we don't have ReadableStream so we have to use the ES5 version.
 
         if (isNode()) {
-            return '../es5/build/pdf.worker.js';
+            // https://stackoverflow.com/questions/10111163/in-node-js-how-can-i-get-the-path-of-a-module-i-have-loaded-via-require-that-is
+
+            const modulePath = require.resolve('pdfjs-dist');
+            return Paths.join(modulePath, '../../es5/build/pdf.worker.js');
+
         }
 
         // this should be in the browser so this should work.
