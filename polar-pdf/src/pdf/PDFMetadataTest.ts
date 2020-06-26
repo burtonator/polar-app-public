@@ -6,6 +6,7 @@ import {Assertions} from "./Assertions";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {DOIs} from "./DOIs";
 import {Strings} from "polar-shared/src/util/Strings";
+import {SampledHitMap} from "polar-shared/src/util/HitMap";
 
 describe('PDF Metadata', function() {
 
