@@ -1,28 +1,24 @@
 import {assert} from 'chai';
 import {PDFMetadata} from './PDFMetadata';
-import {DOIs} from './DOIs';
-import {Strings} from "polar-shared/src/util/Strings";
-import {SampledHitMap} from "polar-shared/src/util/HitMap";
 import {Files} from "polar-shared/src/util/Files";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {Assertions} from "./Assertions";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import {DOIs} from "./DOIs";
+import {Strings} from "polar-shared/src/util/Strings";
 
 describe('PDF Metadata', function() {
+
     this.timeout(999999);
-
-    async function assertAsyncThrows(delegate: () => Promise<void>) {
-
-        try {
-            await delegate();
-            assert.isTrue(false, "Delegate didn't fail");
-        } catch {
-            /// we're good ..
-        }
-
-    }
 
     describe('isPDF', function() {
 
         it("basic failed read", async function() {
+
+            if (! AppRuntime.isNode()) {
+                this.skip();
+                return;
+            }
 
             const path = FilePaths.join(__dirname, "../../tests/the-site-reliability-workbook-next18-broken-html.pdf");
 
@@ -31,8 +27,14 @@ describe('PDF Metadata', function() {
         });
 
         it("basic successful read", async function() {
-            const path = FilePaths.join(__dirname, "../../tests/chubby.pdf");
 
+            if (! AppRuntime.isNode()) {
+                this.skip();
+                return;
+            }
+
+            const path = FilePaths.join(__dirname, "../../tests/chubby.pdf");
+            const url = FilePaths.toURL(path);
             assert.ok(await PDFMetadata.isPDF(Files.createReadStreamForRange(path)));
 
         });
@@ -45,7 +47,7 @@ describe('PDF Metadata', function() {
 
             const path = FilePaths.join(__dirname, "../../tests/the-site-reliability-workbook-next18-broken-html.pdf");
 
-            await assertAsyncThrows(async () => {
+            await Assertions.assertAsyncThrows(async () => {
                 await PDFMetadata.getMetadata(path);
             });
 

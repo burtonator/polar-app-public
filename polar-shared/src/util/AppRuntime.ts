@@ -4,9 +4,9 @@ declare var window: any;
 /**
  * Used to determine if we're running in Electron or Chrome.
  */
-export class AppRuntime {
+export namespace AppRuntime {
 
-    public static get(): AppRuntimeID {
+    export function get(): AppRuntimeID {
 
         if (typeof window === 'undefined') {
             return 'node';
@@ -20,12 +20,16 @@ export class AppRuntime {
 
     }
 
-    public static isElectron() {
+    export function isElectron() {
         return this.get() === 'electron'
     }
 
-    public static isBrowser() {
+    export function isBrowser() {
         return this.get() === 'browser';
+    }
+
+    export function isNode() {
+        return this.get() === 'node';
     }
 
 }

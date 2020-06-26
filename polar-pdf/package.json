@@ -17,18 +17,14 @@
     "@types/mocha": "7.0.2",
     "@types/pdfjs-dist": "^2.0.0-beta.7",
     "chai": "4.2.0",
-    "karma-chai": "=0.1.0",
-    "karma-chrome-launcher": "3.1.0",
-    "karma-mocha": "2.0.1",
-    "karma-typescript": "=5.0.1",
-    "karma-typescript-es6-transform": "=5.0.1",
+    "polar-karma": "^2.0.0-beta.7",
+    "polar-webpack": "^2.0.0-beta.7",
     "mocha": "8.0.1",
     "tslint": "6.1.2",
     "typescript": "3.9.5"
   },
   "dependencies": {
     "@types/node": "12.12.32",
-    "karma": "5.1.0",
     "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
     "polar-shared": "^2.0.0-beta.7",
     "polar-test": "^2.0.0-beta.7"

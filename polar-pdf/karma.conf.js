@@ -1,21 +1,26 @@
-module.exports = function(config) {
+module.exports = (config) => {
     config.set({
-
-        frameworks: ["karma-typescript"],
-
+        browsers: ['ChromeHeadless'],
+        frameworks: ['mocha'],
         files: [
-            { pattern: "src/**/*.ts" }
+            // all files ending in "_test"
+            { pattern: 'src/*Test.ts', watched: false },
+            { pattern: 'src/**/*Test.ts', watched: false },
+            // each file acts as entry point for the webpack configuration
         ],
 
         preprocessors: {
-            "src/**/*.ts": ["karma-typescript"]
+            // add webpack as preprocessor
+            'src/*Test.ts': ['webpack'],
+            'src/**/*Test.ts': ['webpack'],
         },
 
-        reporters: ["karma-typescript"],
+        webpack,
 
-        browsers: ["ChromeHeadless"],
-
-        singleRun: true
+        webpackMiddleware: {
+            // webpack-dev-middleware configuration
+            // i. e.
+            stats: 'errors-only',
+        },
     });
 };
-

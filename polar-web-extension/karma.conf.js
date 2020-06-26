@@ -1,6 +1,7 @@
 module.exports = (config) => {
     config.set({
-        browsers: ['Chrome'],
+        // browsers: ['Chrome'],
+        browsers: ['ChromeHeadless'],
         frameworks: ['mocha'],
         files: [
             // all files ending in "_test"
