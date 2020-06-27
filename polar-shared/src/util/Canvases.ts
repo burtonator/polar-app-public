@@ -90,7 +90,7 @@ export namespace Canvases {
                     reader.readAsArrayBuffer(blob);
 
                 } else {
-                    reject(new Error("No blob"));
+                    reject(new Error("No blob received from canvas."));
                 }
 
             }, opts.type, opts.quality);
