@@ -1,5 +1,7 @@
 import {Logger} from "../logger/Logger";
 import {Base64} from "./Base64";
+import {ArrayBuffers} from "./ArrayBuffers";
+import {ImageType} from "./ImageType";
 
 export type DataURL = string;
 
@@ -13,9 +15,9 @@ const log = Logger.create();
 /**
  * Represents an data: URL as a string.
  */
-export class DataURLs {
+export namespace DataURLs {
 
-    public static decode(dataURL: DataURL): DecodedDataURL {
+    export function decode(dataURL: DataURL): DecodedDataURL {
 
         try {
 
@@ -29,7 +31,7 @@ export class DataURLs {
             // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code
             // that does this
 
-            const dataPortion = this.parseDataPortion(dataURL);
+            const dataPortion = parseDataPortion(dataURL);
 
             const byteString = Base64.atob(dataPortion);
 
@@ -56,13 +58,22 @@ export class DataURLs {
 
     }
 
-    public static parseDataPortion(dataURL: DataURL) {
+    export function encode(ab: ArrayBuffer,
+                           type: ImageType) {
+
+        const encoded = ArrayBuffers.toBase64(ab);
+
+        return `data:${type};base64,` + encoded;
+
+    }
+
+    export function parseDataPortion(dataURL: DataURL) {
         return dataURL.substring(dataURL.indexOf(",") + 1);
     }
 
-    public static toBlob(data: DataURL): Blob {
+    export function toBlob(data: DataURL): Blob {
 
-        const decoded = this.decode(data);
+        const decoded = decode(data);
 
         return new Blob([decoded.data], {type: decoded.type});
 

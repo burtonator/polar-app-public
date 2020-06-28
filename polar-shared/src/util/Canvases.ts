@@ -1,8 +1,8 @@
-import {ArrayBuffers} from './ArrayBuffers';
 import {ILTRect} from './rects/ILTRect';
 import {Preconditions} from '../Preconditions';
-import {DataURL} from './DataURLs';
+import {DataURL, DataURLs} from './DataURLs';
 import {IDimensions} from "./IDimensions";
+import {ImageType} from "./ImageType";
 
 const DEFAULT_IMAGE_TYPE = 'image/png';
 const DEFAULT_IMAGE_QUALITY = 1.0;
@@ -10,16 +10,44 @@ const DEFAULT_IMAGE_QUALITY = 1.0;
 /**
  * Keeps the binary data but also metadata for the extract.
  */
-export interface ExtractedImage {
+export interface ImageData {
+
+    /**
+     * The actual data of the image.
+     */
     readonly data: ArrayBuffer | DataURL;
+
+    /**
+     * The internal format of the 'data'
+     */
+    readonly format: 'arraybuffer' | 'dataurl';
+
     readonly type: ImageType;
+
     readonly width: number;
+
     readonly height: number;
+
 }
 
-export type ImageType = 'image/png' | 'image/jpeg';
+export namespace ImageDatas {
 
-export type ImageData = ArrayBuffer | DataURL | HTMLImageElement;
+    export function toDataURL(image: ImageData) {
+
+        switch (image.format) {
+
+            case "arraybuffer":
+                return DataURLs.encode(<ArrayBuffer> image.data, image.type);
+            case "dataurl":
+                return image.data;
+
+        }
+
+    }
+
+}
+
+export type RawImageData = ArrayBuffer | DataURL | HTMLImageElement;
 
 /**
  * Functions for working with canvas objects, extracting screenshots, etc.
@@ -51,9 +79,7 @@ export namespace Canvases {
 
         const ab = await dataToArrayBuffer();
 
-        const encoded = ArrayBuffers.toBase64(ab);
-
-        return `data:${DEFAULT_IMAGE_TYPE};base64,` + encoded;
+        return DataURLs.encode(ab, DEFAULT_IMAGE_TYPE);
 
     }
 
@@ -116,7 +142,7 @@ export namespace Canvases {
         });
     }
 
-    async function createImageElement(image: ImageData): Promise<HTMLImageElement> {
+    async function createImageElement(image: RawImageData): Promise<HTMLImageElement> {
 
         if (image instanceof HTMLImageElement) {
             return image;
@@ -131,7 +157,16 @@ export namespace Canvases {
 
     }
 
-    export async function crop(image: ImageData,
+    export interface CropOpts extends ImageOpts, CanvasOpts {
+    }
+
+    function disableImageSmoothing(context: CanvasRenderingContext2D) {
+        (<any> context).webkitImageSmoothingEnabled = false;
+        (<any> context).mozImageSmoothingEnabled = false;
+        context.imageSmoothingEnabled = false;
+    }
+
+    export async function crop(image: RawImageData,
                                rect: ILTRect,
                                opts: CropOpts = new DefaultImageOpts()): Promise<DataURL> {
 
@@ -144,7 +179,7 @@ export namespace Canvases {
 
         const ctx = canvas.getContext('2d', {alpha: false})!;
 
-        ctx.imageSmoothingEnabled = false;
+        disableImageSmoothing(ctx);
 
         ctx.drawImage(src,
                       rect.left, rect.top, rect.width, rect.height,
@@ -154,45 +189,54 @@ export namespace Canvases {
 
     }
 
+    export interface ResizeOpts extends ImageOpts, CanvasOpts {
+    }
+
     export async function resize(image: ImageData,
                                  dimensions: IDimensions,
-                                 opts: ResizeOpts = new DefaultImageOpts()): Promise<ResizedImage> {
+                                 opts: ResizeOpts = new DefaultImageOpts()): Promise<ImageData> {
 
-        const src = await createImageElement(image);
+        // There are two main ways to accomplish image scaling.
+        //
+        // Both involve creating a 'src' element which is an HTMLImageElement
+        // that contains our data.
+        //
+        // Then we have two options:
+        //
+        // 1.  Call drawImage but set the width/height of the target much smaller
+        //     so that when it's drawn you have the right dimensions.
+        //
+        // 2.  Do something similar but then call scale() on the resulting image.
+        //
+        // This is essentially:
+        //
+        // <code>
+        // ctx.drawImage(src, 0, 0, image.width, image.height,
+        //               0, 0, image.width, image.height);
+        //
+        // const scaleX = dimensions.width / image.width;
+        // const scaleY = dimensions.height / image.height;
+        //
+        // ctx.scale(scaleX, scaleY);
+        // </code>
+        //
+        // ... but both strategies fail to work properly with clean smooth
+        // re-render so the result looks horrible.
 
-        const canvas = opts.canvas || document.createElement("canvas");
+        const src = await createImageElement(image.data);
 
-        const ctx = canvas.getContext('2d', {alpha: false})!;
+        const tmpCanvas = opts.canvas || document.createElement("canvas");
 
-        canvas.width = dimensions.width;
-        canvas.height = dimensions.height;
+        const ctx = tmpCanvas.getContext('2d', {alpha: false})!;
 
-        const createSourceDimensions = () => {
+        disableImageSmoothing(ctx);
+        tmpCanvas.width = dimensions.width;
+        tmpCanvas.height = dimensions.height;
 
-            if (opts.keepAspectRatio) {
-                const width = src.width;
-                const idealHeight = src.width / (dimensions.width / dimensions.height);
-                const height = Math.min(src.height, idealHeight);
-
-                return {width, height};
-
-            }
-
-            return {width: src.width, height: src.height};
-
-        };
-
-        // TODO: keep aspect ratio of target option...
-        const sourceDimensions = createSourceDimensions();
-
-        // TODO: what the resulting image is not the height because the source dimensions were changed on us...
-
-        ctx.drawImage(src, 0, 0, sourceDimensions.width, sourceDimensions.height,
+        ctx.drawImage(src, 0, 0, image.width, image.height,
                       0, 0, dimensions.width, dimensions.height);
 
-        const dataURL = canvas.toDataURL();
-
-        return {dataURL, size: dimensions};
+        return canvasToImageData(tmpCanvas, opts);
 
     }
 
@@ -205,7 +249,7 @@ export namespace Canvases {
      */
     export async function extract(canvas: HTMLCanvasElement,
                                   rect: ILTRect,
-                                  opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
+                                  opts: ImageOpts = new DefaultImageOpts()): Promise<ImageData> {
 
         Preconditions.assertPresent(canvas, "canvas");
 
@@ -234,12 +278,21 @@ export namespace Canvases {
                                canvasRect.left, canvasRect.top, canvasRect.width, canvasRect.height,
                                0, 0, canvasRect.width, canvasRect.height);
 
-        const data = await toArrayBuffer(tmpCanvas, opts);
+        return await canvasToImageData(tmpCanvas, opts);
 
-        const result = {
+
+    }
+
+    async function canvasToImageData(canvas: HTMLCanvasElement,
+                                     opts: ImageOpts = new DefaultImageOpts()) {
+
+        const data = await toArrayBuffer(canvas, opts);
+
+        const result: ImageData = {
             data,
-            width: canvasRect.width,
-            height: canvasRect.height,
+            format: 'arraybuffer',
+            width: canvas.width,
+            height: canvas.height,
             type: opts.type
         };
 
@@ -249,20 +302,8 @@ export namespace Canvases {
 
 }
 
-export interface ResizedImage {
-    readonly dataURL: DataURL;
-    readonly size: IDimensions;
-}
-
 export interface CanvasOpts {
     canvas?: HTMLCanvasElement;
-}
-
-export interface CropOpts extends ImageOpts, CanvasOpts {
-}
-
-export interface ResizeOpts extends ImageOpts, CanvasOpts {
-    readonly keepAspectRatio?: boolean;
 }
 
 export interface ImageOpts {
