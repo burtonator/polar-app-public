@@ -1,7 +1,7 @@
 import {PathOrURLStr} from "polar-shared/src/util/Strings";
 import {PageViewport, PDFPageProxy, Transform} from "pdfjs-dist";
 import {PDFDocs} from "./PDFDocs";
-import {Canvases} from "polar-shared/src/util/Canvases";
+import {ImageData, Canvases} from "polar-shared/src/util/Canvases";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {
@@ -9,6 +9,7 @@ import {
     PDFPageView,
     PDFPageViewOptions
 } from "pdfjs-dist/web/pdf_viewer";
+import {IDimensions} from "polar-shared/src/util/IDimensions";
 
 export namespace PDFThumbnailer {
 
@@ -25,7 +26,16 @@ export namespace PDFThumbnailer {
         return canvas;
     }
 
-    export async function generate2(pathOrURLStr: PathOrURLStr) {
+    export interface IThumbnail extends ImageData {
+        readonly scaledDimensions: IDimensions;
+        readonly nativeDimensions: IDimensions;
+    }
+
+    export async function generate2(pathOrURLStr: PathOrURLStr): Promise<IThumbnail> {
+
+        // FIXME: the best strategy here is going to be to allow the thumbnail
+        // to be LARGER than we expect but then we need to shrink it smaller
+        // via CSS.
 
         // FIXME: this is actually a difficult problme... primarily because
         // there are 3 resolution systems so the trick is to get to the target
@@ -93,12 +103,36 @@ export namespace PDFThumbnailer {
         // https://github.com/mozilla/pdf.js/issues/9973
         // https://github.com/mozilla/pdf.js/issues/5628
 
+        interface ScaledDimensions {
+            readonly scale: number;
+            readonly width: number;
+            readonly height: number;
+        }
+
+        /**
+         * Use the viewport width and height from the 1.0 viewport to scale
+         * so that the width is at our target size.
+         */
+        function computeScaleDimensions(): ScaledDimensions {
+
+            const targetWidth = 300;
+            const scale = targetWidth / viewport.width;
+
+            return {
+                scale,
+                width: targetWidth,
+                height: viewport.height * scale
+            };
+
+        }
+
+        const scaledDimensions = computeScaleDimensions();
 
         const opts: PDFPageViewOptions = {
             id: 1,
             container,
             eventBus,
-            scale: 0.25,
+            scale: scaledDimensions.scale,
             defaultViewport,
             textLayerMode: 0,
             renderInteractiveForms: false,
@@ -121,41 +155,30 @@ export namespace PDFThumbnailer {
         console.log(`FIXME viewport height: ${viewport.height} , width: ${viewport.width}`);
         console.log(`FIXME canvas height: ${canvas.height} , width: ${canvas.width}`);
 
-        // 816, height: 1056 = 1.294
-        // 8.5 x 11 = 1.294
-
-        // 1689 1305 = 1.294 (but it's truncated.. .why?)
-
-        // FIXME but the canvas height seems wrong.
-
-        // FIXME view.width is right.. not the height though...
         const rect: ILTRect = {
             left: 0,
             top: 0,
             width: view.width,
             height: view.height
-        }
-
-        console.log("FIXME: rendering with rect: ", rect);
-
-        // FIXME: NOW the challenge is that the canvas is larger than the image
-        // size on screen so how do I adjust it properly... ?
+        };
 
         try {
 
-            const rawImage = await Canvases.extract(canvas, rect);
+            const imageData = await Canvases.extract(canvas, rect);
 
-            const resizeDimensions = {
-                width: view.width,
-                height: view.height
+            return {
+                ...imageData,
+                width: scaledDimensions.width,
+                height: scaledDimensions.height,
+                scaledDimensions,
+                nativeDimensions: {
+                    width: imageData.width,
+                    height: imageData.height
+                }
             };
 
-            console.log("FIXME: resizing to: ", resizeDimensions);
-
-            return await Canvases.resize(rawImage, resizeDimensions);
-
         } finally {
-            // FIXME: view.destroy();
+            view.destroy();
         }
 
     }

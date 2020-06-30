@@ -7,9 +7,8 @@ import {ImageType} from "./ImageType";
 const DEFAULT_IMAGE_TYPE = 'image/png';
 const DEFAULT_IMAGE_QUALITY = 1.0;
 
-/**
- * Keeps the binary data but also metadata for the extract.
- */
+export type RawImageData = ArrayBuffer | DataURL | HTMLImageElement;
+
 export interface ImageData {
 
     /**
@@ -32,14 +31,14 @@ export interface ImageData {
 
 export namespace ImageDatas {
 
-    export function toDataURL(image: ImageData) {
+    export function toDataURL(image: ImageData): string {
 
         switch (image.format) {
 
             case "arraybuffer":
                 return DataURLs.encode(<ArrayBuffer> image.data, image.type);
             case "dataurl":
-                return image.data;
+                return <string> image.data;
 
         }
 
@@ -47,7 +46,6 @@ export namespace ImageDatas {
 
 }
 
-export type RawImageData = ArrayBuffer | DataURL | HTMLImageElement;
 
 /**
  * Functions for working with canvas objects, extracting screenshots, etc.
@@ -192,7 +190,7 @@ export namespace Canvases {
     export interface ResizeOpts extends ImageOpts, CanvasOpts {
     }
 
-    export async function resize(image: ImageData,
+    export async function resize(data: RawImageData,
                                  dimensions: IDimensions,
                                  opts: ResizeOpts = new DefaultImageOpts()): Promise<ImageData> {
 
@@ -223,7 +221,7 @@ export namespace Canvases {
         // ... but both strategies fail to work properly with clean smooth
         // re-render so the result looks horrible.
 
-        const src = await createImageElement(image.data);
+        const src = await createImageElement(data);
 
         const tmpCanvas = opts.canvas || document.createElement("canvas");
 
@@ -233,7 +231,7 @@ export namespace Canvases {
         tmpCanvas.width = dimensions.width;
         tmpCanvas.height = dimensions.height;
 
-        ctx.drawImage(src, 0, 0, image.width, image.height,
+        ctx.drawImage(src, 0, 0, src.width, src.height,
                       0, 0, dimensions.width, dimensions.height);
 
         return canvasToImageData(tmpCanvas, opts);
