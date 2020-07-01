@@ -132,7 +132,7 @@ export class AutoPagemarker {
                 pagemarked
             };
 
-            log.debug("Auto pagemarker result: ", result);
+            console.debug("Auto pagemarker result: ", result);
 
             return result;
 
@@ -176,11 +176,13 @@ export class AutoPagemarker {
             // if the current position is undefined, then we've just started
             // and so there's nothing left to do
 
+            console.debug("init");
             return updatePosition('init');
 
         }
 
         if ((now - this.position.created) < this.opts.minDuration) {
+            log.debug("early: ", this.opts.minDuration);
             return updatePosition('early');
         }
 
@@ -291,9 +293,12 @@ export class AutoPagemarker {
                     perc: coverage.perc
                 });
 
+                log.debug("Created");
+
                 return updatePosition('created', prevPageID);
 
             case "updated":
+                log.debug("Updated");
                 return updatePosition('updated');
 
             case "jumped":
