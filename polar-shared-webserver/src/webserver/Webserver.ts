@@ -35,8 +35,8 @@ export class Webserver implements WebRequestHandler {
                 fileRegistry: FileRegistry,
                 resourceRegistry: ResourceRegistry = new ResourceRegistry()) {
 
-        this.webserverConfig = Preconditions.assertNotNull(webserverConfig, "webserverConfig");
-        this.fileRegistry = Preconditions.assertNotNull(fileRegistry, "fileRegistry");
+        this.webserverConfig = Preconditions.assertPresent(webserverConfig, "webserverConfig");
+        this.fileRegistry = Preconditions.assertPresent(fileRegistry, "fileRegistry");
         this.resourceRegistry = resourceRegistry;
 
     }
