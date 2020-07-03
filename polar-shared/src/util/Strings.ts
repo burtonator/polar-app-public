@@ -222,3 +222,5 @@ export type DOIStr = string;
  * String of JSON data.
  */
 export type JSONStr = string;
+
+export type DataURLStr = string;

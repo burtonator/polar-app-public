@@ -6,8 +6,19 @@ import {ImageType} from "./ImageType";
 export type DataURL = string;
 
 export interface DecodedDataURL {
-    data: ArrayBuffer;
-    type: string;
+
+    /**
+     * The actual binary data of the data URL
+     */
+    readonly data: ArrayBuffer;
+
+    /**
+     * The media type of the Data URL.
+     *
+     * Example: image/png, image/jpeg, etc.
+     */
+    readonly type: string;
+
 }
 
 const log = Logger.create();
