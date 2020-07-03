@@ -3,6 +3,8 @@ import {Base64} from "./Base64";
 import {ArrayBuffers} from "./ArrayBuffers";
 import {ImageType} from "./ImageType";
 
+const log = Logger.create();
+
 export type DataURL = string;
 
 export interface DecodedDataURL {
@@ -20,8 +22,6 @@ export interface DecodedDataURL {
     readonly type: string;
 
 }
-
-const log = Logger.create();
 
 /**
  * Represents an data: URL as a string.
