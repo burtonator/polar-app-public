@@ -10,10 +10,9 @@ import {ReadabilityCapture} from "../../ReadabilityCapture";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {Theme} from '@material-ui/core/styles/createMuiTheme';
-import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {SaveToPolarHandler} from "../../services/SaveToPolarHandler";
-import SaveToPolarMessage = SaveToPolarHandler.SaveToPolarRequest;
+import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
 import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
 
 const useStyles = makeStyles((theme: Theme) =>
