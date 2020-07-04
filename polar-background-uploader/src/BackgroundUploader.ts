@@ -85,6 +85,18 @@ namespace CacheEntries {
 
 }
 
+function registerResumeHandler(resumeHandler: () => void) {
+
+    window.addEventListener('online', () => {
+        resumeHandler();
+    })
+
+    window.addEventListener('offline', () => {
+
+    })
+
+}
+
 export namespace BackgroundUploaders {
 
     const LOCALSTORAGE_PREFIX = 'background-uploader:';
@@ -205,23 +217,37 @@ export namespace BackgroundUploaders {
 
                 const localStorageKeys = computeLocalStorageKeys();
 
-                const cacheEntriesWithValue =
-                    localStorageKeys.map(localStorage.getItem)
-                                    .filter(current => current !== null)
-                                    .map(current => current!)
-                                    .map(parseCacheEntry)
-                                    .map(toCacheEntryWithValue);
+                return localStorageKeys.map(localStorage.getItem)
+                                       .filter(current => current !== null)
+                                       .map(current => current!)
+                                       .map(parseCacheEntry)
+                                       .map(toCacheEntryWithValue);
 
-                // FIXME: listen to navigator.onLine to auto-resume here.
-                //
-                // figure out a way to reliably ABORT uploads that are currently
-                // running so that they don't resume if we come back online and
-                // then have TWO uploads happening in parallel.
+            }
 
-                for(const cacheEntryWithValue of cacheEntriesWithValue) {
-                    submit(cacheEntryWithValue.key, cacheEntryWithValue.value, NULL_FUNCTION);
-                }
+            const pendingCacheEntries = computePendingCacheEntries();
 
+            // FIXME: listen to navigator.onLine to auto-resume here.
+            //
+            // FIXME: figure out a way to reliably ABORT uploads that are
+            // currently running so that they don't resume if we come back
+            // online and then have TWO uploads happening in parallel.
+
+            // FIXME: investigate the issues with getting callbacks when the
+            // snapshot fails...
+
+            // FIXME: if we have MULTIPLE windows created/uploaded it's possible
+            // to have multiple resumes happening...
+
+            // FIXME: how do I log that resume is happening?  Creating snackbars
+            // seems like a bit silly...
+
+            // FIXME: to only have ONE lock per browser instance I need some
+            // type of mutex lock but mayb eI could mutex lock each key for a
+            // given time.
+
+            for(const pendingCacheEntry of pendingCacheEntries) {
+                submit(pendingCacheEntry.key, pendingCacheEntry.value, NULL_FUNCTION);
             }
 
         }
