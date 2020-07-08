@@ -1,15 +1,27 @@
 import {ViewCalculator} from "./ViewCalculator";
 import {ViewVisibilityCalculator} from "./ViewVisibilityCalculator";
-import {AutoPagemarker, AutoPagemarkerMode, ExtendPagemark} from "./AutoPagemarker";
+import {
+    AutoPagemarker,
+    AutoPagemarkerMode,
+    ExtendPagemark
+} from "./AutoPagemarker";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {TaskThrottler} from "./TaskThrottler";
 
 const log = Logger.create();
 
-export class Scrollers {
+export namespace Scrollers {
 
-    public static register(extender: (extendPagemark: ExtendPagemark) => void,
-                           mode: AutoPagemarkerMode) {
+    export type ExtenderCallback = (extendPagemark: ExtendPagemark) => void;
+
+    export interface RegisterOpts {
+        readonly mode: AutoPagemarkerMode;
+    }
+
+    export function register(extender: ExtenderCallback,
+                             opts: RegisterOpts) {
+
+        const {mode} = opts;
 
         const selectors = {
             container: '#viewerContainer',

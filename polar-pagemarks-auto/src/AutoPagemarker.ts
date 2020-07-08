@@ -93,7 +93,7 @@ export interface AutoPagemarkerOpts {
 
 const DEFAULT_OPTS: AutoPagemarkerOpts = {
     mode: 'full',
-    minDuration: 30 * 1000,
+    minDuration: 45 * 1000,
     minPagemarkHeight: 200
 };
 
