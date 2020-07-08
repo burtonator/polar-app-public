@@ -23,7 +23,7 @@ export namespace PDFDocs {
         const init: DocumentInitParameters = {
             ...opts,
             cMapPacked: true,
-            cMapUrl: '/web/dist/pdfjs-dist/cmaps/',
+            cMapUrl: '/pdfjs-dist/cmaps/',
             disableAutoFetch: true,
         };
 

@@ -37,11 +37,14 @@ export class PDFMetadata {
 
         const isPath = ! URLs.isURL(docPathOrURL);
 
-        // FIXME: use URLs.toURL for this
-
-        if (isPath && ! await Files.existsAsync(docPathOrURL)) {
-            throw new Error("File does not exist at path: " + docPathOrURL);
-        }
+        // if (isPath) {
+        //     console.log("Loading metadata from file path: " + docPathOrURL);
+        //
+        //     if (isPath && ! await Files.existsAsync(docPathOrURL)) {
+        //         throw new Error("File does not exist at path: " + docPathOrURL);
+        //     }
+        //
+        // }
 
         const toURL = (input: string) => {
 

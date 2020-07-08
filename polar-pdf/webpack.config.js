@@ -127,8 +127,8 @@ module.exports = {
             patterns: [
                 // this is a bit of a hack and it would be better if we supported
                 // this better and managed as part of the build system
-                { from: '../../../node_modules/pdfjs-dist/cmaps', to: './dist/web/dist/pdfjs-dist/cmaps' },
-                { from: '../../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './dist/web/dist/pdfjs-dist' }
+                { from: '../../../node_modules/pdfjs-dist/cmaps', to: './dist/pdfjs-dist/cmaps' },
+                { from: '../../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './dist/pdfjs-dist' }
             ],
         }),
     ],
