@@ -1,3 +1,6 @@
+
+- the renderer still says enableRemoteModule is enabled ut I disabled it... 
+
 - DONE???: get new windows to open up correctly with window.open in a new tab (and
   in the) browser too OR use new tabs API
 

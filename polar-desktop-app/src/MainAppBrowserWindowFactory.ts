@@ -7,9 +7,9 @@ const log = Logger.create();
 
 export const DEFAULT_URL = 'https://beta.getpolarized.io';
 
+// FIXME: window too small.. is there a better way to do this?
 const WIDTH = 900 * 1.2; // 1300 is like 80% of users
 const HEIGHT = 1100 * 1.2;
-const SIDEBAR_BUFFER = 100;
 
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
@@ -17,7 +17,7 @@ const SIDEBAR_BUFFER = 100;
 
 export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = Object.freeze({
     backgroundColor: '#FFF',
-    width: WIDTH + SIDEBAR_BUFFER,
+    width: WIDTH,
     height: HEIGHT,
     show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
@@ -26,11 +26,13 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     webPreferences: {
         nodeIntegration: false,
         nodeIntegrationInSubFrames: false,
+        nodeIntegrationInWorker: false,
         defaultEncoding: 'UTF-8',
         webSecurity: true,
         webaudio: true,
         enableRemoteModule: false,
-        nativeWindowOpen: true
+        nativeWindowOpen: true,
+        webviewTag: false
     }
 
 });
@@ -42,7 +44,9 @@ export class MainAppBrowserWindowFactory {
 
         // ElectronUserAgents.registerUserAgentHandler(MAIN_SESSION_PARTITION_NAME);
 
-        browserWindowOptions = Object.assign({}, browserWindowOptions);
+        browserWindowOptions = {...browserWindowOptions};
+
+        console.log("Starting with browserWindowOptions: ", browserWindowOptions);
 
         const position = this.computeXY();
 
