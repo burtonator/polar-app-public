@@ -630,7 +630,11 @@ export class Files {
         return this.withProperException(() => this.promised.fsyncAsync(fd));
     }
 
+
+
     private static async withProperException<T>(func: () => Promise<T>): Promise<T> {
+
+        const isNode = typeof window === 'undefined';
 
         // the only way to get this to work with node is to create an 'anchor'
         // exception on the entry before we call the method. The downside of
@@ -641,7 +645,13 @@ export class Files {
         try {
             return await func();
         } catch (err) {
-            throw this.createProperException(anchor, err);
+
+            if (isNode) {
+                throw this.createProperException(anchor, err);
+            } else {
+                throw err;
+            }
+
         }
 
     }
