@@ -630,8 +630,6 @@ export class Files {
         return this.withProperException(() => this.promised.fsyncAsync(fd));
     }
 
-
-
     private static async withProperException<T>(func: () => Promise<T>): Promise<T> {
 
         const isNode = typeof window === 'undefined';
