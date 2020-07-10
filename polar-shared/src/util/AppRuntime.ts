@@ -12,6 +12,9 @@ export namespace AppRuntime {
             return 'node';
         }
 
+        // FIXME: this won't work on our most recent polar-desktop-app build so
+        // I need to figure this out. I think this only works if
+        // node-integration is enabled
         if (window?.process?.type) {
             return 'electron';
         } else {

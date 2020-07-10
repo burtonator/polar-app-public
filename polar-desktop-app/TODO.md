@@ -1,19 +1,10 @@
-- DONE: get new windows to open up correctly with window.open in a new tab (and
+- DONE???: get new windows to open up correctly with window.open in a new tab (and
   in the) browser too OR use new tabs API
+
+    I can look for polar-desktop-app in the user-agent... 
   
-- get anki sync to work
-
-    this code fails:
-
-    async function doAsync() {
-        const response = await fetch('http://localhost:8765');
-        const text = await response.text();
-        console.log("Text: ", text);
-    }
-    
-    doAsync().catch(err => console.error("Got error: " + err))
-    
-
+- get anki sync to work by just enabling the button? How do I determine if 
+  I'm in Electron...?
 
 - test everything in the desktop app and make sure it works properly
 
