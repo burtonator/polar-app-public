@@ -29,6 +29,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
         defaultEncoding: 'UTF-8',
         webSecurity: true,
         webaudio: true,
+        enableRemoteModule: false,
         nativeWindowOpen: true
     }
 
