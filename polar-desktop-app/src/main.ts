@@ -1,6 +1,7 @@
 import {app, BrowserWindow} from 'electron';
 import process from 'process';
 import {Version} from "polar-shared/src/util/Version";
+import {MainApp} from "./MainApp";
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
@@ -26,7 +27,8 @@ async function launch() {
     console.log("Running with Polar version: " + Version.get());
     console.log("Running with app version: " + app.getVersion());
 
-    // const mainApp = new MainApp(datastore);
+    const mainApp = new MainApp();
+    await mainApp.start();
 
 }
 
