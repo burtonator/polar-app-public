@@ -1,4 +1,4 @@
-import {app, BrowserWindow} from 'electron';
+import {app, BrowserWindow, session} from 'electron';
 import process from 'process';
 import {Version} from "polar-shared/src/util/Version";
 import {MainApp} from "./MainApp";
@@ -33,6 +33,25 @@ async function launch() {
 }
 
 app.on('ready', async () => {
+
+    // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    //
+    //     if (! details.url.startsWith('http:') && ! details.url.startsWith('https:')) {
+    //         callback({});
+    //         return;
+    //     }
+    //
+    //     console.log("FIXME: adding CSP headers");
+    //
+    //     const additionalHeaders = {
+    //         "Content-Security-Policy": [ "default-src 'self'" ]
+    //     };
+    //
+    //     const newResponseHeaders = {...details.responseHeaders, ...additionalHeaders};
+    //
+    //     callback({ responseHeaders: newResponseHeaders});
+    //
+    // });
 
     const configureReactDevTools = () => {
 

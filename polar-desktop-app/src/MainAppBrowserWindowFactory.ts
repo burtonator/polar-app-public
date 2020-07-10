@@ -11,8 +11,6 @@ const SIDEBAR_BUFFER = 100;
 
 const DEFAULT_URL = 'https://beta.getpolarized.io';
 
-export const MAIN_SESSION_PARTITION_NAME = 'persist:polar-app';
-
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
 // export const APP_ICON = ResourcePaths.resourceURLFromRelativeURL('./build/icons/icon.png');
@@ -30,7 +28,6 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
         defaultEncoding: 'UTF-8',
         webSecurity: true,
         webaudio: true,
-        partition: MAIN_SESSION_PARTITION_NAME,
     }
 
 });
@@ -88,7 +85,7 @@ export class MainAppBrowserWindowFactory {
         // log.notice("Creating browser window with options: ", browserWindowOptions);
 
         // Create the browser window.
-        const browserWindow = new BrowserWindow(browserWindowOptions);
+        const browserWindow = new BrowserWindow();
 
         browserWindow.webContents.on('new-window', (e, newURL) => {
 
@@ -139,10 +136,8 @@ export class MainAppBrowserWindowFactory {
             browserWindow.once('ready-to-show', () => {
 
                 // As of Electron 3.0 beta8 there appears to be a bug where
-                // it persists teh zoom factor between restarts and restores
-                // the zoom factor for the user but this can break / confuse
-                // PHZ loading so we always want them to start at 1.0
-                browserWindow.webContents.zoomFactor = 1.0;
+                // it persists the zoom factor between restarts and restores
+                // the zoom factorbrowserWindow.webContents.zoomFactor = 1.0;
 
                 browserWindow.show();
 
