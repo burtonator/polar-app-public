@@ -2,6 +2,7 @@ import {app, BrowserWindow, session} from 'electron';
 import process from 'process';
 import {Version} from "polar-shared/src/util/Version";
 import {MainApp} from "./MainApp";
+import {DEFAULT_URL} from "./MainAppBrowserWindowFactory";
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
@@ -32,7 +33,39 @@ async function launch() {
 
 }
 
+
+function allowAnkiSyncOrigin() {
+
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+
+        function isAnkiSyncRequest() {
+            const parsedURL = new URL(details.url);
+            return parsedURL.hostname === 'localhost' && parsedURL.port === '8765';
+        }
+
+        if (! isAnkiSyncRequest()) {
+            callback({});
+            return;
+        }
+
+
+        console.log("Adding Access-Control-Allow-Origin for Anki sync");
+
+        const additionalHeaders = {
+            "Access-Control-Allow-Origin": [ DEFAULT_URL ]
+        };
+
+        const newResponseHeaders = {...details.responseHeaders, ...additionalHeaders};
+
+        callback({ responseHeaders: newResponseHeaders});
+
+    });
+
+}
+
 app.on('ready', async () => {
+
+    allowAnkiSyncOrigin();
 
     // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     //

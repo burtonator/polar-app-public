@@ -5,11 +5,11 @@ import {ExternalNavigationBlock} from "./ExternalNavigationBlock";
 
 const log = Logger.create();
 
+export const DEFAULT_URL = 'https://beta.getpolarized.io';
+
 const WIDTH = 900 * 1.2; // 1300 is like 80% of users
 const HEIGHT = 1100 * 1.2;
 const SIDEBAR_BUFFER = 100;
-
-const DEFAULT_URL = 'https://beta.getpolarized.io';
 
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
@@ -25,9 +25,11 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     // icon: APP_ICON,
     webPreferences: {
         nodeIntegration: false,
+        nodeIntegrationInSubFrames: false,
         defaultEncoding: 'UTF-8',
         webSecurity: true,
         webaudio: true,
+        nativeWindowOpen: true
     }
 
 });

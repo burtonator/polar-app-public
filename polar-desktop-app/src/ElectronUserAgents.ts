@@ -9,7 +9,9 @@ export class ElectronUserAgents {
 
         // "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) polar-bookshelf/1.60.14 Chrome/73.0.3683.121 Electron/5.0.11 Safari/537.36"
         userAgent = userAgent.replace(/Electron\/[0-9.]+ /, '');
-        userAgent = userAgent.replace(/polar-bookshelf\/[0-9.]+ /, '');
+        // TODO we might want to trim polar-desktop-app in the the future but
+        // for now it's fine.
+        // userAgent = userAgent.replace(/polar-bookshelf\/[0-9.]+ /, '');
         return userAgent;
 
     }
