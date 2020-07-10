@@ -12,7 +12,7 @@ export interface IExternalNavigationBlock {
 
 export class ExternalNavigationBlockDelegate {
 
-    private enabled: boolean = true;
+    private enabled: boolean = false;
 
     public set(enabled: boolean) {
         log.notice("External navigation block enabled: " + enabled);

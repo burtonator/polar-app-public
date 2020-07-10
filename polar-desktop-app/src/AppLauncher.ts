@@ -1,7 +1,6 @@
 import {BrowserWindow} from "electron";
 import {
     BROWSER_WINDOW_OPTIONS,
-    MAIN_SESSION_PARTITION_NAME,
     MainAppBrowserWindowFactory
 } from './MainAppBrowserWindowFactory';
 import {ResourcePaths} from './ResourcePaths';
@@ -26,10 +25,6 @@ export class AppLauncher {
             log.info("Loading app from URL: " + url);
 
             const browserWindowOptions = Dictionaries.copyOf(BROWSER_WINDOW_OPTIONS);
-
-            // use a 'polar-app' session so we don't use the default session
-            // which is intercepted.
-            browserWindowOptions.webPreferences!.partition = MAIN_SESSION_PARTITION_NAME;
 
             return await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
 
