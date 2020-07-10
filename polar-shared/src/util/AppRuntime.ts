@@ -12,9 +12,14 @@ export namespace AppRuntime {
             return 'node';
         }
 
-        // FIXME: this won't work on our most recent polar-desktop-app build so
-        // I need to figure this out. I think this only works if
-        // node-integration is enabled
+        if (navigator.userAgent.indexOf('polar-desktop-app') !== -1) {
+            // our most recent desktop app sets the UA to include
+            // polar-desktop-app and this is the only way to know for certain as
+            // we're trying to get the Electron build to be just a simple browser
+            // app like the mobile apps.
+            return 'electron';
+        }
+
         if (window?.process?.type) {
             return 'electron';
         } else {
