@@ -1,6 +1,5 @@
 import {BrowserWindow, screen, shell} from "electron";
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {ResourcePaths} from './ResourcePaths';
 import {ElectronUserAgents} from "./ElectronUserAgents";
 import {ExternalNavigationBlock} from "./ExternalNavigationBlock";
 
@@ -10,13 +9,13 @@ const WIDTH = 900 * 1.2; // 1300 is like 80% of users
 const HEIGHT = 1100 * 1.2;
 const SIDEBAR_BUFFER = 100;
 
-const DEFAULT_URL = ResourcePaths.resourceURLFromRelativeURL('./apps/repository/index.html');
+const DEFAULT_URL = 'https://beta.getpolarized.io';
 
 export const MAIN_SESSION_PARTITION_NAME = 'persist:polar-app';
 
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
-export const APP_ICON = ResourcePaths.resourceURLFromRelativeURL('./icon.png');
+// export const APP_ICON = ResourcePaths.resourceURLFromRelativeURL('./build/icons/icon.png');
 
 export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = Object.freeze({
     backgroundColor: '#FFF',
@@ -25,7 +24,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     // TODO: make the app icon a data URL?
-    icon: APP_ICON,
+    // icon: APP_ICON,
     webPreferences: {
         nodeIntegration: false,
         defaultEncoding: 'UTF-8',
@@ -107,15 +106,8 @@ export class MainAppBrowserWindowFactory {
 
         browserWindow.webContents.on('will-navigate', (e, navURL) => {
 
-            // TODO: this is a bit of a hack and these URLs shouldn't be hard
-            // coded here.  We can refactor this in the future though.
-
-            const parsedURL = new URL(navURL);
-
-            const host = parsedURL.hostname;
-
-            if (host === "localhost") {
-                log.info("Always allowing localhost URL");
+            if (! ExternalNavigationBlock.isExternal(navURL)) {
+                console.log("Allowing URL: " + navURL);
                 return;
             }
 

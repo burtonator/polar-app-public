@@ -1,0 +1,50 @@
+{
+  "name": "polar-desktop-app",
+  "version": "2.0.0-beta.7",
+  "description": "Polar",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/burtonator/polar-app-public",
+  "keywords": [
+    "Electron",
+    "PDF",
+    "viewer",
+    "PDF.js",
+    "ebook",
+    "annotations"
+  ],
+  "author": {
+    "name": "contributors",
+    "email": "noone@example.com"
+  },
+  "contributors": [
+    {
+      "name": "Kevin Burton"
+    }
+  ],
+  "build": {
+    "appId": "io.inputneuron/polar",
+    "mac": {
+      "category": "Books"
+    }
+  },
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "mocha": "8.0.1",
+    "tslint": "6.1.2",
+    "typescript": "3.9.5"
+  },
+  "dependencies": {
+    "polar-shared": "^2.0.0-beta.7",
+    "electron": "^9.1.0",
+    "electron-builder": "~22.7.0",
+    "electron-notarize": "1.0.0"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/polar-bookshelf"
+  }
+}

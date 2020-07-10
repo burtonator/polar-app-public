@@ -38,13 +38,9 @@
 
     },
     "include": [
-        "test/sandbox/**/*",
-        "scripts/**/*",
-        "web/**/*",
-        "apps/**/*"
+        "src/"
     ],
     "exclude": [
-        "node_modules/**",
-        "web/spectron.disabled/*"
+        "node_modules/**"
     ]
 }

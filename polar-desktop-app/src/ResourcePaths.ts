@@ -79,7 +79,7 @@ export class ResourcePaths {
                     return URLs.toBase(window.location.href);
                 }
 
-                return "http://localhost:8500";
+                return "https://beta.getpolarized.io";
 
             };
 

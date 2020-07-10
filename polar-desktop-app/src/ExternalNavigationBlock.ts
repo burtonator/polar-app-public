@@ -1,12 +1,27 @@
 import {ExternalNavigationBlockDelegates} from "./ExternalNavigationBlockDelegates";
 
-export class ExternalNavigationBlock {
+export namespace ExternalNavigationBlock {
 
-    public static set(enabled: boolean) {
+    export function isExternal(url: string): boolean {
+
+        const parsedURL = new URL(url);
+
+        const host = parsedURL.hostname;
+
+        if (['localhost', 'beta.getpolarized.io', 'app.getpolarized.io'].includes(host)) {
+            // console.log("Always allowing localhost URL");
+            return false;
+        }
+
+        return true;
+
+    }
+
+    export function set(enabled: boolean) {
         ExternalNavigationBlockDelegates.get().set(enabled);
     }
 
-    public static get() {
+    export function get() {
         return ExternalNavigationBlockDelegates.get().get();
     }
 

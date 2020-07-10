@@ -1,6 +1,7 @@
 import {remote} from "electron";
 import {NullExternalNavigationBlock} from "./ExternalNavigationBlock";
 import {DesktopRuntime} from "./DesktopRuntime";
+import { ExternalNavigationBlockDelegate } from "./ExternalNavigationBlockDelegate";
 
 declare var global: any;
 
@@ -26,7 +27,7 @@ export class ExternalNavigationBlockDelegates {
 
     }
     public static init() {
-        // global.externalNavigationBlock = new ExternalNavigationBlockDelegate();
+        global.externalNavigationBlock = new ExternalNavigationBlockDelegate();
     }
 
 }
