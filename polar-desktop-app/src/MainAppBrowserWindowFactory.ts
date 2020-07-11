@@ -20,6 +20,8 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     width: WIDTH,
     height: HEIGHT,
     show: false,
+    frame: false,
+    titleBarStyle: "hidden",
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     // TODO: make the app icon a data URL?
     // icon: APP_ICON,
@@ -92,7 +94,7 @@ export class MainAppBrowserWindowFactory {
         // log.notice("Creating browser window with options: ", browserWindowOptions);
 
         // Create the browser window.
-        const browserWindow = new BrowserWindow();
+        const browserWindow = new BrowserWindow(browserWindowOptions);
 
         browserWindow.webContents.on('new-window', (e, newURL) => {
 

@@ -1,11 +1,3 @@
-
-- the renderer still says enableRemoteModule is enabled ut I disabled it... 
-
-- DONE???: get new windows to open up correctly with window.open in a new tab (and
-  in the) browser too OR use new tabs API
-
-    I can look for polar-desktop-app in the user-agent... 
-  
 - get anki sync to work by just enabling the button? How do I determine if 
   I'm in Electron...?
 
