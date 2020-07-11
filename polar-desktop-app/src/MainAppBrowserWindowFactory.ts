@@ -73,8 +73,8 @@ export class MainAppBrowserWindowFactory {
 
         const dimensionMappings: DimensionMapping[] = [
 
-            {original: 'minHeight', dimension: 'height', defaultValue: 800},
-            {original: 'minWidth', dimension: 'width', defaultValue: 600},
+            {original: 'minHeight', dimension: 'height', defaultValue: 400},
+            {original: 'minWidth', dimension: 'width', defaultValue: 300},
 
             {original: 'height', dimension: 'height'},
             {original: 'width', dimension: 'width'}
