@@ -28,8 +28,7 @@ async function launch() {
     console.log("Running with Polar version: " + Version.get());
     console.log("Running with app version: " + app.getVersion());
 
-    const mainApp = new MainApp();
-    await mainApp.start();
+    await MainApp.start();
 
 }
 
