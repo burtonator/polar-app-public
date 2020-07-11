@@ -11,3 +11,4 @@
     
     and UpdatesController but we don't need that part yet. 
    
+- disable the external nav system

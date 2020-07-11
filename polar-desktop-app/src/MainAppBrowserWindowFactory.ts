@@ -5,7 +5,8 @@ import {ExternalNavigationBlock} from "./ExternalNavigationBlock";
 
 const log = Logger.create();
 
-export const DEFAULT_URL = 'https://beta.getpolarized.io';
+// export const DEFAULT_URL = 'https://beta.getpolarized.io';
+export const DEFAULT_URL = 'http://localhost:8050';
 
 // FIXME: window too small.. is there a better way to do this?
 const WIDTH = 900 * 1.2; // 1300 is like 80% of users

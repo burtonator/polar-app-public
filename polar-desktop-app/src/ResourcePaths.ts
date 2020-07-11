@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {URLs} from 'polar-shared/src/util/URLs';
+import {DEFAULT_URL} from "./MainAppBrowserWindowFactory";
 
 const USE_FILE_URL = true;
 
@@ -79,7 +80,7 @@ export class ResourcePaths {
                     return URLs.toBase(window.location.href);
                 }
 
-                return "https://beta.getpolarized.io";
+                return DEFAULT_URL;
 
             };
 
