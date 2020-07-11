@@ -3,6 +3,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {AppLauncher} from './AppLauncher';
 import process from "process";
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
+import {Updates} from "./updates/Updates";
 
 const log = Logger.create();
 
@@ -17,6 +18,8 @@ export class MainApp {
         log.info("App loaded from: ", app.getAppPath());
 
         const mainWindow = await AppLauncher.launchApp();
+
+        Updates.start();
 
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 
