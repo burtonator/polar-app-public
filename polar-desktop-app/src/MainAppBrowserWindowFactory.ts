@@ -1,7 +1,6 @@
-import {BrowserWindow, screen, shell} from "electron";
+import {BrowserWindow, screen} from "electron";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ElectronUserAgents} from "./ElectronUserAgents";
-import {ExternalNavigationBlock} from "./ExternalNavigationBlock";
 
 const log = Logger.create();
 
@@ -96,43 +95,6 @@ export class MainAppBrowserWindowFactory {
 
         // Create the browser window.
         const browserWindow = new BrowserWindow(browserWindowOptions);
-
-        browserWindow.webContents.on('new-window', (e, newURL) => {
-
-            if (ExternalNavigationBlock.get()) {
-
-                e.preventDefault();
-                shell.openExternal(newURL)
-                    .catch(err => log.error("Could not open external URL", err, newURL));
-
-            } else {
-                log.notice("Allowing external navigation to new window URL: " + newURL);
-            }
-
-        });
-
-        browserWindow.webContents.on('will-navigate', (e, navURL) => {
-
-            if (! ExternalNavigationBlock.isExternal(navURL)) {
-                console.log("Allowing URL: " + navURL);
-                return;
-            }
-
-            if (ExternalNavigationBlock.get()) {
-
-                log.info("Attempt to navigate to new URL: ", navURL);
-                // required to force the URLs clicked to open in a new browser.  The
-                // user probably / certainly wants to use their main browser.
-                e.preventDefault();
-                shell.openExternal(navURL)
-                    .catch(err => log.error("Cloud open external URL", err, url));
-
-            } else {
-                log.notice("Allowing external navigation to: " + navURL);
-                return;
-            }
-
-        });
 
         // compute the userAgent that we should be using for the renderer
         const userAgent = ElectronUserAgents.computeUserAgentFromWebContents(browserWindow.webContents);

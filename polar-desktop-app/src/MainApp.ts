@@ -3,7 +3,6 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {AppLauncher} from './AppLauncher';
 import process from "process";
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
-import {ExternalNavigationBlockDelegates} from "./ExternalNavigationBlockDelegates";
 
 const log = Logger.create();
 
@@ -12,8 +11,6 @@ export class MainApp {
     public async start(): Promise<MainAppStarted> {
 
         MainAppExceptionHandlers.register();
-
-        ExternalNavigationBlockDelegates.init();
 
         log.info("Electron app path is: " + app.getAppPath());
 
