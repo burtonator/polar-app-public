@@ -7,21 +7,37 @@ import {Updates} from "./updates/Updates";
 
 const log = Logger.create();
 
-export class MainApp {
+export namespace MainApp {
 
-    public async start(): Promise<MainAppStarted> {
+    export async function start(): Promise<MainAppStarted> {
 
         MainAppExceptionHandlers.register();
 
-        log.info("Electron app path is: " + app.getAppPath());
-
-        log.info("App loaded from: ", app.getAppPath());
+        console.log("Electron app path is: " + app.getAppPath());
+        console.log("App loaded from: ", app.getAppPath());
+        console.log("Running with process.args: ", JSON.stringify(process.argv));
 
         const mainWindow = await AppLauncher.launchApp();
 
         Updates.start();
 
-        log.info("Running with process.args: ", JSON.stringify(process.argv));
+        registerAppListeners();
+
+        return {mainWindow};
+
+    }
+
+    function registerAppListeners() {
+        AppListeners.registerSecondInstance();
+        AppListeners.registerWindowAllClosed();
+        AppListeners.registerActivate();
+    }
+
+}
+
+namespace AppListeners {
+
+    export function registerSecondInstance() {
 
         app.on('second-instance', async (event, commandLine) => {
 
@@ -40,6 +56,10 @@ export class MainApp {
             // }
 
         });
+
+    }
+
+    export function registerWindowAllClosed() {
 
         // quit when all windows are closed.
         app.on('window-all-closed', function() {
@@ -79,6 +99,10 @@ export class MainApp {
 
         });
 
+    }
+
+    export function registerActivate() {
+
         app.on('activate', async function() {
 
             // On OS X it's common to re-create a window in the app when the
@@ -99,8 +123,6 @@ export class MainApp {
             }
 
         });
-
-        return {mainWindow};
 
     }
 
