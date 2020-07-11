@@ -16,35 +16,15 @@ export class MainApp {
 
         log.info("App loaded from: ", app.getAppPath());
 
-        // NOTE: removing the next three lines removes the colors in the
-        // toolbar. const appIcon = new Tray(app_icon);
-        // appIcon.setToolTip('Polar Bookshelf');
-        // appIcon.setContextMenu(contextMenu);
-
         const mainWindow = await AppLauncher.launchApp();
-
-        // create a session and configure it for the polar which is persistent
-        // across restarts so that we do not lose cookies, etc.
-
-        // mainSession.cookies.get({}, (err, cookies) => {
-        //
-        //     cookies.filter(cookie => {
-        //         console.log("Found cookie: " , cookie);
-        //     });
-        //
-        // });
-
-        // const cacheInterceptorService =
-        //     new CachingStreamInterceptorService(cacheRegistry, mainSession.protocol);
-
-        // await cacheInterceptorService.start()
-        //     .catch(err => log.error(err));
 
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 
         app.on('second-instance', async (event, commandLine) => {
 
-            log.info("Someone opened a second instance.");
+            console.log("Someone opened a second instance.");
+
+            event.preventDefault();
 
             // const fileArg = Cmdline.getDocArg(commandLine);
             //
@@ -62,7 +42,7 @@ export class MainApp {
         app.on('window-all-closed', function() {
 
             // determine if we need to quit:
-            log.info("No windows left. Quitting app.");
+            console.log("No windows left. Quitting app.");
 
             const forcedExit = () => {
 

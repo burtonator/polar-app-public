@@ -11,4 +11,4 @@
     
     and UpdatesController but we don't need that part yet. 
    
-- disable the external nav system
+- how do we trigger new windows, that are NOT local to be opened in 

@@ -1,19 +1,21 @@
-import {BrowserWindow, screen} from "electron";
+import {BrowserWindow, screen, shell} from "electron";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ElectronUserAgents} from "./ElectronUserAgents";
+import { FilePaths } from "polar-shared/src/util/FilePaths";
 
 const log = Logger.create();
 
-// export const DEFAULT_URL = 'https://beta.getpolarized.io';
-export const DEFAULT_URL = 'http://localhost:8050';
+const IS_DEV = process.env.ELECTRON_ENV = 'development';
 
-// FIXME: window too small.. is there a better way to do this?
+// export const DEFAULT_URL = 'https://beta.getpolarized.io';
+export const DEFAULT_URL = IS_DEV ? 'http://localhost:8050' : 'https://beta.getpolarized.io';
+
 const WIDTH = 900 * 1.2; // 1300 is like 80% of users
 const HEIGHT = 1100 * 1.2;
 
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
-// export const APP_ICON = ResourcePaths.resourceURLFromRelativeURL('./build/icons/icon.png');
+export const APP_ICON = FilePaths.resolve(__dirname, 'build', 'icons', 'icon.ico');
 
 export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = Object.freeze({
     backgroundColor: '#FFF',
@@ -24,7 +26,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     titleBarStyle: "hidden",
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     // TODO: make the app icon a data URL?
-    // icon: APP_ICON,
+    icon: APP_ICON,
     webPreferences: {
         nodeIntegration: false,
         nodeIntegrationInSubFrames: false,
@@ -39,10 +41,10 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
 
 });
 
-export class MainAppBrowserWindowFactory {
+export namespace MainAppBrowserWindowFactory {
 
-    public static createWindow(browserWindowOptions: Electron.BrowserWindowConstructorOptions = BROWSER_WINDOW_OPTIONS,
-                               url = DEFAULT_URL): Promise<BrowserWindow> {
+    export function createWindow(browserWindowOptions: Electron.BrowserWindowConstructorOptions = BROWSER_WINDOW_OPTIONS,
+                                 url = DEFAULT_URL): Promise<BrowserWindow> {
 
         // ElectronUserAgents.registerUserAgentHandler(MAIN_SESSION_PARTITION_NAME);
 
@@ -50,7 +52,7 @@ export class MainAppBrowserWindowFactory {
 
         console.log("Starting with browserWindowOptions: ", browserWindowOptions);
 
-        const position = this.computeXY();
+        const position = computeXY();
 
         if (position) {
             // add some offset to this window so that the previous window and
@@ -99,6 +101,8 @@ export class MainAppBrowserWindowFactory {
         // compute the userAgent that we should be using for the renderer
         const userAgent = ElectronUserAgents.computeUserAgentFromWebContents(browserWindow.webContents);
 
+        registerWindowNavigationHandler(browserWindow);
+
         log.info("Loading URL: " + url);
         browserWindow.loadURL(url, {userAgent})
             .catch(err => log.error("Could not load URL ", err, url));
@@ -121,7 +125,33 @@ export class MainAppBrowserWindowFactory {
 
     }
 
-    private static computeXY(): Position | undefined {
+    function registerWindowNavigationHandler(browserWindow: BrowserWindow) {
+
+        // if we are creating a new window but the URL is NOT the current app
+        // then we should open it in a native browser window.
+
+        browserWindow.webContents.on('new-window', (event, url) => {
+
+            function isExternal() {
+                const appURL = new URL(DEFAULT_URL);
+                const parsedURL = new URL(url);
+                return appURL.host !== parsedURL.host;
+            }
+
+            if (isExternal()) {
+
+                console.log("Opening URL in external browser: ", url);
+
+                event.preventDefault();
+                shell.openExternal(url, {activate: true})
+                     .catch(err => log.error("Could not open external URL", err, url));
+            }
+
+        });
+
+    }
+
+    function computeXY(): Position | undefined {
 
         const offset = 35;
 
