@@ -12,6 +12,10 @@ export namespace AppRuntime {
             return 'node';
         }
 
+        if (window?.process?.type) {
+            return 'electron';
+        }
+
         if (navigator.userAgent.indexOf('polar-desktop-app') !== -1) {
             // our most recent desktop app sets the UA to include
             // polar-desktop-app and this is the only way to know for certain as
@@ -20,11 +24,7 @@ export namespace AppRuntime {
             return 'electron';
         }
 
-        if (window?.process?.type) {
-            return 'electron';
-        } else {
-            return 'browser';
-        }
+        return 'browser';
 
     }
 
