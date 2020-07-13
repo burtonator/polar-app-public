@@ -22,8 +22,8 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     width: WIDTH,
     height: HEIGHT,
     show: false,
-    frame: false,
-    titleBarStyle: "hidden",
+    // frame: false,
+    // titleBarStyle: "hidden",
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     // TODO: make the app icon a data URL?
     icon: APP_ICON,
@@ -135,7 +135,7 @@ export namespace MainAppBrowserWindowFactory {
             function isExternal() {
                 const appURL = new URL(DEFAULT_URL);
                 const parsedURL = new URL(url);
-                return appURL.host !== parsedURL.host;
+                return appURL.host !== parsedURL.host && ! url.startsWith('about:blank');
             }
 
             if (isExternal()) {
