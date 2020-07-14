@@ -18,9 +18,9 @@ mac:
   target:
     - target: dmg
     - target: zip
-  fileAssociations:
-    - ext: pdf
-      role: Viewer
+#  fileAssociations:
+#    - ext: pdf
+#      role: Viewer
 
   # steps for notarizing the MacOS builds:
   # https://kilianvalkhof.com/2019/electron/notarizing-your-electron-application/
@@ -51,9 +51,9 @@ linux:
   # get them to work is to define them under 'mac' and use the icon.icns file
   # to specify the icons.
 
-  fileAssociations:
-    - ext: pdf
-      mimeType: application/pdf
+#  fileAssociations:
+#    - ext: pdf
+#      mimeType: application/pdf
 
 nsis:
   artifactName: ${name}-${version}-${arch}.${ext}
@@ -81,9 +81,9 @@ win:
 
     #- target: portable
   icon: ./icons/icon-512x512.png
-  fileAssociations:
-    - ext: pdf
-      description: Polar PDF
+#  fileAssociations:
+#    - ext: pdf
+#      description: Polar PDF
   publisherName: Spinn3r
 
 snap:
