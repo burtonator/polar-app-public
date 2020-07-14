@@ -2,6 +2,9 @@ const PREFIX = 'feature:';
 
 /**
  * Toggle features based on settings specific for each user.
+ *
+ * @Deprecated this should go away in favor of prefs - which are not bound to
+ * localStorage
  */
 export class FeatureToggles {
 
