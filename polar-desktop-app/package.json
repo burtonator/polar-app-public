@@ -1,6 +1,6 @@
 {
   "name": "polar-desktop-app",
-  "version": "2.0.0-beta.9",
+  "version": "2.0.0-beta.10",
   "description": "Polar",
   "main": "src/main.js",
   "private": true,
@@ -41,7 +41,7 @@
     "electron": "=8.4.0",
     "electron-builder": "~22.7.0",
     "electron-notarize": "1.0.0",
-    "polar-shared": "^2.0.0-beta.9"
+    "polar-shared": "^2.0.0-beta.10"
   },
   "collective": {
     "type": "opencollective",
