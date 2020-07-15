@@ -5,7 +5,10 @@
   "main": "src/main.js",
   "private": true,
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "publish-linux": "electron-builder --config=electron-builder.yml --linux appimage deb tar.gz --publish always",
+    "publish-macos": "electron-builder --config=electron-builder.yml --macos dmg zip --publish always",
+    "publish-win": "./build/dist-win.sh"
   },
   "repository": "https://github.com/burtonator/polar-app-public",
   "keywords": [
@@ -35,12 +38,12 @@
   "devDependencies": {
     "mocha": "8.0.1",
     "tslint": "6.1.2",
-    "typescript": "3.9.5"
+    "typescript": "3.9.5",
+    "electron-notarize": "1.0.0",
+    "electron-builder": "~22.7.0",
+    "electron": "=8.4.0"
   },
   "dependencies": {
-    "electron": "=8.4.0",
-    "electron-builder": "~22.7.0",
-    "electron-notarize": "1.0.0",
     "polar-shared": "^2.0.0-beta.10"
   },
   "collective": {

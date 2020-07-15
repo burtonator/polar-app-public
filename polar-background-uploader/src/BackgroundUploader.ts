@@ -26,8 +26,8 @@ export interface ISubmittedUpload {
  *
  * This is needed for Google cloud storage as there is no transparent upload
  * service.  This is probably NOT a good idea for use within PDFs but works just
- * fine with smaller URLs like PNGs that are less than about 10MB.  The data is
- * eventually removed from localStorage and the permanent URL is used, not the
+ * fine with smaller URLs like PNGs that are less than about 1MB.  The data is
+ * eventually removed from IndexedDB and the permanent URL is used, not the
  * temp URL.
  */
 export interface IBackgroundUploaderService<K, V> {
