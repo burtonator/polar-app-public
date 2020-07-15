@@ -246,6 +246,12 @@ export namespace BackgroundUploaders {
             // type of mutex lock but mayb eI could mutex lock each key for a
             // given time.
 
+            // FIXME: just ALWAYS do one URL at a time... if it fails, add it
+            // to the back of the queue.. don't attempt to upload from the queue
+            // if navigator.onLine is false
+
+            // FIXME: ALWAYS have URLs go through the queue
+
             for(const pendingCacheEntry of pendingCacheEntries) {
                 submit(pendingCacheEntry.key, pendingCacheEntry.value, NULL_FUNCTION);
             }
