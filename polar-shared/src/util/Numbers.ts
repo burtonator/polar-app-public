@@ -61,6 +61,10 @@ export class Numbers {
 
     }
 
+    public static isNumber(text: string) {
+        return ! isNaN(parseInt(text));
+    }
+
     public static toFixedFloat(input: number, width: number): number {
         return parseFloat(input.toFixed(width));
     }
