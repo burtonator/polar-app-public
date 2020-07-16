@@ -1,6 +1,6 @@
 {
   "name": "polar-desktop-app",
-  "version": "2.0.0-beta.10",
+  "version": "2.0.0-beta.11",
   "description": "Polar",
   "main": "src/main.js",
   "private": true,
@@ -36,15 +36,15 @@
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
+    "electron": "=8.4.0",
+    "electron-builder": "~22.7.0",
+    "electron-notarize": "1.0.0",
     "mocha": "8.0.1",
     "tslint": "6.1.2",
-    "typescript": "3.9.5",
-    "electron-notarize": "1.0.0",
-    "electron-builder": "~22.7.0",
-    "electron": "=8.4.0"
+    "typescript": "3.9.5"
   },
   "dependencies": {
-    "polar-shared": "^2.0.0-beta.10"
+    "polar-shared": "^2.0.0-beta.11"
   },
   "collective": {
     "type": "opencollective",
