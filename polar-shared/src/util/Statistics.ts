@@ -9,18 +9,11 @@ export interface DataPoint {
 /**
  * Used so that we can take the times with maybe multiple recordings at the same time and elide them.
  */
-export interface TimeReducer {
-    (timestamp: ISODateString): ISODateString;
-}
+export type TimeReducer = (timestamp: ISODateString) => ISODateString;
 
+export type DataPointsReducer<A extends DataPoint> = (timestamp: ISODateString, datapoints: ReadonlyArray<A>) => A;
 
-export interface DataPointsReducer<A extends DataPoint> {
-    (timestamp: ISODateString, datapoints: ReadonlyArray<A>): A;
-}
-
-export interface EntryDatapointFactory<A> {
-    (key: ISODateTimeString): A;
-};
+export type EntryDatapointFactory<A> = (key: ISODateTimeString) => A;
 
 export class Statistics {
 
