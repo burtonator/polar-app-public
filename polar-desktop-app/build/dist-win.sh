@@ -69,3 +69,4 @@ build_for_arch x64 nsis
 build_for_arch ia32 nsis
 
 
+
