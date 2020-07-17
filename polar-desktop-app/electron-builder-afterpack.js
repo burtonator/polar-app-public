@@ -81,24 +81,24 @@ exports.default = async function(context) {
         return;
     }
 
-    console.log("Configuring polar-bookshelf for --no-sandbox");
+    console.log("Configuring polar-desktop-app for --no-sandbox");
 
-    const pathPolarBookshelf = "dist/linux-unpacked/polar-bookshelf";
-    const pathPolarBookshelfBin = "dist/linux-unpacked/polar-bookshelf.bin";
+    const pathPolarDesktopApp = "dist/linux-unpacked/polar-desktop-app";
+    const pathPolarDesktopAppBin = "dist/linux-unpacked/polar-desktop-app.bin";
 
-    requirePath(pathPolarBookshelf);
+    requirePath(pathPolarDesktopApp);
     requirePath("dist/linux-unpacked/chrome-sandbox");
 
-    fs.renameSync(pathPolarBookshelf, pathPolarBookshelfBin);
+    fs.renameSync(pathPolarDesktopApp, pathPolarDesktopAppBin);
 
     const wrapperScript = `#!/bin/bash
     SOURCE_FILE=$(readlink -f "\${BASH_SOURCE}")
     SOURCE_DIR=\${SOURCE_FILE%/*}
-    "\${SOURCE_DIR}/polar-bookshelf.bin" "$@" --no-sandbox
+    "\${SOURCE_DIR}/polar-desktop-app.bin" "$@" --no-sandbox
   `;
 
-    fs.writeFileSync(pathPolarBookshelf, wrapperScript);
-    exec(`chmod +x ${pathPolarBookshelf}`);
+    fs.writeFileSync(pathPolarDesktopApp, wrapperScript);
+    exec(`chmod +x ${pathPolarDesktopApp}`);
 
     // electron builder doesn't seem to be properly setting the chrome-sandbox
     // permissions
