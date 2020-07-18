@@ -5,6 +5,11 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 export interface Pointer {
 
     /**
+     * A unique ID value for this node/pointer.
+     */
+    readonly idx: number;
+
+    /**
      * The value of this character in text.
      */
     readonly value: string;
@@ -23,6 +28,7 @@ export interface Pointer {
 
 
 export interface MutableNodeTextRegion {
+    idx: number;
     start: number;
     end: number;
     node: Node;
@@ -94,6 +100,7 @@ export class TextIndex {
                 // should be true on the first one so that we create an empty
                 // array the first time for the first record
                 result.push({
+                    idx: entry.curr.idx,
                     start: entry.curr.offset,
                     end: entry.curr.offset,
                     node: entry.curr.node
@@ -187,6 +194,8 @@ export namespace DOMTextSearch {
         // tslint:disable-next-line:no-bitwise
         const treeWalker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
 
+        // the node index so that we can create a new pointer for each node.
+        let index = 0;
         let node;
         while (true) {
 
@@ -225,6 +234,7 @@ export namespace DOMTextSearch {
                 for (const charPointer of charPointers) {
 
                     const pointer: Pointer = {
+                        idx: index++,
                         offset: charPointer.offset,
                         node,
                         value: charPointer.value
