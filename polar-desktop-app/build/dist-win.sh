@@ -51,7 +51,6 @@ build_for_arch() {
    # --config.publish.channel=latest-win-'${arch}'
 
    node_modules_dir=$(realpath ../../../node_modules)
-   #-v ${node_modules_dir}:/project/node_modules \
 
    docker run --rm -ti \
        --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS_TAG|TRAVIS|TRAVIS_REPO_|TRAVIS_BUILD_|TRAVIS_BRANCH|TRAVIS_PULL_REQUEST_|APPVEYOR_|CSC_|GH_|GITHUB_|BT_|AWS_|STRIP|BUILD_') \
@@ -59,6 +58,7 @@ build_for_arch() {
        --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
        -v ${PWD}:/project \
        -v ~/.cache/electron:/root/.cache/electron \
+       -v ${node_modules_dir}:/project/node_modules \
        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
        -v ${WINDOWS_CSC_DIR}:/root/windows-csc \
        electronuserland/builder:wine bash -c 'pwd && /project/node_modules/.bin/electron-builder --config=electron-builder.yml --config.'${target}'.artifactName=\${name}-\${version}-'${target}'-'${arch}'.\${ext} --'${arch}' --win '${target}' --publish always'
