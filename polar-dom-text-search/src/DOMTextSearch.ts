@@ -1,5 +1,6 @@
 import {createSiblings} from "polar-shared/src/util/Functions";
 import {CharPtrs} from "./CharPtrs";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export interface Pointer {
 
@@ -31,6 +32,23 @@ export interface NodeTextRegion extends Readonly<MutableNodeTextRegion> {
 }
 
 export type PointerIndex = ReadonlyArray<Pointer>;
+
+/**
+ * Represents an individual hit when running a find...
+ */
+interface DOMTextHit {
+
+    /**
+     * The DOM regions and the text that was a match.
+     */
+    readonly regions: ReadonlyArray<NodeTextRegion>;
+
+    /**
+     * Where to resume when searching again.
+     */
+    readonly resume: number;
+
+}
 
 export class TextIndex {
 
@@ -91,21 +109,48 @@ export class TextIndex {
     }
 
     /**
-     * This is the main entry point for finding text.
+     * Search and find just one match.
      */
-    public find(text: string, start: number = 0): ReadonlyArray<NodeTextRegion> | undefined {
+    public find(text: string, start: number = 0): DOMTextHit | undefined {
 
         const str = this.toString();
         const idx = str.indexOf(text, start);
 
         if (idx !== -1) {
-
             const pointers = this.lookup(idx, idx + text.length);
-            return this.join(pointers);
+            const regions =  this.join(pointers);
+            const resume = idx + text.length;
+            return {regions, resume};
+        }
+
+        // no hits...
+        return undefined;
+
+    }
+
+    /**
+     * Search the DOM and find all matches.
+     */
+    public search(text: string, start: number = 0): ReadonlyArray<DOMTextHit> {
+
+        const result: DOMTextHit[] = [];
+
+        let idx = start;
+
+        while(true) {
+
+            const hit = this.find(text, idx);
+
+            if (! hit) {
+                break;
+            }
+
+            result.push(hit);
+            idx = hit.resume;
 
         }
 
-        return undefined;
+        return result;
 
     }
 
@@ -124,6 +169,9 @@ export namespace DOMTextSearch {
     export function createIndex(doc: Document = document,
                                 root: HTMLElement = document.documentElement,
                                 pointers: Pointer[] = []) {
+
+        Preconditions.assertPresent(doc, 'doc');
+        Preconditions.assertPresent(root, 'root');
 
         // TODO: we DO have to factor in iframe but we have to have a pointer
         // back to the element's view ... though I am not sure about that really

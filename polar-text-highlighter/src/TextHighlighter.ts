@@ -1,6 +1,6 @@
-import {IRect, MutableIRect} from "polar-shared/src/util/rects/IRect";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {IntersectRects} from "./IntersectRects";
 
 function getScrollParent(element: Node | undefined): HTMLElement | undefined {
 
@@ -64,6 +64,7 @@ export class BoundingClientRects {
 
 export class TextHighlighter {
 
+    // TODO: this should have an injector that can use React to mount these
     private static applyHighlight(opts: ITextHighlighterOpts) {
 
         const {targets} = opts;
@@ -108,10 +109,6 @@ export class TextHighlighter {
 
             const intersectRect = IntersectRects.compute(rect, scrollParentRect);
 
-            // console.log("rect: " , rect);
-            // console.log("scroll parent rect: " , scrollParentRect);
-            // console.log("intersectRect: " , intersectRect);
-
             if (intersectRect.height > 0 && intersectRect.width > 0) {
 
                 highlightElement.style.display = 'block';
@@ -133,24 +130,3 @@ export class TextHighlighter {
 
 }
 
-class IntersectRects {
-
-    public static compute(a: IRect, b: IRect): IRect {
-
-        const result: MutableIRect = {
-            top: Math.max(a.top, b.top),
-            bottom: Math.min(a.bottom, b.bottom),
-            left: a.left,
-            right: a.right,
-            height: 0,
-            width: 0
-        };
-
-        result.height = result.bottom - result.top;
-        result.width = result.right - result.left;
-
-        return result;
-
-    }
-
-}

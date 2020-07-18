@@ -24,8 +24,8 @@ describe('DOMTextSearch', function() {
         // console.log({result});
 
         assert.ok(result);
-        assert.equal(result!.length, 1);
-        assert.equal(result![0].node.textContent, 'this is a basic test');
+        assert.equal(result!.regions.length, 1);
+        assert.equal(result!.regions[0].node.textContent, 'this is a basic test');
 
     });
 
@@ -36,7 +36,7 @@ describe('DOMTextSearch', function() {
         const html = `<html><body><p>this is a basic test</p><iframe srcdoc=""></iframe></body></html>`;
         jsdomGlobal(html);
 
-        document.querySelector('iframe')!.contentDocument!.documentElement.innerHTML = '<html><body> <p>and this is the iframe</p></body</html>';
+        document.querySelector('iframe')!.contentDocument!.documentElement.innerHTML = '<html><body> <p>and this is the iframe</p></body></html>';
 
         // console.log(document);
 
@@ -47,8 +47,8 @@ describe('DOMTextSearch', function() {
         const result = index.find('this is a basic test');
 
         assert.ok(result);
-        assert.equal(result!.length, 1);
-        assert.equal(result![0].node.textContent, 'this is a basic test');
+        assert.equal(result!.regions.length, 1);
+        assert.equal(result!.regions[0].node.textContent, 'this is a basic test');
 
     });
 
@@ -70,7 +70,7 @@ describe('DOMTextSearch', function() {
         console.log({result});
 
         assert.ok(result);
-        assert.equal(result!.length, 5);
+        assert.equal(result!.regions.length, 5);
 
     });
 
