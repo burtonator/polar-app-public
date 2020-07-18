@@ -26,6 +26,13 @@ export interface Pointer {
 
 }
 
+export interface SearchOpts {
+    readonly caseInsensitive?: boolean;
+}
+
+export interface ToStringOpts {
+    readonly caseInsensitive?: boolean;
+}
 
 export interface MutableNodeTextRegion {
     idx: number;
@@ -118,9 +125,12 @@ export class TextIndex {
     /**
      * Search and find just one match.
      */
-    public find(text: string, start: number = 0): DOMTextHit | undefined {
+    public find(text: string,
+                start: number = 0,
+                opts: SearchOpts = {}): DOMTextHit | undefined {
 
-        const str = this.toString();
+        const str = this.toString({caseInsensitive: opts.caseInsensitive});
+
         const idx = str.indexOf(text, start);
 
         if (idx !== -1) {
@@ -138,7 +148,11 @@ export class TextIndex {
     /**
      * Search the DOM and find all matches.
      */
-    public search(text: string, start: number = 0): ReadonlyArray<DOMTextHit> {
+    public search(text: string,
+                  start: number = 0,
+                  opts: SearchOpts = {}): ReadonlyArray<DOMTextHit> {
+
+        // FIXME: how to make this case insensitive???
 
         if (text === '') {
             // not sure this is the best way to handle this but this isn't a
@@ -152,7 +166,7 @@ export class TextIndex {
 
         while(true) {
 
-            const hit = this.find(text, idx);
+            const hit = this.find(text, idx, opts);
 
             if (! hit) {
                 break;
@@ -167,8 +181,16 @@ export class TextIndex {
 
     }
 
-    public toString(): string {
-        return this.pointers.map(current => current.value).join("");
+    public toString(opts: ToStringOpts = {}): string {
+
+        const joined = this.pointers.map(current => current.value).join("");
+
+        if (opts.caseInsensitive) {
+            return joined.toLocaleLowerCase();
+        }
+
+        return joined;
+
     }
 
 }
