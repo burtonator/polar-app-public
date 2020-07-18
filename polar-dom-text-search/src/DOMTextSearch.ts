@@ -136,9 +136,9 @@ export class TextIndex {
                 start: number = 0,
                 opts: SearchOpts = {}): DOMTextHit | undefined {
 
-        const str = this.toString({caseInsensitive: opts.caseInsensitive});
+        text = opts.caseInsensitive ? text.toLocaleLowerCase() : text;
 
-        console.log("FIXME: str: ", str);
+        const str = this.toString({caseInsensitive: opts.caseInsensitive});
 
         const idx = str.indexOf(text, start);
 
