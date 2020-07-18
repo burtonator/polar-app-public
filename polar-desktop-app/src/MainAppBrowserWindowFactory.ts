@@ -5,7 +5,7 @@ import { FilePaths } from "polar-shared/src/util/FilePaths";
 
 const log = Logger.create();
 
-const IS_DEV = process.env.ELECTRON_ENV = 'development';
+const IS_DEV = process.env.ELECTRON_ENV === 'development';
 
 // export const DEFAULT_URL = 'https://beta.getpolarized.io';
 export const DEFAULT_URL = IS_DEV ? 'http://localhost:8050' : 'https://beta.getpolarized.io';
