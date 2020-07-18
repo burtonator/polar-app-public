@@ -122,6 +122,7 @@ export class TextIndex {
 export namespace DOMTextSearch {
 
     export function createIndex(doc: Document = document,
+                                root: HTMLElement = document.documentElement,
                                 pointers: Pointer[] = []) {
 
         // TODO: we DO have to factor in iframe but we have to have a pointer
@@ -130,7 +131,7 @@ export namespace DOMTextSearch {
         const blacklist = ['script', 'link', 'style', 'head', 'object', 'video', 'img'];
 
         // tslint:disable-next-line:no-bitwise
-        const treeWalker = doc.createTreeWalker(doc.documentElement, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
+        const treeWalker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
 
         let node;
         while (true) {
