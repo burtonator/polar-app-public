@@ -42,7 +42,10 @@ export class TextIndex {
         this.pointers = pointers;
     }
 
-    public lookup(start: number, end: number) {
+    /**
+     * Find the pointers from a given start and end offset within the text.
+     */
+    public lookup(start: number, end: number): ReadonlyArray<Pointer> {
 
         const result = [];
 
@@ -87,6 +90,9 @@ export class TextIndex {
 
     }
 
+    /**
+     * This is the main entry point for finding text.
+     */
     public find(text: string, start: number = 0): ReadonlyArray<NodeTextRegion> | undefined {
 
         const str = this.toString();
