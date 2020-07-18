@@ -65,7 +65,7 @@ function allowAnkiSyncOrigin() {
 
 function handleError(err: Error) {
 
-    const title = 'Unable to launch app: '
+    const title = 'Unable to launch Polar: '
     const message = 'An error occurred: \n' + err.message + "\n" + err.stack;
 
     function handleConsole() {
