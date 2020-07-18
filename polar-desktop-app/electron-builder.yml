@@ -111,6 +111,8 @@ snap:
 publish:
   provider: github
   publishAutoUpdate: true
+  owner: burtonator
+  repo: polar-bookshelf
 
 asar: true
 afterPack: "./electron-builder-afterpack.js"

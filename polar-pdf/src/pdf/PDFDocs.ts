@@ -16,6 +16,7 @@ export namespace PDFDocs {
 
     export interface Opts {
         readonly url: htmlString;
+        readonly docBaseURL: string;
     }
 
     export function getDocument(opts: Opts): PDFDocumentLoadingTask {
@@ -25,6 +26,7 @@ export namespace PDFDocs {
             cMapPacked: true,
             cMapUrl: '/pdfjs-dist/cmaps/',
             disableAutoFetch: true,
+            docBaseUrl: opts.docBaseURL
         };
 
         return PDFJS.getDocument(init);
