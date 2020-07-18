@@ -3,6 +3,7 @@ import process from 'process';
 import {Version} from "polar-shared/src/util/Version";
 import {MainApp} from "./MainApp";
 import {DEFAULT_URL} from "./MainAppBrowserWindowFactory";
+import 'source-map-support/register'
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
