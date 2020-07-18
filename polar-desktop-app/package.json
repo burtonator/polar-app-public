@@ -6,9 +6,9 @@
   "private": true,
   "scripts": {
     "start": "electron .",
-    "publish-linux": "electron-builder --config=electron-builder.yml --linux appimage deb tar.gz --publish always",
-    "publish-macos": "electron-builder --config=electron-builder.yml --macos dmg zip --publish always",
-    "publish-win": "./build/dist-win.sh"
+    "publish-linux": "npx webpack && electron-builder --config=electron-builder.yml --linux appimage deb tar.gz --publish always",
+    "publish-macos": "npx webpack && electron-builder --config=electron-builder.yml --macos dmg zip --publish always",
+    "publish-win": "npx webpack && ./build/dist-win.sh"
   },
   "repository": "https://github.com/burtonator/polar-app-public",
   "keywords": [

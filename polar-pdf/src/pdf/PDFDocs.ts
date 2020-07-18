@@ -16,7 +16,7 @@ export namespace PDFDocs {
 
     export interface Opts {
         readonly url: htmlString;
-        readonly docBaseURL: string;
+        readonly docBaseURL?: string;
     }
 
     export function getDocument(opts: Opts): PDFDocumentLoadingTask {
