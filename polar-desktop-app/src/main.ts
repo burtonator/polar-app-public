@@ -1,4 +1,4 @@
-import {app, BrowserWindow, session} from 'electron';
+import {app, BrowserWindow, session, dialog} from 'electron';
 import process from 'process';
 import {Version} from "polar-shared/src/util/Version";
 import {MainApp} from "./MainApp";
@@ -63,6 +63,29 @@ function allowAnkiSyncOrigin() {
 
 }
 
+function handleError(err: Error) {
+
+    const title = 'Unable to launch app: '
+    const message = 'An error occurred: \n' + err.stack;
+
+    function handleConsole() {
+        console.error(title, err);
+    }
+
+    function handleGUI() {
+        dialog.showMessageBoxSync({
+            title,
+            type: 'error',
+            message
+        });
+
+    }
+
+    handleConsole();
+    handleGUI();
+
+}
+
 app.on('ready', async () => {
 
     allowAnkiSyncOrigin();
@@ -101,6 +124,6 @@ app.on('ready', async () => {
     configureReactDevTools();
 
     launch()
-        .catch(err => console.error("Unable to launch app: ", err));
+        .catch(handleError);
 
 });
