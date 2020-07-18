@@ -142,6 +142,7 @@ export namespace DOMTextSearch {
             }
 
             if (node instanceof HTMLIFrameElement && node.contentDocument) {
+                // TODO: this cold give cross origin issues...
                 this.createIndex(node.contentDocument, pointers);
                 continue;
             }
