@@ -66,7 +66,7 @@ function allowAnkiSyncOrigin() {
 function handleError(err: Error) {
 
     const title = 'Unable to launch app: '
-    const message = 'An error occurred: \n' + err.stack;
+    const message = 'An error occurred: \n' + err.message + "\n" + err.stack;
 
     function handleConsole() {
         console.error(title, err);
