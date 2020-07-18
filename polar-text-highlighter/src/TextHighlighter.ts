@@ -91,7 +91,6 @@ export class TextHighlighter {
 
             const id = opts.id + '#' + target.index;
 
-
             const highlightElement = getOrCreateHighlightElement(id);
 
             highlightElement.style.position = 'fixed';

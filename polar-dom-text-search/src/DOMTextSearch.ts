@@ -36,7 +36,7 @@ export type PointerIndex = ReadonlyArray<Pointer>;
 /**
  * Represents an individual hit when running a find...
  */
-interface DOMTextHit {
+export interface DOMTextHit {
 
     /**
      * The DOM regions and the text that was a match.
@@ -132,6 +132,12 @@ export class TextIndex {
      * Search the DOM and find all matches.
      */
     public search(text: string, start: number = 0): ReadonlyArray<DOMTextHit> {
+
+        if (text === '') {
+            // not sure this is the best way to handle this but this isn't a
+            // real query and will sort of be very expensive to execute.
+            return [];
+        }
 
         const result: DOMTextHit[] = [];
 
