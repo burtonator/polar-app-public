@@ -74,4 +74,28 @@ describe('DOMTextSearch', function() {
 
     });
 
+
+    it("toString with whitespace between nodes", function() {
+
+        const html = `
+<html>
+<body>
+<p>
+<b>this</b> and <i>that</i>
+</p>
+
+Graph-based neural network
+
+</body>
+</html>`;
+
+        jsdomGlobal(html);
+
+        const index = DOMTextSearch.createIndex();
+
+        assert.equal(index.toString(), 'this is a basic test');
+
+    });
+
+
 });

@@ -2,7 +2,7 @@ import {createSiblings} from "polar-shared/src/util/Functions";
 import {CharPtrs} from "./CharPtrs";
 import {Preconditions} from "polar-shared/src/Preconditions";
 
-export interface Pointer {
+export interface IPointer {
 
     /**
      * A unique ID value for this node/pointer.
@@ -26,6 +26,12 @@ export interface Pointer {
 
 }
 
+interface INodeText {
+    readonly idx: number;
+    readonly node: Node;
+    readonly text: string;
+}
+
 export interface SearchOpts {
     readonly caseInsensitive?: boolean;
 }
@@ -44,7 +50,7 @@ export interface MutableNodeTextRegion {
 export interface NodeTextRegion extends Readonly<MutableNodeTextRegion> {
 }
 
-export type PointerIndex = ReadonlyArray<Pointer>;
+export type PointerIndex = ReadonlyArray<IPointer>;
 
 /**
  * Represents an individual hit when running a find...
@@ -69,14 +75,15 @@ export class TextIndex {
      *
      * @param pointers allows us to lookup the node and offset of the text any text we index.
      */
-    constructor(readonly pointers: PointerIndex) {
-        this.pointers = pointers;
+    constructor(private readonly pointers: PointerIndex,
+                private readonly nodeTexts: ReadonlyArray<INodeText>) {
+
     }
 
     /**
      * Find the pointers from a given start and end offset within the text.
      */
-    public lookup(start: number, end: number): ReadonlyArray<Pointer> {
+    public lookup(start: number, end: number): ReadonlyArray<IPointer> {
 
         const result = [];
 
@@ -92,7 +99,7 @@ export class TextIndex {
     /**
      * Join hits to get contiguous text on nodes that need highlights.
      */
-    public join(pointers: ReadonlyArray<Pointer>): ReadonlyArray<NodeTextRegion> {
+    public join(pointers: ReadonlyArray<IPointer>): ReadonlyArray<NodeTextRegion> {
 
         const result: MutableNodeTextRegion[] = [];
 
@@ -130,6 +137,8 @@ export class TextIndex {
                 opts: SearchOpts = {}): DOMTextHit | undefined {
 
         const str = this.toString({caseInsensitive: opts.caseInsensitive});
+
+        console.log("FIXME: str: ", str);
 
         const idx = str.indexOf(text, start);
 
@@ -183,7 +192,13 @@ export class TextIndex {
 
     public toString(opts: ToStringOpts = {}): string {
 
-        const joined = this.pointers.map(current => current.value).join("");
+        const join = () => {
+            return this.nodeTexts
+                       .map(current => current.text.trim())
+                       .join(" ");
+        }
+
+        const joined = join();
 
         if (opts.caseInsensitive) {
             return joined.toLocaleLowerCase();
@@ -202,8 +217,10 @@ export class TextIndex {
 export namespace DOMTextSearch {
 
     export function createIndex(doc: Document = document,
-                                root: HTMLElement = document.documentElement,
-                                pointers: Pointer[] = []) {
+                                root: HTMLElement = document.documentElement) {
+
+        const pointers: IPointer[] = [];
+        const nodeTexts: INodeText[] = [];
 
         Preconditions.assertPresent(doc, 'doc');
         Preconditions.assertPresent(root, 'root');
@@ -253,10 +270,12 @@ export namespace DOMTextSearch {
 
                 const charPointers = CharPtrs.collapse(text);
 
+                const idx = index++;
+
                 for (const charPointer of charPointers) {
 
-                    const pointer: Pointer = {
-                        idx: index++,
+                    const pointer: IPointer = {
+                        idx,
                         offset: charPointer.offset,
                         node,
                         value: charPointer.value
@@ -266,11 +285,13 @@ export namespace DOMTextSearch {
 
                 }
 
+                nodeTexts.push({idx, node, text})
+
             }
 
         }
 
-        return new TextIndex(pointers);
+        return new TextIndex(pointers, nodeTexts);
 
     }
 
