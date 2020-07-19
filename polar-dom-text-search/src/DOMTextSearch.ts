@@ -1,37 +1,8 @@
 import {CharPointers} from "./CharPointers";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {TextIndex} from "./TextIndex";
-import {IPointer, PointerType} from "./IPointer";
+import {IPointer} from "./IPointer";
 import {INodeText} from "./INodeText";
-
-export interface MutableNodeTextRegion {
-    idx: number;
-    start: number;
-    end: number;
-    node: Node;
-}
-
-export interface NodeTextRegion extends Readonly<MutableNodeTextRegion> {
-}
-
-export type PointerIndex = ReadonlyArray<IPointer>;
-
-/**
- * Represents an individual hit when running a find...
- */
-export interface DOMTextHit {
-
-    /**
-     * The DOM regions and the text that was a match.
-     */
-    readonly regions: ReadonlyArray<NodeTextRegion>;
-
-    /**
-     * Where to resume when searching again.
-     */
-    readonly resume: number;
-
-}
 
 /**
  * Provides a framework to search text within a DOM and jump to to the elements
@@ -88,7 +59,6 @@ export namespace DOMTextSearch {
             if (nodeValue && nodeValue !== '') {
 
                 const text = nodeValue;
-
                 const nodeID = index++;
 
                 const charPointers = CharPointers.parse(text);

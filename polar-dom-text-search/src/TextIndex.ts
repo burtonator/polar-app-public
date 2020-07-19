@@ -1,14 +1,10 @@
-import {
-    DOMTextHit,
-    MutableNodeTextRegion,
-    NodeTextRegion,
-    PointerIndex,
-} from "./DOMTextSearch";
 import {createSiblings} from "polar-shared/src/util/Functions";
 import {IPointer, PointerType} from "./IPointer";
 import {INodeText} from "./INodeText";
 import {Whitespace} from "./Whitespace";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {NodeTextRegion, MutableNodeTextRegion} from "./NodeTextRegion";
+import {DOMTextHit} from "./DOMTextHit";
 
 export interface SearchOpts {
     readonly caseInsensitive?: boolean;
@@ -17,6 +13,8 @@ export interface SearchOpts {
 export interface ToStringOpts {
     readonly caseInsensitive?: boolean;
 }
+
+export type PointerIndex = ReadonlyArray<IPointer>;
 
 interface TextLookupIndex {
 
@@ -80,7 +78,7 @@ namespace TextLookupIndexes {
                 // should be true on the first one so that we create an empty
                 // array the first time for the first record
                 result.push({
-                    idx: entry.curr.idx,
+                    nodeID: entry.curr.nodeID,
                     start: entry.curr.offset,
                     end: entry.curr.offset,
                     node: entry.curr.node

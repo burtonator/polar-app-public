@@ -20,13 +20,13 @@ describe('DOMTextSearch', function() {
 
         assert.equal(index.toString(), 'this is a basic test');
 
-        const result = index.find('this is a basic test');
+        const result = index.search('this is a basic test');
 
         // console.log({result});
 
         assert.ok(result);
-        assert.equal(result!.regions.length, 1);
-        assert.equal(result!.regions[0].node.textContent, 'this is a basic test');
+        assert.equal(result![0].regions.length, 1);
+        assert.equal(result![0].regions[0].node.textContent, 'this is a basic test');
 
     });
 
@@ -45,11 +45,11 @@ describe('DOMTextSearch', function() {
 
         assert.equal(index.toString(), 'this is a basic test and this is the iframe');
 
-        const result = index.find('this is a basic test');
+        const result = index.search('this is a basic test');
 
         assert.ok(result);
-        assert.equal(result!.regions.length, 1);
-        assert.equal(result!.regions[0].node.textContent, 'this is a basic test');
+        assert.equal(result![0].regions.length, 1);
+        assert.equal(result![0].regions[0].node.textContent, 'this is a basic test');
 
     });
 
@@ -66,12 +66,12 @@ describe('DOMTextSearch', function() {
 
         assert.equal(index.toString(), 'this is a basic test');
 
-        const result = index.find('this is a basic test');
+        const result = index.search('this is a basic test');
 
         console.log({result});
 
         assert.ok(result);
-        assert.equal(result!.regions.length, 5);
+        assert.equal(result![0].regions.length, 5);
 
     });
 
@@ -96,7 +96,7 @@ Graph-based neural network
 
         assert.equal(index.toString(), 'this and that Graph-based neural network');
 
-        assertJSON(index.find('Graph'), {});
+        assertJSON(index.search('Graph'), [{}]);
 
     });
 
