@@ -49,6 +49,10 @@ export class Numbers {
 
     }
 
+    /**
+     * Compute a list of number between start and end, inclusive over the
+     * interval [start, end]
+     */
     public static range(start: number, end: number): ReadonlyArray<number> {
 
         const result = [];
