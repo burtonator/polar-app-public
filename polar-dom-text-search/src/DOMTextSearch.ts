@@ -1,44 +1,7 @@
-import {createSiblings} from "polar-shared/src/util/Functions";
 import {CharPtrs} from "./CharPtrs";
 import {Preconditions} from "polar-shared/src/Preconditions";
-
-export interface IPointer {
-
-    /**
-     * A unique ID value for this node/pointer.
-     */
-    readonly idx: number;
-
-    /**
-     * The value of this character in text.
-     */
-    readonly value: string;
-
-    /**
-     * The offset into this node that the character is stored.
-     */
-    readonly offset: number;
-
-    /**
-     * The node for this item.
-     */
-    readonly node: Node;
-
-}
-
-interface INodeText {
-    readonly idx: number;
-    readonly node: Node;
-    readonly text: string;
-}
-
-export interface SearchOpts {
-    readonly caseInsensitive?: boolean;
-}
-
-export interface ToStringOpts {
-    readonly caseInsensitive?: boolean;
-}
+import {TextIndex} from "./TextIndex";
+import { IPointer } from "./IPointer";
 
 export interface MutableNodeTextRegion {
     idx: number;
@@ -66,147 +29,6 @@ export interface DOMTextHit {
      * Where to resume when searching again.
      */
     readonly resume: number;
-
-}
-
-export class TextIndex {
-
-    /**
-     *
-     * @param pointers allows us to lookup the node and offset of the text any text we index.
-     */
-    constructor(private readonly pointers: PointerIndex,
-                private readonly nodeTexts: ReadonlyArray<INodeText>) {
-
-    }
-
-    /**
-     * Find the pointers from a given start and end offset within the text.
-     */
-    public lookup(start: number, end: number): ReadonlyArray<IPointer> {
-
-        const result = [];
-
-        for (let idx = start; idx < end; ++idx) {
-            const pointer = this.pointers[idx];
-            result.push(pointer);
-        }
-
-        return result;
-
-    }
-
-    /**
-     * Join hits to get contiguous text on nodes that need highlights.
-     */
-    public join(pointers: ReadonlyArray<IPointer>): ReadonlyArray<NodeTextRegion> {
-
-        const result: MutableNodeTextRegion[] = [];
-
-        const siblings = createSiblings(pointers);
-
-        for (const entry of siblings) {
-
-            const prevNode = entry.prev?.node;
-            const currNode = entry.curr.node;
-
-            if (prevNode !== currNode) {
-                // should be true on the first one so that we create an empty
-                // array the first time for the first record
-                result.push({
-                    idx: entry.curr.idx,
-                    start: entry.curr.offset,
-                    end: entry.curr.offset,
-                    node: entry.curr.node
-                });
-            }
-
-            result[result.length - 1].end = entry.curr.offset;
-
-        }
-
-        return result;
-
-    }
-
-    /**
-     * Search and find just one match.
-     */
-    public find(text: string,
-                start: number = 0,
-                opts: SearchOpts = {}): DOMTextHit | undefined {
-
-        text = opts.caseInsensitive ? text.toLocaleLowerCase() : text;
-
-        const str = this.toString({caseInsensitive: opts.caseInsensitive});
-
-        const idx = str.indexOf(text, start);
-
-        if (idx !== -1) {
-            const pointers = this.lookup(idx, idx + text.length);
-            const regions =  this.join(pointers);
-            const resume = idx + text.length;
-            return {regions, resume};
-        }
-
-        // no hits...
-        return undefined;
-
-    }
-
-    /**
-     * Search the DOM and find all matches.
-     */
-    public search(text: string,
-                  start: number = 0,
-                  opts: SearchOpts = {}): ReadonlyArray<DOMTextHit> {
-
-        // FIXME: how to make this case insensitive???
-
-        if (text === '') {
-            // not sure this is the best way to handle this but this isn't a
-            // real query and will sort of be very expensive to execute.
-            return [];
-        }
-
-        const result: DOMTextHit[] = [];
-
-        let idx = start;
-
-        while(true) {
-
-            const hit = this.find(text, idx, opts);
-
-            if (! hit) {
-                break;
-            }
-
-            result.push(hit);
-            idx = hit.resume;
-
-        }
-
-        return result;
-
-    }
-
-    public toString(opts: ToStringOpts = {}): string {
-
-        const join = () => {
-            return this.nodeTexts
-                       .map(current => current.text.trim())
-                       .join(" ");
-        }
-
-        const joined = join();
-
-        if (opts.caseInsensitive) {
-            return joined.toLocaleLowerCase();
-        }
-
-        return joined;
-
-    }
 
 }
 
@@ -264,9 +86,7 @@ export namespace DOMTextSearch {
 
             if (nodeValue && nodeValue !== '') {
 
-                const text = nodeValue;
-
-                // console.log("'" + text + "'");
+                const text = nodeValue.trim() + ' ';
 
                 const charPointers = CharPtrs.collapse(text);
 
