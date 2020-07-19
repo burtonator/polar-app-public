@@ -2,12 +2,7 @@ export enum PointerType {
     Literal, Padding, ExcessiveWhitespace
 }
 
-export interface IPointer {
-
-    /**
-     * A unique ID value for this node/pointer.
-     */
-    readonly idx: number;
+export interface IPointerBase {
 
     /**
      * The value of this character in text.
@@ -19,11 +14,20 @@ export interface IPointer {
      */
     readonly offset: number;
 
+    readonly type: PointerType;
+
+}
+
+export interface IPointer extends IPointerBase {
+
+    /**
+     * A unique ID value for this node/pointer.
+     */
+    readonly nodeID: number;
+
     /**
      * The node for this item.
      */
     readonly node: Node;
-
-    readonly type: PointerType;
 
 }

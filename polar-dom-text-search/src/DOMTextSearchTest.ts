@@ -119,7 +119,7 @@ Graph-based neural network
 
         assert.equal(index.toString(), 'this Graph-based neural network');
 
-        assertJSON(index.find('Graph'), {});
+        assertJSON(index.search('Graph'), {});
 
     });
 

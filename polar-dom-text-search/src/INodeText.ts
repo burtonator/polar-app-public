@@ -1,8 +1,8 @@
-import {CharPointer} from "./CharPointers";
+import {IPointer} from "./IPointer";
 
 export interface INodeText {
-    readonly idx: number;
+    readonly nodeID: number;
     readonly node: Node;
     readonly text: string;
-    readonly charPointers: ReadonlyArray<CharPointer>;
+    readonly pointers: ReadonlyArray<IPointer>;
 }

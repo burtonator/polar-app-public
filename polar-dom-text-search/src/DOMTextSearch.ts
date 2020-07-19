@@ -89,33 +89,12 @@ export namespace DOMTextSearch {
 
                 const text = nodeValue;
 
+                const nodeID = index++;
+
                 const charPointers = CharPointers.parse(text);
-
-                const idx = index++;
-
-                for (const charPointer of charPointers) {
-
-                    const pointer: IPointer = {
-                        idx,
-                        offset: charPointer.offset,
-                        node,
-                        value: charPointer.value,
-                        type: charPointer.type
-                    };
-
-                    pointers.push(pointer);
-
-                }
-
-                // pointers.push({
-                //     idx,
-                //     offset: text.length,
-                //     node,
-                //     value: ' ',
-                //     type: PointerType.Padding
-                // })
-
-                nodeTexts.push({idx, node, text, charPointers})
+                const newPointers = CharPointers.toPointers(nodeID, node, charPointers);
+                pointers.push(...newPointers);
+                nodeTexts.push({nodeID, node, text, pointers: newPointers})
 
             }
 

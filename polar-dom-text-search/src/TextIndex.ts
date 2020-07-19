@@ -6,9 +6,9 @@ import {
 } from "./DOMTextSearch";
 import {createSiblings} from "polar-shared/src/util/Functions";
 import {IPointer, PointerType} from "./IPointer";
-import {CharPointer} from "./CharPointers";
-import { INodeText } from "./INodeText";
-import { Whitespace } from "./Whitespace";
+import {INodeText} from "./INodeText";
+import {Whitespace} from "./Whitespace";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export interface SearchOpts {
     readonly caseInsensitive?: boolean;
@@ -18,33 +18,50 @@ export interface ToStringOpts {
     readonly caseInsensitive?: boolean;
 }
 
-export class TextIndex {
+interface TextLookupIndex {
 
-    constructor(private readonly pointers: PointerIndex,
-                private readonly nodeTexts: ReadonlyArray<INodeText>) {
+    /**
+     * The text of the content.
+     */
+    readonly text: string;
 
-    }
+    /**
+     * The pointer lookup.  The value could be undefined which means it's just
+     * whitespace
+     */
+    readonly lookup: ReadonlyArray<IPointer | undefined>;
+
+}
+
+namespace TextLookupIndexes {
 
     /**
      * Find the pointers from a given start and end offset within the text.
      */
-    public lookup(start: number, end: number): ReadonlyArray<IPointer> {
+    export function lookup(lookup: ReadonlyArray<IPointer | undefined>,
+                           start: number,
+                           end: number): ReadonlyArray<IPointer> {
 
         const result = [];
 
         for (let idx = start; idx < end; ++idx) {
-            const pointer = this.pointers[idx];
-            result.push(pointer);
+            const pointer = lookup[idx];
+
+            if (pointer) {
+                result.push(pointer);
+
+            }
         }
 
-        return result;
+       return result;
 
     }
+
 
     /**
      * Join hits to get contiguous text on nodes that need highlights.
      */
-    public join(pointers: ReadonlyArray<IPointer>): ReadonlyArray<NodeTextRegion> {
+    export function join(pointers: ReadonlyArray<IPointer>): ReadonlyArray<NodeTextRegion> {
 
         const result: MutableNodeTextRegion[] = [];
 
@@ -78,26 +95,38 @@ export class TextIndex {
 
     }
 
+}
+
+export class TextIndex {
+
+    constructor(private readonly pointers: PointerIndex,
+                private readonly nodeTexts: ReadonlyArray<INodeText>) {
+
+    }
+
+    /**
+     * Find the pointers from a given start and end offset within the text.
+     */
+    public lookup(start: number, end: number): ReadonlyArray<IPointer> {
+
+        const result = [];
+
+        for (let idx = start; idx < end; ++idx) {
+            const pointer = this.pointers[idx];
+            result.push(pointer);
+        }
+
+        return result;
+
+    }
+
+
     /**
      * Search and find just one match.
      */
-    public find(query: string,
-                start: number = 0,
-                opts: SearchOpts = {}): DOMTextHit | undefined {
-
-        const toQuery = () => {
-            return Whitespace.collapse(opts.caseInsensitive ? query.toLocaleLowerCase() : query);
-        }
-
-        // FIXME: this i super inefficient as each time we call 'find' we're
-        // recomputing the string indes
-
-        const toStr = () => {
-            return this.toString({caseInsensitive: opts.caseInsensitive})
-        }
-
-        query = toQuery();
-        const str = toStr();
+    private find(query: string,
+                 start: number = 0,
+                 textLookupIndex: TextLookupIndex): DOMTextHit | undefined {
 
         if (query === '') {
             // not sure this is the best way to handle this but this isn't a
@@ -105,15 +134,14 @@ export class TextIndex {
             return undefined;
         }
 
-        const idx = str.indexOf(query, start);
+        const {text, lookup} = textLookupIndex;
 
-        // FIXME: this is the bug because the look is wrong.. we have to have toStr()
-        // return a toStringLookup or somethign along those lines where we can
-        // take the index in the string and lookup the pointer in the original..
+
+        const idx = text.indexOf(query, start);
 
         if (idx !== -1) {
-            const pointers = this.lookup(idx, idx + query.length);
-            const regions =  this.join(pointers);
+            const resolvedPointers = TextLookupIndexes.lookup(lookup, idx, idx + query.length);
+            const regions =  TextLookupIndexes.join(resolvedPointers);
             const resume = idx + query.length;
             return {regions, resume};
         }
@@ -130,13 +158,20 @@ export class TextIndex {
                   start: number = 0,
                   opts: SearchOpts = {}): ReadonlyArray<DOMTextHit> {
 
+        const toQuery = () => {
+            return Whitespace.collapse(opts.caseInsensitive ? query.toLocaleLowerCase() : query);
+        }
+
+        const textLookupIndex = this.toTextLookupIndex({caseInsensitive: opts.caseInsensitive});
+        query = toQuery();
+
         const result: DOMTextHit[] = [];
 
         let idx = start;
 
         while(true) {
 
-            const hit = this.find(query, idx, opts);
+            const hit = this.find(query, idx, textLookupIndex);
 
             if (! hit) {
                 break;
@@ -151,35 +186,47 @@ export class TextIndex {
 
     }
 
-    public toString(opts: ToStringOpts = {}): string {
+    public toTextLookupIndex(opts: ToStringOpts = {}): TextLookupIndex {
 
-        // FIXME: this has to create TWO indexes... one is the text representation
-        // and the other is a lookup that can find the pointer back to the node
-        // and its original offset.
-        const join = () => {
+        function filteredPointers(pointers: ReadonlyArray<IPointer>) {
+            return pointers.filter(current => current.type !== PointerType.ExcessiveWhitespace)
+        }
 
-            function toText(charPointers: ReadonlyArray<CharPointer>) {
-                // FIXME: these offsets look right...
-                return charPointers.filter(current => current.type !== PointerType.ExcessiveWhitespace)
-                                   .map(current => current.value)
-                                   .join("")
+        // pointers for each node in the DOM
+        const nodePointers = this.nodeTexts
+                                 .map(current => current.pointers)
+                                 .map(current => filteredPointers(current));
+
+        function toLookup(): ReadonlyArray<IPointer | undefined> {
+
+            return arrayStream(nodePointers)
+                    .map(current => {
+                        return [...current, undefined]
+                    })
+                    .flatMap(current => current)
+                    .collect();
+
+        }
+
+        function toText(): string {
+
+            function toText(pointers: ReadonlyArray<IPointer>) {
+                return pointers.map(current => current.value)
+                               .join("");
             }
 
-            return this.nodeTexts
-                       .map(current => current.charPointers)
-                       .map(toText)
-                       .filter(current => current !== '')
-                       .join(" ");
+            const raw = nodePointers
+                            .map(toText)
+                            .join(" ");
+
+            return opts.caseInsensitive ? raw.toLocaleLowerCase() : raw;
 
         }
 
-        const joined = join().trim();
+        const text = toText();
+        const lookup = toLookup();
 
-        if (opts.caseInsensitive) {
-            return joined.toLocaleLowerCase();
-        }
-
-        return joined;
+        return {text, lookup};
 
     }
 
