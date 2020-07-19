@@ -1,14 +1,13 @@
-import {assert} from 'chai';
-import {CharPtrs} from "./CharPtrs";
+import {CharPointers} from "./CharPointers";
 import {assertJSON} from "polar-test/src/test/Assertions";
 
-describe('CharPtrs', function() {
+describe('CharPointers', function() {
 
     it("toArray", function() {
 
-        assertJSON(CharPtrs.toArray(''), []);
+        assertJSON(CharPointers.toArray(''), []);
 
-        assertJSON(CharPtrs.toArray('hello world'), [
+        assertJSON(CharPointers.toArray('hello world'), [
             {
                 "value": "h",
                 "offset": 0,
@@ -70,7 +69,7 @@ describe('CharPtrs', function() {
 
     it("collapse", function() {
 
-       assertJSON(CharPtrs.collapse('hello    world'), [
+       assertJSON(CharPointers.collapse('hello    world'), [
            {
                "value": "h",
                "offset": 0,

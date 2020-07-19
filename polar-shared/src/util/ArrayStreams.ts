@@ -47,6 +47,9 @@ export interface IValueWithIndex<V> {
     readonly value: V;
 }
 
+export type ScanTuple<V> = [V, boolean]
+export type ScanHandler<T, V> = (record: T, index: number) => ScanTuple<V>;
+
 /**
  * Similar to Java streams but for Javascript/Typescript arrays.
  *
@@ -58,6 +61,45 @@ export interface IValueWithIndex<V> {
 export class ArrayStream<T> {
 
     constructor(private values: ReadonlyArray<T>) {
+    }
+
+    /**
+     * Scan function that lets us can the array in any direction. So in theory
+     * the same code could be use to on an underlying array just by changing the
+     * delta.
+     *
+     * The handler needs to return a tuple with two values.  The first is the
+     * mapped value, and the second is whether to continue.
+     */
+    public scan<V>(start: number,
+                   delta: number,
+                   handler: ScanHandler<T, V>) {
+
+        // TODO just add a 'direction instead of delta...?
+
+        // TODO: maybe the 'direction' should be computed internally during the
+        // constructor and then I could use the internal map and filter commands
+        // instead of a scan function.  This way I could compute the direction
+        // mapping there and then have a map function that maps and returns true
+        // or false depending if we should continue
+
+        const result: V[] = [];
+
+        for(let idx = start; idx >= 0 && idx < this.values.length; idx = idx + delta) {
+
+            const value = this.values[idx];
+            const [newValue, keepScanning] = handler(value, idx);
+
+            result.push(newValue);
+
+            if (! keepScanning) {
+                break;
+            }
+
+        }
+
+        return new ArrayStream(result);
+
     }
 
     /**

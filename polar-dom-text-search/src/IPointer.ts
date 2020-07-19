@@ -1,3 +1,7 @@
+export enum PointerType {
+    Literal, Padding, ExcessiveWhitespace
+}
+
 export interface IPointer {
 
     /**
@@ -20,5 +24,6 @@ export interface IPointer {
      */
     readonly node: Node;
 
-}
+    readonly type: PointerType;
 
+}

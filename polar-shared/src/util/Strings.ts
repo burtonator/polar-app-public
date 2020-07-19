@@ -7,9 +7,9 @@ export type Char = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | '
     | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X'
     | 'Y' | 'Z' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
-export class Strings {
+export namespace Strings {
 
-    public static generate(len: number, c: Char = 'x') {
+    export function generate(len: number, c: Char = 'x') {
 
         let buff = "";
 
@@ -21,7 +21,7 @@ export class Strings {
 
     }
 
-    public static toPrimitive(value: string): string | number | boolean {
+    export function toPrimitive(value: string): string | number | boolean {
 
         if (value === "true" || value === "false") {
             return value === "true";
@@ -42,7 +42,7 @@ export class Strings {
     /**
      * Convert the string to a number or return the default value.
      */
-    public static toNumber(value: string | null | undefined,
+    export function toNumber(value: string | null | undefined,
                            defaultValue: number) {
 
         // don't use type cooercion as the rules are insane.
@@ -56,13 +56,13 @@ export class Strings {
     }
 
 
-    public static empty(value: string | null | undefined): boolean {
+    export function empty(value: string | null | undefined): boolean {
         return value === null || value === undefined || value.trim() === "";
     }
 
-    public static filterEmpty(value: string | null | undefined): string | undefined {
+    export function filterEmpty(value: string | null | undefined): string | undefined {
 
-        if (this.empty(value)) {
+        if (empty(value)) {
             return undefined;
         }
 
@@ -70,7 +70,7 @@ export class Strings {
 
     }
 
-    public static lpad = function(str: string | number, padd: string, length: number) {
+    export function lpad(str: string | number, padd: string, length: number) {
 
         if (typeof str === 'number') {
             str = `${str}`;
@@ -82,19 +82,19 @@ export class Strings {
 
         return str;
 
-    };
+    }
 
-    public static toUnixLineNewLines(str: string) {
+    export function toUnixLineNewLines(str: string) {
         return str.replace(/\r\n/g, '\n');
     }
 
-    public static indent(text: string, padding: string) {
+    export function indent(text: string, padding: string) {
         text = padding + text;
         text = text.replace(/\n/g, "\n" + padding);
         return text;
     }
 
-    public static canonicalizeWhitespace(str: string) {
+    export function canonicalizeWhitespace(str: string) {
         return str.replace(/[ \t]+/g, ' ')
                   .replace(/\r\n/g, '\n' );
     }
@@ -102,7 +102,7 @@ export class Strings {
     /**
      * Make the first character uppercase.
      */
-    public static upperFirst(text: string) {
+    export function upperFirst(text: string) {
 
         if (text === '') {
             return text;
@@ -112,7 +112,7 @@ export class Strings {
 
     }
 
-    public static truncateOnWordBoundary(text: string,
+    export function truncateOnWordBoundary(text: string,
                                          length: number,
                                          useEllipsis: boolean = true ) {
 
@@ -142,13 +142,21 @@ export class Strings {
     }
 
     /**
+     * Regular expression for finding a whitespace char.
+     */
+    export const WHITESPACE_REGEX = '[ \f\r\n\v\t\u00A0\u2028\u2029]';
+
+    /**
      * Return true if the given character is whitespace.
      *
      */
-    public static isWhitespace(c: string) {
+    export function isWhitespace(c: string[1]) {
 
-        // TODO: only one character works. If it's longer than one character
-        // this will break
+        if (c.length !== 1) {
+            // TODO: only one character works. If it's longer than one character
+            // this will break
+            throw new Error("String too long");
+        }
 
         switch (c) {
 
@@ -159,6 +167,7 @@ export class Strings {
             case '\v':
             case '\t':
             case '\u00A0':
+            case '\u2028':
             case '\u2029':
                 return true;
             default:

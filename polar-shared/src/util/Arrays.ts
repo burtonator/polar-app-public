@@ -26,10 +26,11 @@ export interface IndexedValue<V> {
     readonly value: V;
 }
 
-export class Arrays {
+export namespace Arrays {
 
-
-    public static toIndexed<V>(values: ReadonlyArray<V>): ReadonlyArray<IndexedValue<V>> {
+    // FIXME scan implementation..
+    
+    export function toIndexed<V>(values: ReadonlyArray<V>): ReadonlyArray<IndexedValue<V>> {
 
         const result = [];
 
@@ -41,7 +42,7 @@ export class Arrays {
 
     }
 
-    public static groupBy<V>(values: ReadonlyArray<V>,
+    export function groupBy<V>(values: ReadonlyArray<V>,
                              toKey: (value: V) => string): GroupedDict<V> {
 
         const result: MutableGroupedDict<V> = {};
@@ -59,7 +60,7 @@ export class Arrays {
 
     }
 
-    public static toArray<T>(value: ToArrayLike<T>): ReadonlyArray<T> {
+    export function toArray<T>(value: ToArrayLike<T>): ReadonlyArray<T> {
 
         if (value === undefined || value === null) {
             return [];
@@ -74,14 +75,14 @@ export class Arrays {
     }
 
 
-    public static onlyDefined<T>(values: ReadonlyArray<T | undefined>): ReadonlyArray<T> {
+    export function onlyDefined<T>(values: ReadonlyArray<T | undefined>): ReadonlyArray<T> {
 
         return values.filter(current => current !== undefined)
                      .map(current => current!);
 
     }
 
-    public static first<T>(values: ReadonlyArray<T>): T | undefined {
+    export function first<T>(values: ReadonlyArray<T>): T | undefined {
 
         if (! values) {
             return undefined;
@@ -95,7 +96,7 @@ export class Arrays {
 
     }
 
-    public static last<T>(values: ReadonlyArray<T>): T | undefined {
+    export function last<T>(values: ReadonlyArray<T>): T | undefined {
 
         if (values.length === 0) {
             return undefined;
@@ -109,7 +110,7 @@ export class Arrays {
      * Take N samples from the given input.
      * @param values
      */
-    public static sample<T>(values: T[], count: number) {
+    export function sample<T>(values: T[], count: number) {
 
         if (count === 0) {
             return [];
@@ -135,7 +136,7 @@ export class Arrays {
     /**
      * Convert an array to a dictionary.
      */
-    public static toDict(val: {} | any[]): {[key: string]: any} {
+    export function toDict(val: {} | any[]): {[key: string]: any} {
 
         const isObject = typeof val === "object";
         const isArray = val instanceof Array;
@@ -176,7 +177,7 @@ export class Arrays {
      * This can be used for algorithms that need to peek ahead or behind
      * inside an iterative algorithm
      */
-    public static createSiblings<T>(arrayLikeObject: T[]) {
+    export function createSiblings<T>(arrayLikeObject: T[]) {
 
         Preconditions.assertPresent(arrayLikeObject, "arrayLikeObject");
 
@@ -207,7 +208,7 @@ export class Arrays {
      * partial. This is the last few if they don't equal the size.
      *
      */
-    public static createBatches<T>(input: T[], batchSize: number): T[][] {
+    export function createBatches<T>(input: T[], batchSize: number): T[][] {
 
         const result: T[][] = [];
 
@@ -235,7 +236,7 @@ export class Arrays {
     /**
      * Like forEach but sequentially executes each function.
      */
-    public static async asyncForEach<T>(items: T[], callback: AsyncCallback<T>) {
+    export async function asyncForEach<T>(items: T[], callback: AsyncCallback<T>) {
 
         for (const item of items) {
             await callback(item);
@@ -246,7 +247,7 @@ export class Arrays {
     /**
      * Shuffle the input as a new array.
      */
-    public static shuffle<T>(...input: T[]): T[] {
+    export function shuffle<T>(...input: T[]): T[] {
 
         const arr = Object.assign([], input);
 
@@ -266,7 +267,7 @@ export class Arrays {
     /**
      * Get up to `limit` values from the given input.
      */
-    public static head<T>(input: ReadonlyArray<T>, limit: number): T[] {
+    export function head<T>(input: ReadonlyArray<T>, limit: number): T[] {
 
         // adjust the limit so we never fetch too many values.
         limit = Math.min(limit, input.length);
@@ -284,7 +285,7 @@ export class Arrays {
     /**
      * Return true if the given `list` has any of the elements in `items`
      */
-    public static hasAny<T>(list: ReadonlyArray<T>, items: ReadonlyArray<T>) {
+    export function hasAny<T>(list: ReadonlyArray<T>, items: ReadonlyArray<T>) {
 
         for (const item of items) {
 
@@ -298,7 +299,7 @@ export class Arrays {
 
     }
 
-    public static equal(a: PrimitiveArray, b: PrimitiveArray) {
+    export function equal(a: PrimitiveArray, b: PrimitiveArray) {
 
         if (a === b) {
             return true;
@@ -329,9 +330,7 @@ export class Arrays {
 
 }
 
-export interface AsyncCallback<T> {
-    (current: T): Promise<void>;
-}
+export type AsyncCallback<T> = (current: T) => Promise<void>;
 
 /**
  * Represents a 'position' object for createSiblings() that has a curr
@@ -360,9 +359,9 @@ class ArrayPosition<T> {
  */
 export type SparseArray<T> = ReadonlyArray<T | undefined | null>;
 
-export class SparseArrays {
+export namespace SparseArrays {
 
-    public static presentOnly<T>(values: SparseArray<T>): ReadonlyArray<T> {
+    export function presentOnly<T>(values: SparseArray<T>): ReadonlyArray<T> {
 
         return values.filter(current => isPresent(current))
                       .map(current => current!);

@@ -1,7 +1,7 @@
-import {CharPtrs} from "./CharPtrs";
+import {CharPointers} from "./CharPointers";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {TextIndex} from "./TextIndex";
-import { IPointer } from "./IPointer";
+import {IPointer, PointerType} from "./IPointer";
 
 export interface MutableNodeTextRegion {
     idx: number;
@@ -86,9 +86,15 @@ export namespace DOMTextSearch {
 
             if (nodeValue && nodeValue !== '') {
 
-                const text = nodeValue.trim() + ' ';
+                // FIXME: I need a BETTER grand unified theory for dealing with
+                // white text or we're going to have a LOT of bugs...
 
-                const charPointers = CharPtrs.collapse(text);
+                // FIXME: one each node we fine the FIRST and LAST non-whitespace
+                // but we
+
+                const text = nodeValue;
+
+                const charPointers = CharPointers.collapse(text);
 
                 const idx = index++;
 
@@ -98,14 +104,23 @@ export namespace DOMTextSearch {
                         idx,
                         offset: charPointer.offset,
                         node,
-                        value: charPointer.value
+                        value: charPointer.value,
+                        type: PointerType.Literal
                     };
 
                     pointers.push(pointer);
 
                 }
 
-                nodeTexts.push({idx, node, text})
+                pointers.push({
+                    idx,
+                    offset: text.length,
+                    node,
+                    value: ' ',
+                    type: PointerType.Padding
+                })
+
+                nodeTexts.push({idx, node, text: text + ' '})
 
             }
 

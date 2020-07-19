@@ -47,6 +47,8 @@ export class TextIndex {
      */
     public join(pointers: ReadonlyArray<IPointer>): ReadonlyArray<NodeTextRegion> {
 
+        console.log("FIXME: joining pointers: ", pointers);
+
         const result: MutableNodeTextRegion[] = [];
 
         const siblings = createSiblings(pointers);
@@ -55,6 +57,10 @@ export class TextIndex {
 
             const prevNode = entry.prev?.node;
             const currNode = entry.curr.node;
+
+            if (entry.curr.type === 'padding') {
+                continue;
+            }
 
             if (prevNode !== currNode) {
                 // should be true on the first one so that we create an empty
