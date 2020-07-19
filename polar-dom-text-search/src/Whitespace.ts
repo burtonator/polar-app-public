@@ -1,9 +1,23 @@
 import {arrayStream, ScanTuple} from "polar-shared/src/util/ArrayStreams";
 import { Strings } from "polar-shared/src/util/Strings";
 
-export namespace WhitespaceHandlers {
+export namespace Whitespace {
 
     export type ScanDirection = 'start' | 'end';
+
+    /**
+     * True if the current character is a run of whitespace. At least two
+     * whitespace characters in a row.
+     */
+    export function isWhitespaceRun(text: string, idx: number): boolean {
+
+        if (idx === 0) {
+            return false;
+        }
+
+        return Strings.isWhitespace(text[idx - 1]) && Strings.isWhitespace(text[idx]);
+
+    }
 
     export function computeWhitespaceTerminator(text: string,
                                                 direction: ScanDirection): number | undefined {
@@ -58,11 +72,22 @@ export namespace WhitespaceHandlers {
                 return true;
             }
 
+            if ( Whitespace.isWhitespaceRun(text, idx)) {
+                return true;
+            }
+
             // regular text idx should be within [start, end] (interval notation)
             return idx < start || idx > end;
 
         };
 
+    }
+
+    export function collapse(text: string) {
+        const whitespacePredicate = createWhitespacePredicate(text);
+        return Array.from(text)
+                    .filter((current, idx) => ! whitespacePredicate(idx))
+                    .join("");
     }
 
 }

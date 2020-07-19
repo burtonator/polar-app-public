@@ -1,6 +1,7 @@
 import {assert} from 'chai';
 import {DOMTextSearch} from "./DOMTextSearch";
 import {JSDOM} from "jsdom";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 const jsdomGlobal = require('jsdom-global');
 
@@ -95,7 +96,31 @@ Graph-based neural network
 
         assert.equal(index.toString(), 'this and that Graph-based neural network');
 
+        assertJSON(index.find('Graph'), {});
+
     });
 
+
+    it("basic incorrect offset", function() {
+
+        const html = `
+<html>
+<body>
+<p>this</p>
+
+Graph-based neural network
+
+</body>
+</html>`;
+
+        jsdomGlobal(html);
+
+        const index = DOMTextSearch.createIndex();
+
+        assert.equal(index.toString(), 'this Graph-based neural network');
+
+        assertJSON(index.find('Graph'), {});
+
+    });
 
 });

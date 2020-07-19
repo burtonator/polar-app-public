@@ -8,6 +8,7 @@ import {createSiblings} from "polar-shared/src/util/Functions";
 import {IPointer, PointerType} from "./IPointer";
 import {CharPointer} from "./CharPointers";
 import { INodeText } from "./INodeText";
+import { Whitespace } from "./Whitespace";
 
 export interface SearchOpts {
     readonly caseInsensitive?: boolean;
@@ -85,15 +86,11 @@ export class TextIndex {
                 opts: SearchOpts = {}): DOMTextHit | undefined {
 
         const toQuery = () => {
-
-            function collapseWhiteSpace(text: string) {
-                return text.replace(/[ \t\r\n]{2,}/, ' ')
-                           .trim();
-            }
-
-            return collapseWhiteSpace(opts.caseInsensitive ? query.toLocaleLowerCase() : query);
-
+            return Whitespace.collapse(opts.caseInsensitive ? query.toLocaleLowerCase() : query);
         }
+
+        // FIXME: this i super inefficient as each time we call 'find' we're
+        // recomputing the string indes
 
         const toStr = () => {
             return this.toString({caseInsensitive: opts.caseInsensitive})
@@ -109,6 +106,10 @@ export class TextIndex {
         }
 
         const idx = str.indexOf(query, start);
+
+        // FIXME: this is the bug because the look is wrong.. we have to have toStr()
+        // return a toStringLookup or somethign along those lines where we can
+        // take the index in the string and lookup the pointer in the original..
 
         if (idx !== -1) {
             const pointers = this.lookup(idx, idx + query.length);
@@ -152,9 +153,13 @@ export class TextIndex {
 
     public toString(opts: ToStringOpts = {}): string {
 
+        // FIXME: this has to create TWO indexes... one is the text representation
+        // and the other is a lookup that can find the pointer back to the node
+        // and its original offset.
         const join = () => {
 
             function toText(charPointers: ReadonlyArray<CharPointer>) {
+                // FIXME: these offsets look right...
                 return charPointers.filter(current => current.type !== PointerType.ExcessiveWhitespace)
                                    .map(current => current.value)
                                    .join("")

@@ -1,6 +1,5 @@
-import {Strings} from "polar-shared/src/util/Strings";
 import {PointerType} from "./IPointer";
-import {WhitespaceHandlers} from "./WhitespaceHandlers";
+import {Whitespace} from "./Whitespace";
 
 export interface CharPointer {
 
@@ -22,27 +21,13 @@ export namespace CharPointers {
 
     export function parse(text: string): ReadonlyArray<CharPointer> {
 
-        /**
-         * True if the current character is a run of whitespace. At least two
-         * whitespace characters in a row.
-         */
-        function isWhitespaceRun(idx: number): boolean {
-
-            if (idx === 0) {
-                return false;
-            }
-
-            return Strings.isWhitespace(text[idx - 1]) && Strings.isWhitespace(text[idx]);
-
-        }
-
-        const whitespacePredicate = WhitespaceHandlers.createWhitespacePredicate(text);
+        const whitespacePredicate = Whitespace.createWhitespacePredicate(text);
 
         function toCharPointer(c: string, idx: number): CharPointer {
 
             function computeType(): PointerType {
 
-                if (whitespacePredicate(idx) || isWhitespaceRun(idx)) {
+                if (whitespacePredicate(idx)) {
                     return PointerType.ExcessiveWhitespace;
                 }
 
