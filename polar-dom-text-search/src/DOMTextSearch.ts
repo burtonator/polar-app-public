@@ -2,6 +2,7 @@ import {CharPointers} from "./CharPointers";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {TextIndex} from "./TextIndex";
 import {IPointer, PointerType} from "./IPointer";
+import {INodeText} from "./INodeText";
 
 export interface MutableNodeTextRegion {
     idx: number;
@@ -39,13 +40,13 @@ export interface DOMTextHit {
 export namespace DOMTextSearch {
 
     export function createIndex(doc: Document = document,
-                                root: HTMLElement = document.documentElement) {
-
-        const pointers: IPointer[] = [];
-        const nodeTexts: INodeText[] = [];
+                                root: Node = document.body) {
 
         Preconditions.assertPresent(doc, 'doc');
         Preconditions.assertPresent(root, 'root');
+
+        const pointers: IPointer[] = [];
+        const nodeTexts: INodeText[] = [];
 
         // TODO: we DO have to factor in iframe but we have to have a pointer
         // back to the element's view ... though I am not sure about that really
@@ -68,7 +69,7 @@ export namespace DOMTextSearch {
 
             if (node instanceof HTMLIFrameElement && node.contentDocument) {
                 // TODO: this cold give cross origin issues...
-                this.createIndex(node.contentDocument, pointers);
+                this.createIndex(node.contentDocument, node.contentDocument.body);
                 continue;
             }
 
@@ -86,15 +87,9 @@ export namespace DOMTextSearch {
 
             if (nodeValue && nodeValue !== '') {
 
-                // FIXME: I need a BETTER grand unified theory for dealing with
-                // white text or we're going to have a LOT of bugs...
-
-                // FIXME: one each node we fine the FIRST and LAST non-whitespace
-                // but we
-
                 const text = nodeValue;
 
-                const charPointers = CharPointers.collapse(text);
+                const charPointers = CharPointers.parse(text);
 
                 const idx = index++;
 
@@ -105,22 +100,22 @@ export namespace DOMTextSearch {
                         offset: charPointer.offset,
                         node,
                         value: charPointer.value,
-                        type: PointerType.Literal
+                        type: charPointer.type
                     };
 
                     pointers.push(pointer);
 
                 }
 
-                pointers.push({
-                    idx,
-                    offset: text.length,
-                    node,
-                    value: ' ',
-                    type: PointerType.Padding
-                })
+                // pointers.push({
+                //     idx,
+                //     offset: text.length,
+                //     node,
+                //     value: ' ',
+                //     type: PointerType.Padding
+                // })
 
-                nodeTexts.push({idx, node, text: text + ' '})
+                nodeTexts.push({idx, node, text, charPointers})
 
             }
 

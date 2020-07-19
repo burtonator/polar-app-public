@@ -243,6 +243,16 @@ export class ArrayStream<T> {
 
     }
 
+    public last(): T | undefined {
+
+        if (this.values.length > 0) {
+            return this.values[this.values.length - 1];
+        }
+
+        return undefined;
+
+    }
+
     public collect(): ReadonlyArray<T> {
         return [...this.values];
     }

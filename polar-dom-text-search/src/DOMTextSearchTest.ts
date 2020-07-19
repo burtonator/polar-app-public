@@ -29,7 +29,7 @@ describe('DOMTextSearch', function() {
 
     });
 
-    it("basic with iframe", function() {
+    xit("basic with iframe", function() {
 
         console.log(JSDOM)
 
@@ -93,7 +93,7 @@ Graph-based neural network
 
         const index = DOMTextSearch.createIndex();
 
-        assert.equal(index.toString(), 'this is a basic test');
+        assert.equal(index.toString(), 'this and that Graph-based neural network');
 
     });
 

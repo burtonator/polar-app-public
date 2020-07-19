@@ -4,129 +4,135 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 describe('CharPointers', function() {
 
     it("toArray", function() {
-
-        assertJSON(CharPointers.toArray(''), []);
-
-        assertJSON(CharPointers.toArray('hello world'), [
+        assertJSON(CharPointers.parse(''), []);
+        assertJSON(CharPointers.parse('hello world'), [
             {
+                "type": 0,
                 "value": "h",
-                "offset": 0,
-                "whitespace": false
+                "offset": 0
             },
             {
+                "type": 0,
                 "value": "e",
-                "offset": 1,
-                "whitespace": false
+                "offset": 1
             },
             {
+                "type": 0,
                 "value": "l",
-                "offset": 2,
-                "whitespace": false
+                "offset": 2
             },
             {
+                "type": 0,
                 "value": "l",
-                "offset": 3,
-                "whitespace": false
+                "offset": 3
             },
             {
+                "type": 0,
                 "value": "o",
-                "offset": 4,
-                "whitespace": false
+                "offset": 4
             },
             {
+                "type": 0,
                 "value": " ",
-                "offset": 5,
-                "whitespace": true
+                "offset": 5
             },
             {
+                "type": 0,
                 "value": "w",
-                "offset": 6,
-                "whitespace": false
+                "offset": 6
             },
             {
+                "type": 0,
                 "value": "o",
-                "offset": 7,
-                "whitespace": false
+                "offset": 7
             },
             {
+                "type": 0,
                 "value": "r",
-                "offset": 8,
-                "whitespace": false
+                "offset": 8
             },
             {
+                "type": 0,
                 "value": "l",
-                "offset": 9,
-                "whitespace": false
+                "offset": 9
             },
             {
+                "type": 0,
                 "value": "d",
-                "offset": 10,
-                "whitespace": false
+                "offset": 10
             }
         ]);
-
     });
 
-    it("collapse", function() {
-
-       assertJSON(CharPointers.collapse('hello    world'), [
-           {
-               "value": "h",
-               "offset": 0,
-               "whitespace": false
-           },
-           {
-               "value": "e",
-               "offset": 1,
-               "whitespace": false
-           },
-           {
-               "value": "l",
-               "offset": 2,
-               "whitespace": false
-           },
-           {
-               "value": "l",
-               "offset": 3,
-               "whitespace": false
-           },
-           {
-               "value": "o",
-               "offset": 4,
-               "whitespace": false
-           },
-           {
-               "value": " ",
-               "offset": 8,
-               "whitespace": true
-           },
-           {
-               "value": "w",
-               "offset": 9,
-               "whitespace": false
-           },
-           {
-               "value": "o",
-               "offset": 10,
-               "whitespace": false
-           },
-           {
-               "value": "r",
-               "offset": 11,
-               "whitespace": false
-           },
-           {
-               "value": "l",
-               "offset": 12,
-               "whitespace": false
-           },
-           {
-               "value": "d",
-               "offset": 13,
-               "whitespace": false
-           }
-       ]);
-
+    it("prefix whitespace", function() {
+        assertJSON(CharPointers.parse('  hello world'), [
+            {
+                "type": 2,
+                "value": " ",
+                "offset": 0
+            },
+            {
+                "type": 2,
+                "value": " ",
+                "offset": 1
+            },
+            {
+                "type": 0,
+                "value": "h",
+                "offset": 2
+            },
+            {
+                "type": 0,
+                "value": "e",
+                "offset": 3
+            },
+            {
+                "type": 0,
+                "value": "l",
+                "offset": 4
+            },
+            {
+                "type": 0,
+                "value": "l",
+                "offset": 5
+            },
+            {
+                "type": 0,
+                "value": "o",
+                "offset": 6
+            },
+            {
+                "type": 0,
+                "value": " ",
+                "offset": 7
+            },
+            {
+                "type": 0,
+                "value": "w",
+                "offset": 8
+            },
+            {
+                "type": 0,
+                "value": "o",
+                "offset": 9
+            },
+            {
+                "type": 0,
+                "value": "r",
+                "offset": 10
+            },
+            {
+                "type": 0,
+                "value": "l",
+                "offset": 11
+            },
+            {
+                "type": 0,
+                "value": "d",
+                "offset": 12
+            }
+        ]);
     });
+
 
 });

@@ -5,7 +5,9 @@ import {
     PointerIndex,
 } from "./DOMTextSearch";
 import {createSiblings} from "polar-shared/src/util/Functions";
-import {IPointer} from "./IPointer";
+import {IPointer, PointerType} from "./IPointer";
+import {CharPointer} from "./CharPointers";
+import { INodeText } from "./INodeText";
 
 export interface SearchOpts {
     readonly caseInsensitive?: boolean;
@@ -17,10 +19,6 @@ export interface ToStringOpts {
 
 export class TextIndex {
 
-    /**
-     *
-     * @param pointers allows us to lookup the node and offset of the text any text we index.
-     */
     constructor(private readonly pointers: PointerIndex,
                 private readonly nodeTexts: ReadonlyArray<INodeText>) {
 
@@ -46,8 +44,6 @@ export class TextIndex {
      * Join hits to get contiguous text on nodes that need highlights.
      */
     public join(pointers: ReadonlyArray<IPointer>): ReadonlyArray<NodeTextRegion> {
-
-        console.log("FIXME: joining pointers: ", pointers);
 
         const result: MutableNodeTextRegion[] = [];
 
@@ -157,12 +153,22 @@ export class TextIndex {
     public toString(opts: ToStringOpts = {}): string {
 
         const join = () => {
+
+            function toText(charPointers: ReadonlyArray<CharPointer>) {
+                return charPointers.filter(current => current.type !== PointerType.ExcessiveWhitespace)
+                                   .map(current => current.value)
+                                   .join("")
+            }
+
             return this.nodeTexts
-                       .map(current => current.text)
-                       .join("");
+                       .map(current => current.charPointers)
+                       .map(toText)
+                       .filter(current => current !== '')
+                       .join(" ");
+
         }
 
-        const joined = join();
+        const joined = join().trim();
 
         if (opts.caseInsensitive) {
             return joined.toLocaleLowerCase();
