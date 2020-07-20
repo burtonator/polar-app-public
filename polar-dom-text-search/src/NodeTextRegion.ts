@@ -1,5 +1,5 @@
 export interface MutableNodeTextRegion {
-    readonly nodeID: number;
+    nodeID: number;
     start: number;
     end: number;
     node: Node;
