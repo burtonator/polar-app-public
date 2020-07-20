@@ -9,6 +9,7 @@ import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocI
 export namespace DatastoreWriter {
 
     import IDocImport = DocImporter.IDocImport;
+    import DocImporterOpts = DocImporter.DocImporterOpts;
 
     export interface IWriteOpts {
         readonly doc: Blob,
@@ -68,10 +69,16 @@ export namespace DatastoreWriter {
 
         const docImport = createDocImport();
 
+        const docImporterOpts: DocImporterOpts = {
+            docInfo,
+            docImport,
+            consistency: 'committed'
+        }
+
         const imported = await DocImporter.importFile(persistenceLayerProvider,
                                                       url,
                                                       opts.basename,
-                                                      {docInfo, docImport});
+                                                      docImporterOpts);
 
         await persistenceLayer.stop();
 
