@@ -42,7 +42,7 @@ namespace TextLookupIndexes {
 
         const result = [];
 
-        for (let idx = start; idx < end; ++idx) {
+        for (let idx = start; idx <= end; ++idx) {
             const pointer = lookup[idx];
 
             if (pointer) {
@@ -133,7 +133,6 @@ export class TextIndex {
         }
 
         const {text, lookup} = textLookupIndex;
-
 
         const idx = text.indexOf(query, start);
 
