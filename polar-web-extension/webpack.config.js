@@ -127,7 +127,7 @@ module.exports = {
     },
     plugins: [
         // new BundleAnalyzerPlugin(),
-        new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
+        new ForkTsCheckerWebpackPlugin({}),
         new CopyPlugin({
             patterns: [
                 // this is a bit of a hack and it would be better if we supported

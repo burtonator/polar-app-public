@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import Readability from "@polar-app/readability";
+import Readability from "readability";
 
 describe('Readability', function() {
 
