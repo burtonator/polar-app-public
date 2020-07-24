@@ -1,7 +1,4 @@
 import {Page, View} from "./ViewVisibilityCalculator";
-import {Logger} from "polar-shared/src/logger/Logger";
-
-const log = Logger.create();
 
 export type CSSSelector = string;
 
@@ -18,6 +15,8 @@ export interface Selectors {
 export class ViewCalculator {
 
     public static compute(selectors: Selectors): View {
+
+        // FIXME: this code isn't safe for Polar 2.0 either!!!!
 
         // const selectors = {
         //     container: '#viewerContainer',

@@ -20,6 +20,20 @@ export class Numbers {
         return values.reduce(Reducers.SUM, 0);
     }
 
+    public static max(...values: number[]) {
+
+        let result = values[0];
+
+        for (const value of values) {
+            if (value > result) {
+                result = value;
+            }
+        }
+
+        return result;
+
+    }
+
     public static mean(...values: number[]) {
 
         if (values.length === 0) {
