@@ -6,6 +6,11 @@ import {NodeTextRegion} from "./NodeTextRegion";
 export interface DOMTextHit {
 
     /**
+     * Unique ID for this text hit.
+     */
+    readonly id: string;
+
+    /**
      * The DOM regions and the text that was a match.
      */
     readonly regions: ReadonlyArray<NodeTextRegion>;

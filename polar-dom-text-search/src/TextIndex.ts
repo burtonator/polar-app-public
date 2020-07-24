@@ -137,10 +137,13 @@ export class TextIndex {
         const idx = text.indexOf(query, start);
 
         if (idx !== -1) {
-            const resolvedPointers = TextLookupIndexes.lookup(lookup, idx, idx + query.length);
+            const start = idx;
+            const end = idx + query.length;
+            const resolvedPointers = TextLookupIndexes.lookup(lookup, start, end);
+            const id = `${start}:${end}`;
             const regions =  TextLookupIndexes.join(resolvedPointers);
             const resume = idx + query.length;
-            return {regions, resume};
+            return {id, regions, resume};
         }
 
         // no hits...
