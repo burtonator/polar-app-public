@@ -140,7 +140,7 @@ export class TextIndex {
             const start = idx;
             const end = idx + query.length;
             const resolvedPointers = TextLookupIndexes.lookup(lookup, start, end);
-            const id = `${start}:${end}`;
+            const id = `hit-${start}-${end}`;
             const regions =  TextLookupIndexes.join(resolvedPointers);
             const resume = idx + query.length;
             return {id, regions, resume};
