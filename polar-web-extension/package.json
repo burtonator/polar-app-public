@@ -18,7 +18,7 @@
     "@material-ui/icons": "=4.9.1",
     "page-metadata-parser": "=1.1.4",
     "polar-assets": "^2.0.0-beta.12",
-    "polar-bookshelf": "^2.0.0-beta.11",
+    "polar-bookshelf": "^2.0.0-beta.12",
     "polar-content-capture": "^2.0.0-beta.12",
     "polar-epub-generator": "^2.0.0-beta.12",
     "polar-html": "^2.0.0-beta.12",
