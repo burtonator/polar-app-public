@@ -81,7 +81,7 @@ export namespace URLs {
      */
     export function isURL(path: string) {
 
-        if (!path) {
+        if (path === null || path === undefined) {
             return false;
         }
 

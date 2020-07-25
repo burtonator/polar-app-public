@@ -3,6 +3,7 @@ import {URLs} from "polar-shared/src/util/URLs";
 import ePub from "@polar-app/epubjs";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
+import {Fetches} from "polar-shared/src/util/Fetch";
 
 export class EPUBMetadata {
 
@@ -10,7 +11,18 @@ export class EPUBMetadata {
 
         const docURL = await URLs.toURL(docPathOrURL);
 
-        const book = ePub(docURL);
+        async function toArrayBuffer() {
+            // we have to convert the URL to an ArrayBuffer otherwise epub
+            // gets confused and tries to load this incorrectly with epubs.
+            //
+            // TODO: we should have a progress listener here ...
+
+            const response = await Fetches.fetch(docURL)
+            return await response.arrayBuffer();
+        }
+
+        const arrayBuffer = await toArrayBuffer();
+        const book = ePub(arrayBuffer);
 
         const metadata = await book.loaded.metadata;
         const spine = await book.loaded.spine;

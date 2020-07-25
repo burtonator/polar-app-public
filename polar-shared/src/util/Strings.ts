@@ -112,9 +112,28 @@ export namespace Strings {
 
     }
 
+    export function truncate(text: string,
+                             length: number,
+                             useEllipsis: boolean = true) {
+
+        if (text.length < length) {
+            // we don't need to truncate.
+            return text;
+        }
+
+        const truncated = text.substring(0, length);
+
+        if (useEllipsis) {
+            return truncated + ' ...';
+        } else {
+            return truncated;
+        }
+
+    }
+
     export function truncateOnWordBoundary(text: string,
-                                         length: number,
-                                         useEllipsis: boolean = true ) {
+                                          length: number,
+                                          useEllipsis: boolean = true) {
 
         if (text.length < length) {
             // we don't need to truncate.
