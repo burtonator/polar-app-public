@@ -95,7 +95,7 @@ namespace TextLookupIndexes {
 
 }
 
-export class TextIndex {
+export class DOMTextIndex {
 
     constructor(private readonly pointers: PointerIndex,
                 private readonly nodeTexts: ReadonlyArray<INodeText>) {

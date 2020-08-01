@@ -1,6 +1,6 @@
 import {CharPointers} from "./CharPointers";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {TextIndex} from "./TextIndex";
+import {DOMTextIndex} from "./DOMTextIndex";
 import {IPointer} from "./IPointer";
 import {INodeText} from "./INodeText";
 
@@ -11,7 +11,7 @@ import {INodeText} from "./INodeText";
 export namespace DOMTextSearch {
 
     export function createIndex(doc: Document = document,
-                                root: Node = document.body) {
+                                root: Node = document.body): DOMTextIndex {
 
         Preconditions.assertPresent(doc, 'doc');
         Preconditions.assertPresent(root, 'root');
@@ -70,7 +70,7 @@ export namespace DOMTextSearch {
 
         }
 
-        return new TextIndex(pointers, nodeTexts);
+        return new DOMTextIndex(pointers, nodeTexts);
 
     }
 
