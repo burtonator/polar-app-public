@@ -5,6 +5,7 @@ import {Whitespace} from "./Whitespace";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {NodeTextRegion, MutableNodeTextRegion} from "./NodeTextRegion";
 import {DOMTextHit} from "./DOMTextHit";
+import { isPresent } from "polar-shared/src/Preconditions";
 
 export interface SearchOpts {
     readonly caseInsensitive?: boolean;
@@ -95,6 +96,11 @@ namespace TextLookupIndexes {
 
 }
 
+function prepareQuery(query: string, opts: SearchOpts) {
+    return Whitespace.collapse(opts.caseInsensitive ? query.toLocaleLowerCase() : query);
+}
+
+
 export class DOMTextIndex {
 
     constructor(private readonly pointers: PointerIndex,
@@ -122,11 +128,11 @@ export class DOMTextIndex {
     /**
      * Search and find just one match.
      */
-    private find(query: string,
-                 start: number = 0,
-                 textLookupIndex: TextLookupIndex): DOMTextHit | undefined {
+    private find0(query: string,
+                  start: number = 0,
+                  textLookupIndex: TextLookupIndex): DOMTextHit | undefined {
 
-        if (query === '') {
+        if ( ! isPresent(query) || query === '') {
             // not sure this is the best way to handle this but this isn't a
             // real query and will sort of be very expensive to execute.
             return undefined;
@@ -151,19 +157,24 @@ export class DOMTextIndex {
 
     }
 
+    public find(rawQuery: string, opts: SearchOpts = {}): DOMTextHit | undefined {
+
+        // TODO: this could/should be pre-computed/cached I think.
+        const textLookupIndex = this.toTextLookupIndex({caseInsensitive: opts.caseInsensitive});
+        const query = prepareQuery(rawQuery, opts);
+        return this.find0(query, 0, textLookupIndex);
+    }
+
     /**
      * Search the DOM and find all matches.
      */
-    public search(query: string,
+    public search(rawQuery: string,
                   start: number = 0,
                   opts: SearchOpts = {}): ReadonlyArray<DOMTextHit> {
 
-        const toQuery = () => {
-            return Whitespace.collapse(opts.caseInsensitive ? query.toLocaleLowerCase() : query);
-        }
-
+        // TODO: this could/should be pre-computed/cached I think.
         const textLookupIndex = this.toTextLookupIndex({caseInsensitive: opts.caseInsensitive});
-        query = toQuery();
+        const query = prepareQuery(rawQuery, opts);
 
         const result: DOMTextHit[] = [];
 
@@ -171,7 +182,7 @@ export class DOMTextIndex {
 
         while(true) {
 
-            const hit = this.find(query, idx, textLookupIndex);
+            const hit = this.find0(query, idx, textLookupIndex);
 
             if (! hit) {
                 break;
