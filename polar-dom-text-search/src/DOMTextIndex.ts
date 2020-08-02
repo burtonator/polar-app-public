@@ -234,6 +234,7 @@ export class DOMTextIndex {
 
         }
 
+
         const text = toText();
         const lookup = toLookup();
 
