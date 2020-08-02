@@ -2,6 +2,7 @@ import {assert} from 'chai';
 import {DOMTextSearch} from "./DOMTextSearch";
 import {JSDOM} from "jsdom";
 import {assertJSON} from "polar-test/src/test/Assertions";
+import {DOMTextHits} from "./DOMTextHits";
 
 const jsdomGlobal = require('jsdom-global');
 
@@ -16,17 +17,21 @@ describe('DOMTextSearch', function() {
 
         const index = DOMTextSearch.createIndex();
 
-        // console.log({index});
-
         assert.equal(index.toString(), 'this is a basic test');
 
-        const result = index.search('this is a basic test');
+        const query = 'this is a basic test';
+        const hits = index.search(query);
 
-        // console.log({result});
+        assert.ok(hits);
+        assert.equal(hits.length, 1);
 
-        assert.ok(result);
-        assert.equal(result![0].regions.length, 1);
-        assert.equal(result![0].regions[0].node.textContent, 'this is a basic test');
+        const hit = hits[0];
+
+        assert.equal(hit.regions.length, 1);
+        const region = hit.regions[0];
+        assert.equal(region.node.textContent, 'this is a basic test');
+        assert.equal(DOMTextHits.extract(hits), 'this is a basic test');
+        assert.equal((region.end - region.start) + 1, query.length);
 
     });
 
@@ -96,21 +101,17 @@ Graph-based neural network
         const index = DOMTextSearch.createIndex();
 
         assert.equal(index.toString(), 'this and that Graph-based neural network');
+        const hits = index.search('Graph');
+        assert.equal(DOMTextHits.extract(hits), 'Graph');
 
-        assertJSON(index.search('Graph'), [
+        assertJSON(hits, [
             {
-                "id": "hit-14-19",
+                "id": "hit-14-18",
                 "regions": [
-                    {
-                        "nodeID": 4,
-                        "start": 3,
-                        "end": 3,
-                        "node": {}
-                    },
                     {
                         "nodeID": 6,
                         "start": 2,
-                        "end": 4,
+                        "end": 6,
                         "node": {}
                     }
                 ],
@@ -136,9 +137,12 @@ Graph-based neural network
         jsdomGlobal(html);
 
         const index = DOMTextSearch.createIndex();
-        assertJSON(index.search('Graph'),[
+        const hits = index.search('Graph');
+        assert.equal(DOMTextHits.extract(hits), 'Graph');
+
+        assertJSON(hits, [
             {
-                "id": "hit-5-10",
+                "id": "hit-5-9",
                 "regions": [
                     {
                         "nodeID": 2,

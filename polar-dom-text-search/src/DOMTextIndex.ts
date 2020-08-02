@@ -48,8 +48,8 @@ namespace TextLookupIndexes {
 
             if (pointer) {
                 result.push(pointer);
-
             }
+
         }
 
        return result;
@@ -60,7 +60,7 @@ namespace TextLookupIndexes {
     /**
      * Join hits to get contiguous text on nodes that need highlights.
      */
-    export function join(pointers: ReadonlyArray<IPointer>): ReadonlyArray<NodeTextRegion> {
+    export function mergeToRegionsByNode(pointers: ReadonlyArray<IPointer>): ReadonlyArray<NodeTextRegion> {
 
         const result: MutableNodeTextRegion[] = [];
 
@@ -71,7 +71,7 @@ namespace TextLookupIndexes {
             const prevNode = entry.prev?.node;
             const currNode = entry.curr.node;
 
-            if (entry.curr.type === 'padding') {
+            if (entry.curr.type !== PointerType.Literal) {
                 continue;
             }
 
@@ -156,10 +156,11 @@ export class DOMTextIndex {
 
         if (idx !== -1) {
             const start = idx;
-            const end = idx + query.length;
+            const end = idx + query.length - 1;
+
             const resolvedPointers = TextLookupIndexes.lookup(lookup, start, end);
             const id = `hit-${start}-${end}`;
-            const regions =  TextLookupIndexes.join(resolvedPointers);
+            const regions =  TextLookupIndexes.mergeToRegionsByNode(resolvedPointers);
             const resume = idx + query.length;
             return {id, regions, resume};
         }
@@ -219,7 +220,8 @@ export class DOMTextIndex {
         // pointers for each node in the DOM
         const nodePointers = this.nodeTexts
                                  .map(current => current.pointers)
-                                 .map(current => filteredPointers(current));
+                                 .map(current => filteredPointers(current))
+                                 .filter(current => current.length > 0)
 
         function toLookup(): ReadonlyArray<IPointer | undefined> {
 
@@ -240,7 +242,6 @@ export class DOMTextIndex {
             }
 
             const raw = nodePointers
-                            .filter(current => current.length > 0)
                             .map(toText)
                             .join(" ");
 

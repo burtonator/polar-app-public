@@ -147,22 +147,19 @@ export class Functions {
      * This can be used for algorithms that need to peek ahead or behind
      * inside an iterative algorithm
      *
-     * @param arrayLikeObject {Array<any>}
-     * @return {Array<ArrayPosition>}
-     * @Deprecated use Tuples.createSiblings
      */
-    public static createSiblings(arrayLikeObject: any) {
+    public static createSiblings<T>(arr: ReadonlyArray<T>): ReadonlyArray<IArrayPosition<T>> {
 
-        Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
+        Preconditions.assertPresent(arr, "arr");
 
-        const result: IArrayPosition<any>[] = [];
+        const result: IArrayPosition<T>[] = [];
 
-        for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
+        for (let idx = 0; idx < arr.length; ++idx) {
 
             result.push({
-                curr: arrayLikeObject[idx],
-                prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
-                next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
+                curr: arr[idx],
+                prev: Optional.of(arr[idx - 1]).getOrUndefined(),
+                next: Optional.of(arr[idx + 1]).getOrUndefined()
             });
 
         }
@@ -227,8 +224,8 @@ export function createSiblingTuples(arrayLikeObject: any) {
     return Functions.createSiblingTuples(arrayLikeObject);
 }
 
-export function createSiblings(arrayLikeObject: any) {
-    return Functions.createSiblings(arrayLikeObject);
+export function createSiblings<T>(arr: ReadonlyArray<T>) {
+    return Functions.createSiblings(arr);
 }
 
 export function nullableCallback<T>(delegate: Callback1<T> | undefined) {
