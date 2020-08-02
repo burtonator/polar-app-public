@@ -101,10 +101,22 @@ function prepareQuery(query: string, opts: SearchOpts) {
 }
 
 
+interface TextLookupIndexCache {
+    readonly insensitive: TextLookupIndex;
+    readonly sensitive: TextLookupIndex;
+}
+
 export class DOMTextIndex {
+
+    private readonly textLookupIndexCache: TextLookupIndexCache;
 
     constructor(private readonly pointers: PointerIndex,
                 private readonly nodeTexts: ReadonlyArray<INodeText>) {
+
+        this.textLookupIndexCache = {
+            sensitive: this.toTextLookupIndex({caseInsensitive: false}),
+            insensitive: this.toTextLookupIndex({caseInsensitive: true})
+        };
 
     }
 
@@ -157,10 +169,12 @@ export class DOMTextIndex {
 
     }
 
-    public find(rawQuery: string, opts: SearchOpts = {}): DOMTextHit | undefined {
+    private getTextLookupIndex(opts: SearchOpts): TextLookupIndex {
+        return opts.caseInsensitive ? this.textLookupIndexCache.insensitive : this.textLookupIndexCache.sensitive;
+    }
 
-        // TODO: this could/should be pre-computed/cached I think.
-        const textLookupIndex = this.toTextLookupIndex({caseInsensitive: opts.caseInsensitive});
+    public find(rawQuery: string, opts: SearchOpts = {}): DOMTextHit | undefined {
+        const textLookupIndex = this.getTextLookupIndex(opts);
         const query = prepareQuery(rawQuery, opts);
         return this.find0(query, 0, textLookupIndex);
     }
@@ -172,8 +186,7 @@ export class DOMTextIndex {
                   start: number = 0,
                   opts: SearchOpts = {}): ReadonlyArray<DOMTextHit> {
 
-        // TODO: this could/should be pre-computed/cached I think.
-        const textLookupIndex = this.toTextLookupIndex({caseInsensitive: opts.caseInsensitive});
+        const textLookupIndex = this.getTextLookupIndex(opts);
         const query = prepareQuery(rawQuery, opts);
 
         const result: DOMTextHit[] = [];
@@ -227,6 +240,7 @@ export class DOMTextIndex {
             }
 
             const raw = nodePointers
+                            .filter(current => current.length > 0)
                             .map(toText)
                             .join(" ");
 
@@ -240,6 +254,10 @@ export class DOMTextIndex {
 
         return {text, lookup};
 
+    }
+
+    public toString() {
+        return this.textLookupIndexCache.sensitive.text;
     }
 
 }

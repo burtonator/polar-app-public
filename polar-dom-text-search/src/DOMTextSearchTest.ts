@@ -71,7 +71,8 @@ describe('DOMTextSearch', function() {
         console.log({result});
 
         assert.ok(result);
-        assert.equal(result![0].regions.length, 5);
+        assert.ok(result.length === 1);
+        assert.equal(result![0].regions.length, 3);
 
     });
 
@@ -96,7 +97,26 @@ Graph-based neural network
 
         assert.equal(index.toString(), 'this and that Graph-based neural network');
 
-        assertJSON(index.search('Graph'), [{}]);
+        assertJSON(index.search('Graph'), [
+            {
+                "id": "hit-14-19",
+                "regions": [
+                    {
+                        "nodeID": 4,
+                        "start": 3,
+                        "end": 3,
+                        "node": {}
+                    },
+                    {
+                        "nodeID": 6,
+                        "start": 2,
+                        "end": 4,
+                        "node": {}
+                    }
+                ],
+                "resume": 19
+            }
+        ]);
 
     });
 
@@ -116,10 +136,22 @@ Graph-based neural network
         jsdomGlobal(html);
 
         const index = DOMTextSearch.createIndex();
+        assertJSON(index.search('Graph'),[
+            {
+                "id": "hit-5-10",
+                "regions": [
+                    {
+                        "nodeID": 2,
+                        "start": 2,
+                        "end": 6,
+                        "node": {}
+                    }
+                ],
+                "resume": 10
+            }
+        ]);
 
         assert.equal(index.toString(), 'this Graph-based neural network');
-
-        assertJSON(index.search('Graph'), {});
 
     });
 
