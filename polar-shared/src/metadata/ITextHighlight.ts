@@ -10,6 +10,14 @@ import {IRect} from "../util/rects/IRect";
 
 export interface ITextHighlight extends IAnnotation {
 
+    /**
+     * Specify a specific type of text highlight.
+     *
+     * text-only: textSelections doesn't exist nor does rects as it isn't
+     *            manually placed on the page but is placed by the text.
+     */
+    readonly type?: 'text-only';
+
     readonly textSelections: { [id: number]: ITextRect };
 
     readonly text: Text | string;
