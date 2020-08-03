@@ -35,6 +35,8 @@ describe('Whitespace', function() {
 
             }
 
+            assertJSON(toPredicateArray('x\nx'), [true, false, true]);
+
             assertJSON(toPredicateArray(' '), [true]);
             assertJSON(toPredicateArray(' \t\r'), [true, true, true]);
 
@@ -52,6 +54,10 @@ describe('Whitespace', function() {
         it("basic", function() {
             assert.equal(Whitespace.collapse(' '), '');
             assert.equal(Whitespace.collapse('   hello   world '), 'hello world');
+
+            assert.equal(Whitespace.collapse('Anon, to sudden silence won,\n' +
+                                                 'In fancy they pursue'), "Anon, to sudden silence won, In fancy they pursue");
+
         });
 
     });

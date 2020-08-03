@@ -59,6 +59,7 @@ export namespace Whitespace {
     export function createWhitespacePredicate(text: string) {
 
         if (text === '') {
+            // we are ALWAYS false
             return () => false;
         }
 
@@ -88,6 +89,12 @@ export namespace Whitespace {
         return Array.from(text)
                     .filter((current, idx) => ! whitespacePredicate(idx))
                     .join("");
+    }
+
+    export function canonicalize(text: string): string {
+        return Array.from(text)
+                    .map(current => Strings.isWhitespace(current) ? ' ' : current)
+                    .join("")
     }
 
 }

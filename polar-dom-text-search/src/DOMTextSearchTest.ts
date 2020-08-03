@@ -159,4 +159,28 @@ Graph-based neural network
 
     });
 
+
+    it("whitespace handling", function() {
+
+        const html = `
+<html>
+<body>
+<p>
+this\ris\na\ttest
+</p>
+</body>
+</html>`;
+
+        jsdomGlobal(html);
+
+        const index = DOMTextSearch.createIndex();
+        assert.equal(index.toString(), 'this is a test');
+
+        const hits = index.search('this is a test');
+
+        assert.equal(hits.length, 1);
+        assert.equal(DOMTextHits.extract(hits), 'this\nis\na\ttest');
+
+    });
+
 });

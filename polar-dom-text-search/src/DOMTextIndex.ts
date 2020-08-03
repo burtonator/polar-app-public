@@ -6,6 +6,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {NodeTextRegion, MutableNodeTextRegion} from "./NodeTextRegion";
 import {DOMTextHit} from "./DOMTextHit";
 import { isPresent } from "polar-shared/src/Preconditions";
+import { Strings } from "polar-shared/src/util/Strings";
 
 export interface SearchOpts {
     readonly caseInsensitive?: boolean;
@@ -97,7 +98,7 @@ namespace TextLookupIndexes {
 }
 
 function prepareQuery(query: string, opts: SearchOpts) {
-    return Whitespace.collapse(opts.caseInsensitive ? query.toLocaleLowerCase() : query);
+    return Whitespace.canonicalize(Whitespace.collapse(opts.caseInsensitive ? query.toLocaleLowerCase() : query));
 }
 
 
@@ -234,10 +235,20 @@ export class DOMTextIndex {
 
         }
 
+        function canonicalizeWhitespace(c: string): string {
+
+            if (Strings.isWhitespace(c)) {
+                return ' ';
+            } else {
+                return c;
+            }
+
+        }
+
         function toText(): string {
 
             function toText(pointers: ReadonlyArray<IPointer>) {
-                return pointers.map(current => current.value)
+                return pointers.map(current => canonicalizeWhitespace(current.value))
                                .join("");
             }
 
