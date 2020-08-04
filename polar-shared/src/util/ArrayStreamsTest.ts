@@ -5,6 +5,17 @@ describe('ArrayStreams', function() {
 
     it("flatMap", function() {
 
+        assertJSON(arrayStream([1, 2, 3])
+                   .map(current => [current, current])
+                   .flatMap(current => current)
+                   .collect(),
+                   [1, 1, 2, 2, 3, 3]);
+
+        assertJSON(arrayStream([[1, 2, 3]])
+                   .flatMap(current => current)
+                   .collect(),
+                   [1, 2, 3]);
+
         assertJSON(arrayStream([[1],[2]])
                         .flatMap(current => current)
                         .collect(),

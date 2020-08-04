@@ -207,9 +207,8 @@ export class ArrayStream<T> {
         return new ArrayStream<V>(mapped);
     }
 
-    /**
-     * Map over the values, returning a new ArrayStream.
-     */
+    // TODO: give it a default implementation of the function so it's just a
+    // regular flatmap that doesn't need to convert the types.
     public flatMap<V>(mapper: (currentValue: T, index: number) => ReadonlyArray<V>): ArrayStream<V> {
 
         const result: V[] = [];
