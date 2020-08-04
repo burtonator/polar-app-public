@@ -1,14 +1,9 @@
 import {Text} from "./Text";
-import {INote} from "./INote";
-import {IQuestion} from "./IQuestion";
-import {IFlashcard} from "./IFlashcard";
-import {IAnnotation} from "./IAnnotation";
-import {HighlightColor} from "./IBaseHighlight";
-import {IImage} from "./IImage";
+import {IBaseHighlight} from "./IBaseHighlight";
 import {ITextRect} from "./ITextRect";
-import {IRect} from "../util/rects/IRect";
+import {IChildAnnotations} from "./IChildAnnotations";
 
-export interface ITextHighlight extends IAnnotation {
+export interface ITextHighlight extends IBaseHighlight, IChildAnnotations {
 
     /**
      * Specify a specific type of text highlight.
@@ -26,13 +21,5 @@ export interface ITextHighlight extends IAnnotation {
      * User edited/revised text for the highlight.
      */
     readonly revisedText?: Text | string;
-
-    readonly rects: { [key: number]: IRect };
-    readonly image?: IImage;
-    readonly images: { [key: string]: IImage };
-    readonly notes: { [key: string]: INote };
-    readonly questions: { [key: string]: IQuestion };
-    readonly flashcards: { [key: string]: IFlashcard };
-    readonly color?: HighlightColor;
 
 }

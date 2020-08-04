@@ -1,14 +1,6 @@
 import {IBaseHighlight} from "./IBaseHighlight";
-import {INote} from "./INote";
-import {IQuestion} from "./IQuestion";
-import {IFlashcard} from "./IFlashcard";
+import {IChildAnnotations} from "./IChildAnnotations";
 
-export interface IAreaHighlight extends IBaseHighlight {
-
-    readonly notes: {[key: string]: INote};
-
-    readonly questions: {[key: string]: IQuestion};
-
-    readonly flashcards: {[key: string]: IFlashcard};
+export interface IAreaHighlight extends IBaseHighlight, IChildAnnotations {
 
 }

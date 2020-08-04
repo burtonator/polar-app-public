@@ -16,6 +16,13 @@ export interface HighlightRects {
     [key: string]: IRect;
 }
 
+/**
+ * An arbitrary position in the rendered page so that we can sort the
+ * annotations based on their position on the page.  Used as an alternative
+ * to 'position'.
+ */
+export type AnnotationOrder = number;
+
 export interface IBaseHighlight extends IAnnotation {
 
     /**
@@ -51,6 +58,12 @@ export interface IBaseHighlight extends IAnnotation {
      * to action that this annotation needs further editing, is important, etc.
      */
     flagged?: boolean;
+
+    /**
+     * Works with position to help place the annotations on the page but order
+     * is approximate and this can also be used to reorder teh sidebar manually.
+     */
+    order?: AnnotationOrder;
 
 }
 
