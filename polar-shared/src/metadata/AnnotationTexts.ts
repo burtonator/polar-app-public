@@ -10,9 +10,15 @@ import {ITextHighlights} from "./ITextHighlights";
 export class AnnotationTexts {
 
     public static toHTML(type: AnnotationType,
-                         annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard) {
+                         annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard): string | undefined {
 
-        return Texts.toHTML(this.toIText(type, annotation));
+        const result = Texts.toHTML(this.toIText(type, annotation));
+
+        if (result !== undefined) {
+            return result.trim();
+        } else {
+            return undefined;
+        }
 
     }
 
