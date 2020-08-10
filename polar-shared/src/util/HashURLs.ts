@@ -4,7 +4,9 @@ export namespace HashURLs {
         readonly hash?: string;
     }
 
-    export function parse(queryOrLocation: string | ILocationWithHash): URLSearchParams {
+    export type QueryOrLocation = string | ILocationWithHash;
+
+    export function parse(queryOrLocation: QueryOrLocation): URLSearchParams {
 
         function toQuery() {
 
