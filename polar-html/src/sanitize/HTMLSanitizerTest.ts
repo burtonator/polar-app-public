@@ -9,7 +9,7 @@ describe('HTMLSanitizer', function () {
 
 
     it('xhtml', function () {
-        assert.equal(HTMLSanitizer.sanitize('<br>'), '<br/>');
+        assert.equal(HTMLSanitizer.sanitize('<br>'), '<br />');
     });
 
     it('with minimal CSS', function () {
