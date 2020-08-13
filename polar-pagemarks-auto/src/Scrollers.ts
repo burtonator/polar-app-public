@@ -33,7 +33,7 @@ export namespace Scrollers {
             log.debug("New page auto pagemarked... ", extendPagemark);
         };
 
-        const autoPagemarker = new AutoPagemarker(onPagemarkCreated, {mode});
+        const autoPagemarker = new AutoPagemarker(onPagemarkCreated, {mode, minDuration: 45 * 1000});
 
         const handleScroll = () => {
 
