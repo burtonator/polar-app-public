@@ -1,10 +1,22 @@
 import {Preconditions} from '../Preconditions';
 import {Optional} from './ts/Optional';
-import {IDStr} from "./Strings";
 
-export class Dictionaries {
+export namespace Dictionaries {
 
-    public static filter<T>(dict: Readonly<{[key: string]: T}>, predicate: (key: string, value: T) => boolean): Readonly<{[key: string]: T}> {
+    /**
+     * Return JUST the data attributes (data-*) in a dictionary.
+     */
+    export function dataAttributes(dict: Readonly<{[key: string]: any}>): Readonly<{[key: string]: string}> {
+
+        function predicate(key: string, value: any) {
+            return key.startsWith('data-') && typeof value === 'string';
+        }
+
+        return filter(dict, predicate);
+
+    }
+
+    export function filter<T>(dict: Readonly<{[key: string]: T}>, predicate: (key: string, value: T) => boolean): Readonly<{[key: string]: T}> {
 
         const result: {[key: string]: T} = {};
 
@@ -22,7 +34,7 @@ export class Dictionaries {
     /**
      * Return true if a is equal to be but using only the given keys.
      */
-    public static equals(a: any, b: any, keys: ReadonlyArray<string>) {
+    export function equals(a: any, b: any, keys: ReadonlyArray<string>) {
 
         for(const key of keys) {
             if (a[key] !== b[key]) {
@@ -38,11 +50,11 @@ export class Dictionaries {
      * Convert a dictionary to number keys. In JS all dictionaries use string keys
      * but TS supports string keys.
      */
-    public static numberKeys<T>(dict: {[key: number]: T}): ReadonlyArray<number> {
+    export function numberKeys<T>(dict: {[key: number]: T}): ReadonlyArray<number> {
         return Object.keys(dict).map(current => parseInt(current));
     }
 
-    public static values<T>(dict: {[key: string]: T} | undefined | null): T[] {
+    export function values<T>(dict: {[key: string]: T} | undefined | null): T[] {
 
         const result: T[] = [];
 
@@ -55,7 +67,7 @@ export class Dictionaries {
 
     }
 
-    public static entries<V>(dict: {[key: string]: V} | undefined | null): ReadonlyArray<DictionaryEntry<V>> {
+    export function entries<V>(dict: {[key: string]: V} | undefined | null): ReadonlyArray<DictionaryEntry<V>> {
 
         if (! dict) {
             return [];
@@ -78,7 +90,7 @@ export class Dictionaries {
      * @param dict
      * @param callback
      */
-    public static forDict<T>(dict: {[key: string]: T}, callback: ForDictCallbackFunction<T> ) {
+    export function forDict<T>(dict: {[key: string]: T}, callback: ForDictCallbackFunction<T> ) {
 
         Preconditions.assertNotNull(dict, "dict");
         Preconditions.assertNotNull(callback, "callback");
@@ -104,7 +116,7 @@ export class Dictionaries {
      * canonically the same.
      *
      */
-    public static sorted(dict: any): any {
+    export function sorted(dict: any): any {
 
         // TODO: this doesn't handle circular reference well and will chase its tail.
 
@@ -123,7 +135,7 @@ export class Dictionaries {
             const result: any[] = [];
 
             for (let idx = 0; idx < dict.length; ++idx) {
-                result[idx] = this.sorted(dict[idx]);
+                result[idx] = sorted(dict[idx]);
             }
 
             return result;
@@ -135,7 +147,7 @@ export class Dictionaries {
             const sortedKeys = Object.keys(dict).sort();
 
             for (const key of sortedKeys) {
-                result[key] = this.sorted(dict[key]);
+                result[key] = sorted(dict[key]);
             }
 
             return result;
@@ -144,7 +156,7 @@ export class Dictionaries {
 
     }
 
-    public static deepCopy(dict: any): object {
+    export function deepCopy(dict: any): object {
 
         if (dict === undefined || dict === null) {
             // nothing to do here.
@@ -161,7 +173,7 @@ export class Dictionaries {
             const result: any[] = [];
 
             for (let idx = 0; idx < dict.length; ++idx) {
-                result[idx] = this.deepCopy(dict[idx]);
+                result[idx] = deepCopy(dict[idx]);
             }
 
             return result;
@@ -171,7 +183,7 @@ export class Dictionaries {
             const result: any = {};
 
             Object.keys(dict).forEach(key => {
-                result[key] = this.deepCopy(dict[key]);
+                result[key] = deepCopy(dict[key]);
             });
 
             return result;
@@ -190,7 +202,7 @@ export class Dictionaries {
      * // TODO: make this support generics properly.
      * @param dict
      */
-    public static onlyDefinedProperties(dict: any): any {
+    export function onlyDefinedProperties(dict: any): any {
 
         if (dict === undefined || dict === null) {
             // nothing to do here.
@@ -205,7 +217,7 @@ export class Dictionaries {
         const result: any = {};
 
         if (Array.isArray(dict)) {
-            return dict.map(current => this.onlyDefinedProperties(current));
+            return dict.map(current => onlyDefinedProperties(current));
         } else {
 
             for (const key of Object.keys(dict).sort()) {
@@ -215,7 +227,7 @@ export class Dictionaries {
                     continue;
                 }
 
-                result[key] = this.onlyDefinedProperties(value);
+                result[key] = onlyDefinedProperties(value);
             }
 
             return result;
@@ -229,7 +241,7 @@ export class Dictionaries {
      *
      * @param dict
      */
-    public static copyOf(dict: any): any {
+    export function copyOf(dict: any): any {
 
         if (dict === undefined || dict === null) {
             // nothing to do here.
@@ -244,7 +256,7 @@ export class Dictionaries {
         const result: any = {};
 
         Object.keys(dict).forEach(key => {
-            result[key] = this.copyOf(dict[key]);
+            result[key] = copyOf(dict[key]);
         });
 
         return result;
@@ -254,7 +266,7 @@ export class Dictionaries {
     /**
      * Easily convert an array to a dict.
      */
-    public static toDict<V>(values: ReadonlyArray<V>, converter: (value: V) => string): {[key: string]: V} {
+    export function toDict<V>(values: ReadonlyArray<V>, converter: (value: V) => string): {[key: string]: V} {
 
         const result: { [key: string]: V } = {};
 
@@ -266,7 +278,7 @@ export class Dictionaries {
 
     }
 
-    public static countOf<V>(dict: {[key: string]: V} | null | undefined) {
+    export function countOf<V>(dict: {[key: string]: V} | null | undefined) {
 
         return Optional.of(dict)
             .map(current => Object.keys(current).length)
@@ -274,7 +286,7 @@ export class Dictionaries {
 
     }
 
-    public static size<V>(dict: {[key: string]: V}) {
+    export function size<V>(dict: {[key: string]: V}) {
         return Object.keys(dict).length;
     }
 
@@ -285,7 +297,7 @@ export class Dictionaries {
      * mapping function and enters it into this map unless undefined or null.
      *
      */
-    public static computeIfAbsent<V>(dict: {[key: string]: V},
+    export function computeIfAbsent<V>(dict: {[key: string]: V},
                                      key: string,
                                      mappingFunction: (newKey: string) => V): V {
 
@@ -309,7 +321,7 @@ export class Dictionaries {
 
     }
 
-    public static putAll<V>(source: {[key: string]: V},
+    export function putAll<V>(source: {[key: string]: V},
                             target: {[key: string]: V} = {}) {
 
         for (const key of Object.keys(source)) {
@@ -322,7 +334,7 @@ export class Dictionaries {
      * Return true if the dictionary is empty and has no entries (null or
      * undefined too).
      */
-    public static empty(dict: {[key: string]: any} | null | undefined): boolean {
+    export function empty(dict: {[key: string]: any} | null | undefined): boolean {
 
         if (! dict) {
             return true;
@@ -332,7 +344,7 @@ export class Dictionaries {
 
     }
 
-    public static clear(dict: {[key: string]: any} | null | undefined) {
+    export function clear(dict: {[key: string]: any} | null | undefined) {
 
         if ( ! dict) {
             return;
@@ -347,8 +359,8 @@ export class Dictionaries {
     /**
      * Pretty printed and sorted JSON
      */
-    public static toJSON(obj: any) {
-        return JSON.stringify(this.sorted(obj), null, "  ")
+    export function toJSON(obj: any) {
+        return JSON.stringify(sorted(obj), null, "  ")
     }
 
 }
