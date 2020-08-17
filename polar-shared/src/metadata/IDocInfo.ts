@@ -11,6 +11,14 @@ import {IDocAuthor} from "./IDocAuthor";
 import {IThumbnail} from "./IThumbnail";
 import {IText} from "./Text";
 
+/**
+ * The type of URL of URL:
+ *
+ *  - download: This is a binary URL which is meant to be downloaded (PDF, EPUB, etc)
+ *  - landing: This is a landing page meant to be viewed in the browser.
+ */
+export type URLType = 'download' | 'landing';
+
 export interface IDocInfo {
 
     /**
@@ -58,6 +66,12 @@ export interface IDocInfo {
      * The network URL for the document where we originally fetched it.
      */
     url?: string;
+
+    /**
+     * The URL type for this document.  By default it is 'download' when not
+     * specified which was the previous default file format.
+     */
+    urlType?: URLType;
 
     /**
      * The last time this document was opened or null if it's never been
