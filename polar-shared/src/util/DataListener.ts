@@ -1,10 +1,6 @@
-export type ErrorHandlerCallback = (err: Error) => void;
-export type SnapshotUnsubscriber = () => void;
+import {SnapshotSubscriber} from "./Snapshots";
 
-export interface DataSubscriber {
-    // tslint:disable-next-line:callable-types
-    <D>(value: D | undefined, onError?: ErrorHandlerCallback): SnapshotUnsubscriber;
-}
+export type SnapshotUnsubscriber = () => void;
 
 export type OnUpdatedCallback = <D>(value: D | undefined) => void;
 
@@ -31,7 +27,7 @@ export class DefaultDataListener<D> implements DataListener<D> {
      * @param subscriber The subscriber to provide the data as well as an unsubscriber.
      * @param onUpdated An optional callback to also update us in real time.
      */
-    constructor(private readonly subscriber: DataSubscriber,
+    constructor(private readonly subscriber: SnapshotSubscriber<D>,
                 private readonly onUpdated?: OnUpdatedCallback) {
 
         const onNext = (data: D | undefined) => {
@@ -66,6 +62,7 @@ export class NullDataListener<D> implements DataListener<D> {
     }
 
     public unsubscribe(): void {
+        // noop
     }
 
 }
@@ -83,6 +80,7 @@ export class StaticDefaultDataListener<D> implements DataListener<D> {
     }
 
     public unsubscribe(): void {
+        // noop
     }
 
 }
