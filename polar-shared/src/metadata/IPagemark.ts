@@ -3,7 +3,31 @@ import {PagemarkMode} from "./PagemarkMode";
 import {IAnnotation} from "./IAnnotation";
 import {INote} from "./INote";
 import {IPagemarkRect} from "./IPagemarkRect";
+import { IPagemarkRange } from "./IPagemarkRange";
 
+/**
+ * Represents a Pagemark that covers a specific page.
+ *
+ * PDF:
+ *
+ * PDF pagemarks are placed by the pageNumber and 'rect' which specifies whic
+ * part of the page is covered.
+ *
+ * When you want to create multiple pagemarks you create one for each page.
+ *
+ * EPUB:
+ *
+ * EPUBs pagemarks are a bit different as EPUBs are fluid so they're anchored
+ * to one of the two strategies.
+ *
+ * - Entire page covered is just a pagemark on the give page with percentage as
+ *   100.  This is normally used for ranges so that we don't have to lookup
+ *   all the EPUB CFIs on those pages which would take time.
+ *
+ * - With 'anchors' that specify the start and end of the pagemark with an
+ *   EPUB CFI and a 'percentage' of the page covered for tracking in the UI.
+ *
+ */
 export interface IPagemark extends IAnnotation {
 
     /**
@@ -55,5 +79,7 @@ export interface IPagemark extends IAnnotation {
      *
      */
     batch?: string;
+
+    range?: IPagemarkRange;
 
 }
