@@ -38,7 +38,11 @@ export class Percentages {
 
     public static calculate(value: number,
                             total: number,
-                            opts: CalculateOpts = {}): number {
+                            opts: CalculateOpts = {}): Percentage100 {
+
+        if (value > total) {
+            throw new Error(`value ${value} is greater than total ${total}`);
+        }
 
         const raw = 100 * (value / total);
 
@@ -49,7 +53,7 @@ export class Percentages {
         return Percentages.round(raw);
     }
 
-    public static round(perc: number): number {
+    public static round(perc: number): Percentage100 {
         return Math.round(perc * 100) / 100;
     }
 
