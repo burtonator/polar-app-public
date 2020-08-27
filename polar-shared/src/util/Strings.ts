@@ -9,6 +9,18 @@ export type Char = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | '
 
 export namespace Strings {
 
+    /**
+     * Join an array of strings, with spacing but without duplicate whitespace
+     * between each one.  Each item could have spacing itself os we have to
+     * merge them properly.
+     */
+    export function joinWithSpacing(values: ReadonlyArray<string | undefined | null>) {
+        return values.filter(current => current !== undefined && current !== null)
+                     .map(current => current!)
+                     .map(value => value.trim())
+                     .join(" ");
+    }
+
     export function generate(len: number, c: Char = 'x') {
 
         let buff = "";
