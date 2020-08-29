@@ -7,8 +7,8 @@
     "test": "echo no tests",
     "clean": "rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin && rm -rf dist",
     "compile": "tsc",
-    "dist": "unset NODE_ENV && unset WEBPACK_TARGET && npm run-script webpack && ./dist.sh",
-    "webpack": "npx webpack --config=webpack.config.js"
+    "webpack": "npx webpack --config=webpack.config.js",
+    "dist": "unset NODE_ENV && unset WEBPACK_TARGET && npm run-script clean && npm run-script webpack && ./dist.sh"
   },
   "author": "",
   "license": "ISC",

@@ -86,8 +86,8 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             name: '[name]-[contenthash].[ext]',
-                            outputPath: 'dist/assets',
-                            publicPath: 'dist/assets'
+                            outputPath: 'assets',
+                            publicPath: '/assets'
                         }
                     },
                 ],
@@ -115,8 +115,8 @@ module.exports = {
     },
     devtool: isDev ? "inline-source-map" : false,
     output: {
-        path: path.resolve(__dirname),
-        filename: 'dist/[name]-bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name]-bundle.js',
         // publicPath: '/web/js/apps'
     },
     node: {
@@ -132,8 +132,8 @@ module.exports = {
             patterns: [
                 // this is a bit of a hack and it would be better if we supported
                 // this better and managed as part of the build system
-                { from: '../../../node_modules/pdfjs-dist/cmaps', to: './dist/pdfjs-dist/cmaps' },
-                { from: '../../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './dist/pdfjs-dist' }
+                { from: '../../../node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps' },
+                { from: '../../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist' }
             ],
         }),
     ],

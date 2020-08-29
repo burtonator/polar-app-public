@@ -11,4 +11,4 @@ cp manifest.json ${DEST}
 
 ./bin/generate-manifest.js
 
-zip -r polar-web-extension.zip dist
+(cd dist && zip -r ../polar-web-extension.zip .)

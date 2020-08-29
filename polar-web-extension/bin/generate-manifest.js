@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
 // prod or beta
-const POLAR_EXTENSION_TYPE = process.env.POLAR_EXTENSION_TYPE || 'PROD';
+const POLAR_EXTENSION_TYPE = process.env.POLAR_EXTENSION_TYPE;
+
+if ( ! POLAR_EXTENSION_TYPE) {
+    console.error("MUST specify POLAR_EXTENSION_TYPE as either PROD or BETA");
+    process.exit(1);
+}
 
 if (! ['PROD', 'BETA'].includes(POLAR_EXTENSION_TYPE)) {
     throw new Error("POLAR_EXTENSION_TYPE must be PROD or BETA")
