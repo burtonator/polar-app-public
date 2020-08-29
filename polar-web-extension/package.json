@@ -5,7 +5,7 @@
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo no tests",
-    "clean": "rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin && rm -rf dist",
+    "clean": "rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin && rm -rf dist && rm -rf polar-web-extension.zip",
     "compile": "tsc",
     "webpack": "npx webpack --config=webpack.config.js",
     "dist": "unset NODE_ENV && unset WEBPACK_TARGET && npm run-script clean && npm run-script webpack && ./dist.sh"
