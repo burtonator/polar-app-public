@@ -6,7 +6,7 @@ import {PDFDocs} from "./PDFDocs";
 export class PDFText {
 
     public static async getText(docPathOrURL: PathOrURLStr,
-                                callback: (page: number, textContent: TextContent) => void) {
+                                callback: (pageNum: number, textContent: TextContent) => void) {
 
         const docURL = await URLs.toURL(docPathOrURL);
 
@@ -14,10 +14,10 @@ export class PDFText {
 
         const doc = await pdfLoadingTask.promise;
 
-        for (let idx = 1; idx <= doc.numPages; idx++) {
-            const page = await doc.getPage(idx);
+        for (let pageNum = 1; pageNum <= doc.numPages; pageNum++) {
+            const page = await doc.getPage(pageNum);
             const textContent = await page.getTextContent();
-            callback(idx, textContent);
+            callback(pageNum, textContent);
         }
 
     }

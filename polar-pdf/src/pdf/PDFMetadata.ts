@@ -1,4 +1,3 @@
-import {Files} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DOIs} from './DOIs';
