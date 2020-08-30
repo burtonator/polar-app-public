@@ -90,4 +90,12 @@ describe('Strings', function() {
 
     });
 
+    describe('isWhitespace', function() {
+
+        it("basic", function() {
+            assert.ok(Strings.isWhitespace(' '));
+            assert.isFalse(Strings.isWhitespace('📸'));
+        });
+
+    });
 });

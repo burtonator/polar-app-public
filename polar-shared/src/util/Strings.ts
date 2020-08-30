@@ -183,10 +183,14 @@ export namespace Strings {
      */
     export function isWhitespace(c: string[1]) {
 
-        if (c.length !== 1) {
+        if (c.length === 0) {
+            throw new Error("String is empty");
+        }
+
+        if ([...c].length > 1) {
             // TODO: only one character works. If it's longer than one character
             // this will break
-            throw new Error("String too long");
+            throw new Error(`String too long: '${c}'`);
         }
 
         switch (c) {
