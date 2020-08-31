@@ -198,6 +198,41 @@ export class ArrayStream<T> {
 
     }
 
+    /**
+     * Similar to group but we provide a predicate that computes whether two
+     * consecutive items are part of the same group.
+     *
+     * @param predicate Return true if the two items belong to the same group.
+     */
+    public merge(predicate: (v0: T, v1: T) => boolean) {
+
+        let key: number = 0;
+        let prev: T | undefined;
+
+        function toKey(val: T): number {
+
+            try {
+
+                if (!prev) {
+                    // this is the first record so obviously it's in its own key
+                    return key;
+                }
+
+                if (val !== prev) {
+                    ++key;
+                }
+
+                return key;
+
+            } finally {
+                prev = val;
+            }
+
+        }
+
+        return this.group(val => '' + toKey(val));
+
+    }
 
     /**
      * Map over the values, returning a new ArrayStream.
