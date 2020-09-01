@@ -1,6 +1,6 @@
 {
   "name": "polar-react-svg-icons",
-  "version": "2.0.0-beta.17",
+  "version": "2.0.0-beta.18",
   "description": "",
   "scripts": {
     "test": "echo",
@@ -21,7 +21,7 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "polar-react": "^2.0.0-beta.17"
+    "polar-react": "^2.0.0-beta.18"
   },
   "files": [
     "**/*.js",
