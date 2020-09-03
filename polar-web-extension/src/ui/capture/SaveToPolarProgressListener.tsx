@@ -39,7 +39,7 @@ export const SaveToPolarProgressListener = deepMemo(() => {
     const [progress, setProgress] = React.useState<WriteFileProgress | undefined>()
 
     useChromeMessageListener<WriteFileProgress>('progress', newProgress => {
-        console.log("progress", newProgress);
+        console.log(`progress: type: ${newProgress.type} value: ${newProgress.value}`, newProgress);
         setProgress(progress);
     })
 
