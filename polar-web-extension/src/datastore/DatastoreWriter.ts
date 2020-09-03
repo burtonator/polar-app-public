@@ -5,6 +5,7 @@ import {DefaultPersistenceLayer} from "polar-bookshelf/web/js/datastore/DefaultP
 import {Firestore} from "polar-bookshelf/web/js/firebase/Firestore";
 import {DocInfo} from "polar-bookshelf/web/js/metadata/DocInfo";
 import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocImporter";
+import {WriteFileProgressListener} from "polar-bookshelf/web/js/datastore/Datastore";
 
 export namespace DatastoreWriter {
 
@@ -21,6 +22,8 @@ export namespace DatastoreWriter {
 
         readonly fingerprint?: string;
         readonly nrPages?: number;
+
+        readonly progressListener: WriteFileProgressListener;
     }
 
     export interface WrittenDoc {
@@ -72,7 +75,8 @@ export namespace DatastoreWriter {
         const docImporterOpts: DocImporterOpts = {
             docInfo,
             docImport,
-            consistency: 'committed'
+            consistency: 'committed',
+            progressListener: opts.progressListener
         }
 
         const imported = await DocImporter.importFile(persistenceLayerProvider,

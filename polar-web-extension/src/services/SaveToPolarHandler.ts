@@ -6,14 +6,16 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
 import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {
+    WriteFileProgress,
+    WriteFileProgressListener
+} from "polar-bookshelf/web/js/datastore/Datastore";
 import WrittenDoc = DatastoreWriter.WrittenDoc;
 import IWriteOpts = DatastoreWriter.IWriteOpts;
-import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocImporter";
 
 export namespace SaveToPolarHandler {
 
     import ICapturedEPUB = ReadabilityCapture.ICapturedEPUB;
-    import IDocImport = DocImporter.IDocImport;
 
     export interface ICapturedPDF {
         readonly url: URLStr;
@@ -39,7 +41,8 @@ export namespace SaveToPolarHandler {
         await Tabs.loadLinkInActiveTab(url);
     }
 
-    function saveToPolarAsPDF(capture: ICapturedPDF) {
+    function saveToPolarAsPDF(capture: SaveToPolarHandler.ICapturedPDF,
+                              progressListener: WriteFileProgressListener) {
 
         console.log("saveToPolarAsPDF")
 
@@ -51,7 +54,8 @@ export namespace SaveToPolarHandler {
                 doc: blob,
                 type: 'pdf',
                 basename,
-                url: capture.url
+                url: capture.url,
+                progressListener
             }
 
             const writtenDoc = await DatastoreWriter.write(opts)
@@ -65,7 +69,8 @@ export namespace SaveToPolarHandler {
 
     }
 
-    function saveToPolarAsEPUB(capture: ICapturedEPUB) {
+    function saveToPolarAsEPUB(capture: ReadabilityCapture.ICapturedEPUB,
+                               progressListener: WriteFileProgressListener) {
 
         console.log("saveToPolarAsEPUB")
 
@@ -87,7 +92,8 @@ export namespace SaveToPolarHandler {
                 url: capture.url,
                 basename,
                 fingerprint,
-                nrPages: 1
+                nrPages: 1,
+                progressListener
             }
 
             const writtenDoc = await DatastoreWriter.write(opts)
@@ -103,7 +109,7 @@ export namespace SaveToPolarHandler {
 
     export function register() {
 
-        chrome.runtime.onMessage.addListener((message) => {
+        chrome.runtime.onMessage.addListener((message, sender) => {
 
             if (! message.type) {
                 console.warn("No message type: ", message)
@@ -118,13 +124,15 @@ export namespace SaveToPolarHandler {
 
                     const request = <SaveToPolarRequest> message;
 
+                    const progressListener = createProgressListener(sender);
+
                     switch (request.strategy) {
 
                         case "pdf":
-                            saveToPolarAsPDF(request.value)
+                            saveToPolarAsPDF(request.value, progressListener)
                             break;
                         case "epub":
-                            saveToPolarAsEPUB(request.value)
+                            saveToPolarAsEPUB(request.value, progressListener)
                             break;
                         default:
                             console.warn("Unable to handle request strategy: ", request);
@@ -145,3 +153,20 @@ export namespace SaveToPolarHandler {
 
 }
 
+function createProgressListener(sender: chrome.runtime.MessageSender): WriteFileProgressListener {
+    return (progress: WriteFileProgress) => {
+
+        if (! sender.tab || ! sender.tab.id) {
+            console.warn("Sender is not a tab (not sending progress).");
+            return;
+        }
+
+        const message = {
+            type: 'progress',
+            value: progress
+        };
+
+        chrome.tabs.sendMessage(sender.tab.id, message)
+
+    }
+}
