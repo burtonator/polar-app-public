@@ -42,7 +42,8 @@ export namespace SaveToPolarHandler {
     }
 
     function saveToPolarAsPDF(capture: SaveToPolarHandler.ICapturedPDF,
-                              progressListener: WriteFileProgressListener) {
+                              progressListener: WriteFileProgressListener,
+                              errorReporter: (err: Error) => void) {
 
         console.log("saveToPolarAsPDF")
 
@@ -63,14 +64,14 @@ export namespace SaveToPolarHandler {
 
         }
 
-        // FIXME: report the error to the chrome extension...
         doAsync()
-            .catch(err => console.error(err));
+            .catch(errorReporter);
 
     }
 
     function saveToPolarAsEPUB(capture: ReadabilityCapture.ICapturedEPUB,
-                               progressListener: WriteFileProgressListener) {
+                               progressListener: WriteFileProgressListener,
+                               errorReporter: (err: Error) => void) {
 
         console.log("saveToPolarAsEPUB")
 
@@ -101,9 +102,8 @@ export namespace SaveToPolarHandler {
 
         }
 
-        // FIXME: report the error to the chrome extension...
         doAsync()
-            .catch(err => console.error(err));
+            .catch(errorReporter);
 
     }
 
@@ -125,14 +125,15 @@ export namespace SaveToPolarHandler {
                     const request = <SaveToPolarRequest> message;
 
                     const progressListener = createProgressListener(sender);
+                    const errorReporter = createErrorReporter(sender);
 
                     switch (request.strategy) {
 
                         case "pdf":
-                            saveToPolarAsPDF(request.value, progressListener)
+                            saveToPolarAsPDF(request.value, progressListener, errorReporter)
                             break;
                         case "epub":
-                            saveToPolarAsEPUB(request.value, progressListener)
+                            saveToPolarAsEPUB(request.value, progressListener, errorReporter)
                             break;
                         default:
                             console.warn("Unable to handle request strategy: ", request);
@@ -169,4 +170,35 @@ function createProgressListener(sender: chrome.runtime.MessageSender): WriteFile
         chrome.tabs.sendMessage(sender.tab.id, message)
 
     }
+}
+
+export interface IError {
+    readonly message: string;
+    readonly stack?: string;
+}
+
+function createErrorReporter(sender: chrome.runtime.MessageSender): (err: Error) => void {
+    return (err: Error) => {
+
+        // make sure to always report it to the console in the background tab
+        // so that we have the error there too.
+        console.error(err);
+
+        if (! sender.tab || ! sender.tab.id) {
+            console.warn("Sender is not a tab (not sending progress).");
+            return;
+        }
+
+        const message = {
+            type: 'error',
+            value: {
+                message: err.message,
+                stack: err.stack
+            }
+        };
+
+        chrome.tabs.sendMessage(sender.tab.id, message)
+
+    }
+
 }
