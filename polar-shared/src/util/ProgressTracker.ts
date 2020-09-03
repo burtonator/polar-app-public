@@ -147,12 +147,13 @@ export interface Progress extends Readonly<MutableProgress> {
 
 }
 
-export interface BaseProgress<V> {
+export interface BaseProgress<T, V> {
+    readonly type: T;
     readonly task: TaskID;
     readonly completed: number;
     readonly total: number;
     readonly duration: number;
-    readonly progress: Percentage;
+    readonly value: Percentage;
     readonly id: string;
     readonly timestamp: UnixTimeMS;
 
@@ -166,14 +167,14 @@ export interface BaseProgress<V> {
 /**
  * A determinate progress message with a percentage complete
  */
-export interface DeterminateProgress extends BaseProgress<Progress>{
+export interface DeterminateProgress extends BaseProgress<'determinate', Percentage>{
 
 }
 
 /**
  * A indeterminate progress message with progress 'indeterminate'
  */
-export interface IndeterminateProgress extends BaseProgress<'indeterminate'>{
+export interface IndeterminateProgress extends BaseProgress<'indeterminate', undefined>{
 
 }
 

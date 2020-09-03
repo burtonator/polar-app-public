@@ -8,6 +8,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const mode = process.env.NODE_ENV || 'production';
 const isDev = process.env.NODE_ENV === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
+const devtool = isDev ? "inline-source-map" : "source-map";
 
 const workers = require('os').cpus().length - 1;
 
@@ -113,7 +114,7 @@ module.exports = {
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
-    devtool: isDev ? "inline-source-map" : false,
+    devtool,
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name]-bundle.js',

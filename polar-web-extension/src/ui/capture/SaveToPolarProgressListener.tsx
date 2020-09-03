@@ -40,15 +40,19 @@ export const SaveToPolarProgressListener = deepMemo(() => {
 
     useChromeMessageListener<WriteFileProgress>('progress', newProgress => {
         console.log("progress", newProgress);
+        setProgress(progress);
     })
 
     if (! progress) {
         return null;
     }
 
+    if (progress.type === 'determinate') {
+        return <DeterminateActivityProgress value={progress.value}/>
+    }
+
     // if (progress.)
     //
-    // return <DeterminateActivityProgress/>
 
     return null;
 

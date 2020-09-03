@@ -11,11 +11,11 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import {Theme} from '@material-ui/core/styles/createMuiTheme';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {SaveToPolarHandler} from "../../services/SaveToPolarHandler";
-import {NavLogo} from "polar-bookshelf/apps/repository/js/nav/NavLogo";
+import {SaveToPolarProgressListener} from './SaveToPolarProgressListener';
+import {deepMemo} from 'polar-bookshelf/web/js/react/ReactUtils';
+import {NavLogoText} from "polar-bookshelf/apps/repository/js/nav/NavLogoText";
 import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
 import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
-import { SaveToPolarProgressListener } from './SaveToPolarProgressListener';
-import { deepMemo } from 'polar-bookshelf/web/js/react/ReactUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,7 +59,24 @@ export const CaptureRoot = deepMemo(() => {
             <AppBar position="static" color="inherit">
                 <Toolbar>
 
-                    <NavLogo/>
+                    <div style={{
+                             display: 'flex',
+                             alignItems: 'center',
+                             flexWrap: 'nowrap',
+                             flexGrow: 1,
+                         }}>
+
+                        {/*TODO: we need a way to find the URL of the chrome */}
+                        {/*extension so that we can load assets.  We can't load */}
+                        {/*from / because that will be the SITE not our extension.*/}
+
+                        {/*TODO apparent we can call chrome.runtime.getURL but
+                           that's nasty.*/}
+
+                        {/*<NavLogoImage/>*/}
+                        <NavLogoText/>
+
+                    </div>
 
                     <Button
                         variant="contained"
