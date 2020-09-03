@@ -2,7 +2,6 @@ import React from 'react';
 import {PreviewContent} from './PreviewContent';
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import {useCaptureContentContext} from './CaptureApp';
@@ -12,8 +11,11 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import {Theme} from '@material-ui/core/styles/createMuiTheme';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {SaveToPolarHandler} from "../../services/SaveToPolarHandler";
+import {NavLogo} from "polar-bookshelf/apps/repository/js/nav/NavLogo";
 import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
 import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
+import { SaveToPolarProgressListener } from './SaveToPolarProgressListener';
+import { deepMemo } from 'polar-bookshelf/web/js/react/ReactUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export const CaptureRoot = () => {
+export const CaptureRoot = deepMemo(() => {
 
     const captureContentContext = useCaptureContentContext();
 
@@ -57,9 +59,7 @@ export const CaptureRoot = () => {
             <AppBar position="static" color="inherit">
                 <Toolbar>
 
-                    <Typography variant="h6" className={classes.title}>
-                        Polar
-                    </Typography>
+                    <NavLogo/>
 
                     <Button
                         variant="contained"
@@ -80,6 +80,8 @@ export const CaptureRoot = () => {
                 <PreviewContent/>
             </div>
 
+            <SaveToPolarProgressListener/>
+
         </div>
     );
-}
+});
