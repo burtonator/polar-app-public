@@ -2,12 +2,11 @@ import {DataURL} from 'polar-shared/src/util/DataURLs';
 import {Preconditions} from "polar-shared/src/Preconditions";
 
 const EXTENSION_IDS = [
-    "alennbmnfgmkcmfkcnlhpofncmalokfc", // dev
-    "djhpkkgkedcpphgmbekmmeoalamnibfg",
+    "mklidoahhflhlpcpigokeckcipaibopd", // beta
     "jkfdkjomocoaljglgddnmhcbolldcafd"  // prod
 ];
 
-export namespace webextensions {
+export namespace WebExtensions {
 
     export class Runtime {
 
