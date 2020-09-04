@@ -1,6 +1,6 @@
 import {Results} from 'polar-shared/src/util/Results';
 import {Handlers} from './Handlers';
-import {webextensions} from 'polar-web-extension-api/src/WebExtensions';
+import {WebExtensions} from 'polar-web-extension-api/src/WebExtensions';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
@@ -98,7 +98,7 @@ export class BrowserScreenshotHandler {
     }
 
     private static async captureTabImage() {
-        return await Stopwatches.withStopwatchAsync(() => webextensions.Tabs.captureVisibleTab(),
+        return await Stopwatches.withStopwatchAsync(() => WebExtensions.Tabs.captureVisibleTab(),
                                                     stopwatch => console.log("captureVisibleTab: " + stopwatch));
     }
 
@@ -116,3 +116,5 @@ export interface BrowserScreenshot {
 interface ScreenshotRequest {
     readonly rect?: ILTRect;
 }
+
+
