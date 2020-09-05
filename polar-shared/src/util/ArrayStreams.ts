@@ -288,6 +288,8 @@ export class ArrayStream<T> {
     }
 
     public collect(): ReadonlyArray<T> {
+        // TODO: think about adding a mapping function to the end with the
+        // default to just map to ReadonlyArray<T>
         return [...this.values];
     }
 

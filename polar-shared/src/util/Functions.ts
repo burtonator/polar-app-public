@@ -131,45 +131,6 @@ export class Functions {
     }
 
     /**
-     *
-     * @Deprecated use createSiblings as createSiblingTuples implies that this
-     * is a tuple and it's actually a triple.
-     */
-    public static createSiblingTuples(arrayLikeObject: any) {
-        return Functions.createSiblings(arrayLikeObject);
-    }
-
-    /**
-     * Go over the array-like object and return tuples with prev, curr, and next
-     * properties so that we can peek at siblings easily.  If the prev and / or
-     * next are not present these values are null.
-     *
-     * This can be used for algorithms that need to peek ahead or behind
-     * inside an iterative algorithm
-     *
-     */
-    public static createSiblings<T>(arr: ReadonlyArray<T>): ReadonlyArray<IArrayPosition<T>> {
-
-        Preconditions.assertPresent(arr, "arr");
-
-        const result: IArrayPosition<T>[] = [];
-
-        for (let idx = 0; idx < arr.length; ++idx) {
-
-            result.push({
-                curr: arr[idx],
-                prev: Optional.of(arr[idx - 1]).getOrUndefined(),
-                next: Optional.of(arr[idx + 1]).getOrUndefined()
-            });
-
-        }
-
-        return result;
-
-    }
-
-
-    /**
      * Create a function that is a singleton and only runs once.
      */
     public static createAsyncSingleton(delegate: () => Promise<void>) {
@@ -194,22 +155,6 @@ export class Functions {
 
 }
 
-/**
- * Represents a 'position' object for createSiblings() that has a curr
- * (current), prev (previous), and next references for working with lists of
- * objects.  The position allow sus to know where we currently are but also the
- * previous and future states.
- */
-export interface IArrayPosition<T> {
-
-    readonly prev?: T;
-
-    readonly curr: T;
-
-    readonly next?: T;
-
-}
-
 export type KeyValueCallback = (key: string, value: any) => void;
 
 export function forDict(dict: {[key: string]: any}, callback: KeyValueCallback) {
@@ -218,14 +163,6 @@ export function forDict(dict: {[key: string]: any}, callback: KeyValueCallback) 
 
 export function forOwnKeys(dict: {[key: string]: any}, callback: KeyValueCallback) {
     return Functions.forOwnKeys(dict, callback);
-}
-
-export function createSiblingTuples(arrayLikeObject: any) {
-    return Functions.createSiblingTuples(arrayLikeObject);
-}
-
-export function createSiblings<T>(arr: ReadonlyArray<T>) {
-    return Functions.createSiblings(arr);
 }
 
 export function nullableCallback<T>(delegate: Callback1<T> | undefined) {

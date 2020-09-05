@@ -170,34 +170,6 @@ export namespace Arrays {
     }
 
     /**
-     * Go over the array-like object and return tuples with prev, curr, and next
-     * properties so that we can peek at siblings easily.  If the prev and / or
-     * next are not present these values are null.
-     *
-     * This can be used for algorithms that need to peek ahead or behind
-     * inside an iterative algorithm
-     */
-    export function createSiblings<T>(arrayLikeObject: T[]) {
-
-        Preconditions.assertPresent(arrayLikeObject, "arrayLikeObject");
-
-        const result = [];
-
-        for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
-
-            result.push(new ArrayPosition<T>(
-                Optional.of(arrayLikeObject[idx - 1]).getOrUndefined(),
-                arrayLikeObject[idx],
-                Optional.of(arrayLikeObject[idx + 1]).getOrUndefined()
-            ));
-
-        }
-
-        return result;
-
-    }
-
-    /**
      * Take the input and return it as batch of lists based on the size.
      *
      * For example, if the batchSize is 2, and the input is a array of
@@ -331,28 +303,6 @@ export namespace Arrays {
 }
 
 export type AsyncCallback<T> = (current: T) => Promise<void>;
-
-/**
- * Represents a 'position' object for createSiblings() that has a curr
- * (current), prev (previous), and next references for working with lists of
- * objects.  The position allow sus to know where we currently are but also the
- * previous and future states.
- */
-class ArrayPosition<T> {
-
-    public readonly prev?: T;
-
-    public readonly curr: T;
-
-    public readonly next?: T;
-
-    constructor(prev: T | undefined, curr: T, next: T | undefined) {
-        this.prev = prev;
-        this.curr = curr;
-        this.next = next;
-    }
-
-}
 
 /**
  * An array that might have missing items.

@@ -201,7 +201,7 @@ export namespace Strings {
             case '\n':
             case '\v':
             case '\t':
-            case '\u00A0':
+            case '\u00A0': // this maps to nbsp
             case '\u2028':
             case '\u2029':
                 return true;

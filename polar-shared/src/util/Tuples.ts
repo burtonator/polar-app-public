@@ -1,8 +1,7 @@
-
 import {Optional} from './ts/Optional';
 import {Preconditions} from "../Preconditions";
 
-export class Tuples {
+export namespace Tuples {
 
     /**
      * Go over the array-like object and return tuples with prev, curr, and next
@@ -13,24 +12,20 @@ export class Tuples {
      * inside an iterative algorithm
      *
      */
-    public static createSiblings<T>(arr: ReadonlyArray<T>) {
+    export function createSiblings<T>(arr: ReadonlyArray<T>): ReadonlyArray<ISibling<T>> {
 
         Preconditions.assertPresent(arr, "arr");
 
-        const result: Array<IArrayElement<T>> = [];
-
-        for (let idx = 0; idx < arr.length; ++idx) {
-
-            result.push({
+        function toSibling(value: T, idx: number): ISibling<T> {
+            return {
                 idx,
-                curr: arr[idx],
+                curr: value,
                 prev: Optional.of(arr[idx - 1]).getOrUndefined(),
                 next: Optional.of(arr[idx + 1]).getOrUndefined()
-            });
-
+            }
         }
 
-        return result;
+        return arr.map(toSibling);
 
     }
 
@@ -42,7 +37,7 @@ export class Tuples {
  * objects.  The position allow sus to know where we currently are but also the
  * previous and future states.
  */
-export interface IArrayElement<T> {
+export interface ISibling<T> {
 
     readonly idx: number;
 
