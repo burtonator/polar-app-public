@@ -26,7 +26,8 @@
     "matches": [
       "*://*.getpolarized.io/*",
       "*://app.getpolarized.io/*",
-      "*://beta.getpolarized.io/*"
+      "*://beta.getpolarized.io/*",
+      "http://localhost:8050/*"
     ]
   },
   "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com https://apis.google.com; object-src 'self'",
