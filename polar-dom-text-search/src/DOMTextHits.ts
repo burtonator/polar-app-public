@@ -1,9 +1,10 @@
 import {DOMTextHit} from "./DOMTextHit";
 import {NodeTextRegion} from "./NodeTextRegion";
+import {PlainTextStr} from "polar-shared/src/util/Strings";
 
 export namespace DOMTextHits {
 
-    export function extract(hits: ReadonlyArray<DOMTextHit>): string {
+    export function extract(hits: ReadonlyArray<DOMTextHit>): PlainTextStr {
 
         function hitToText(hit: DOMTextHit): string {
 

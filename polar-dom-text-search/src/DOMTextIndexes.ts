@@ -1,17 +1,13 @@
-import {CharPointers} from "./CharPointers";
-import {Preconditions} from "polar-shared/src/Preconditions";
 import {DOMTextIndex} from "./DOMTextIndex";
 import {IPointer} from "./IPointer";
 import {INodeText} from "./INodeText";
+import {CharPointers} from "./CharPointers";
+import { Preconditions } from "polar-shared/src/Preconditions";
 
-/**
- * Provides a framework to search text within a DOM and jump to to the elements
- * that contain that text.
- */
-export namespace DOMTextSearch {
+export namespace DOMTextIndexes {
 
-    export function createIndex(doc: Document = document,
-                                root: Node = document.body): DOMTextIndex {
+    export function create(doc: Document = document,
+                           root: Node = document.body): DOMTextIndex {
 
         Preconditions.assertPresent(doc, 'doc');
         Preconditions.assertPresent(root, 'root');
@@ -60,7 +56,6 @@ export namespace DOMTextSearch {
 
                 const text = nodeValue;
                 const nodeID = index++;
-
                 const charPointers = CharPointers.parse(text);
                 const newPointers = CharPointers.toPointers(nodeID, node, charPointers);
                 pointers.push(...newPointers);

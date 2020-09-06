@@ -195,15 +195,15 @@ export namespace Strings {
 
         switch (c) {
 
-            case ' ':
-            case '\f':
-            case '\r':
-            case '\n':
-            case '\v':
-            case '\t':
+            case ' ':      // basic space
+            case '\f':     // form feed
+            case '\r':     // return
+            case '\n':     // newline
+            case '\v':     // vertical tab
+            case '\t':     // tab
             case '\u00A0': // this maps to nbsp
-            case '\u2028':
-            case '\u2029':
+            case '\u2028': // unicode 'line separator'
+            case '\u2029': // unicode 'paragraph separator'
                 return true;
             default:
                 return false;

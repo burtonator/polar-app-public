@@ -206,6 +206,9 @@ export class ArrayStream<T> {
      */
     public merge(predicate: (v0: T, v1: T) => boolean) {
 
+        // FIXME/WARNING: I think this function isn't implemented correctly because
+        // I'm not even using the predicate properly.
+
         let key: number = 0;
         let prev: T | undefined;
 

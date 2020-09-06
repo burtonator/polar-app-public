@@ -15,9 +15,4 @@ export interface DOMTextHit {
      */
     readonly regions: ReadonlyArray<NodeTextRegion>;
 
-    /**
-     * Where to resume when searching again.
-     */
-    readonly resume: number;
-
 }

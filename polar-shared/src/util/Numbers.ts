@@ -16,6 +16,10 @@ export class Numbers {
 
     }
 
+    public static toString(value: number): string {
+        return '' + value;
+    }
+
     public static sum(...values: number[]) {
         return values.reduce(Reducers.SUM, 0);
     }

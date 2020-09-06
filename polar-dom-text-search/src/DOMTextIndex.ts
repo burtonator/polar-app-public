@@ -1,123 +1,45 @@
-import {createSiblings} from "polar-shared/src/util/Functions";
-import {IPointer, PointerType} from "./IPointer";
+import {IPointer} from "./IPointer";
 import {INodeText} from "./INodeText";
 import {Whitespace} from "./Whitespace";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {NodeTextRegion, MutableNodeTextRegion} from "./NodeTextRegion";
 import {DOMTextHit} from "./DOMTextHit";
-import { isPresent } from "polar-shared/src/Preconditions";
-import { Strings } from "polar-shared/src/util/Strings";
+import {Strings} from "polar-shared/src/util/Strings";
+import {ITextLookupIndex, TextLookupIndexes} from "./TextLookupIndexes";
+import {QueryRegexps} from "./QueryRegExps";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
-export interface SearchOpts {
+export interface FindOpts {
+
+    /**
+     * True if we should be case insensitive
+     */
     readonly caseInsensitive?: boolean;
+
 }
 
-export interface ToStringOpts {
-    readonly caseInsensitive?: boolean;
+export interface SearchOpts extends FindOpts {
+
+    /**
+     * The max number of hits.
+     */
+    readonly limit?: number;
+
 }
 
 export type PointerIndex = ReadonlyArray<IPointer>;
 
-interface TextLookupIndex {
-
-    /**
-     * The text of the content.
-     */
-    readonly text: string;
-
-    /**
-     * The pointer lookup.  The value could be undefined which means it's just
-     * whitespace
-     */
-    readonly lookup: ReadonlyArray<IPointer | undefined>;
-
-}
-
-namespace TextLookupIndexes {
-
-    /**
-     * Find the pointers from a given start and end offset within the text.
-     */
-    export function lookup(lookup: ReadonlyArray<IPointer | undefined>,
-                           start: number,
-                           end: number): ReadonlyArray<IPointer> {
-
-        const result = [];
-
-        for (let idx = start; idx <= end; ++idx) {
-            const pointer = lookup[idx];
-
-            if (pointer) {
-                result.push(pointer);
-            }
-
-        }
-
-       return result;
-
-    }
-
-
-    /**
-     * Join hits to get contiguous text on nodes that need highlights.
-     */
-    export function mergeToRegionsByNode(pointers: ReadonlyArray<IPointer>): ReadonlyArray<NodeTextRegion> {
-
-        const result: MutableNodeTextRegion[] = [];
-
-        const siblings = createSiblings(pointers);
-
-        for (const entry of siblings) {
-
-            const prevNode = entry.prev?.node;
-            const currNode = entry.curr.node;
-
-            if (entry.curr.type !== PointerType.Literal) {
-                continue;
-            }
-
-            if (prevNode !== currNode) {
-                // should be true on the first one so that we create an empty
-                // array the first time for the first record
-                result.push({
-                    nodeID: entry.curr.nodeID,
-                    start: entry.curr.offset,
-                    end: entry.curr.offset,
-                    node: entry.curr.node
-                });
-            }
-
-            result[result.length - 1].end = entry.curr.offset;
-
-        }
-
-        return result;
-
-    }
-
-}
-
-function prepareQuery(query: string, opts: SearchOpts) {
-    return Whitespace.canonicalize(Whitespace.collapse(opts.caseInsensitive ? query.toLocaleLowerCase() : query));
-}
-
-
-interface TextLookupIndexCache {
-    readonly insensitive: TextLookupIndex;
-    readonly sensitive: TextLookupIndex;
+function prepareQuery(query: string) {
+    return Whitespace.canonicalize(Whitespace.collapse(query));
 }
 
 export class DOMTextIndex {
 
-    private readonly textLookupIndexCache: TextLookupIndexCache;
+    public readonly textLookupIndex: ITextLookupIndex;
 
     constructor(private readonly pointers: PointerIndex,
                 private readonly nodeTexts: ReadonlyArray<INodeText>) {
 
-        this.textLookupIndexCache = {
-            sensitive: this.toTextLookupIndex({caseInsensitive: false}),
-            insensitive: this.toTextLookupIndex({caseInsensitive: true})
-        };
+        this.textLookupIndex = this.toTextLookupIndex();
 
     }
 
@@ -137,74 +59,51 @@ export class DOMTextIndex {
 
     }
 
-
-    /**
-     * Search and find just one match.
-     */
-    private find0(query: string,
-                  start: number = 0,
-                  textLookupIndex: TextLookupIndex): DOMTextHit | undefined {
-
-        if ( ! isPresent(query) || query === '') {
-            // not sure this is the best way to handle this but this isn't a
-            // real query and will sort of be very expensive to execute.
-            return undefined;
-        }
-
-        const {text, lookup} = textLookupIndex;
-
-        const idx = text.indexOf(query, start);
-
-        if (idx !== -1) {
-            const start = idx;
-            const end = idx + query.length - 1;
-
-            const resolvedPointers = TextLookupIndexes.lookup(lookup, start, end);
-            const id = `hit-${start}-${end}`;
-            const regions =  TextLookupIndexes.mergeToRegionsByNode(resolvedPointers);
-            const resume = idx + query.length;
-            return {id, regions, resume};
-        }
-
-        // no hits...
-        return undefined;
-
-    }
-
-    private getTextLookupIndex(opts: SearchOpts): TextLookupIndex {
-        return opts.caseInsensitive ? this.textLookupIndexCache.insensitive : this.textLookupIndexCache.sensitive;
-    }
-
-    public find(rawQuery: string, opts: SearchOpts = {}): DOMTextHit | undefined {
-        const textLookupIndex = this.getTextLookupIndex(opts);
-        const query = prepareQuery(rawQuery, opts);
-        return this.find0(query, 0, textLookupIndex);
+    public find(query: string, opts: FindOpts = {}): DOMTextHit | undefined {
+        const hits = this.search(query, 0, {...opts, limit: 1});
+        return Arrays.first(hits);
     }
 
     /**
      * Search the DOM and find all matches.
      */
-    public search(rawQuery: string,
+    public search(query: string,
                   start: number = 0,
                   opts: SearchOpts = {}): ReadonlyArray<DOMTextHit> {
 
-        const textLookupIndex = this.getTextLookupIndex(opts);
-        const query = prepareQuery(rawQuery, opts);
+        const regexp = QueryRegexps.toRegExp(prepareQuery(query));
+
+        const flags = opts.caseInsensitive ? 'gi' : 'g';
+        const re = new RegExp(regexp, flags);
+
+        const toDOMTextHit = (match: RegExpExecArray): DOMTextHit => {
+
+            // https://stackoverflow.com/questions/2295657/return-positions-of-a-regex-match-in-javascript
+
+            const start = match.index;
+            const end = start + match[0].length - 1;
+            const resolvedPointers = TextLookupIndexes.resolvePointers(this.textLookupIndex.lookup, start, end);
+            const id = `hit-${start}-${end}`;
+            const regions =  TextLookupIndexes.mergeToRegionsByNode(resolvedPointers);
+            return {id, regions};
+        }
 
         const result: DOMTextHit[] = [];
 
-        let idx = start;
-
         while(true) {
 
-            const hit = this.find0(query, idx, textLookupIndex);
+            const match = re.exec(this.textLookupIndex.text);
 
-            if (! hit) {
+            if (opts.limit !== undefined && result.length >= opts.limit) {
                 break;
             }
 
-            result.push(hit);
-            idx = hit.resume;
+            if (! match) {
+                break;
+            }
+
+            const hit = toDOMTextHit(match);
+            result.push(hit)
 
         }
 
@@ -212,29 +111,24 @@ export class DOMTextIndex {
 
     }
 
-    public toTextLookupIndex(opts: ToStringOpts = {}): TextLookupIndex {
+    public toTextLookupIndex(): ITextLookupIndex {
 
-        function filteredPointers(pointers: ReadonlyArray<IPointer>) {
-            return pointers.filter(current => current.type !== PointerType.ExcessiveWhitespace)
-        }
-
-        // pointers for each node in the DOM
         const nodePointers = this.nodeTexts
                                  .map(current => current.pointers)
-                                 .map(current => filteredPointers(current))
                                  .filter(current => current.length > 0)
 
-        function toLookup(): ReadonlyArray<IPointer | undefined> {
-
+        function toLookup(): ReadonlyArray<IPointer> {
             return arrayStream(nodePointers)
                     .map(current => {
-                        return [...current, undefined]
+                        return [...current]
                     })
                     .flatMap(current => current)
                     .collect();
-
         }
 
+        /**
+         * Convert all the whitespace in the string to to ' ' (AKA space)
+         */
         function canonicalizeWhitespace(c: string): string {
 
             if (Strings.isWhitespace(c)) {
@@ -248,15 +142,14 @@ export class DOMTextIndex {
         function toText(): string {
 
             function toText(pointers: ReadonlyArray<IPointer>) {
+                // we canonicalize the whitespace here so that debuging is made
+                // a bit easier but it's not strictly required.
                 return pointers.map(current => canonicalizeWhitespace(current.value))
                                .join("");
             }
 
-            const raw = nodePointers
-                            .map(toText)
-                            .join(" ");
-
-            return opts.caseInsensitive ? raw.toLocaleLowerCase() : raw;
+            return nodePointers.map(toText)
+                               .join("");
 
         }
 
@@ -264,12 +157,16 @@ export class DOMTextIndex {
         const text = toText();
         const lookup = toLookup();
 
+        // if (text.length !== lookup.length) {
+        //     throw new Error(`Invalid text and lookup computation: ${text.length} vs ${lookup.length}`);
+        // }
+
         return {text, lookup};
 
     }
 
     public toString() {
-        return this.textLookupIndexCache.sensitive.text;
+        return this.textLookupIndex.text;
     }
 
 }
