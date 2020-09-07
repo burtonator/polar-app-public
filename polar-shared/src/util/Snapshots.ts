@@ -36,6 +36,7 @@ export interface SnapshotSubscriberWithID<V> {
      * The subscribe function.
      */
     readonly subscribe: SnapshotSubscriber<V>;
+
 }
 
 /**
