@@ -2,6 +2,7 @@ import {ReadabilityCapture} from "./ReadabilityCapture";
 import {CaptureApp} from "./ui/capture/CaptureApp";
 import {SaveToPolarHandler} from "./services/SaveToPolarHandler";
 import SaveToPolarRequestWithPDF = SaveToPolarHandler.SaveToPolarRequestWithPDF;
+import {UploadProgressApp} from "./ui/capture/UploadProgressApp";
 
 const PDF_CONTENT_TYPE = 'application/pdf';
 
@@ -30,15 +31,43 @@ function handleStartCaptureWithPDF() {
 
     console.log("handleStartCaptureWithPDF");
 
-    const message: SaveToPolarRequestWithPDF = {
-        type: 'save-to-polar',
-        strategy: 'pdf',
-        value: {
-            url: document.location.href
+    function triggerSaveToPolar() {
+
+        const message: SaveToPolarRequestWithPDF = {
+            type: 'save-to-polar',
+            strategy: 'pdf',
+            value: {
+                url: document.location.href
+            }
         }
+
+        chrome.runtime.sendMessage(message);
+
     }
 
-    chrome.runtime.sendMessage(message);
+    function createUI() {
+
+        if (! document) {
+            console.warn("No document. Not starting UI");
+            return;
+        }
+
+        const container = document.createElement('div');
+
+        if (! document.body) {
+            console.warn("No body. Not starting UI");
+            return;
+        }
+
+        document.body.appendChild(container);
+
+        UploadProgressApp.start(container);
+        console.log("UploadProgressApp started")
+
+    }
+
+    createUI();
+    triggerSaveToPolar();
 
 }
 

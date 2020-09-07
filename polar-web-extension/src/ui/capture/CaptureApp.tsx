@@ -11,9 +11,10 @@ export function useCaptureContentContext() {
     return React.useContext(CaptureContentContext);
 }
 
-export class CaptureApp {
+export namespace CaptureApp {
 
-    public static start(content: ICapturedContent) {
+    export function start(content: ICapturedContent,
+                          container: Element = document.body) {
 
         ReactDOM.render(
             <MUIAppRoot>
@@ -22,7 +23,7 @@ export class CaptureApp {
                 </CaptureContentContext.Provider>
             </MUIAppRoot>
             ,
-            document.body
+            container
         );
 
     }

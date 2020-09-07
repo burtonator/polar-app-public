@@ -5,8 +5,9 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "polar-bookshelf/web/js/hooks/ReactLifecycleHooks";
-import { TypedMessage } from 'polar-bookshelf/web/js/util/TypedMessage';
-import {DeterminateActivityProgress} from "polar-bookshelf/web/js/ui/progress_bar/DeterminateActivityProgress";
+import {TypedMessage} from 'polar-bookshelf/web/js/util/TypedMessage';
+import {UploadProgressDialog} from "polar-bookshelf/web/js/ui/dialogs/UploadProgressDialog";
+import {Percentage} from "polar-shared/src/util/ProgressTracker";
 
 export function useChromeMessageListener<T>(type: string, handler: (value: T) => void) {
 
@@ -31,28 +32,49 @@ export function useChromeMessageListener<T>(type: string, handler: (value: T) =>
 
 }
 
+export interface IndeterminateProgress {
+    readonly type: 'indeterminate';
+}
+
+export interface DeterminateProgress {
+    readonly type: 'determinate';
+    readonly value: Percentage;
+}
+
+export type Progress = IndeterminateProgress | DeterminateProgress;
+
+interface IProps {
+
+    /**
+     * The initial progress
+     */
+    readonly progress?: Progress;
+
+}
+
 /**
  * Component called when a document is being uploaded.
  */
-export const SaveToPolarProgressListener = deepMemo(() => {
+export const SaveToPolarProgressListener = deepMemo((props: IProps) => {
 
-    const [progress, setProgress] = React.useState<WriteFileProgress | undefined>()
+    const [progress, setProgress] = React.useState<Progress | undefined>(props.progress)
 
     useChromeMessageListener<WriteFileProgress>('progress', newProgress => {
         console.log(`progress: type: ${newProgress.type} value: ${newProgress.value}`, newProgress);
-        setProgress(progress);
+        setProgress(newProgress);
     })
 
     if (! progress) {
         return null;
     }
 
-    if (progress.type === 'determinate') {
-        return <DeterminateActivityProgress value={progress.value}/>
+    if (progress.type === 'indeterminate') {
+        return <UploadProgressDialog value='indeterminate'/>
     }
 
-    // if (progress.)
-    //
+    if (progress.type === 'determinate') {
+        return <UploadProgressDialog value={progress.value}/>
+    }
 
     return null;
 
