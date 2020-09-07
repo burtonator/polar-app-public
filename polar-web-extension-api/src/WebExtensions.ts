@@ -1,5 +1,6 @@
 import {DataURL} from 'polar-shared/src/util/DataURLs';
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const EXTENSION_IDS = [
     "mklidoahhflhlpcpigokeckcipaibopd", // beta
@@ -11,6 +12,8 @@ export namespace WebExtensions {
     export class Runtime {
 
         public static async sendMessage(extensionID: string, message: any): Promise<any> {
+
+            // TODO: migrate to withPromise
 
             return new Promise<any>(resolve => {
                 chrome.runtime.sendMessage(extensionID, message, result => resolve(result));
@@ -50,6 +53,8 @@ export namespace WebExtensions {
 
         public static async getCurrent(): Promise<chrome.windows.Window> {
 
+            // TODO: migrate to withPromise
+
             return new Promise(resolve => {
 
                 chrome.windows.getCurrent(window => {
@@ -68,13 +73,28 @@ export namespace WebExtensions {
 
             const win = await Windows.getCurrent();
 
-            return new Promise(resolve => {
+            // TODO: migrate to withPromise
 
-                chrome.tabs.captureVisibleTab(win.id, {format: 'png'}, dataURL => {
-                    resolve(dataURL);
-                });
+            return new Promise((resolve, reject) => {
+
+                try {
+
+                    chrome.tabs.captureVisibleTab(win.id, {format: 'png'}, dataURL => {
+                        resolve(dataURL);
+                    });
+
+                } catch (e) {
+                    reject(e);
+                }
 
             });
+
+        }
+
+        public static async query(queryInfo: chrome.tabs.QueryInfo): Promise<ReadonlyArray<chrome.tabs.Tab>> {
+
+            return withPromise((callback) =>
+                                   chrome.tabs.query(queryInfo, callback))
 
         }
 
@@ -82,17 +102,28 @@ export namespace WebExtensions {
 
             Preconditions.assertPresent(tabId, 'tabId');
 
-            return new Promise((resolve, reject) => {
-                try {
-                    chrome.tabs.sendMessage(tabId, message, response => resolve(response));
-                } catch (e) {
-                    reject(e);
-                }
-
-            })
+            return withPromise<any>((callback) =>
+                                        chrome.tabs.sendMessage(tabId, message, callback))
 
         }
 
     }
+
+}
+
+
+type PromiseCallback<V> = (value: V) => void;
+type PromiseHandler<V> = (callback: PromiseCallback<V>) => void;
+
+function withPromise<V>(handler: PromiseHandler<V>): Promise<V> {
+
+    return new Promise<V>((resolve, reject) => {
+        try {
+            handler(value => resolve(value));
+        } catch (e) {
+            reject(e);
+        }
+
+    })
 
 }
