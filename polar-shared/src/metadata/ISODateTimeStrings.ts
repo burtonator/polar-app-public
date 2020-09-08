@@ -164,6 +164,9 @@ export class ISODateTimeStrings {
         return input.substring(0, '0000'.length);
     }
 
+    /**
+     * Return positive if a is > b, 0, or negative.
+     */
     public static compare(a: ISODateTimeString, b: ISODateTimeString): number {
         return this.parse(a).getTime() - this.parse(b).getTime();
     }

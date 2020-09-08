@@ -38,6 +38,12 @@ export interface SnapshotSubscriberWithID<V> {
     readonly subscribe: SnapshotSubscriber<V>;
 
 }
+export interface SubscriptionValue<T> {
+    readonly value: T | undefined;
+    readonly error: Error | undefined;
+}
+
+export type SnapshotTuple<T> = [T | undefined, Error | undefined];
 
 /**
  * A null snapshot subscriber which can be used when you don't want to do

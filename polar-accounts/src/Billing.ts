@@ -1,0 +1,43 @@
+/**
+ * Various functions and types around billing.
+ */
+export namespace Billing {
+
+    export type V1Plan = 'free' | 'bronze' | 'silver' | 'gold';
+
+    export type V2PlanLevel = 'free' | 'plus' | 'pro';
+
+    export interface V2Plan {
+        readonly ver: 'v2',
+        readonly level: V2PlanLevel;
+    }
+
+    export type Plan = V1Plan | V2Plan;
+
+    export type Interval = 'month' | 'year';
+
+    /**
+     * A subscription is a plan with an interval (month or year) so that we
+     * know the duration of how often it's charged.
+     */
+    export interface Subscription {
+        readonly plan: Plan;
+        readonly interval: Interval;
+    }
+
+    export const V2PlanFree: V2Plan = {
+        ver: 'v2',
+        level: 'free'
+    }
+
+    export const V2PlanPlus: V2Plan = {
+        ver: 'v2',
+        level: 'plus'
+    }
+
+    export const V2PlanPro: V2Plan = {
+        ver: 'v2',
+        level: 'pro'
+    }
+
+}
