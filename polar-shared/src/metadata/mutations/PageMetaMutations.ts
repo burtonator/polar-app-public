@@ -3,7 +3,7 @@ import {Logger} from "../../logger/Logger";
 import {ISODateTimeStrings} from "../ISODateTimeStrings";
 import {IAnnotationRefWithDocMeta, IIDRef, IPageRef} from "../AnnotationRefs";
 import {arrayStream} from "../../util/ArrayStreams";
-import {DocMetas} from "../DocMetas";
+import {IDocMetas} from "../IDocMetas";
 import {AnnotationType} from "../AnnotationType";
 import {IAreaHighlight} from "../IAreaHighlight";
 import {IImage} from "../IImage";
@@ -46,7 +46,7 @@ export abstract class MutatorDelegate<V extends IIDRef> {
 
         const {docMeta} = ref;
 
-        const pageMeta = DocMetas.getPageMeta(docMeta, ref.pageNum);
+        const pageMeta = IDocMetas.getPageMeta(docMeta, ref.pageNum);
         const values = this.toValues(pageMeta) || {};
 
         // we have to delete the existing object by ID, then also set the
@@ -74,7 +74,7 @@ export abstract class MutatorDelegate<V extends IIDRef> {
 
         const {docMeta} = ref;
 
-        const pageMeta = DocMetas.getPageMeta(docMeta, ref.pageNum);
+        const pageMeta = IDocMetas.getPageMeta(docMeta, ref.pageNum);
 
         const values = this.toValues(pageMeta) || {};
 
