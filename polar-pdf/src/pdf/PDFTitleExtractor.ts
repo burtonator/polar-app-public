@@ -1,5 +1,6 @@
 import {PDFDocumentProxy} from "pdfjs-dist";
 import {Strings} from "polar-shared/src/util/Strings";
+import {Whitespace} from "polar-shared/src/util/Whitespace";
 
 export namespace PDFTitleExtractor {
 
@@ -55,7 +56,7 @@ export namespace PDFTitleExtractor {
             return undefined;
         }
 
-        return Strings.joinWithSpacing(head.map(current => current.str));
+        return Whitespace.canonicalize(head.map(current => current.str).join("")).trim();
 
     }
 
