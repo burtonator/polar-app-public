@@ -5,6 +5,7 @@ export interface MutableILTRect {
     width: number;
     height: number;
 }
+
 /**
  * A left/top rect.
  */
