@@ -44,6 +44,7 @@ export namespace Scrollers {
 
         };
 
+        // TODO: NOT portable to Polar 2.0 document viewer...
         const container = document.querySelector(selectors.container);
 
         const throttler = new TaskThrottler(250);
