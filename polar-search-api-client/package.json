@@ -1,6 +1,6 @@
 {
   "name": "polar-search-api-client",
-  "version": "2.0.0-beta.21",
+  "version": "2.0.0-beta.22",
   "description": "Provides support for calling our backend REST APIs in the polar cloud.",
   "main": "index.js",
   "scripts": {
@@ -15,14 +15,14 @@
     "@types/mocha": "7.0.2",
     "chai": "4.2.0",
     "mocha": "8.0.1",
-    "polar-test": "^2.0.0-beta.21",
+    "polar-test": "^2.0.0-beta.22",
     "tslint": "6.1.2",
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "polar-search": "^2.0.0-beta.21",
-    "polar-search-api": "^2.0.0-beta.21",
-    "polar-shared": "^2.0.0-beta.21"
+    "polar-search": "^2.0.0-beta.22",
+    "polar-search-api": "^2.0.0-beta.22",
+    "polar-shared": "^2.0.0-beta.22"
   },
   "files": [
     "**/*.js",
