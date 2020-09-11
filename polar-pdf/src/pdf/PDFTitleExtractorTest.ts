@@ -3,7 +3,7 @@ import {PDFDocs} from "./PDFDocs";
 import {URLs} from "polar-shared/src/util/URLs";
 import {assert} from 'chai';
 
-describe('PDFTitleExtractor', function() {
+xdescribe('PDFTitleExtractor', function() {
 
     async function doTest(docPathOrURL: string, expectedTitle: string) {
 
@@ -19,7 +19,7 @@ describe('PDFTitleExtractor', function() {
 
     }
 
-    it("basic", async function () {
+    xit("basic", async function () {
         await doTest('/Users/burton/Downloads/2008.05300.pdf', 'Who Watches the Watchmen?  A Review of Subjective Approaches for Sybil-resistance in Proof of Personhood Protocols')
         await doTest('/Users/burton/Downloads/p3181-adams.pdf', 'Monarch: Google’s Planet-Scale In-MemoryTime Series Database')
     });
