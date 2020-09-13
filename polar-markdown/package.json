@@ -1,6 +1,6 @@
 {
   "name": "polar-markdown",
-  "version": "2.0.0-beta.24",
+  "version": "2.0.0-beta.25",
   "description": "Provides support for parsing and working with markdown",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
@@ -21,8 +21,8 @@
     "@types/node": "12.12.32",
     "@types/showdown": "^1.9.3",
     "gray-matter": "^4.0.2",
-    "polar-shared": "^2.0.0-beta.24",
-    "polar-test": "^2.0.0-beta.24",
+    "polar-shared": "^2.0.0-beta.25",
+    "polar-test": "^2.0.0-beta.25",
     "showdown": "^1.9.1"
   },
   "files": [
