@@ -1,5 +1,4 @@
-import {isPresent, Preconditions} from '../Preconditions';
-import {Optional} from "./ts/Optional";
+import {isPresent} from '../Preconditions';
 
 export type PrimitiveArray = ReadonlyArray<string | number | boolean>;
 
@@ -73,7 +72,6 @@ export namespace Arrays {
         return Object.values(value);
 
     }
-
 
     export function onlyDefined<T>(values: ReadonlyArray<T | undefined>): ReadonlyArray<T> {
 
