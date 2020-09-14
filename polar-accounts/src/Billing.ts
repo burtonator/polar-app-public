@@ -25,6 +25,11 @@ export namespace Billing {
         readonly interval: Interval;
     }
 
+    export interface V2Subscription {
+        readonly plan: V2Plan;
+        readonly interval: Interval;
+    }
+
     export const V2PlanFree: V2Plan = {
         ver: 'v2',
         level: 'free'
