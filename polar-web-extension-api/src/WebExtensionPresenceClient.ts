@@ -47,7 +47,7 @@ export namespace WebExtensionPresenceClient {
 
         let unsubscriber: SnapshotUnsubscriber = NULL_FUNCTION;
 
-        if (chrome.runtime.onMessage) {
+        if (chrome && chrome.runtime && chrome.runtime.onMessage) {
 
             chrome.runtime.onMessage.addListener(onMessage);
 
