@@ -30,14 +30,20 @@ export namespace DatastoreWriter {
         readonly id: string;
     }
 
-    export async function write(opts: IWriteOpts): Promise<WrittenDoc> {
-
+    async function createPersistenceLayer() {
         await Firestore.init({enablePersistence: false});
 
         const datastore = new FirebaseDatastore()
         // TODO add back in the error listener I think.
         await datastore.init(NULL_FUNCTION, {noInitialSnapshot: true, noSync: true});
         const persistenceLayer = new DefaultPersistenceLayer(datastore);
+        return persistenceLayer;
+    }
+
+    export async function write(opts: IWriteOpts): Promise<WrittenDoc> {
+
+        const persistenceLayer = await createPersistenceLayer();
+
         const persistenceLayerProvider = () => persistenceLayer;
 
         const title = Optional.of(opts.title).getOrElse("Untitled");

@@ -97,8 +97,13 @@ export namespace SaveToPolarHandler {
                 progressListener
             }
 
+            // FIXME: handle phz migration here...
+
             const writtenDoc = await DatastoreWriter.write(opts)
             await doLoadWrittenDoc(writtenDoc);
+
+            // FIXME: after is doc is written ... fix the DocMeta that we just wrote
+            // by pull it back in and migration annotations..
 
         }
 
