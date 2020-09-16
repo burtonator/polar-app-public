@@ -71,7 +71,7 @@ function handleStartCaptureWithPDF() {
 
 }
 
-function handleStartCapture() {
+export function handleStartCapture() {
 
     console.log("Starting capture...");
 
@@ -80,9 +80,7 @@ function handleStartCapture() {
         handleStartCaptureWithPDF();
         return;
     } else {
-
         handleStartCaptureWithEPUB();
-
     }
 
 }
