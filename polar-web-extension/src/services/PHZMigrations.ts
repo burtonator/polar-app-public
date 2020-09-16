@@ -1,7 +1,8 @@
 import {PHZMigrationClient} from "polar-web-extension-api/src/PHZMigrationClient";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {PersistenceLayer} from "polar-bookshelf/web/js/datastore/PersistenceLayer";
-import { IDocInfo } from "polar-shared/src/metadata/IDocInfo";
+import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 export namespace PHZMigrations {
 
@@ -23,7 +24,7 @@ export namespace PHZMigrations {
 
     }
 
-    function copyKeys<T>(dest: T, src: T, keys: ReadonlyArray<keyof T>) {
+    function copyKeys<T>(src: T, dest: T, keys: ReadonlyArray<keyof T>) {
         for (const key of keys) {
             dest[key] = src[key];
         }
@@ -46,7 +47,7 @@ export namespace PHZMigrations {
             return;
         }
 
-        copyKeys(newDocMeta.docInfo, existingDocMeta.docInfo, [
+        copyKeys(existingDocMeta.docInfo, newDocMeta.docInfo, [
             'title',
             'archived',
             'flagged',
@@ -57,10 +58,22 @@ export namespace PHZMigrations {
             'readingPerDay',
             'visibility',
             'authors',
-            'summary'
+            'summary',
+            'nrTextHighlights',
+            'nrFlashcards',
+            'nrNotes',
+            'nrComments',
+            'tags'
         ]);
 
-        // copy text highlights now...
+        const newPageMeta = DocMetas.getPageMeta(newDocMeta, 1);
+        const existingPageMeta = DocMetas.getPageMeta(existingDocMeta, 1);
+
+        Dictionaries.putAll(existingPageMeta.textHighlights, newPageMeta.textHighlights);
+        Dictionaries.putAll(existingPageMeta.comments, newPageMeta.comments);
+        Dictionaries.putAll(existingPageMeta.flashcards, newPageMeta.flashcards);
+
+        await persistenceLayer.writeDocMeta(newDocMeta);
 
     }
 

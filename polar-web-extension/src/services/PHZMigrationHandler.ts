@@ -33,7 +33,7 @@ export namespace PHZMigrationHandler {
     function onMessageHandler(request: any,
                               sender: chrome.runtime.MessageSender) {
 
-        if (request.type !== 'start-phz-migration-start') {
+        if (request.type !== 'start-phz-migration') {
             return;
         }
 

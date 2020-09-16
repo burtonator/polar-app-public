@@ -322,7 +322,7 @@ export namespace Dictionaries {
     }
 
     export function putAll<V>(source: {[key: string]: V},
-                            target: {[key: string]: V} = {}) {
+                              target: {[key: string]: V} = {}) {
 
         for (const key of Object.keys(source)) {
             target[key] = source[key];
