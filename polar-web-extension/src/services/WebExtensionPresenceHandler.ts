@@ -8,8 +8,12 @@ export namespace WebExtensionPresenceHandler {
     export type SendResponseCallback = (response: any) => void;
 
     export function start() {
+
         chrome.runtime.onMessageExternal.addListener(onMessageHandler);
+
+        // send in case anyone is listening and raced before the start.
         sendPresenceToPolarApp();
+
     }
 
     export function stop() {

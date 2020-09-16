@@ -27,6 +27,8 @@
       "*://*.getpolarized.io/*",
       "*://app.getpolarized.io/*",
       "*://beta.getpolarized.io/*",
+      "*://dev.getpolarized.io/*",
+      "*://dev.getpolarized.io:8050/*",
       "http://localhost:8050/*"
     ]
   },
