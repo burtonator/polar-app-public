@@ -1,11 +1,8 @@
-import {FirebaseDatastore} from "polar-bookshelf/web/js/datastore/FirebaseDatastore";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {DefaultPersistenceLayer} from "polar-bookshelf/web/js/datastore/DefaultPersistenceLayer";
-import {Firestore} from "polar-bookshelf/web/js/firebase/Firestore";
 import {DocInfo} from "polar-bookshelf/web/js/metadata/DocInfo";
 import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocImporter";
 import {WriteFileProgressListener} from "polar-bookshelf/web/js/datastore/Datastore";
+import {PersistenceLayer} from "polar-bookshelf/web/js/datastore/PersistenceLayer";
 
 export namespace DatastoreWriter {
 
@@ -13,6 +10,9 @@ export namespace DatastoreWriter {
     import DocImporterOpts = DocImporter.DocImporterOpts;
 
     export interface IWriteOpts {
+
+        readonly persistenceLayer: PersistenceLayer;
+
         readonly doc: Blob,
         readonly type: 'pdf' | 'epub';
         readonly url: string;
@@ -30,19 +30,9 @@ export namespace DatastoreWriter {
         readonly id: string;
     }
 
-    async function createPersistenceLayer() {
-        await Firestore.init({enablePersistence: false});
-
-        const datastore = new FirebaseDatastore()
-        // TODO add back in the error listener I think.
-        await datastore.init(NULL_FUNCTION, {noInitialSnapshot: true, noSync: true});
-        const persistenceLayer = new DefaultPersistenceLayer(datastore);
-        return persistenceLayer;
-    }
-
     export async function write(opts: IWriteOpts): Promise<WrittenDoc> {
 
-        const persistenceLayer = await createPersistenceLayer();
+        const {persistenceLayer} = opts;
 
         const persistenceLayerProvider = () => persistenceLayer;
 
@@ -89,8 +79,6 @@ export namespace DatastoreWriter {
                                                       url,
                                                       opts.basename,
                                                       docImporterOpts);
-
-        await persistenceLayer.stop();
 
         return {id: imported.docInfo.fingerprint};
 

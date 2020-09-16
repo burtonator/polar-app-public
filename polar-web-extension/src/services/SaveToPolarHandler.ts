@@ -12,6 +12,9 @@ import {
 } from "polar-bookshelf/web/js/datastore/Datastore";
 import WrittenDoc = DatastoreWriter.WrittenDoc;
 import IWriteOpts = DatastoreWriter.IWriteOpts;
+import {ExtensionPersistenceLayers} from "./ExtensionPersistenceLayers";
+import {PHZMigrations} from "./PHZMigrations";
+import {PHZActiveMigrations} from "./PHZActiveMigrations";
 
 export namespace SaveToPolarHandler {
 
@@ -51,16 +54,25 @@ export namespace SaveToPolarHandler {
             const blob = await URLs.toBlob(capture.url);
             const basename = URLs.basename(capture.url);
 
-            const opts: IWriteOpts = {
-                doc: blob,
-                type: 'pdf',
-                basename,
-                url: capture.url,
-                progressListener
-            }
+            const persistenceLayer = await ExtensionPersistenceLayers.create();
 
-            const writtenDoc = await DatastoreWriter.write(opts)
-            await doLoadWrittenDoc(writtenDoc);
+            try {
+
+                const opts: IWriteOpts = {
+                    persistenceLayer,
+                    doc: blob,
+                    type: 'pdf',
+                    basename,
+                    url: capture.url,
+                    progressListener
+                }
+
+                const writtenDoc = await DatastoreWriter.write(opts)
+                await doLoadWrittenDoc(writtenDoc);
+
+            } finally {
+                persistenceLayer.stop();
+            }
 
         }
 
@@ -85,25 +97,38 @@ export namespace SaveToPolarHandler {
 
             const basename = Hashcodes.createRandomID() + '.' + 'epub';
 
-            const opts: IWriteOpts = {
-                doc,
-                type: 'epub',
-                title: capture.title,
-                description: capture.description,
-                url: capture.url,
-                basename,
-                fingerprint,
-                nrPages: 1,
-                progressListener
+            const persistenceLayer = await ExtensionPersistenceLayers.create();
+
+            try {
+
+                const opts: IWriteOpts = {
+                    persistenceLayer,
+                    doc,
+                    type: 'epub',
+                    title: capture.title,
+                    description: capture.description,
+                    url: capture.url,
+                    basename,
+                    fingerprint,
+                    nrPages: 1,
+                    progressListener
+                }
+
+                const writtenDoc = await DatastoreWriter.write(opts)
+                await doLoadWrittenDoc(writtenDoc);
+
+                const migration = PHZActiveMigrations.get();
+
+                if (migration?.url === capture.url) {
+                    await PHZMigrations.doMigration(persistenceLayer,
+                                                    fingerprint,
+                                                    migration);
+                    PHZActiveMigrations.clear();
+                }
+
+            } finally {
+                persistenceLayer.stop();
             }
-
-            // FIXME: handle phz migration here...
-
-            const writtenDoc = await DatastoreWriter.write(opts)
-            await doLoadWrittenDoc(writtenDoc);
-
-            // FIXME: after is doc is written ... fix the DocMeta that we just wrote
-            // by pull it back in and migration annotations..
 
         }
 

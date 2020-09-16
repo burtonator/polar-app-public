@@ -330,6 +330,12 @@ export namespace Dictionaries {
 
     }
 
+    function copyKeys<T>(src: T, dest: T, keys: ReadonlyArray<keyof T>) {
+        for (const key of keys) {
+            dest[key] = src[key];
+        }
+    }
+
     /**
      * Return true if the dictionary is empty and has no entries (null or
      * undefined too).

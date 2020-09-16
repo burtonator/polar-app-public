@@ -1,11 +1,10 @@
 import {PHZMigrationClient} from "polar-web-extension-api/src/PHZMigrationClient";
 import {Tabs} from "../chrome/Tabs";
-import {PHZMigrations} from "./PHZMigrations";
+import {PHZActiveMigrations} from "./PHZActiveMigrations";
 
 export namespace PHZMigrationHandler {
 
     import IStartPHZMigrationMessage = PHZMigrationClient.IStartPHZMigrationMessage;
-    import setActiveMigration = PHZMigrations.setActiveMigration;
 
     export function start() {
         chrome.runtime.onMessageExternal.addListener(onMessageHandler);
@@ -22,7 +21,7 @@ export namespace PHZMigrationHandler {
 
         async function doAsync() {
             console.log("Starting migration in origin: " + document.origin);
-            setActiveMigration(message);
+            PHZActiveMigrations.set(message);
             await Tabs.loadLinkInCurrentTab(message.url);
         }
 
