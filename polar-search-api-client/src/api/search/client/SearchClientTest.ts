@@ -1,7 +1,7 @@
 import {SearchClient} from "./SearchClient";
 
 
-xdescribe('SearchClient', function() {
+describe('SearchClient', function() {
 
     it("basic", async function() {
         this.timeout(50000);
