@@ -17,6 +17,7 @@ function clearDocument() {
 
 function handleStartCaptureWithEPUB() {
 
+    // TODO: selection code should work here...
     const capture = ReadabilityCapture.capture();
 
     console.log("Captured: ", capture);

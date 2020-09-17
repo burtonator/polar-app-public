@@ -10,7 +10,7 @@ export class FileSavers {
     /**
      * Trigger a file download using the specified filename and blob.
      */
-    public static saveAs(blob: Blob, filename: string) {
+    public static saveAs(blob: Blob | string | File, filename: string) {
         saveAs(blob, filename);
     }
 
