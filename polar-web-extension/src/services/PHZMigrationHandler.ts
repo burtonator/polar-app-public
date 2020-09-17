@@ -22,7 +22,7 @@ export namespace PHZMigrationHandler {
         async function doAsync() {
             console.log("Starting migration in origin: " + document.origin);
             PHZActiveMigrations.set(message);
-            await Tabs.loadLinkInCurrentTab(message.url);
+            await Tabs.loadLinkInActiveTab(message.url);
         }
 
         doAsync().catch(err => console.error(err));

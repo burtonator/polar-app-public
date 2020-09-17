@@ -59,6 +59,9 @@ export namespace Tabs {
 
     }
 
+    /**
+     * @Deprecated I think this one isn't useful and doesn't work.
+     */
     export async function loadLinkInCurrentTab(link: string) {
 
         const tab = await currentTab();

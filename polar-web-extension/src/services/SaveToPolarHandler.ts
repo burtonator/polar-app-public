@@ -43,7 +43,7 @@ export namespace SaveToPolarHandler {
         const url = 'https://beta.getpolarized.io/doc/' + writtenDoc.id;
         await Tabs.loadLinkInActiveTab(url);
     }
-
+    
     function saveToPolarAsPDF(capture: SaveToPolarHandler.ICapturedPDF,
                               progressListener: WriteFileProgressListener,
                               errorReporter: (err: Error) => void) {
