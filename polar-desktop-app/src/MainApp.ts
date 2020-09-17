@@ -45,16 +45,6 @@ namespace AppListeners {
 
             event.preventDefault();
 
-            // const fileArg = Cmdline.getDocArg(commandLine);
-            //
-            // if (fileArg) {
-            //
-            //     FileImportClient.send(FileImportRequests.fromPath(fileArg));
-            //
-            // } else {
-            //     mainAppController.activateMainWindow();
-            // }
-
         });
 
     }

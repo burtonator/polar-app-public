@@ -90,25 +90,6 @@ app.on('ready', async () => {
 
     allowAnkiSyncOrigin();
 
-    // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    //
-    //     if (! details.url.startsWith('http:') && ! details.url.startsWith('https:')) {
-    //         callback({});
-    //         return;
-    //     }
-    //
-    //     console.log("FIXME: adding CSP headers");
-    //
-    //     const additionalHeaders = {
-    //         "Content-Security-Policy": [ "default-src 'self'" ]
-    //     };
-    //
-    //     const newResponseHeaders = {...details.responseHeaders, ...additionalHeaders};
-    //
-    //     callback({ responseHeaders: newResponseHeaders});
-    //
-    // });
-
     const configureReactDevTools = () => {
 
         const path = process.env.POLAR_REACT_DEV_TOOLS;
