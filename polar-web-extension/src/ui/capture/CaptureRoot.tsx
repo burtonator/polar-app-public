@@ -16,6 +16,7 @@ import {deepMemo} from 'polar-bookshelf/web/js/react/ReactUtils';
 import {NavLogoText} from "polar-bookshelf/apps/repository/js/nav/NavLogoText";
 import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
 import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
+import {NavLogoImage} from "polar-bookshelf/apps/repository/js/nav/NavLogoImage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
