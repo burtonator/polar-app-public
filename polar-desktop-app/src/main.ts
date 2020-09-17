@@ -4,6 +4,7 @@ import {Version} from "polar-shared/src/util/Version";
 import {MainApp} from "./MainApp";
 import {DEFAULT_URL} from "./MainAppBrowserWindowFactory";
 import 'source-map-support/register'
+import {LegacyDatastores} from "./LegacyDatastores";
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
@@ -29,6 +30,7 @@ async function launch() {
     console.log("Running with Polar version: " + Version.get());
     console.log("Running with app version: " + app.getVersion());
 
+    await LegacyDatastores.start();
     await MainApp.start();
 
 }
