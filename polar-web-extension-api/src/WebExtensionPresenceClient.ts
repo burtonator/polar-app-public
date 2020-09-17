@@ -14,7 +14,7 @@ export namespace WebExtensionPresenceClient {
 
     export async function exec(): Promise<IPresenceMessage | undefined> {
 
-        const response = await WebExtensions.Messaging.sendMessage({type: 'ping'});
+        const response = await WebExtensions.Messaging.sendMessage({type: 'presence'});
 
         if (! isPresent(response)) {
             return undefined;

@@ -16,7 +16,8 @@
     "contextMenus",
     "unlimitedStorage",
     "declarativeContent",
-    "notifications"
+    "notifications",
+    "*://*.getpolarized.io/*"
   ],
   "optional_permissions": [
     "clipboardRead",
@@ -24,12 +25,7 @@
   ],
   "externally_connectable": {
     "matches": [
-      "*://*.getpolarized.io/*",
-      "*://app.getpolarized.io/*",
-      "*://beta.getpolarized.io/*",
-      "*://dev.getpolarized.io/*",
-      "*://dev.getpolarized.io:8050/*",
-      "http://localhost:8050/*"
+      "*://*.getpolarized.io/*"
     ]
   },
   "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com https://apis.google.com; object-src 'self'",
