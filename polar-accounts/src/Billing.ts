@@ -14,7 +14,7 @@ export namespace Billing {
 
     export type Plan = V1Plan | V2Plan;
 
-    export type Interval = 'month' | 'year';
+    export type Interval = 'month' | 'year' | '4year';
 
     /**
      * A subscription is a plan with an interval (month or year) so that we
