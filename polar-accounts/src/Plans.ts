@@ -1,4 +1,5 @@
 import {Billing} from "./Billing";
+import {PlanLevels} from "./PlanLevels";
 
 export namespace Plans {
 
@@ -36,21 +37,14 @@ export namespace Plans {
 
         const v2Plan = toV2(plan);
 
-        switch (v2Plan.level) {
-            case "free":
-                return 0;
-            case "plus":
-                return 1;
-            case "pro":
-                return 2;
-        }
+        return PlanLevels.toInt(v2Plan.level);
 
     }
 
     /**
      * Return true if the required plan level is ok vs the actual plan level.
      */
-    export function hasLevel(required: Billing.Plan, actual: Billing.Plan) {
+    export function hasLevel(required: Billing.V2PlanLevel, actual: Billing.Plan) {
         return this.toInt(required) <= this.toInt(actual);
     }
 
