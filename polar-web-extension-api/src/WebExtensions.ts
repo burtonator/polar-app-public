@@ -1,20 +1,28 @@
 import {DataURL} from 'polar-shared/src/util/DataURLs';
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const EXTENSION_IDS = [
     "mklidoahhflhlpcpigokeckcipaibopd", // beta
     "jkfdkjomocoaljglgddnmhcbolldcafd"  // prod
 ];
 
+function hasWebExtensionSupport() {
+    return typeof chrome !== 'undefined';
+}
+
 export namespace WebExtensions {
+
+
 
     export class Runtime {
 
         public static async sendMessage(extensionID: string, message: any): Promise<any> {
 
-            // TODO: migrate to withPromise
+            if (! hasWebExtensionSupport()) {
+                return;
+            }
 
+            // TODO use withPromise
             return new Promise<any>(resolve => {
                 chrome.runtime.sendMessage(extensionID, message, result => resolve(result));
             });
