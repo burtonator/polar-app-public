@@ -19,7 +19,7 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "epubjs": "=0.3.89-polar.13",
+    "epubjs": "=0.3.89-polar.14",
     "polar-shared": "^2.0.0-beta.27"
   }
 }
