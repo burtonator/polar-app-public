@@ -242,14 +242,19 @@ export namespace Tags {
     /**
      * Lookup a tag by its literal.  The input can be either a tag id or a label
      * but we lookup against the ID.
+     *
+     * @param tags the tag index
+     * @param tagLabels The labels we're working with
+     * @param tagFactory called when we can't find the literal in the index to create a new one.
      */
     export function lookupByTagLiteral(tags: ReadonlyArray<Tag>,
-                                       tagLabels: ReadonlyArray<TagLiteral>): ReadonlyArray<Tag> {
+                                       tagLabels: ReadonlyArray<TagLiteral>,
+                                       tagFactory: (literal: TagLiteral) => Tag | undefined = () => undefined): ReadonlyArray<Tag> {
 
         const tagMap = arrayStream(tags)
             .toMap(current => current.id);
 
-        return tagLabels.map(current => tagMap[current])
+        return tagLabels.map(current => tagMap[current] || tagFactory(current))
                         .filter(isPresent);
 
     }
