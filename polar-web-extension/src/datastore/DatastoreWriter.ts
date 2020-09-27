@@ -1,8 +1,8 @@
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {DocInfo} from "polar-bookshelf/web/js/metadata/DocInfo";
 import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocImporter";
 import {WriteFileProgressListener} from "polar-bookshelf/web/js/datastore/Datastore";
 import {PersistenceLayer} from "polar-bookshelf/web/js/datastore/PersistenceLayer";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export namespace DatastoreWriter {
 
@@ -42,11 +42,11 @@ export namespace DatastoreWriter {
         const title = Optional.of(opts.title).getOrElse("Untitled");
         const description = Optional.of(opts.description).getOrElse("");
 
-        const docInfo: Partial<DocInfo> = {
+        const docInfo: Partial<IDocInfo> = {
             title,
             description,
-            url: opts.url
-
+            url: opts.url,
+            bytes: opts.doc.size
         }
 
         const url = URL.createObjectURL(opts.doc);
