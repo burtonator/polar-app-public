@@ -64,7 +64,8 @@ export namespace SaveToPolarHandler {
                     type: 'pdf',
                     basename,
                     url: capture.url,
-                    progressListener
+                    progressListener,
+                    webCapture: false
                 }
 
                 const writtenDoc = await DatastoreWriter.write(opts)
@@ -111,7 +112,8 @@ export namespace SaveToPolarHandler {
                     basename,
                     fingerprint,
                     nrPages: 1,
-                    progressListener
+                    progressListener,
+                    webCapture: true
                 }
 
                 const writtenDoc = await DatastoreWriter.write(opts)

@@ -24,6 +24,9 @@ export namespace DatastoreWriter {
         readonly nrPages?: number;
 
         readonly progressListener: WriteFileProgressListener;
+
+        readonly webCapture: boolean;
+
     }
 
     export interface WrittenDoc {
@@ -58,6 +61,7 @@ export namespace DatastoreWriter {
                     nrPages: opts.nrPages,
                     title,
                     description,
+                    webCapture: opts.webCapture
                 }
 
             }

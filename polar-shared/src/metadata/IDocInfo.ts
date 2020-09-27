@@ -163,6 +163,11 @@ export interface IDocInfo {
     hashcode?: Hashcode;
 
     /**
+     * The number of bytes used by the document (PDF, EPUB, etc).
+     */
+    bytes?: number;
+
+    /**
      * If this document was found and shared from the web we can include the
      * 'referer' that this page was found from.  Usually this is going to be
      * google news, hacker news, reddit, etc.
@@ -227,6 +232,11 @@ export interface IDocInfo {
      * Summary of the document provided from the publisher.
      */
     summary?: IText;
+
+    /**
+     * True if this is a web capture document.
+     */
+    webCapture?: boolean;
 
 }
 
