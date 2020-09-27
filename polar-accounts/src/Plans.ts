@@ -11,7 +11,7 @@ export namespace Plans {
     /**
      * Convert a plan to a V2 plan
      */
-    export function toV2(plan: Billing.Plan | undefined): V2Plan {
+    export function toV2(plan: Billing.Plan | Billing.V2PlanLevel | undefined): V2Plan {
 
         if (plan === undefined) {
             return V2PlanFree;
@@ -19,7 +19,15 @@ export namespace Plans {
 
         if (typeof plan === 'string') {
 
+            switch(plan) {
+                case "plus":
+                    return V2PlanPlus;
+                case "pro":
+                    return V2PlanPro;
+            }
+
             switch (plan) {
+                // v1
                 case "free":
                     return V2PlanFree;
                 case "bronze":
@@ -29,6 +37,7 @@ export namespace Plans {
                 case "gold":
                     return V2PlanPro;
             }
+
         }
 
         return plan;
@@ -38,7 +47,7 @@ export namespace Plans {
     /**
      * Convert plans to integers so they can be compared.
      */
-    export function toInt(plan: Billing.Plan) {
+    export function toInt(plan: Billing.Plan | Billing.V2PlanLevel) {
 
         const v2Plan = toV2(plan);
 
@@ -50,7 +59,12 @@ export namespace Plans {
      * Return true if the required plan level is ok vs the actual plan level.
      */
     export function hasLevel(required: Billing.V2PlanLevel, actual: Billing.Plan) {
-        return this.toInt(required) <= this.toInt(actual);
+
+        const nRequired = toInt(required);
+        const nActual = toInt(actual);
+
+        return nRequired <= nActual;
+
     }
 
 }
