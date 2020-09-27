@@ -31,4 +31,22 @@ export namespace Bytes {
 
     }
 
+    export function format(bytes: number): string {
+
+        if (bytes < 1000) {
+            return bytes +  "";
+        } else if (bytes < 100000) {
+            return Math.floor(bytes / 1000) + " KB";
+        } else if (bytes < 100000000) {
+            return Math.floor(bytes / 1000000) + " MB";
+        } else if (bytes < 100000000000) {
+            return Math.floor(bytes / 1000000000) + " GB";
+        } else if (bytes < 100000000000000) {
+            return Math.floor(bytes / 1000000000000) + " TB";
+        }
+
+        return bytes +  "";
+
+    }
+
 }

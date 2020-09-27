@@ -11,9 +11,14 @@ export namespace Plans {
     /**
      * Convert a plan to a V2 plan
      */
-    export function toV2(plan: Billing.Plan): V2Plan {
+    export function toV2(plan: Billing.Plan | undefined): V2Plan {
+
+        if (plan === undefined) {
+            return V2PlanFree;
+        }
 
         if (typeof plan === 'string') {
+
             switch (plan) {
                 case "free":
                     return V2PlanFree;

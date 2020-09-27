@@ -9,6 +9,7 @@ export class Reducers {
     public static MAX =
         (accumulator: number, currentValue: number) => currentValue > accumulator ? currentValue : accumulator
 
+
     /**
      * Return the first entry in the reducer.  A default value to reduce can be
      * specified as the initial value and it will work with a list of zero or more
