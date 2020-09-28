@@ -83,7 +83,7 @@ export namespace HTMLSanitizer {
                 'cite', 'p', 'a', 'ul', 'ol', 'nl', 'li', 'b', 'i',
                 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
                 'table', 'thead', 'caption', 'tbody', 'tr', 'th',
-                'td', 'pre'],
+                'td', 'pre', 'img'],
 
             allowedAttributes: {
 

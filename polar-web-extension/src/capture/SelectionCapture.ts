@@ -1,6 +1,5 @@
 import {HTMLSanitizer} from "polar-html/src/sanitize/HTMLSanitizer";
 import {getMetadata,} from "page-metadata-parser";
-import {ReadabilityCapture} from "./ReadabilityCapture";
 import {ExtensionContentCapture} from "./ExtensionContentCapture";
 
 export namespace SelectionCapture {
