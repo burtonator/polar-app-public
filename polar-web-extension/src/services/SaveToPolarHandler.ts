@@ -1,7 +1,7 @@
 import {Tabs} from "../chrome/Tabs";
 import {CapturedContentEPUBGenerator} from "../captured/CapturedContentEPUBGenerator";
 import {DatastoreWriter} from "../datastore/DatastoreWriter";
-import {ReadabilityCapture} from "../ReadabilityCapture";
+import {ReadabilityCapture} from "../capture/ReadabilityCapture";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
 import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
@@ -15,10 +15,11 @@ import IWriteOpts = DatastoreWriter.IWriteOpts;
 import {ExtensionPersistenceLayers} from "./ExtensionPersistenceLayers";
 import {PHZMigrations} from "./PHZMigrations";
 import {PHZActiveMigrations} from "./PHZActiveMigrations";
+import {ExtensionContentCapture} from "../capture/ExtensionContentCapture";
 
 export namespace SaveToPolarHandler {
 
-    import ICapturedEPUB = ReadabilityCapture.ICapturedEPUB;
+    import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
     export interface ICapturedPDF {
         readonly url: URLStr;
@@ -82,7 +83,7 @@ export namespace SaveToPolarHandler {
 
     }
 
-    function saveToPolarAsEPUB(capture: ReadabilityCapture.ICapturedEPUB,
+    function saveToPolarAsEPUB(capture: ICapturedEPUB,
                                progressListener: WriteFileProgressListener,
                                errorReporter: (err: Error) => void) {
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ReadabilityCapture} from "../../ReadabilityCapture";
+import {ReadabilityCapture} from "../../capture/ReadabilityCapture";
 import {CaptureRoot} from "./CaptureRoot";
 import {MUIAppRoot} from 'polar-bookshelf/web/js/mui/MUIAppRoot';
-import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
+import ICapturedContent = ExtensionContentCapture.ICapturedEPUB;
+import {ExtensionContentCapture} from "../../capture/ExtensionContentCapture";
 
 const CaptureContentContext = React.createContext<ICapturedContent>(null!);
 

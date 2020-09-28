@@ -5,7 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import {useCaptureContentContext} from './CaptureApp';
-import {ReadabilityCapture} from "../../ReadabilityCapture";
+import {ReadabilityCapture} from "../../capture/ReadabilityCapture";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {Theme} from '@material-ui/core/styles/createMuiTheme';
@@ -14,9 +14,10 @@ import {SaveToPolarHandler} from "../../services/SaveToPolarHandler";
 import {SaveToPolarProgressListener} from './SaveToPolarProgressListener';
 import {deepMemo} from 'polar-bookshelf/web/js/react/ReactUtils';
 import {NavLogoText} from "polar-bookshelf/apps/repository/js/nav/NavLogoText";
-import ICapturedContent = ReadabilityCapture.ICapturedEPUB;
 import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
 import {NavLogoImage} from "polar-bookshelf/apps/repository/js/nav/NavLogoImage";
+import {ExtensionContentCapture} from "../../capture/ExtensionContentCapture";
+import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,7 +42,7 @@ export const CaptureRoot = deepMemo(() => {
     const [saving, setSaving]= React.useState(false);
 
     // FIXME: move this to a script to send varrious messages to trigger the capture
-    function saveToPolar(capture: ICapturedContent) {
+    function saveToPolar(capture: ICapturedEPUB) {
 
         setSaving(true);
 

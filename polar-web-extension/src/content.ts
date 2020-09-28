@@ -1,8 +1,9 @@
-import {ReadabilityCapture} from "./ReadabilityCapture";
+import {ReadabilityCapture} from "./capture/ReadabilityCapture";
 import {CaptureApp} from "./ui/capture/CaptureApp";
 import {SaveToPolarHandler} from "./services/SaveToPolarHandler";
 import SaveToPolarRequestWithPDF = SaveToPolarHandler.SaveToPolarRequestWithPDF;
 import {UploadProgressApp} from "./ui/capture/UploadProgressApp";
+import {ExtensionContentCapture} from "./capture/ExtensionContentCapture";
 
 const PDF_CONTENT_TYPE = 'application/pdf';
 
@@ -17,8 +18,7 @@ function clearDocument() {
 
 function handleStartCaptureWithEPUB() {
 
-    // TODO: selection code should work here...
-    const capture = ReadabilityCapture.capture();
+    const capture = ExtensionContentCapture.capture();
 
     console.log("Captured: ", capture);
 

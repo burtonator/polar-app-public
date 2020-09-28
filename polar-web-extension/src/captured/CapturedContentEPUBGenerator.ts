@@ -1,14 +1,17 @@
 import {XHTMLWrapper} from "polar-epub-generator/src/XHTMLWrapper";
 import {EPUBGenerator} from "polar-epub-generator/src/EPUBGenerator";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {ReadabilityCapture} from "../ReadabilityCapture";
+import {ReadabilityCapture} from "../capture/ReadabilityCapture";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {URLs} from "polar-shared/src/util/URLs";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import { URLStr } from "polar-shared/src/util/Strings";
+import {ExtensionContentCapture} from "../capture/ExtensionContentCapture";
 
 export namespace CapturedContentEPUBGenerator {
+
+    import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
     interface LocalImage {
         readonly img: HTMLImageElement;
@@ -67,7 +70,7 @@ export namespace CapturedContentEPUBGenerator {
 
     }
 
-    function convertToHumanReadableContent(capture: ReadabilityCapture.ICapturedEPUB) {
+    function convertToHumanReadableContent(capture: ICapturedEPUB) {
 
         function createFigure() {
 
@@ -111,7 +114,7 @@ export namespace CapturedContentEPUBGenerator {
 
     }
 
-    async function convertToEPUBDocument(capture: ReadabilityCapture.ICapturedEPUB) {
+    async function convertToEPUBDocument(capture: ICapturedEPUB) {
 
         const {title, url} = capture;
 
@@ -154,7 +157,7 @@ export namespace CapturedContentEPUBGenerator {
 
     }
 
-    export async function generate(capture: ReadabilityCapture.ICapturedEPUB): Promise<ArrayBuffer> {
+    export async function generate(capture: ICapturedEPUB): Promise<ArrayBuffer> {
         const doc = await convertToEPUBDocument(capture);
         return await EPUBGenerator.generate(doc);
     }
