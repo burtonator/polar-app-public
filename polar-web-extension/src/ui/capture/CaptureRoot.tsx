@@ -18,6 +18,7 @@ import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPU
 import {NavLogoImage} from "polar-bookshelf/apps/repository/js/nav/NavLogoImage";
 import {ExtensionContentCapture} from "../../capture/ExtensionContentCapture";
 import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
+import {MUIBrowserLinks} from "polar-bookshelf/web/js/mui/MUIBrowserLinks";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

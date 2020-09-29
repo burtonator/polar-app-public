@@ -1,35 +1,50 @@
 import React from 'react';
 import {useCaptureContentContext} from "./CaptureApp";
+import {MUIBrowserLinks} from "polar-bookshelf/web/js/mui/MUIBrowserLinks";
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import createStyles from '@material-ui/core/styles/createStyles';
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            margin: 'auto',
+            maxWidth: '850px',
+            flexGrow: 1,
+            padding: '5px'
+        },
+    }),
+);
 
 export const PreviewContent = () => {
+
+    const classes = useStyles();
     const captureContentContext = useCaptureContentContext();
 
     return (
 
-        <div style={{
-                 margin: 'auto',
-                 maxWidth: '850px',
-                 flexGrow: 1,
-                 padding: '5px'
-             }}>
+        <div className={classes.root}>
 
-            <h1>{captureContentContext.title}</h1>
+            <MUIBrowserLinks>
 
-            {captureContentContext.image && (
-                <div style={{display: 'flex'}}>
+                <h1>{captureContentContext.title}</h1>
 
-                    <img style={{
-                             margin: 'auto',
-                             maxHeight: '100%',
-                             maxWidth: '100%'
-                         }}
-                         alt="Preview image"
-                         src={captureContentContext.image}/>
+                {captureContentContext.image && (
+                    <div style={{display: 'flex'}}>
 
-                </div>
-            )}
+                        <img style={{
+                                 margin: 'auto',
+                                 maxHeight: '100%',
+                                 maxWidth: '100%'
+                             }}
+                             alt="Preview image"
+                             src={captureContentContext.image}/>
 
-            <div dangerouslySetInnerHTML={{__html: captureContentContext.content}}></div>
+                    </div>
+                )}
+
+                <div dangerouslySetInnerHTML={{__html: captureContentContext.content}}></div>
+
+            </MUIBrowserLinks>
 
         </div>
     );
