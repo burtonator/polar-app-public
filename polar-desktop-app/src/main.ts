@@ -41,8 +41,17 @@ function allowAnkiSyncOrigin() {
     session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
 
         function isAnkiSyncRequest() {
+
+            function isAnkiSyncPort() {
+                return parsedURL.port === '8765' || parsedURL.port === '8766'
+            }
+
+            function isAnkiSyncHost() {
+                return parsedURL.hostname === 'localhost' || parsedURL.hostname === '127.0.0.1';
+            }
+
             const parsedURL = new URL(details.url);
-            return parsedURL.hostname === 'localhost' && parsedURL.port === '8765';
+            return isAnkiSyncPort() && isAnkiSyncHost();
         }
 
         if (! isAnkiSyncRequest()) {
@@ -50,12 +59,27 @@ function allowAnkiSyncOrigin() {
             return;
         }
 
+        function computeOrigin() {
+            const parsedURL = new URL(DEFAULT_URL);
 
-        console.log("Adding Access-Control-Allow-Origin for Anki sync");
+            if (parsedURL.port !== '80' && parsedURL.port !== '443' && parsedURL.port !== '') {
+                return 'http://' + parsedURL.hostname + ":" + parsedURL.port;
+            } else {
+                return 'http://' + parsedURL.hostname;
+            }
+
+        }
+
+        const origin = computeOrigin();
+
+        console.log("Adding Access-Control-Allow-Origin for Anki sync: " + origin);
 
         const additionalHeaders = {
-            "Access-Control-Allow-Origin": [ DEFAULT_URL ]
+            "Access-Control-Allow-Origin": [origin],
+            "Access-Control-Allow-Headers": '*'
         };
+
+        console.log("Using additional headers: ", additionalHeaders);
 
         const newResponseHeaders = {...details.responseHeaders, ...additionalHeaders};
 
