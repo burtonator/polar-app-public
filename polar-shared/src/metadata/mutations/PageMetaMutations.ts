@@ -9,6 +9,8 @@ import {IAreaHighlight} from "../IAreaHighlight";
 import {IImage} from "../IImage";
 import {ITextHighlight} from "../ITextHighlight";
 import {isPresent} from "../../Preconditions";
+import {Refs} from "../Refs";
+import {IVersionedObject} from "../IVersionedObject";
 
 const log = Logger.create();
 
@@ -70,28 +72,30 @@ export abstract class MutatorDelegate<V extends IIDRef> {
 
     }
 
-    public delete(ref: IAnnotationRefWithDocMeta): boolean {
+    public delete(annotationRef: IAnnotationRefWithDocMeta): boolean {
 
-        const {docMeta} = ref;
+        const {docMeta} = annotationRef;
 
-        const pageMeta = IDocMetas.getPageMeta(docMeta, ref.pageNum);
+        const pageMeta = IDocMetas.getPageMeta(docMeta, annotationRef.pageNum);
 
         const values = this.toValues(pageMeta) || {};
 
-        if (values[ref.id]) {
-            console.log("Deleted record: ", ref);
-            delete values[ref.id];
-            return true;
+        let deleted: boolean = false;
+
+        if (values[annotationRef.id]) {
+            console.log("Deleted record: ", annotationRef);
+            delete values[annotationRef.id];
+            deleted = true;
         }
 
         function getImage(): IImage | undefined {
 
-            if (ref.annotationType === AnnotationType.AREA_HIGHLIGHT) {
-                return (<IAreaHighlight> ref.original).image;
+            if (annotationRef.annotationType === AnnotationType.AREA_HIGHLIGHT) {
+                return (<IAreaHighlight> annotationRef.original).image;
             }
 
-            if (ref.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
-                return (<ITextHighlight> ref.original).image;
+            if (annotationRef.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
+                return (<ITextHighlight> annotationRef.original).image;
             }
 
             return undefined;
@@ -103,9 +107,26 @@ export abstract class MutatorDelegate<V extends IIDRef> {
             delete docMeta.docInfo.attachments[image.id];
         }
 
-        log.warn("Failed to delete value: ", ref);
-        return false;
 
+        const ref = Refs.createFromAnnotationType(annotationRef.id, annotationRef.annotationType);
+
+        const deleteChildren = (children: {[id: string]: IVersionedObject}) => {
+
+            const dependencies = Object.values(children || {})
+                .filter(current => current.ref === ref);
+
+            for (const dependency of dependencies) {
+                delete children[dependency.id];
+            }
+
+        }
+
+        deleteChildren(pageMeta.comments);
+        deleteChildren(pageMeta.flashcards);
+
+        log.warn("Failed to delete value: ", annotationRef);
+
+        return deleted;
 
     }
 
