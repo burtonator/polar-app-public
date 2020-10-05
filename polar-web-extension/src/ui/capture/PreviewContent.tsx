@@ -10,7 +10,11 @@ const useStyles = makeStyles((theme) =>
             margin: 'auto',
             maxWidth: '850px',
             flexGrow: 1,
-            padding: '5px'
+            padding: '5px',
+            "& img": {
+                maxWidth: '850px',
+                height: 'auto'
+            }
         },
     }),
 );
@@ -33,8 +37,6 @@ export const PreviewContent = () => {
 
                         <img style={{
                                  margin: 'auto',
-                                 maxHeight: '100%',
-                                 maxWidth: '100%'
                              }}
                              alt="Preview image"
                              src={captureContentContext.image}/>
