@@ -1,6 +1,3 @@
-/**
- * A Provider is just a function that returns a given type.
- */
 import {DurationStr, TimeDurations} from "./TimeDurations";
 import {Latch} from "./Latch";
 
@@ -9,6 +6,9 @@ import {Latch} from "./Latch";
  */
 export type LiteralOrProvider<T> = T | Provider<T>;
 
+/**
+ * A Provider is just a function that returns a given type.
+ */
 export type Provider<T> = () => T;
 
 /**

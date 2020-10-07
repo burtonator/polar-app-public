@@ -1,8 +1,8 @@
+import {ILogger} from './ILogger';
+
 /**
  * Simple logger that just writes to the console.
  */
-import {ILogger} from './ILogger';
-
 export class ConsoleLogger implements ILogger {
 
     public readonly name: string = 'console-logger';
