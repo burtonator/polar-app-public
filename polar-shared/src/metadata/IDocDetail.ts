@@ -22,8 +22,14 @@ export interface IDocDetail {
      */
     readonly title?: string;
 
+    /**
+     * The subtitle for the document.
+     */
     readonly subtitle?: string;
 
+    /**
+     * The description for the document.
+     */
     readonly description?: string;
 
     /**
