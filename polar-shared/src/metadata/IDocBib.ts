@@ -1,4 +1,5 @@
 import {IDocAuthor} from "./IDocAuthor";
+import {IJournal} from "./IDocDetail";
 
 
 export interface IDocBibMutable {
@@ -38,9 +39,10 @@ export interface IDocBibMutable {
 
     lang?: string;
 
-    journal?: string;
+    journal?: string | IJournal;
 
     month?: string;
+
     year?: string;
 
     pmid?: string;

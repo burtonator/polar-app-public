@@ -39,7 +39,7 @@ export interface IDocDetail {
     readonly url?: URLStr;
 
     /**
-     * The web page , landing URL for this document which can be the original
+     * The web page, landing URL for this document which can be the original
      * URL if this is just HTML or a web page representing the doc.
      */
     readonly landingURL?: URLStr;
