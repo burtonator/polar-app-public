@@ -11,7 +11,7 @@ export namespace Plans {
     /**
      * Convert a plan to a V2 plan
      */
-    export function toV2(plan: Billing.Plan | Billing.V2PlanLevel | undefined): V2Plan {
+    export function toV2(plan: Billing.PlanLike | undefined): V2Plan {
 
         if (plan === undefined) {
             return V2PlanFree;

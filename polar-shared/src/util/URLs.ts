@@ -10,6 +10,25 @@ const log = Logger.create();
 
 export namespace URLs {
 
+    interface CreateOpts {
+        readonly base: URLStr;
+        readonly params?: {[name: string]: string};
+    }
+
+    export function create(opts: CreateOpts): URLStr {
+
+        const {params, base} = opts;
+
+        const result = base.endsWith("?") ? base : base + "?";
+
+        const query = Object.entries(params || {})
+                            .map(current => current[0] + '=' + encodeURIComponent(current[1]))
+                            .join("&")
+
+        return result + query;
+
+    }
+
     export async function toBuffer(url: URLStr): Promise<Buffer> {
 
         const response = await fetch(url);

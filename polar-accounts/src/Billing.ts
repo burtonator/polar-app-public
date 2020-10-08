@@ -14,6 +14,11 @@ export namespace Billing {
 
     export type Plan = V1Plan | V2Plan;
 
+    /**
+     * Like a plan but can be V1, V2 or a V2 level string.
+     */
+    export type PlanLike = V1Plan | V2Plan | Billing.V2PlanLevel;
+
     export type Interval = 'month' | 'year' | '4year';
 
     /**
