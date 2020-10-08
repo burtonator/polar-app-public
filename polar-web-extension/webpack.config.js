@@ -4,6 +4,7 @@ const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const svgToMiniDataURI = require('mini-svg-data-uri');
 
 const mode = process.env.NODE_ENV || 'production';
 const isDev = process.env.NODE_ENV === 'development';
@@ -81,7 +82,7 @@ module.exports = {
             {
                 // all image and font assets including SVG, TTFs and an optional
                 // v=xxx identifier at the end if we want to use one.
-                test: /\.(png|jpe?g|gif|bmp|svg|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
+                test: /\.(png|jpe?g|gif|bmp|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
                 use: [
                     {
                         loader: 'file-loader',
@@ -89,6 +90,19 @@ module.exports = {
                             name: '[name]-[contenthash].[ext]',
                             outputPath: 'assets',
                             publicPath: '/assets'
+                        }
+                    },
+                ],
+            },
+            {
+                // make SVGs use data URLs.
+                test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 32768,
+                            generator: (content) => svgToMiniDataURI(content.toString()),
                         }
                     },
                 ],

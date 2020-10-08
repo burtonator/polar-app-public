@@ -69,14 +69,7 @@ export const CaptureRoot = deepMemo(() => {
                              flexGrow: 1,
                          }}>
 
-                        {/*TODO: we need a way to find the URL of the chrome */}
-                        {/*extension so that we can load assets.  We can't load */}
-                        {/*from / because that will be the SITE not our extension.*/}
-
-                        {/*TODO apparent we can call chrome.runtime.getURL but
-                           that's nasty.*/}
-
-                        {/*<NavLogoImage/>*/}
+                        <NavLogoImage width={50} height={50}/>
                         <NavLogoText/>
 
                     </div>
