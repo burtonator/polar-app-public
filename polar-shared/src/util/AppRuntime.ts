@@ -29,15 +29,15 @@ export namespace AppRuntime {
     }
 
     export function isElectron() {
-        return this.get() === 'electron'
+        return get() === 'electron'
     }
 
     export function isBrowser() {
-        return this.get() === 'browser';
+        return get() === 'browser';
     }
 
     export function isNode() {
-        return this.get() === 'node';
+        return get() === 'node';
     }
 
 }

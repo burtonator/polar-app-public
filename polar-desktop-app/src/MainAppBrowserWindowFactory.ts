@@ -137,7 +137,7 @@ export namespace MainAppBrowserWindowFactory {
             function isExternal() {
                 const appURL = new URL(DEFAULT_URL);
                 const parsedURL = new URL(url);
-                return appURL.host !== parsedURL.host && ! url.startsWith('about:blank');
+                return appURL.host !== parsedURL.host;
             }
 
             if (isExternal()) {
