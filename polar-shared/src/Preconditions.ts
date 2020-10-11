@@ -233,3 +233,7 @@ export function isPresent(val: any): boolean {
     return Preconditions.isPresent(val);
 }
 
+// TODO migrate to isPresent2 as I think this is the right generic expression
+export function isPresent2<T>(val: T | null | undefined): val is Exclude<T, null | undefined> {
+    return val !== null && val !== undefined;
+}
