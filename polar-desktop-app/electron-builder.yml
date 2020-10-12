@@ -3,7 +3,7 @@ productName: Polar
 # using nightly versions when not set.  It should use package.json
 electronVersion: 8.4.0
 appId: io.inputneuron/polar
-compression: normal
+compression: maximum
 npmRebuild: false
 # TODO: enable this in the future once we sign all the linux builds.
 #forceCodeSigning: true
