@@ -8,7 +8,7 @@ const log = Logger.create();
 const IS_DEV = process.env.ELECTRON_ENV === 'development';
 
 // export const DEFAULT_URL = 'https://beta.getpolarized.io';
-export const DEFAULT_URL = IS_DEV ? 'http://localhost:8050' : 'https://beta.getpolarized.io';
+export const DEFAULT_URL = IS_DEV ? 'http://localhost:8050' : 'https://app.getpolarized.io';
 
 console.log(`Using ${DEFAULT_URL} - to use localhost export ELECTRON_ENV=development`)
 
