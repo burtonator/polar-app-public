@@ -41,7 +41,7 @@ export namespace SaveToPolarHandler {
 
 
     async function doLoadWrittenDoc(writtenDoc: WrittenDoc) {
-        const url = 'https://beta.getpolarized.io/doc/' + writtenDoc.id;
+        const url = 'https://app.getpolarized.io/doc/' + writtenDoc.id;
         await Tabs.loadLinkInActiveTab(url);
     }
     

@@ -1,7 +1,7 @@
 
 // keep the request index built so I can determine the original request to read
 // the origin.
-const HOST = 'beta.getpolarized.io';
+const HOST = 'app.getpolarized.io';
 
 const INITIAL_URL = `https://${HOST}/?utm_source=app_on_install&utm_medium=chrome_extension`;
 
