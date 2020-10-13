@@ -103,9 +103,6 @@ export class Webserver implements WebRequestHandler {
                             rewrites: ReadonlyArray<Rewrite> = [],
                             app: Express = express()): Express {
 
-        // FIXME: add a test to make sure the directory we're going to use actaully exists...
-        // FIXME: try this:https://www.npmjs.com/package/directory-tree
-
         // handle rewrites FIRST so that we can send URLs to the right destination
         // before all other handlers.
         this.registerRewrites(app, rewrites);
@@ -120,10 +117,6 @@ export class Webserver implements WebRequestHandler {
 
         });
 
-        // FIXME: I think the problme now is that setting the path DOES NOT change the path for serveStatic inside
-        // the runtime environment on teh server?
-
-        // TODO: add infinite caching if the files are woff2 web fonts...
         app.use(serveStatic(dir, {immutable: true}));
 
         for (const page of ['login.html', 'index.html']) {
