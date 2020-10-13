@@ -59,7 +59,7 @@ export const CaptureRoot = deepMemo(() => {
     return (
         <div style={{display: 'flex', flexDirection: 'column'}}>
 
-            <AppBar position="static" color="inherit">
+            <AppBar position="fixed" color="inherit">
                 <Toolbar>
 
                     <div style={{
@@ -89,7 +89,10 @@ export const CaptureRoot = deepMemo(() => {
 
             {saving && <LinearProgress />}
 
-            <div style={{display: 'flex'}}>
+            <div style={{
+                     display: 'flex',
+                     marginTop: '64px'
+                }}>
                 <PreviewContent/>
             </div>
 
