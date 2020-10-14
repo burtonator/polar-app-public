@@ -63,9 +63,9 @@ function allowAnkiSyncOrigin() {
             const parsedURL = new URL(DEFAULT_URL);
 
             if (parsedURL.port !== '80' && parsedURL.port !== '443' && parsedURL.port !== '') {
-                return 'http://' + parsedURL.hostname + ":" + parsedURL.port;
+                return parsedURL.protocol + '//' + parsedURL.hostname + ":" + parsedURL.port;
             } else {
-                return 'http://' + parsedURL.hostname;
+                return parsedURL.protocol + '//' + parsedURL.hostname;
             }
 
         }
