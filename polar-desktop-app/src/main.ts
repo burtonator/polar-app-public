@@ -60,6 +60,7 @@ function allowAnkiSyncOrigin() {
         }
 
         function computeOrigin() {
+
             const parsedURL = new URL(DEFAULT_URL);
 
             if (parsedURL.port !== '80' && parsedURL.port !== '443' && parsedURL.port !== '') {
