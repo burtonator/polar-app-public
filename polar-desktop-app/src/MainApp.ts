@@ -57,11 +57,11 @@ namespace AppListeners {
             // determine if we need to quit:
             console.log("No windows left. Quitting app.");
 
-            const forcedExit = () => {
+            const doExit = () => {
 
                 try {
 
-                    log.info("Forcing app quit...");
+                    log.info("Quitting app...");
                     app.quit();
                     log.info("Forcing process exit...");
                     process.exit();
@@ -72,20 +72,7 @@ namespace AppListeners {
 
             };
 
-            const gracefulExit = () => {
-
-                try {
-                    // mainAppController.exitApp();
-                } catch (e) {
-                    log.error("Failed graceful exit: ", e);
-                    forcedExit();
-
-                }
-
-            };
-
-            gracefulExit();
-
+            doExit();
 
         });
 
