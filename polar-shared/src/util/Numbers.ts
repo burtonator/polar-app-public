@@ -1,12 +1,12 @@
 import { Reducers } from "./Reducers";
 
-export class Numbers {
+export namespace Numbers {
 
     /**
      * Type guard to verify that the value given is always a number type.
      * @param value
      */
-    public static toNumber(value: number | string): number {
+    export function toNumber(value: number | string): number {
 
         if (typeof value === 'string') {
             return parseInt(value);
@@ -16,15 +16,15 @@ export class Numbers {
 
     }
 
-    public static toString(value: number): string {
+    export function toString(value: number): string {
         return '' + value;
     }
 
-    public static sum(...values: number[]) {
+    export function sum(...values: number[]) {
         return values.reduce(Reducers.SUM, 0);
     }
 
-    public static max(...values: number[]) {
+    export function max(...values: number[]) {
 
         let result = values[0];
 
@@ -38,7 +38,7 @@ export class Numbers {
 
     }
 
-    public static mean(...values: number[]) {
+    export function mean(...values: number[]) {
 
         if (values.length === 0) {
             return NaN;
@@ -49,7 +49,7 @@ export class Numbers {
 
     }
 
-    public static compare(n0: number | undefined, n1: number | undefined) {
+    export function compare(n0: number | undefined, n1: number | undefined) {
 
         if (n0 === undefined && n1 !== undefined) {
             return -1;
@@ -71,7 +71,7 @@ export class Numbers {
      * Compute a list of number between start and end, inclusive over the
      * interval [start, end]
      */
-    public static range(start: number, end: number): ReadonlyArray<number> {
+    export function range(start: number, end: number): ReadonlyArray<number> {
 
         const result = [];
 
@@ -83,11 +83,11 @@ export class Numbers {
 
     }
 
-    public static isNumber(text: string) {
+    export function isNumber(text: string) {
         return ! isNaN(parseInt(text));
     }
 
-    public static toFixedFloat(input: number, width: number): number {
+    export function toFixedFloat(input: number, width: number): number {
         return parseFloat(input.toFixed(width));
     }
 
