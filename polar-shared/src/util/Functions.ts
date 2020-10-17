@@ -1,5 +1,4 @@
 import {isPresent, Preconditions} from "../Preconditions";
-import {Optional} from "./ts/Optional";
 
 export class Functions {
 
