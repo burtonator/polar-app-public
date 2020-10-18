@@ -1,6 +1,6 @@
 {
   "name": "polar-typescript",
-  "version": "2.0.42",
+  "version": "2.0.50",
   "description": "Typescript support and all dependent packages",
   "scripts": {
     "test": "echo",
@@ -10,15 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "tslint": "6.1.2",
-    "typescript": "3.9.5",
+    "@typescript-eslint/eslint-plugin": "=4.4.1",
+    "@typescript-eslint/parser": "=4.4.1",
     "eslint": "=7.11.0",
     "eslint-config-prettier": "=6.13.0",
-    "eslint-plugin-jsdoc": "=30.6.5",
     "eslint-plugin-import": "=2.22.1",
+    "eslint-plugin-jsdoc": "=30.6.5",
     "eslint-plugin-prefer-arrow": "=1.2.2",
     "eslint-plugin-react-hooks": "=4.1.2",
-    "@typescript-eslint/parser": "=4.4.1",
-    "@typescript-eslint/eslint-plugin": "=4.4.1"
+    "tslint": "6.1.2",
+    "typescript": "3.9.5"
   }
 }
