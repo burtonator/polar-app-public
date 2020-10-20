@@ -57,6 +57,8 @@ linux:
 
 nsis:
   artifactName: ${name}-${version}-${arch}.${ext}
+  createStartMenuShortcut: true
+  createDesktopShortcut: true
 
 appx:
   artifactName: ${name}-${version}-${arch}.${ext}
