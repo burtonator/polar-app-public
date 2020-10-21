@@ -1,12 +1,11 @@
 import {XHTMLWrapper} from "polar-epub-generator/src/XHTMLWrapper";
 import {EPUBGenerator} from "polar-epub-generator/src/EPUBGenerator";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {ReadabilityCapture} from "../capture/ReadabilityCapture";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {URLs} from "polar-shared/src/util/URLs";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
-import { URLStr } from "polar-shared/src/util/Strings";
+import {URLStr} from "polar-shared/src/util/Strings";
 import {ExtensionContentCapture} from "../capture/ExtensionContentCapture";
 
 export namespace CapturedContentEPUBGenerator {
@@ -14,34 +13,40 @@ export namespace CapturedContentEPUBGenerator {
     import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
     interface LocalImage {
+        readonly id: string;
         readonly img: HTMLImageElement;
-        readonly newHref: string;
+        readonly src: string;
+        readonly newSrc: string;
         readonly blob: Blob;
+        readonly mediaType: string;
     }
 
     async function toLocalImage(url: URLStr,
                                 img: HTMLImageElement): Promise<LocalImage | undefined> {
 
-        const href = img.getAttribute('href');
+        const src = img.getAttribute('src');
 
-        if (! href) {
+        if (src === null) {
             return undefined;
         }
 
         // ID for the image...
         const id = Hashcodes.createRandomID();
 
-        const basename = URLs.basename(href);
+        const basename = URLs.basename(src);
         const ext = FilePaths.toExtension(basename).getOrUndefined();
-        const newHref = id + ext ? `.${ext}` : '';
+        const newSrc = id + (ext ? `.${ext}` : '');
 
-        const hrefAbsolute = URLs.absolute(href, url);
+        const hrefAbsolute = URLs.absolute(src, url);
         const blob = await URLs.toBlob(hrefAbsolute);
 
         return {
+            id,
             img,
-            newHref,
-            blob
+            src,
+            newSrc,
+            blob,
+            mediaType: blob.type
         };
 
     }
@@ -53,15 +58,18 @@ export namespace CapturedContentEPUBGenerator {
             // update the internal src href so that it can load from the epub
             // and not the original URL
             for (const localImage of localImages) {
-                localImage.img.setAttribute('href', localImage.newHref);
+                localImage.img.setAttribute('data-original-src', localImage.src)
+                localImage.img.setAttribute('src', localImage.newSrc);
             }
 
         }
 
         function toEPUBImage(local: LocalImage): EPUBGenerator.EPUBImage {
             return {
-                href: local.newHref,
-                data: local.blob
+                id: local.id,
+                src: local.newSrc,
+                data: local.blob,
+                mediaType: <EPUBGenerator.MediaType> local.mediaType
             };
         }
 
@@ -118,19 +126,19 @@ export namespace CapturedContentEPUBGenerator {
 
         const {title, url} = capture;
 
-        const content = convertToHumanReadableContent(capture);
+        const readableContent = convertToHumanReadableContent(capture);
 
         const parser = new DOMParser();
-        const contentDoc = parser.parseFromString(content, "text/html");
+        const contentDoc = parser.parseFromString(readableContent, "text/html");
 
         const imgs = Array.from(contentDoc.querySelectorAll('img'));
 
         const localImages =
             await asyncStream(imgs)
-             .map(current => toLocalImage(url, current))
-             .filter(current => current !== undefined)
-             .map(current => current!)
-             .collect();
+                .map(current => toLocalImage(url, current))
+                .filter(current => current !== undefined)
+                .map(current => current!)
+                .collect();
 
         const images = convertDocumentToLocalImages(localImages);
 

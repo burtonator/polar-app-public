@@ -27,7 +27,7 @@ export namespace WebExtensionPresenceHandler {
 
         async function doAsync() {
 
-            const tabs = await WebExtensions.Tabs.query({url: '*.getpolarized.io'});
+            const tabs = await WebExtensions.Tabs.query({url: '*://*.getpolarized.io/'});
 
             for (const tab of tabs) {
 

@@ -34,11 +34,29 @@ export namespace EPUBGenerator {
 
     export type HTMLData = RawData;
 
-    export type MediaType = 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
+    export type MediaType = 'application/xhtml+xml' | 'image/png' | 'image/jpeg' | 'image/svg+xml' | 'image/gif' | 'image/webp';
 
     export interface EPUBImage {
-        readonly href: string;
+
+        /**
+         * A unique id for the image.
+         */
+        readonly id: string;
+
+        /**
+         * The src href of the image that we're writing...
+         */
+        readonly src: string;
+
+        /**
+         * The image data
+         */
         readonly data: ImageData;
+
+        /**
+         * The media type of the image. Example: image/png, image/svg+xml, etc
+         */
+        readonly mediaType: MediaType;
     }
 
     export interface EPUBDocument {
@@ -139,6 +157,25 @@ export namespace EPUBGenerator {
 
             }
 
+            function imagesToManifest(): ReadonlyArray<IManifestItem> {
+
+                function toManifestItem(image: EPUBImage): IManifestItem {
+
+                    return {
+                        id: image.id,
+                        href: image.src,
+                        mediaType: image.mediaType
+                    };
+
+                }
+
+                return arrayStream(doc.contents)
+                        .flatMap(content => content.images)
+                        .map(toManifestItem)
+                        .collect();
+
+            }
+
             function guideToManifest(): ReadonlyArray<IManifestItem> {
                 return [
                     {
@@ -152,6 +189,7 @@ export namespace EPUBGenerator {
 
             return [
                 ...contentsToManifest(),
+                ...imagesToManifest(),
                 ...guideToManifest()
             ];
 
@@ -173,8 +211,6 @@ export namespace EPUBGenerator {
         const spine = toSpine();
         const manifest = toManifest();
         const guide = toGuide();
-
-        // FIXME: ejs ues eval!!!
 
         const content: IContent = {
             id: doc.url,
@@ -301,7 +337,7 @@ export namespace EPUBGenerator {
                 zip.file('OEBPS/'+ content.href, content.data);
 
                 for (const image of content.images) {
-                    zip.file('OEBPS/' + image.href, image.data);
+                    zip.file('OEBPS/' + image.src, image.data);
                 }
 
             }
@@ -342,8 +378,6 @@ export namespace EPUBGenerator {
             .collect();
 
     }
-
-
 
 }
 
