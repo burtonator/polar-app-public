@@ -1,5 +1,5 @@
 import {Parser} from "./Parser";
-import {ARXIVParser} from "./ARXIVParser";
+import {ARXIVParser} from "./parsers/ARXIVParser";
 
 namespace Parsers {
 

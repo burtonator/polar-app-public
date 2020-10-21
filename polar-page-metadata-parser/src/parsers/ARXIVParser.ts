@@ -1,4 +1,4 @@
-import {Parser} from "./Parser";
+import {Parser} from "../Parser";
 
 export class ARXIVParser implements Parser {
 

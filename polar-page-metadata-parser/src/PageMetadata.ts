@@ -6,7 +6,7 @@
 // and we can probably just extend this class with PageMetadata which will allow
 // us to put EXTRA fields in PageMetadata if necessary
 
-interface PageMetadata {
+export interface PageMetadata {
 
     readonly url: string;
     readonly pdfURL: string;
