@@ -80,10 +80,10 @@ export namespace HTMLSanitizer {
 
             // TODO: add all of these below.. to allowedAttributes.
             allowedTags: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote',
-                'cite', 'p', 'a', 'ul', 'ol', 'nl', 'li', 'b', 'i',
-                'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
-                'table', 'thead', 'caption', 'tbody', 'tr', 'th',
-                'td', 'pre', 'img'],
+                           'cite', 'p', 'a', 'ul', 'ol', 'nl', 'li', 'b', 'i',
+                           'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
+                           'table', 'thead', 'caption', 'tbody', 'tr', 'th',
+                           'td', 'pre', 'img'],
 
             allowedAttributes: {
 
