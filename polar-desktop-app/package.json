@@ -1,6 +1,6 @@
 {
   "name": "polar-desktop-app",
-  "version": "2.0.54",
+  "version": "2.0.55",
   "description": "Polar",
   "main": "./main-bundle.js",
   "private": true,
@@ -52,8 +52,8 @@
     "webpack-cli": "=3.3.12"
   },
   "dependencies": {
-    "polar-bookshelf": "^2.0.54",
-    "polar-shared": "^2.0.54"
+    "polar-bookshelf": "^2.0.55",
+    "polar-shared": "^2.0.55"
   },
   "collective": {
     "type": "opencollective",
