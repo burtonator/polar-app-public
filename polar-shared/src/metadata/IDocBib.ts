@@ -1,7 +1,9 @@
 import {IDocAuthor} from "./IDocAuthor";
 import {IJournal} from "./IDocDetail";
 
-
+/**
+ * Mutable interface for bibliographic metadata on a document
+ */
 export interface IDocBibMutable {
 
     /**
@@ -9,6 +11,9 @@ export interface IDocBibMutable {
      */
     title?: string;
 
+    /**
+     * Included in some versions of bibtex.
+     */
     shortTitle?: string;
 
     /**
@@ -27,14 +32,21 @@ export interface IDocBibMutable {
 
     isbn?: string;
 
-    editor?: string;
+    editor?: string | ReadonlyArray<string>;
 
     address?: string;
 
     edition?: string;
 
+    /**
+     * The DOI (document identifier) for this document.  This is either provided
+     * by the user or found via metadata when adding the PDF.
+     */
     doi?: string;
 
+    /**
+     * The abstract or summary of the document as provided by the author of the paper.
+     */
     abstract?: string;
 
     lang?: string;
@@ -45,14 +57,21 @@ export interface IDocBibMutable {
 
     year?: string;
 
+    /**
+     * The PubMed ID for this document.
+     */
     pmid?: string;
 
     keywords?: ReadonlyArray<string>;
 
     pages?: string;
 
-    authors?: ReadonlyArray<IDocAuthor>;
+    authors?: ReadonlyArray<string> | ReadonlyArray<IDocAuthor>;
 
+    /**
+     * The name of the publisher for this document.  This is the name of the
+     * academic journal, newspaper, website, etc.
+     */
     publisher?: string;
 
     copyright?: string;
