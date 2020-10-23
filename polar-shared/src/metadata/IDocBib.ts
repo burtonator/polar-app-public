@@ -55,6 +55,10 @@ export interface IDocBibMutable {
 
     month?: string;
 
+    /**
+     * The year the document was published. This needs to be a string because some publishers use
+     * time ranges like '1992-1994' or '1992, 1993, 1994'
+     */
     year?: string;
 
     /**
