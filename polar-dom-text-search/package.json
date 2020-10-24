@@ -1,6 +1,6 @@
 {
   "name": "polar-dom-text-search",
-  "version": "2.0.55",
+  "version": "2.0.56",
   "description": "Provides a framework to search text within a DOM.",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@types/node": "12.12.32",
-    "polar-shared": "^2.0.55",
-    "polar-test": "^2.0.55"
+    "polar-shared": "^2.0.56",
+    "polar-test": "^2.0.56"
   },
   "files": [
     "**/*.js",
