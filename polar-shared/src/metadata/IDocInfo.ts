@@ -7,9 +7,9 @@ import {Hashcode} from "./Hashcode";
 import {ReadingOverview} from "./ReadingOverview";
 import {IAttachment} from "./IAttachment";
 import {Visibility} from "../datastore/Visibility";
-import {IDocAuthor} from "./IDocAuthor";
 import {IThumbnail} from "./IThumbnail";
 import {IText} from "./Text";
+import {IDocBibMutable} from "./IDocBib";
 
 /**
  * The type of URL of URL:
@@ -19,7 +19,7 @@ import {IText} from "./Text";
  */
 export type URLType = 'download' | 'landing';
 
-export interface IDocInfo {
+export interface IDocInfo extends IDocBibMutable {
 
     /**
      * The number of pages in this document.
@@ -194,23 +194,6 @@ export interface IDocInfo {
      */
     published?: ISODateString | ISODateTimeString;
 
-    /**
-     * The name of the publisher for this document.  This is the name of the
-     * academic journal, newspaper, website, etc.
-     */
-    publisher?: string;
-
-    /**
-     * The DOI (document identifier) for this document.  This is either provided
-     * by the user or found via metadata when adding the PDF.
-     */
-    doi?: string;
-
-    /**
-     * The PubMed ID for this document.
-     */
-    pmid?: string;
-
     readingPerDay?: ReadingOverview;
 
     /**
@@ -221,15 +204,13 @@ export interface IDocInfo {
 
     attachments: {[id: string]: IAttachment};
 
-    authors?: ReadonlyArray<IDocAuthor>;
-
     /**
      * Thumbnails for the document which allow for preview.
      */
     thumbnails?: { [id: string]: IThumbnail };
 
     /**
-     * Summary of the document provided from the publisher.
+     * Summary of the document provided by the user.
      */
     summary?: IText;
 
