@@ -19,7 +19,7 @@
     "null-loader": "=4.0.1",
     "sass-loader": "=10.0.4",
     "style-loader": "=2.0.0",
-    "terser-webpack-plugin": "=5.0.1",
+    "terser-webpack-plugin": "=3.0.6",
     "thread-loader": "=3.0.0",
     "ts-loader": "=8.0.7",
     "url-loader": "=4.1.1",

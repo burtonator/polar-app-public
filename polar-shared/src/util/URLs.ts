@@ -40,12 +40,12 @@ export namespace URLs {
 
     export async function toBlob(url: URLStr): Promise<Blob> {
 
-        const response = await fetch(url, {mode: "no-cors"});
+        const response = await fetch(url);
 
         if (response.ok) {
             return await response.blob();
         } else {
-            throw new Error(`Could not fetch URL ${response.status}: ${response.statusText}`);
+            throw new Error(`Could not fetch URL: ${url} status: ${response.status}, statusText: '${response.statusText}'`);
         }
 
     }
