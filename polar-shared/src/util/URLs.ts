@@ -55,9 +55,7 @@ export namespace URLs {
      * @param url
      */
     export function isWebScheme(url: URLStr) {
-
         return url.startsWith('http:') || url.startsWith('https:');
-
     }
 
     /**
