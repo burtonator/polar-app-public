@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/jszip": "~3.4.1",
     "@types/mocha": "7.0.2",
     "@types/node": "12.12.32",
     "mocha": "8.0.1",
@@ -21,7 +20,7 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "jszip": "~3.4.0",
+    "jszip": "~3.5.0",
     "polar-shared": "^2.0.56"
   }
 }
