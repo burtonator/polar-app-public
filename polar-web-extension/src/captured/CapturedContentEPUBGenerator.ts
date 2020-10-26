@@ -12,6 +12,8 @@ export namespace CapturedContentEPUBGenerator {
 
     import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
+    const ENABLE_LOCAL_IMAGES = false;
+
     interface LocalImage {
         readonly id: string;
         readonly img: HTMLImageElement;
@@ -140,7 +142,7 @@ export namespace CapturedContentEPUBGenerator {
                 .map(current => current!)
                 .collect();
 
-        const images = convertDocumentToLocalImages(localImages);
+        const images = ENABLE_LOCAL_IMAGES ? convertDocumentToLocalImages(localImages) : [];
 
         const localContent = contentDoc.documentElement.outerHTML;
         const data = XHTMLWrapper.wrap({title, content: localContent});

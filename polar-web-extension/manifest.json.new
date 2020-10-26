@@ -1,0 +1,52 @@
+{
+  "name": "Save to Polar",
+  "short_name": "Polar",
+  "description": "Save PDFs and EPUBs to Polar.",
+  "version": "__VERSION__",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAz2a8p8uv41X3fndJZhoetT6PKYDqjPzZ7tffFrXmZCcImdGzukSe02iihAImsEkx3clfrj+ZBSfV5qScT9kpSSKBGUI7vVJJRNMQkcnfM7sBQHOS/ctQny5C8UM54OW0ZfBJysyjUbD0MiqUiLC8JZ2/UVIzL1Nq4JzW7eDQ2nBgYOoXUJ3i8IEYy9lvIw273nRyepFPlHtmaoqe6mRDLvnfUFkasEfJsIba+nCvkk/rRS+zcjIhdO/AKJEWSwDdkjh3CaHgHrWJEETbWa/m44xT5xgbZfbYTVGIPwWFvXnYlujQMPXd2W5FmbUoMSI3rSZ/CTQuE4zFaTOD3Mso6wIDAQAB",
+  "background": {
+    "scripts": ["background-bundle.js"],
+    "persistent": true
+  },
+  "permissions": [
+    "activeTab",
+    "fileBrowserHandler",
+    "storage",
+    "tabCapture",
+    "contextMenus",
+    "unlimitedStorage",
+    "declarativeContent",
+    "notifications",
+    "*://*/*",
+    "*://*.getpolarized.io/*"
+  ],
+  "optional_permissions": [
+    "fileSystem"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "*://*.getpolarized.io/*"
+    ]
+  },
+  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com https://apis.google.com; object-src 'self'",
+  "file_browser_handlers": [{
+    "id": "open-as-pdf",
+    "default_title": "Save to Polar",
+    "file_filters": [
+      "filesystem:*.pdf"
+    ]
+  }],
+  "browser_action": {
+    "name": "Save to Polar",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icon-128.png",
+    "32": "icon-128.png",
+    "48": "icon-128.png",
+    "128": "icon-128.png"
+  },
+  "manifest_version": 2
+}
+
+
