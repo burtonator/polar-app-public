@@ -17,11 +17,7 @@
     "unlimitedStorage",
     "declarativeContent",
     "notifications",
-    "*://*.getpolarized.io/*"
-  ],
-  "optional_permissions": [
-    "clipboardRead",
-    "clipboardWrite"
+    "*://*/*"
   ],
   "externally_connectable": {
     "matches": [

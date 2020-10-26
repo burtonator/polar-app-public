@@ -12,7 +12,7 @@ export namespace CapturedContentEPUBGenerator {
 
     import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
-    const ENABLE_LOCAL_IMAGES = false;
+    const ENABLE_LOCAL_IMAGES = true;
 
     interface LocalImage {
         readonly id: string;

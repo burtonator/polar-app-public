@@ -17,12 +17,8 @@
     "unlimitedStorage",
     "declarativeContent",
     "notifications",
-    "*://*/*",
-    "*://*.getpolarized.io/*"
-  ],
-  "optional_permissions": [
-    "fileSystem"
-  ],
+    "*://*/*"
+  ]
   "externally_connectable": {
     "matches": [
       "*://*.getpolarized.io/*"
