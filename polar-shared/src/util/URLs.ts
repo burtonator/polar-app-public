@@ -40,7 +40,7 @@ export namespace URLs {
 
     export async function toBlob(url: URLStr): Promise<Blob> {
 
-        const response = await fetch(url);
+        const response = await fetch(url, {mode: "no-cors"});
 
         if (response.ok) {
             return await response.blob();
