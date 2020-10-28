@@ -17,7 +17,11 @@ describe('SimpleParser', function() {
         const doc = parseHTML(`<html><body><div class="title">this is the title</div></body>`, 'http://example.com');
         const parser = new SimpleParser();
         const metadata = parser.parse(doc);
-        assertJSON(metadata, {});
+        assertJSON(metadata, {
+            "pdfURL": "http://example.com/example.pdf",
+            "title": "this is the title",
+            "url": "http://example.com/"
+        });
 
     });
 
