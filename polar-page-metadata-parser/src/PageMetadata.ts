@@ -1,23 +1,25 @@
 
-// TODO:
-// this should have roughly the same metadata as IDocBib in
-//     polar-app-public/polar-shared/src/metadata/IDocBib.ts
-//
-// and we can probably just extend this class with PageMetadata which will allow
-// us to put EXTRA fields in PageMetadata if necessary
-
-// TODO: we need to support the concept of docMeta that don't have metadata backing them.
+import {IDocBib} from "polar-shared/src/metadata/IDocBib";
 
 export type CaptureType = '';
 
-export interface PageMetadata {
+export interface BasePageMetadata extends Readonly<IDocBib> {
 
     readonly url: string;
-    readonly pdfURL: string;
-
-    readonly title?: string;
-    readonly authors?: ReadonlyArray<string>;
-    readonly summary?: string;
 
 }
 
+export interface PageMetadataForPDF extends BasePageMetadata {
+
+    /**
+     * The PDF document URL for downloading the PDF.
+     */
+    readonly pdfURL: string;
+
+}
+
+export interface PageMetadataForWebContent extends BasePageMetadata {
+
+}
+
+export type PageMetadata = PageMetadataForPDF | PageMetadataForWebContent;
