@@ -40,16 +40,23 @@ export namespace CapturedContentEPUBGenerator {
         const newSrc = id + (ext ? `.${ext}` : '');
 
         const hrefAbsolute = URLs.absolute(src, url);
-        const blob = await URLs.toBlob(hrefAbsolute);
 
-        return {
-            id,
-            img,
-            src,
-            newSrc,
-            blob,
-            mediaType: blob.type
-        };
+        try {
+            const blob = await URLs.toBlob(hrefAbsolute);
+
+            return {
+                id,
+                img,
+                src,
+                newSrc,
+                blob,
+                mediaType: blob.type
+            };
+
+        } catch (e) {
+            console.error("Unable to store image locally: " + url, e);
+            return undefined;
+        }
 
     }
 
