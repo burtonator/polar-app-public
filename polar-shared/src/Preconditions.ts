@@ -218,7 +218,11 @@ export class Preconditions {
 
 }
 
-type AssertionFunction<T> = (val: T) => boolean;
+/**
+ * A function that returns false if the assertion fails or throw an error if it fails if you want a better error
+ * than just the value.
+ */
+export type AssertionFunction<T> = (val: T) => boolean;
 
 // noinspection TsLint: variable-name
 export function defaultValue<T>(value: T | undefined | null, defaultValue: T): NonNullable<T> {
