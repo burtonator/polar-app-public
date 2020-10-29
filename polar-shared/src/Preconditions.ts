@@ -18,7 +18,7 @@ export class Preconditions {
      */
     public static assert<T>(value: T, testFunction: AssertionFunction<T>, message: string): T {
 
-        Preconditions.assertNotNull(testFunction, "testFunction");
+        Preconditions.assertPresent(testFunction, "testFunction");
 
         const result = testFunction(value);
 

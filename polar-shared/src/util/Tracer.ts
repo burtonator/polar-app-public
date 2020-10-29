@@ -1,4 +1,3 @@
-/* tslint:disable:no-console */
 /**
  * Simple tracer that uses log.time and can also return values...
  */
@@ -25,12 +24,14 @@ export namespace Tracer {
     }
 
     export function sync<T>(delegate: () => T, id: string): T {
+
         const timer = createTimer(id);
         try {
             return delegate();
         } finally {
             timer.stop();
         }
+
     }
 
 
