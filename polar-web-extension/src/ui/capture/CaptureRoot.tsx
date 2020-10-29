@@ -42,7 +42,6 @@ export const CaptureRoot = deepMemo(() => {
 
     const [saving, setSaving]= React.useState(false);
 
-    // FIXME: move this to a script to send varrious messages to trigger the capture
     function saveToPolar(capture: ICapturedEPUB) {
 
         setSaving(true);
