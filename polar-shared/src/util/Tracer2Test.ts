@@ -11,7 +11,7 @@ describe('Tracer2', function() {
             return 101;
         }
 
-        const tracer = Tracer2.create();
+        const tracer = Tracer2.create({id: 'sync'});
 
         assert.equal(101, await tracer(doAsync));
 
@@ -24,7 +24,7 @@ describe('Tracer2', function() {
             return 101;
         }
 
-        const tracer = Tracer2.create();
+        const tracer = Tracer2.create({id: 'async'});
 
         assert.equal(101, tracer(doSync));
 

@@ -5,43 +5,29 @@ import {isPresent} from "../Preconditions";
  */
 export namespace Tracer2 {
 
-    export interface TracerFunction<T> {
-        (delegate: () => T): T;
-        (delegate: () => Promise<T>): Promise<T>;
-    };
+    const THRESHOLD = 125;
 
     /**
-     * Logger implementation so we can change this any time we want.
+     * A TracerFunction can be given either a delegate that returns a value
+     * without await or a Promise.
+     */
+    export interface TracerFunction {
+        <T>(delegate: () => T): T;
+        <T>(delegate: () => Promise<T>): Promise<T>;
+    }
+
+    /**
+     * Logger implementation so we can change this any time we want via a hook
+     * or some other factory method.
      */
     export interface TracerLogger {
         readonly info: (msg: string) => void;
         readonly warn: (msg: string) => void;
     }
 
-    export type TracerDelegate<T> = () => T;
-
-    export type TracerExecutor = <T>(delegate: TracerDelegate<T>) => void;
-
-    const WARN_THRESHOLD = 125;
-
     function isPromise<T>(value: any): value is Promise<T> {
         return isPresent(value.then);
     }
-    //
-    // function createTimer(id: string): Timer {
-    //
-    //     const before = Date.now();
-    //
-    //     return {
-    //         stop: () => {
-    //             const after = Date.now();
-    //             const duration = after - before;
-    //             if (duration > WARN_THRESHOLD) {
-    //                 console.warn(`Slow task ${id}: `, duration);
-    //             }
-    //         }
-    //     }
-    // }
 
     function now(): number {
         if (typeof performance !== 'undefined') {
@@ -51,21 +37,35 @@ export namespace Tracer2 {
         }
     }
 
+    interface CreateOpts {
 
-    function handleCompletion(start: number, end: number) {
-        const duration = end - start;
-        if (duration > WARN_THRESHOLD) {
-            console.warn(`FIXME id operation took too long: ${duration}ms`);
-        }
+        /**
+         * The unique ID for this tracer.
+         */
+        readonly id: string;
+        readonly threshold?: number;
+        readonly logger?: TracerLogger;
+
     }
 
     /**
      * Creates a tracer with a given ID
-     * FIXME: this can return T or Promise<T> which is wrong.
      */
-    export function create() {
+    export function create(opts: CreateOpts): TracerFunction {
 
-        return <T>(delegate: () => T) => {
+        const {id} = opts;
+        const threshold = opts.threshold || THRESHOLD;
+        const logger = opts.logger || console;
+
+        function handleCompletion(start: number, end: number) {
+            const duration = end - start;
+            if (duration > threshold) {
+                logger.warn(`${id} operation took too long: ${duration}ms`);
+            }
+        }
+
+        return <T>(delegate: () => T | Promise<T>) => {
+
             const start = now();
             const result = delegate();
 
