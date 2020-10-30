@@ -4,7 +4,7 @@
   "description": "Parses metadata for pages from the DOM",
   "main": "index.js",
   "scripts": {
-    "test": "ts-mocha --timeout 20000 --exit src/**/*Test.ts",
+    "test": "mocha --timeout 20000 --exit src/**/*Test.js",
     "compile": "tsc"
   },
   "keywords": [],
