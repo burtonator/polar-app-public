@@ -6,14 +6,14 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 
 async function readTestData(url: string): Promise<string> {
 
-    if (existsSync('src/test/arxiv1.html')) {
+    if (existsSync('test/arxiv1.html')) {
         console.log('The path exists.');
-        return readFileSync('src/test/arxiv1.html').toString()
+        return readFileSync('test/arxiv1.html').toString()
     } else {
         const response = await Fetches.fetch(url);
 
         const html = await response.text();
-        writeFileSync('src/test/arxiv1.html', html)
+        writeFileSync('test/arxiv1.html', html)
         return html;
     }
 
