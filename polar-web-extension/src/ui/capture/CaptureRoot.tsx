@@ -38,11 +38,9 @@ export const CaptureRoot = deepMemo(() => {
 
     const captureContentContext = useCaptureContentContext();
 
-    const classes = useStyles();
-
     const [saving, setSaving]= React.useState(false);
 
-    function saveToPolar(capture: ICapturedEPUB) {
+    const saveToPolar = React.useCallback((capture: ICapturedEPUB) => {
 
         setSaving(true);
 
@@ -54,7 +52,8 @@ export const CaptureRoot = deepMemo(() => {
 
         chrome.runtime.sendMessage(message);
 
-    }
+    }, []);
+
     return (
         <div style={{display: 'flex', flexDirection: 'column'}}>
 
