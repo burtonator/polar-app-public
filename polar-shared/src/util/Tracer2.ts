@@ -5,6 +5,11 @@ import {isPresent} from "../Preconditions";
  */
 export namespace Tracer2 {
 
+    export interface TracerFunction<T> {
+        (delegate: () => T): T;
+        (delegate: () => Promise<T>): Promise<T>;
+    };
+
     /**
      * Logger implementation so we can change this any time we want.
      */
