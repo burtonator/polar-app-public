@@ -1,6 +1,6 @@
 {
   "name": "polar-page-metadata-parser",
-  "version": "2.0.56",
+  "version": "2.0.58",
   "description": "Parses metadata for pages from the DOM",
   "main": "index.js",
   "scripts": {
@@ -12,10 +12,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "4.2.11",
-    "@types/jsdom": "12.2.4",
-    "@types/mocha": "^7.0.2",
+    "@types/jsdom": "=16.2.5",
+    "@types/mocha": "7.0.2",
     "chai": "4.2.0",
-    "jsdom": "16.2.2",
+    "jsdom": "=16.4.0",
     "mocha": "8.0.1",
     "ts-mocha": "^7.0.0",
     "tslint": "6.1.2",
@@ -23,10 +23,8 @@
   },
   "dependencies": {
     "@types/node": "12.12.32",
-    "@types/xmldom": "^0.1.30",
-    "polar-shared": "^2.0.56",
-    "polar-test": "^2.0.56",
-    "xmldom": "^0.3.0"
+    "polar-shared": "^2.0.58",
+    "polar-test": "^2.0.58"
   },
   "files": [
     "**/*.js",

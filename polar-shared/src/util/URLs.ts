@@ -45,7 +45,7 @@ export namespace URLs {
         if (response.ok) {
             return await response.blob();
         } else {
-            throw new Error(`Could not fetch URL ${response.status}: ${response.statusText}`);
+            throw new Error(`Could not fetch URL: ${url} status: ${response.status}, statusText: '${response.statusText}'`);
         }
 
     }
@@ -55,9 +55,7 @@ export namespace URLs {
      * @param url
      */
     export function isWebScheme(url: URLStr) {
-
         return url.startsWith('http:') || url.startsWith('https:');
-
     }
 
     /**

@@ -78,22 +78,22 @@ function createUniversitiesMap(university: ReadonlyArray<University>): DomainNam
 const universities = createUniversities();
 const domainNameToUniversityMap = createUniversitiesMap(universities);
 
-export class Universities {
+export namespace Universities {
 
-    public static get() {
+    export function get() {
         return universities;
     }
 
-    public static getByDomain(domain: DomainNameStr): University | undefined {
+    export function getByDomain(domain: DomainNameStr): University | undefined {
         return domainNameToUniversityMap[domain] || undefined;
     }
 
-    public static toTupleJSON(university: University) {
-        const tuple = this.toTuple(university);
+    export function toTupleJSON(university: University) {
+        const tuple = toTuple(university);
         return JSON.stringify(tuple);
     }
 
-    public static toTuple(university: University): UniversityTuple {
+    export function toTuple(university: University): UniversityTuple {
 
         return [
             university.name,
