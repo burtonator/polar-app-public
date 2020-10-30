@@ -4,6 +4,21 @@ import { Fetches } from "polar-shared/src/util/Fetch";
 import { ARXIVParser } from './ARXIVParser';
 import {assertJSON} from "polar-test/src/test/Assertions";
 
+async function readTestData(url: string): Promise<string> {
+
+    if (existsSync('src/test/arxiv1.html')) {
+        console.log('The path exists.');
+        return readFileSync('src/test/arxiv1.html').toString()
+    } else {
+        const response = await Fetches.fetch(url);
+
+        const html = await response.text();
+        writeFileSync('src/test/arxiv1.html', html)
+        return html;
+    }
+
+}
+
 describe('ARXIVParser', function () {
 
     function parseHTML(html: string, url: string) {
@@ -28,21 +43,8 @@ describe('ARXIVParser', function () {
         // const parser = Parsers.get(url);
         //
 
-        var html : string = '';
         const url = "https://arxiv.org/abs/2010.09039";
-
-        // if test file exists
-        if (existsSync('src/test/arxiv1.html')) {
-            console.log('The path exists.');
-            html = readFileSync('src/test/arxiv1.html').toString()
-        
-        // else fetch test html
-        } else {
-            const response = await Fetches.fetch(url);
-    
-            html = await response.text();
-            writeFileSync('src/test/arxiv1.html', html)
-        }
+        const html = await readTestData(url);
 
         const doc = parseHTML(html, url);
         const parser = new ARXIVParser();
