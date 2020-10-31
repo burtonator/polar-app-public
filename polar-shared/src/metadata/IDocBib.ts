@@ -66,6 +66,9 @@ export interface IDocBibMutable {
      */
     pmid?: string;
 
+    /**
+     * The keywords that are defined by the publisher for this document.
+     */
     keywords?: ReadonlyArray<string>;
 
     pages?: string;
