@@ -26,6 +26,9 @@ export interface IDocBibMutable {
      */
     description?: string;
 
+    /**
+     * The volume of a journal or multivolume book.
+     */
     volume?: string;
 
     issn?: string;
