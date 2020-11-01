@@ -3,6 +3,7 @@ import {Preconditions} from '../Preconditions';
 import {DataURL, DataURLs} from './DataURLs';
 import {IDimensions} from "./IDimensions";
 import {ImageType} from "./ImageType";
+import {ImageTypes} from "../../../../polar-bookshelf/web/js/metadata/Image";
 
 const DEFAULT_IMAGE_TYPE = 'image/png';
 const DEFAULT_IMAGE_QUALITY = 1.0;
@@ -281,22 +282,28 @@ export namespace Canvases {
 
     }
 
-    async function canvasToImageData(canvas: HTMLCanvasElement,
-                                     opts: ImageOpts = new DefaultImageOpts()) {
+    export async function canvasToImageData(canvas: HTMLCanvasElement,
+                                            opts: ImageOpts = new DefaultImageOpts()): Promise<ImageData> {
 
         const data = await toArrayBuffer(canvas, opts);
 
-        const result: ImageData = {
-            data,
-            format: 'arraybuffer',
-            width: canvas.width,
-            height: canvas.height,
-            type: opts.type
-        };
-
-        return result;
+        return arrayBufferToImageData(data, {width: canvas.width, height: canvas.height}, opts.type);
 
     }
+
+    export async function arrayBufferToImageData(data: ArrayBuffer,
+                                                 dimensions: IDimensions,
+                                                 type: ImageType): Promise<ImageData> {
+
+        return {
+            data,
+            format: 'arraybuffer',
+            ...dimensions,
+            type
+        };
+
+    }
+
 
 }
 
