@@ -29,15 +29,17 @@ export namespace EPUBThumbnailer {
         const response = await fetch(coverURL);
         const blob = await response.blob();
 
+        console.log("FIXME: blob size: " + blob.size);
+
         const acceptedTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif']
 
         if (! acceptedTypes.includes(blob.type)) {
             throw new Error("Type not accepted: " + blob.type);
         }
 
-        const data = Blobs.toArrayBuffer(blob);
+        const data = await Blobs.toArrayBuffer(blob);
 
-        const imageData = Canvases.arrayBufferToImageData(data, dimensions, blob.type);
+        const imageData = await Canvases.arrayBufferToImageData(data, dimensions, blob.type);
 
         return {
             ...imageData,
@@ -46,6 +48,5 @@ export namespace EPUBThumbnailer {
         }
 
     }
-
 
 }
