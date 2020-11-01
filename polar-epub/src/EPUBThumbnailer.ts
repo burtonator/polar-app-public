@@ -3,6 +3,7 @@ import {EPUBDocs} from "./EPUBDocs";
 import {Canvases} from "polar-shared/src/util/Canvases";
 import {Images} from "polar-shared/src/util/Images";
 import {Blobs} from "polar-shared/src/util/Blobs";
+import {ImageTypes} from "polar-shared/src/util/ImageTypes";
 
 export namespace EPUBThumbnailer {
 
@@ -21,9 +22,7 @@ export namespace EPUBThumbnailer {
         const response = await fetch(coverURL);
         const blob = await response.blob();
 
-        const acceptedTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif']
-
-        if (! acceptedTypes.includes(blob.type)) {
+        if (! ImageTypes.isImageType(blob.type)) {
             throw new Error("Type not accepted: " + blob.type);
         }
 
