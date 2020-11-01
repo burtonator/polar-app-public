@@ -3,6 +3,7 @@ import PDFJS, {
     PDFDocumentLoadingTask
 } from "pdfjs-dist";
 import {PDFWorkers} from "./PDFWorkers";
+import {URLStr} from "polar-shared/src/util/Strings";
 
 PDFJS.GlobalWorkerOptions.workerSrc = PDFWorkers.computeWorkerSrcPath();
 
@@ -12,10 +13,8 @@ PDFJS.GlobalWorkerOptions.workerSrc = PDFWorkers.computeWorkerSrcPath();
  */
 export namespace PDFDocs {
 
-    import htmlString = JQuery.htmlString;
-
     export interface Opts {
-        readonly url: htmlString;
+        readonly url: URLStr;
         readonly docBaseURL?: string;
     }
 

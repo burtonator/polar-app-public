@@ -9,7 +9,7 @@ import {
     PDFPageView,
     PDFPageViewOptions
 } from "pdfjs-dist/web/pdf_viewer";
-import {IDimensions} from "polar-shared/src/util/IDimensions";
+import {IThumbnail, ThumbnailerGenerateOpts} from "polar-shared/src/util/Thumbnailer";
 
 export namespace PDFThumbnailer {
 
@@ -26,18 +26,7 @@ export namespace PDFThumbnailer {
         return canvas;
     }
 
-    export interface IThumbnail extends ImageData {
-        readonly scaledDimensions: IDimensions;
-        readonly nativeDimensions: IDimensions;
-    }
-
-    export interface GenerateOpts {
-        readonly pathOrURL: PathOrURLStr;
-        readonly scaleBy: 'width' | 'height';
-        readonly value: number;
-    }
-
-    export async function generate2(opts: GenerateOpts): Promise<IThumbnail> {
+    export async function generate2(opts: ThumbnailerGenerateOpts): Promise<IThumbnail> {
 
         // FIXME: the best strategy here is going to be to allow the thumbnail
         // to be LARGER than we expect but then we need to shrink it smaller
@@ -288,7 +277,5 @@ export namespace PDFThumbnailer {
         return await makeThumb(page);
 
     }
-
-
 
 }
