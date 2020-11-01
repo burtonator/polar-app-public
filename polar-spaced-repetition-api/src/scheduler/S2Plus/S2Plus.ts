@@ -123,6 +123,7 @@ export interface ISpacedRep {
      * The ID if the key we're working with.
      */
     readonly id: IDStr;
+
     /**
      * True when the card is suspended and no longer available for review.
      */

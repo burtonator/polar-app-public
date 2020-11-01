@@ -111,7 +111,7 @@ export class TasksCalculator {
                     id: taskRep.id,
                     suspended: taskRep.suspended,
                     stage: 'review',
-                    state: state
+                    state
                 };
 
             }
