@@ -28,30 +28,24 @@ export namespace PDFThumbnailer {
 
     export async function generate2(opts: ThumbnailerGenerateOpts): Promise<IThumbnail> {
 
-        // FIXME: the best strategy here is going to be to allow the thumbnail
-        // to be LARGER than we expect but then we need to shrink it smaller
-        // via CSS.
-
-        // FIXME: this is actually a difficult problme... primarily because
-        // there are 3 resolution systems so the trick is to get to the target
+        // The best strategy here is going to be to allow the thumbnail to be
+        // LARGER than we expect but then we need to shrink it smaller via CSS.
+        //
+        // There are 3 resolution systems so the trick is to get to the target
         // image resolution and visibility without the image being fuzzy.
 
         // - PDFs render at 72 DPI and the web renders at 96dpi
         //
-        // - The resulting image may have to be downscaled as PDF.js renders
-        //   the canvas slightly larger than the image and then scales it back
-        //   so that it doesn't look fuzzy.
+        // - The resulting image has to be downscaled as PDF.js renders the
+        // canvas slightly larger than the image and then scales it back so that
+        // it doesn't look fuzzy.
         //
-        // - I tried to resize but when I do the PDF in canvas it looks horrible
-        //   and I think PDF.js is getting away with this because CSS does
-        //   resize elegantly.
+        // - I tried to resize time image directly but when I do the PDF in
+        // canvas it looks horrible asPDF.js is getting away with this because
+        // CSS does resize elegantly.
 
-        // - I think what's happening is that they are always rendering at 72 DPI
-        //   in the canvas and then CSS scaling it down to 25% to increase the
-        //   image size to 96 DPI
-        //
-        // - but this doesn't make much sense as our version is 62% of the
-        //   original...s
+        // - pdf.js always renders at 72 DPI in the canvas and then CSS scaling
+        // it down to 25% to increase the image size to 96 DPI
 
         // PPI setup here is really confusing because there are various scales
         // that have to be adjusted.
@@ -90,10 +84,9 @@ export namespace PDFThumbnailer {
 
         const defaultViewport: PageViewport = viewport;
 
-        // Using PDFPageView is the best option to generate PDFs with the
-        // proper resolution. I could use page.render but it message up WRT
-        // the correct resolution and PDFPageView has logic to handle it
-        // directly.
+        // Using PDFPageView is the best option to generate PDFs with the proper
+        // resolution. I could use page.render but it message up WRT the correct
+        // resolution and PDFPageView has logic to handle it directly.
 
         // https://github.com/mozilla/pdf.js/issues/10745
         // https://stackoverflow.com/questions/13038146/pdf-js-scale-pdf-on-fixed-width
@@ -123,11 +116,6 @@ export namespace PDFThumbnailer {
         if (! canvas) {
             throw new Error("No canvas");
         }
-
-        console.log(`FIXME view.scale: ${view.scale}`);
-        console.log(`FIXME view height: ${view.height} , width: ${view.width}`);
-        console.log(`FIXME viewport height: ${viewport.height} , width: ${viewport.width}`);
-        console.log(`FIXME canvas height: ${canvas.height} , width: ${canvas.width}`);
 
         const rect: ILTRect = {
             left: 0,
