@@ -163,6 +163,51 @@ describe('Dictionaries', function() {
 
     });
 
+
+    describe("deepCopy", () => {
+
+        it("array array", () => {
+            assertJSON(Dictionaries.deepCopy(['one']), ['one']);
+        });
+
+        it("nested array", () => {
+            assertJSON(Dictionaries.deepCopy({nested: ['one']}), {nested: ['one']});
+        });
+
+        it("complex object", () => {
+            const value = {
+                nested: [
+                    'one',
+                    {
+                        key: 'foo',
+                        bar: [
+                            1
+                        ]
+                    }
+                ]
+            };
+
+            assertJSON(Dictionaries.deepCopy(value), value);
+        });
+
+        it("with types", () => {
+
+            interface IFoo {
+                readonly bar: string;
+            }
+
+            const foo: IFoo = {
+                bar: 'hello'
+            }
+
+            const newFoo = Dictionaries.deepCopy(foo)
+
+            assert.equal(newFoo.bar, 'hello');
+        });
+
+
+    });
+
     // it("toDict", function() {
     //
     //     interface Name {

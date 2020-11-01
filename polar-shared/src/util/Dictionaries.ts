@@ -156,7 +156,7 @@ export namespace Dictionaries {
 
     }
 
-    export function deepCopy(dict: any): object {
+    export function deepCopy<T>(dict: T): T {
 
         if (dict === undefined || dict === null) {
             // nothing to do here.
@@ -169,22 +169,14 @@ export namespace Dictionaries {
         }
 
         if (Array.isArray(dict)) {
-
-            const result: any[] = [];
-
-            for (let idx = 0; idx < dict.length; ++idx) {
-                result[idx] = deepCopy(dict[idx]);
-            }
-
-            return result;
-
+            return dict.map(current => deepCopy(current)) as any;
         } else {
 
             const result: any = {};
 
-            Object.keys(dict).forEach(key => {
-                result[key] = deepCopy(dict[key]);
-            });
+            for(const key of Object.keys(dict)) {
+                result[key] = deepCopy((dict as any)[key]);
+            }
 
             return result;
 
@@ -240,6 +232,7 @@ export namespace Dictionaries {
      * Create a deep copy of the given dictionary.
      *
      * @param dict
+     * @Deprecated use deepCopy which can handle arrays.
      */
     export function copyOf(dict: any): any {
 
