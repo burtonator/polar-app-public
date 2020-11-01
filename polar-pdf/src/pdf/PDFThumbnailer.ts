@@ -31,7 +31,13 @@ export namespace PDFThumbnailer {
         readonly nativeDimensions: IDimensions;
     }
 
-    export async function generate2(pathOrURLStr: PathOrURLStr): Promise<IThumbnail> {
+    export interface GenerateOpts {
+        readonly pathOrURL: PathOrURLStr;
+        readonly scaleBy: 'width' | 'height';
+        readonly value: number;
+    }
+
+    export async function generate2(opts: GenerateOpts): Promise<IThumbnail> {
 
         // FIXME: the best strategy here is going to be to allow the thumbnail
         // to be LARGER than we expect but then we need to shrink it smaller
@@ -65,7 +71,9 @@ export namespace PDFThumbnailer {
         // - ... then CSS has its own px resolution scaling.
         // - ... then Canvas has its own high DPI scaling.
 
-        const task = PDFDocs.getDocument({url: pathOrURLStr});
+        const {pathOrURL} = opts;
+
+        const task = PDFDocs.getDocument({url: pathOrURL});
         const doc = await task.promise;
 
         const page = await doc.getPage(1);
@@ -115,20 +123,23 @@ export namespace PDFThumbnailer {
          */
         function computeScaleDimensions(): ScaledDimensions {
 
-            const targetWidth = 300;
-            const scale = targetWidth / viewport.width;
+            function computeScaleValue(dimension: 'width' | 'height') {
+                return opts.scaleBy === dimension ? opts.value : viewport[dimension] * scale
+            }
+
+            const scale = opts.value / viewport[opts.scaleBy];
 
             return {
                 scale,
-                width: targetWidth,
-                height: viewport.height * scale
+                width: computeScaleValue('width'),
+                height: computeScaleValue('height')
             };
 
         }
 
         const scaledDimensions = computeScaleDimensions();
 
-        const opts: PDFPageViewOptions = {
+        const pageViewOptions: PDFPageViewOptions = {
             id: 1,
             container,
             eventBus,
@@ -139,7 +150,7 @@ export namespace PDFThumbnailer {
             renderer: 'canvas'
         }
 
-        const view = new PDFPageView(opts);
+        const view = new PDFPageView(pageViewOptions);
         view.setPdfPage(page);
 
         await view.draw();
