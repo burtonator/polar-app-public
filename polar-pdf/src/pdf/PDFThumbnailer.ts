@@ -15,17 +15,6 @@ export namespace PDFThumbnailer {
 
     export type DataURLStr = string;
 
-    function createCanvas(width: number, height: number) {
-
-        Preconditions.assertCondition(width > 0, 'width <= 0');
-        Preconditions.assertCondition(height > 0, 'height <= 0');
-
-        const canvas = document.createElement('canvas');
-        canvas.height = height;
-        canvas.width = width;
-        return canvas;
-    }
-
     export async function generate2(opts: ThumbnailerGenerateOpts): Promise<IThumbnail> {
 
         // The best strategy here is going to be to allow the thumbnail to be
