@@ -1,9 +1,7 @@
-import {PathOrURLStr} from "polar-shared/src/util/Strings";
-import {PageViewport, PDFPageProxy, Transform} from "pdfjs-dist";
+import {PageViewport} from "pdfjs-dist";
 import {PDFDocs} from "./PDFDocs";
-import {ImageData, Canvases} from "polar-shared/src/util/Canvases";
+import {Canvases} from "polar-shared/src/util/Canvases";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {Preconditions} from "polar-shared/src/Preconditions";
 import {
     EventBus,
     PDFPageView,
@@ -15,7 +13,7 @@ export namespace PDFThumbnailer {
 
     export type DataURLStr = string;
 
-    export async function generate2(opts: ThumbnailerGenerateOpts): Promise<IThumbnail> {
+    export async function generate(opts: ThumbnailerGenerateOpts): Promise<IThumbnail> {
 
         // The best strategy here is going to be to allow the thumbnail to be
         // LARGER than we expect but then we need to shrink it smaller via CSS.
