@@ -1,4 +1,4 @@
-import {ThumbnailerGenerateOpts} from "polar-shared/src/util/Thumbnailer";
+import {ThumbnailerGenerateOpts, Thumbnailers} from "polar-shared/src/util/Thumbnailer";
 import {EPUBDocs} from "./EPUBDocs";
 import {Canvases} from "polar-shared/src/util/Canvases";
 import {Images} from "polar-shared/src/util/Images";
@@ -10,26 +10,16 @@ export namespace EPUBThumbnailer {
 
         const book = await EPUBDocs.getDocument({url: opts.pathOrURL});
 
-        const metadata = await book.loaded.metadata;
-        const spine = await book.loaded.spine;
-
         const coverURL = await book.coverUrl();
 
         if (! coverURL) {
             return undefined;
         }
 
-        console.log("FIXME: coverURL: ", coverURL);
-
-        // FIXME: now I just have to pull compute the dimensions and then do the resize directly using
-        // Canvases and then return the ImageData ..
-
-        const dimensions = await Images.getDimensions(coverURL);
+        const nativeDimensions = await Images.getDimensions(coverURL);
 
         const response = await fetch(coverURL);
         const blob = await response.blob();
-
-        console.log("FIXME: blob size: " + blob.size);
 
         const acceptedTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif']
 
@@ -39,12 +29,21 @@ export namespace EPUBThumbnailer {
 
         const data = await Blobs.toArrayBuffer(blob);
 
-        const imageData = await Canvases.arrayBufferToImageData(data, dimensions, blob.type);
+        const scaledDimensions = Thumbnailers.computeScaleDimensions(opts, nativeDimensions);
 
-        return {
-            ...imageData,
-            scaledDimensions: dimensions,
-            nativeDimensions: dimensions
+        const imageData = await Canvases.arrayBufferToImageData(data, nativeDimensions, blob.type);
+
+        try {
+            const scaledImageData = await Canvases.resize(imageData.data, scaledDimensions)
+
+            return {
+                ...scaledImageData,
+                scaledDimensions,
+                nativeDimensions
+            }
+        } catch (e) {
+            console.error(e);
+            throw e;
         }
 
     }

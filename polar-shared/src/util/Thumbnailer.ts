@@ -20,3 +20,30 @@ export interface IThumbnail extends ImageData {
 export interface Thumbnailer {
     readonly generate: (opts: ThumbnailerGenerateOpts) => IThumbnail;
 }
+
+export namespace Thumbnailers {
+
+    export interface ScaledDimensions {
+        readonly scale: number;
+        readonly width: number;
+        readonly height: number;
+    }
+
+    export function computeScaleDimensions(opts: ThumbnailerGenerateOpts,
+                                           original: IDimensions): ScaledDimensions {
+
+        function computeScaleValue(dimension: 'width' | 'height') {
+            return opts.scaleBy === dimension ? opts.value : original[dimension] * scale
+        }
+
+        const scale = opts.value / original[opts.scaleBy];
+
+        return {
+            scale,
+            width: computeScaleValue('width'),
+            height: computeScaleValue('height')
+        };
+
+    }
+
+}

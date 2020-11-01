@@ -3,7 +3,7 @@ import {Preconditions} from '../Preconditions';
 import {DataURL, DataURLs} from './DataURLs';
 import {IDimensions} from "./IDimensions";
 import {ImageType} from "./ImageType";
-import {ImageTypes} from "../../../../polar-bookshelf/web/js/metadata/Image";
+
 
 const DEFAULT_IMAGE_TYPE = 'image/png';
 const DEFAULT_IMAGE_QUALITY = 1.0;
@@ -144,6 +144,7 @@ export namespace Canvases {
     async function createImageElement(image: RawImageData): Promise<HTMLImageElement> {
 
         if (image instanceof HTMLImageElement) {
+            // we're done...
             return image;
         }
 

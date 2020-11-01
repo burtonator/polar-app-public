@@ -9,7 +9,7 @@ import {
     PDFPageView,
     PDFPageViewOptions
 } from "pdfjs-dist/web/pdf_viewer";
-import {IThumbnail, ThumbnailerGenerateOpts} from "polar-shared/src/util/Thumbnailer";
+import {IThumbnail, ThumbnailerGenerateOpts, Thumbnailers} from "polar-shared/src/util/Thumbnailer";
 
 export namespace PDFThumbnailer {
 
@@ -100,33 +100,7 @@ export namespace PDFThumbnailer {
         // https://github.com/mozilla/pdf.js/issues/9973
         // https://github.com/mozilla/pdf.js/issues/5628
 
-        interface ScaledDimensions {
-            readonly scale: number;
-            readonly width: number;
-            readonly height: number;
-        }
-
-        /**
-         * Use the viewport width and height from the 1.0 viewport to scale
-         * so that the width is at our target size.
-         */
-        function computeScaleDimensions(): ScaledDimensions {
-
-            function computeScaleValue(dimension: 'width' | 'height') {
-                return opts.scaleBy === dimension ? opts.value : viewport[dimension] * scale
-            }
-
-            const scale = opts.value / viewport[opts.scaleBy];
-
-            return {
-                scale,
-                width: computeScaleValue('width'),
-                height: computeScaleValue('height')
-            };
-
-        }
-
-        const scaledDimensions = computeScaleDimensions();
+        const scaledDimensions = Thumbnailers.computeScaleDimensions(opts, viewport);
 
         const pageViewOptions: PDFPageViewOptions = {
             id: 1,
