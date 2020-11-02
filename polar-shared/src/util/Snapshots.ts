@@ -14,6 +14,8 @@ export type OnNextCallback<V> = (value: V | undefined) => void;
  */
 export type SnapshotUnsubscriber = () => void;
 
+export type SnapshotSubscriberFactory<V> = () => SnapshotSubscriber<V>;
+
 /**
  *
  * Allows us to subscribe to snapshots of a specific type and receive errors
