@@ -1,6 +1,6 @@
 {
   "name": "polar-firebase",
-  "version": "2.0.59",
+  "version": "2.0.60",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,12 +15,12 @@
     "@types/mocha": "7.0.2",
     "chai": "4.2.0",
     "mocha": "8.0.1",
-    "polar-test": "^2.0.59",
+    "polar-test": "^2.0.60",
     "tslint": "6.1.2",
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "polar-shared": "^2.0.59",
-    "polar-spaced-repetition-api": "^2.0.59"
+    "polar-shared": "^2.0.60",
+    "polar-spaced-repetition-api": "^2.0.60"
   }
 }
