@@ -61,7 +61,7 @@ export interface IBaseHighlight extends IAnnotation {
 
     /**
      * Works with position to help place the annotations on the page but order
-     * is approximate and this can also be used to reorder teh sidebar manually.
+     * is approximate and this can also be used to reorder the sidebar manually.
      */
     order?: AnnotationOrder;
 
