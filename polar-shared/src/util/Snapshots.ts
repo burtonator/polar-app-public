@@ -55,7 +55,7 @@ export function NULL_SNAPSHOT_SUBSCRIBER<V>(onNext: OnNextCallback<V>, onError?:
     return NULL_FUNCTION;
 }
 
-export type SnapshotConverter<F,T> = (from: F | undefined) => T | undefined;
+export type SnapshotConverter<F, T> = (from: F | undefined) => T | undefined;
 
 export namespace SnapshotSubscribers {
 
@@ -63,7 +63,8 @@ export namespace SnapshotSubscribers {
      * Convert a subscriber from and to the given value but behave like a normal
      * snapshot subscriber
      */
-    export function converted<F, T>(subscriber: SnapshotSubscriber<F>, converter: SnapshotConverter<F, T>): SnapshotSubscriber<T> {
+    export function converted<F, T>(subscriber: SnapshotSubscriber<F>,
+                                    converter: SnapshotConverter<F, T>): SnapshotSubscriber<T> {
 
         return (onNext, onError) => {
             return subscriber(from => onNext(converter(from)), onError)
