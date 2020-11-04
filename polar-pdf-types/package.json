@@ -1,6 +1,6 @@
 {
   "name": "@types/pdfjs-dist",
-  "version": "2.0.66",
+  "version": "2.0.67",
   "description": "Typescript bindings for the latest PDFJS.",
   "main": "index.js",
   "scripts": {
