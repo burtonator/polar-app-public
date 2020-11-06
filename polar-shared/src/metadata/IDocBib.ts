@@ -1,6 +1,8 @@
 import {IDocAuthor} from "./IDocAuthor";
 import {IJournal} from "./IDocDetail";
 
+export type ReadonlyArrayMap<V> = Readonly<{[key: number]: V}>;
+
 /**
  * Mutable interface for bibliographic metadata on a document
  */
@@ -35,7 +37,8 @@ export interface IDocBibMutable {
 
     isbn?: string;
 
-    editor?: string | ReadonlyArray<string>;
+    // FIXME: array maps on't wokr
+    editor?: string | ReadonlyArrayMap<string>;
 
     address?: string;
 
@@ -72,11 +75,11 @@ export interface IDocBibMutable {
     /**
      * The keywords that are defined by the publisher for this document.
      */
-    keywords?: ReadonlyArray<string>;
+    keywords?: ReadonlyArrayMap<string>;
 
     pages?: string;
 
-    authors?: ReadonlyArray<string> | ReadonlyArray<IDocAuthor>;
+    authors?: ReadonlyArrayMap<string> | ReadonlyArrayMap<IDocAuthor>;
 
     /**
      * The name of the publisher for this document.  This is the name of the
