@@ -33,6 +33,9 @@ export interface IDocCache {
     get(id: IDStr): Promise<IDocCacheEntry | undefined>;
 }
 
+// TODO: this isn't all the metadata we need as we need to figure out a way to
+// compute the cache URL with data from Firestore
+
 export type CacheURLFactory = (id: IDStr) => string;
 
 /**
@@ -46,11 +49,6 @@ export namespace DocCachesFactory {
         function computeCacheKey(id: IDStr) {
             return 'doc-cache:' + id;
         }
-
-        // TODO we do do not need to compute the docURL until we're in the webapp because
-        // that pushes the URL dependency up...
-
-        // TODO: we might have to create TWO caches one by ID and one by URL ...
 
         async function put(entry: IDocCacheEntry) {
 
