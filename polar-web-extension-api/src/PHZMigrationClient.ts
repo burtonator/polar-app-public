@@ -1,7 +1,4 @@
 import {WebExtensions} from "./WebExtensions";
-import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {isPresent} from "polar-shared/src/Preconditions";
 
 export namespace PHZMigrationClient {
 
