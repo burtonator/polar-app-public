@@ -1,5 +1,7 @@
 import {Callback, Callback1} from "./Functions";
 
+export type DebouncerCallback = Callback;
+
 /**
  * A task scheduler that only executes a task once every interval and replaces
  * the task that it should execute so that the most recent task is the one that
@@ -12,7 +14,7 @@ export namespace Debouncers {
     }
 
     export function create(callback: Callback,
-                           opts: DebouncerOpts = {interval: 100}): Callback {
+                           opts: DebouncerOpts = {interval: 100}): DebouncerCallback {
 
         let timeout: object | undefined;
 
