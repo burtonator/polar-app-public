@@ -1,6 +1,6 @@
 {
   "name": "polar-karma",
-  "version": "2.0.75",
+  "version": "2.0.76",
   "description": "Basic webpack dependencies and utilities.",
   "scripts": {
     "test": "echo",
