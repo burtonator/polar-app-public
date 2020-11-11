@@ -129,9 +129,18 @@ export namespace DocCachesFactory {
 
             }
 
-            async function getDocBlob(): Promise<Blob> {
-                const response = await fetch(cacheURL);
-                return await response.blob();
+            async function getDocBlob(): Promise<Blob | undefined> {
+
+                if (!await caches.has('polar-doc-cache')) {
+                    console.error('cache does not exist')
+                    return undefined
+                }
+                const cache = await caches.open('polar-doc-cache');
+                const response = await cache.match(new Request(cacheURL));
+                if (response !== undefined) {
+                    return response.blob()
+                }
+                return undefined;
             }
 
             const docCacheDescriptor = await getDocCacheDescriptor();
@@ -139,8 +148,10 @@ export namespace DocCachesFactory {
             if (! docCacheDescriptor) {
                 return undefined;
             }
-
             const docBlob = await getDocBlob();
+            if (! docBlob) {
+                return undefined;
+            }
 
             return {
                 ...docCacheDescriptor,
