@@ -42,7 +42,7 @@ export namespace Arrays {
     }
 
     export function groupBy<V>(values: ReadonlyArray<V>,
-                             toKey: (value: V) => string): GroupedDict<V> {
+                              toKey: (value: V) => string): GroupedDict<V> {
 
         const result: MutableGroupedDict<V> = {};
 
@@ -178,7 +178,7 @@ export namespace Arrays {
      * partial. This is the last few if they don't equal the size.
      *
      */
-    export function createBatches<T>(input: T[], batchSize: number): T[][] {
+    export function createBatches<T>(input: ReadonlyArray<T>, batchSize: number): T[][] {
 
         const result: T[][] = [];
 
