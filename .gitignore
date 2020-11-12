@@ -1,2 +1,5 @@
 **/node_modules
 **/.webpack-cache-loader
+*.js
+*.d.ts
+*.js.map
