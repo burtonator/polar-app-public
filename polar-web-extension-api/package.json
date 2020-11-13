@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "karma start karma.conf.js",
+    "test": "echo noop",
     "compile": "tsc",
     "build": "webpack --config webpack.config.js"
   },
