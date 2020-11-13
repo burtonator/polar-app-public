@@ -21,9 +21,9 @@
   "homepage": "https://github.com/burtonator/polar-backend-shared#readme",
   "devDependencies": {
     "@types/chai": "4.2.11",
-    "@types/mocha": "7.0.2",
+    "@types/mocha": "=8.0.4",
     "chai": "4.2.0",
-    "mocha": "8.0.1",
+    "mocha": "=8.2.1",
     "typescript": "3.9.5"
   },
   "dependencies": {

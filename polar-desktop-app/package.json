@@ -41,7 +41,7 @@
     "electron-builder": "~22.9.1",
     "electron-notarize": "1.0.0",
     "fork-ts-checker-webpack-plugin": "=5.2.0",
-    "mocha": "8.0.1",
+    "mocha": "=8.2.1",
     "null-loader": "=4.0.1",
     "source-map-support": "=0.5.19",
     "thread-loader": "=3.0.0",

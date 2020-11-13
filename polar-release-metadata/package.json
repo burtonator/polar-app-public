@@ -15,10 +15,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "4.2.11",
-    "@types/mocha": "7.0.2",
+    "@types/mocha": "=8.0.4",
     "@types/semver": "~6.2.0",
     "chai": "4.2.0",
-    "mocha": "8.0.1",
+    "mocha": "=8.2.1",
     "tslint": "6.1.2",
     "typescript": "3.9.5"
   },

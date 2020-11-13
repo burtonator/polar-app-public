@@ -13,10 +13,10 @@
   "devDependencies": {
     "@types/chai": "4.2.11",
     "@types/jsdom": "=16.2.5",
-    "@types/mocha": "7.0.2",
+    "@types/mocha": "=8.0.4",
     "chai": "4.2.0",
     "jsdom": "=16.4.0",
-    "mocha": "8.0.1",
+    "mocha": "=8.2.1",
     "tslint": "6.1.2",
     "typescript": "3.9.5"
   },

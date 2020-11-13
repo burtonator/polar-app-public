@@ -14,10 +14,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "4.2.11",
-    "@types/mocha": "7.0.2",
+    "@types/mocha": "=8.0.4",
     "@types/pdfjs-dist": "^2.0.77",
     "chai": "4.2.0",
-    "mocha": "8.0.1",
+    "mocha": "=8.2.1",
     "polar-karma": "^2.0.77",
     "polar-webpack": "^2.0.77",
     "tslint": "6.1.2",
