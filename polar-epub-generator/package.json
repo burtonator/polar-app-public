@@ -1,6 +1,6 @@
 {
   "name": "polar-epub-generator",
-  "version": "2.0.76",
+  "version": "2.0.77",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,12 +15,12 @@
     "@types/mocha": "7.0.2",
     "@types/node": "12.12.32",
     "mocha": "8.0.1",
-    "polar-test": "^2.0.76",
+    "polar-test": "^2.0.77",
     "tslint": "6.1.2",
     "typescript": "3.9.5"
   },
   "dependencies": {
     "jszip": "~3.5.0",
-    "polar-shared": "^2.0.76"
+    "polar-shared": "^2.0.77"
   }
 }
