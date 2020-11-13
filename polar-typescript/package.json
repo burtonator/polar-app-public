@@ -1,6 +1,6 @@
 {
   "name": "polar-typescript",
-  "version": "2.0.77",
+  "version": "2.0.78",
   "description": "Typescript support and all dependent packages",
   "scripts": {
     "test": "echo",
