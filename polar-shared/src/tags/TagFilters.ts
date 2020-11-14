@@ -12,7 +12,7 @@ export namespace TagFilters {
     /**
      * Only tags (no folders).
      */
-    export function onlyRegular<T extends Tag>(tag: T) {
+    export function onlyRegular<T extends Tag>(tag: T): boolean {
         return ! tag.label.startsWith('/');
     }
 
