@@ -1,8 +1,8 @@
 import {EmailStr} from "./Strings";
 
-export class Emails {
+export namespace Emails {
 
-    public static toDomain(email: EmailStr): string | undefined {
+    export function toDomain(email: EmailStr): string | undefined {
 
         if (! email) {
             return undefined;
