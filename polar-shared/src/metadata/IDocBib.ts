@@ -3,6 +3,8 @@ import {IJournal} from "./IDocDetail";
 
 export type ReadonlyArrayMap<V> = Readonly<{[key: number]: V}>;
 
+export type Month = 'jan' | 'feb' | 'mar' | 'apr' | 'may' | 'jun' | 'jul' | 'aug' | 'sep' | 'oct' | 'nov' | 'dec';
+
 /**
  * Mutable interface for bibliographic metadata on a document
  */
@@ -59,7 +61,7 @@ export interface IDocBibMutable {
 
     journal?: string | IJournal;
 
-    month?: string;
+    month?: Month | string;
 
     /**
      * The year the document was published. This needs to be a string because some publishers use
