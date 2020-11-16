@@ -20,7 +20,7 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "jszip": "~3.5.0",
+    "jszip": "=3.5.0",
     "polar-shared": "^2.0.81"
   }
 }
