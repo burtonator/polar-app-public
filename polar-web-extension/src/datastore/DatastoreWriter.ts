@@ -46,7 +46,8 @@ export namespace DatastoreWriter {
             title,
             description,
             url: opts.url,
-            bytes: opts.doc.size
+            bytes: opts.doc.size,
+            webCapture: opts.webCapture
         }
 
         const url = URL.createObjectURL(opts.doc);
