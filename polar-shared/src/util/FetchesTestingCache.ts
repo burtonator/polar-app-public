@@ -22,7 +22,8 @@ export namespace FetchesTestingCache {
         const exists = await Files.existsAsync(path);
 
         if (exists) {
-            return Files.readFileAsync(path).toString()
+            const buff = await Files.readFileAsync(path);
+            return buff.toString()
         } else {
 
             const response = await Fetches.fetch(url);

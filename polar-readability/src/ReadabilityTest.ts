@@ -3,6 +3,7 @@ import {ConstructorOptions, JSDOM} from "jsdom";
 import {FetchesTestingCache} from "polar-shared/src/util/FetchesTestingCache";
 
 describe('Readability', function () {
+
     function parseHTML(html: string, url: string) {
         const opts: ConstructorOptions = {url, contentType: 'text/html', resources: 'usable'};
         const dom = new JSDOM(html, opts);
