@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>What is a System-on-Chip (SoC), and Why Do We Care if They are Open Source? &laquo;  bunnie&#039;s blog</title>
+
+<link rel="stylesheet" href="https://www.bunniestudios.com/wordpress/wp-content/themes/default/style.css" type="text/css" media="screen" />
+<link rel="pingback" href="https://www.bunniestudios.com/wordpress/xmlrpc.php" />
+
+<style type="text/css" media="screen">
+
+	#page { background: url("https://www.bunniestudios.com/wordpress/wp-content/themes/default/images/kubrickbgwide.jpg") repeat-y top; border: none; }
+
+</style>
+
+ 
+
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="bunnie&#039;s blog &raquo; Feed" href="https://www.bunniestudios.com/blog/?feed=rss2" />
+<link rel="alternate" type="application/rss+xml" title="bunnie&#039;s blog &raquo; Comments Feed" href="https://www.bunniestudios.com/blog/?feed=comments-rss2" />
+<link rel="alternate" type="application/rss+xml" title="bunnie&#039;s blog &raquo; What is a System-on-Chip (SoC), and Why Do We Care if They are Open Source? Comments Feed" href="https://www.bunniestudios.com/blog/?feed=rss2&#038;p=5971" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.bunniestudios.com\/wordpress\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.3.2"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='fes-css'  href='https://www.bunniestudios.com/wordpress/wp-content/plugins/feedburner-email-subscription/css/styles.css?ver=5.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://www.bunniestudios.com/wordpress/wp-includes/css/dist/block-library/style.min.css?ver=5.3.2' type='text/css' media='all' />
+<link rel='https://api.w.org/' href='https://www.bunniestudios.com/blog/index.php?rest_route=/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.bunniestudios.com/wordpress/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.bunniestudios.com/wordpress/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Name that Ware, October 2020' href='https://www.bunniestudios.com/blog/?p=5966' />
+<meta name="generator" content="WordPress 5.3.2" />
+<link rel="canonical" href="https://www.bunniestudios.com/blog/?p=5971" />
+<link rel='shortlink' href='https://www.bunniestudios.com/blog/?p=5971' />
+<link rel="alternate" type="application/json+oembed" href="https://www.bunniestudios.com/blog/index.php?rest_route=%2Foembed%2F1.0%2Fembed&#038;url=https%3A%2F%2Fwww.bunniestudios.com%2Fblog%2F%3Fp%3D5971" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.bunniestudios.com/blog/index.php?rest_route=%2Foembed%2F1.0%2Fembed&#038;url=https%3A%2F%2Fwww.bunniestudios.com%2Fblog%2F%3Fp%3D5971&#038;format=xml" />
+		<style type="text/css" id="wp-custom-css">
+			/** call-to-action button **/
+.cta {
+  background: #ffeef860;
+  background-image: -webkit-linear-gradient(top, #ffeef860, #fee0f0ff);
+  background-image: -moz-linear-gradient(top, #ffeef860, #fee0f0ff);
+  background-image: -ms-linear-gradient(top, #ffeef860, #fee0f0ff);
+  background-image: -o-linear-gradient(top, #ffeef860, #fee0f0ff);
+  background-image: linear-gradient(to bottom, #ffeef860, #fee0f0ff);
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  -webkit-box-shadow: 2px 2px 5px #666666;
+  -moz-box-shadow: 2px 2px 5px #666666;
+  box-shadow: 2px 2px 5px #666666;
+  color: #404040;
+  font-size: 12px;
+  padding: 5px 5px 5px 5px;
+  text-decoration: none;
+}
+ .cta:hover { 
+  background: #ffeef860;
+  background-image: -webkit-linear-gradient(top, #fee0f0ff, #ffeef860);
+  background-image: -moz-linear-gradient(top, #fee0f0ff, #ffeef860);
+  background-image: -ms-linear-gradient(top, #fee0f0ff, #ffeef860);
+  background-image: -o-linear-gradient(top, #fee0f0ff, #ffeef860);
+  background-image: linear-gradient(to bottom, #fee0f0ff, #ffeef860);
+  text-decoration: none;
+}		</style>
+		</head>
+<body class="post-template-default single single-post postid-5971 single-format-standard">
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-73296428-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-73296428-1');
+</script>
+<div id="page">
+
+
+<div id="header" role="banner">
+	<a href="https://www.bunniestudios.com/blog/"><div id="headerimg"></div></a>
+</div>
+<hr />
+
+	<div id="content" class="widecolumn" role="main">
+
+	
+		<div class="navigation">
+			<div class="alignleft"><a href="https://www.bunniestudios.com/blog/?p=5966" rel="prev">&laquo; Name that Ware, October 2020</a></div>
+			<div class="alignright"></div>
+		</div>
+
+		<div class="post-5971 post type-post status-publish format-standard hentry category-open-source category-precursor category-uncategorized" id="post-5971">
+			<h2>What is a System-on-Chip (SoC), and Why Do We Care if They are Open Source?</h2>
+
+			<div class="entry">
+				<p><a href="https://bunniefoo.com/precursor/soc-post/dark-matter.jpg"><img src="https://bunniefoo.com/precursor/soc-post/dark-matter_sm.jpg"/></a></p>
+<p><em>Note: This post originally appeared as an update in the <a href="https://www.crowdsupply.com/sutajio-kosagi/precursor">crowdfunding campaign for Precursor.</a></em></p>
+<p>Modern gadgets are typically built around a single, highly integrated chip, known as a “System on Chip” (SoC). While the earliest home computer motherboards consisted of around a hundred chips, Moore’s Law pushed that down to just a handful of chips by the time 80286 PC/AT clones were mainstream, and the industry has never looked back. Now, a typical SoC integrates a CPU core complex, plus dozens of peripherals, including analog, RF, and power functions; there are even “System in Package” solutions available that package the SoC, RAM, and sometimes even the FLASH die into a single plastic package.</p>
+<p>Modern SoCs are exceedingly complex. The “full user’s manual” for a modern SoC is thousands of pages long, and the errata (“bug list”) – if you’re allowed to see it – can be hundreds of pages alone. I put “full user’s manual” in quotations because even the most open, well-documented SoCs (such as the i.MX series from NXP) require a strict NDA to access thousands of pages of documentation on third party Intellectual Property (IP) blocks for functions such as video decoding, graphics acceleration, and security. Beyond the NDA  blocks, there is typically a deeper layer of completely unpublished documentation for disused silicon, such as peripherals that were designed-in but did not make the final cut, internal debugging facilities, and pre-boot facilities. Many of these disused features aren’t even well-known within the team that designed the chip!</p>
+<p>Disused silicon is a thing because building chips is less like snapping together Legos, and more like a sculptor chiseling away at a marble block: adding a circuit is much harder than deactivating a circuit. Adding a circuit might cost around $1 million in new masks, while delaying the project by about 70 days (at a cost of 100,000 man-hours worth of additional wages); with proper planning, deactivating a circuit may be as simple as a code change, or a small edit to a single mask layer, at a cost of perhaps $10,000 and a few days (assuming wafers were held at intermediate stages to facilitate this style of edit).</p>
+<p><img src="https://bunniefoo.com/precursor/soc-post/man-with-chisel_jpg_project-body.jpg"/><br />
+<em>photo credit: &#8220;Man With Mallet &amp; Chisel Bas Relief (Washington, DC)&#8221; by takomabibelot is licensed under CC BY 2.0</em></p>
+<p>Thus a typical SoC mask set starts with lots of extra features, spare logic, and debug facilities that are chiseled away (disused) until the final shape of the SoC emerges. As Michelangelo once said “every block of stone has a statue inside it, and it is the task of the sculptor to discover it,” we could say <b>“every SoC mask set has a datasheet inside it, and it is the task of the validation team to discover it”</b>. Sometimes the final chisel blow happens at boot: an errant feature may be turned off or patched over by pre-boot code that runs even before the CPU executes its first instruction. As a result, even the best documented SoCs will have a non-trivial fraction of transistors that are disused and unaccountable, theoretically invisible to end users.</p>
+<p>From a security standpoint, the presence of such “dark matter” in SoCs is worrisome. Forget worrying about the boot ROM or CPU microcode – the BIST (Built in Self Test) infrastructure has everything you need to do code injection, if you can just cajole it into the right mode. Furthermore, SoC integrators all buy functional blocks such as DDR, PCI, and USB from a tiny set of IP vendors.  This means the same disused logic motifs are baked into hundreds of millions of devices, even across competing brands and dissimilar product lines. Herein lies a hazard for an unpatchable, ecosystem-shattering security break!</p>
+<p>Precursor sidesteps this hazard by implementing its SoC using an FPGA. FPGAs are user-reconfigurable, drastically changing the calculus on the cost of design errors; instead of chiseling away at a block of marble, we are once again building with a Lego set. Of course, this flexibility comes at a cost: an FPGA is perhaps 50x more expensive than a feature-equivalent SoC and about 5-10x slower in absolute MHz. However, it does mean there is no dark matter in Precursor, as every line of code used to describe the SoC is visible for inspection. It also means if logic bugs are found in the Precursor SoC, they can be patched with an update. This drastically reduces the cost to iterate the SoC, making it more economically compatible with an open source approach. In an ideal world, the Precursor SoC design will be thoroughly vetted and audited over the next couple of years, converging on a low-risk path toward a tape out in fixed silicon that can reduce production costs and improve performance all while maintaining a high standard of transparency.</p>
+<p><b>LiteX: The Framework Behind Precursor’s SoC</b></p>
+<p>Precursor’s SoC is built using LiteX. LiteX is a framework created by <a href="https://github.com/enjoy-digital">Florent Kermarrec</a> for defining SoCs using the Migen/MiSoC FHDL, which itself is written in Python 3.6+. The heart of LiteX is a set of “handlers” that will automatically adapt between bus standards and widths. This allows designers to easily mix and match various controllers and peripherals with Wishbone, AXI, and CSR, bus interconnect standards. It is pretty magical to be able to glue an extra USB debug controller into a complex SoC with just a few lines of code, and have an entire infrastructure of bus arbiters and adapters figure themselves out automatically in response. If you want to learn more about LiteX and FPGAs, a great place to start is Florent’s <a href="https://github.com/litex-hub/fpga_101">“FPGA_101” mini-course</a>.</p>
+<p>A Brief Tour of Precursor’s SoC</p>
+<p><a href="https://bunniefoo.com/precursor/soc-post/soc-diagram.png"><img src="https://bunniefoo.com/precursor/soc-post/soc-diagram.png"/><br />
+</a></p>
+<p>Above is a block diagram of Precursor’s SoC, as of October 2020. It’s important to pay attention to the date on documentation, because an FPGA-based SoC can and will change over time. We generally eschew pretty, hand-drawn block diagrams like this because they are out of date almost the day they are finished. Instead, our equivalent of a <a href="https://ci.betrusted.io/betrusted-soc/doc/">“programmer’s manual”</a> is dynamically generated by our CI system with every code push, and for Rust programmers we have a tool, <a href="https://github.com/betrusted-io/xous-core/tree/master/svd2utra">svd2utra</a> that automatically translates SVD files generated by LiteX into a Rust API crate. With an open source FPGA-based SoC, automated CI isn’t merely best practice, it’s essential, because small but sometimes important patches in submodule dependencies will regularly affect your design.</p>
+<p><b>Core Complex</b></p>
+<p>The “Core Complex” currently consists of one RISC-V core, implemented using <a href="https://github.com/Dolu1990">Charles Papon’s</a> VexRiscV. We configured it to support the “RV32IMAC” instruction subset, gave it an MMU, and beefed up the caches. The VexRiscV limits cache size to 4kiB, but effective capacity can be increased by upping the cache associativity. We get about a 10% performance boost by tuning the core to have a two-way I-cache, and a four-way D-cache. We also provision a 32 kiB boot ROM, which currently holds <a href="https://github.com/betrusted-io/betrusted-soc/blob/da09e92f219d6bb39c499300347634a51b863d36/loader/loader.S#L1">three instructions</a>, but will someday be expanded to include signature checks on code loaded from external memory and a 128kiB on-board SRAM for tightly coupled/higher security operations. The CPU core is adapted to, and arbitrated into, a multi-controller Wishbone bus by LiteX and further adapted into a CSR bus by a dedicated CSR bridge that has been configured to automatically space peripherals on 4-kiB page boundaries, so that they can be individually remapped with the MMU. There’s also an IRQ handler that manages interrupts originating from peripherals sprinkled around the chip.</p>
+<p><img src="https://bunniefoo.com/precursor/soc-post/core_complex.png"/></p>
+<p>The Core Complex also includes a set of mostly boilerplate CSRs which perform the following functions:</p>
+<ul>
+<li>“Reboot” allows us to specify a new location for the reset vector</li>
+<li>“Ctrl” allows us to issue a soft reset</li>
+<li>“Timer 0” is the default timer provided by LiteX. It is a high resolution 32-bit timer clocked at the same frequency as the CPU core.</li>
+<li>“CRG” is an interface to control the FPGA’s clock generator. Right now we don’t do much with it, but eventually this is going to play a central role in power management and extending battery life.</li>
+<li>“Git Info” is a static register that provides information about the state of the git repo from which Precursor was built.</li>
+<li>“BtSeed” is a 64-bit number that can be randomized to force entropy into the place-and-route process, in case the end user desires a final FPGA netlist unique to their device without having to modify the code (otherwise the builds are entirely reproducible).</li>
+<li>“Litex ID” is a human-readable text string that identifies the SoC design.</li>
+<li>“TickTimer” is a low-resolution, 64-bit timer clocked in 1 ms increments. It serves as a source of time for the Xous OS.</li>
+</ul>
+<p><b>Debug Block</b></p>
+<p>Adjacent to the Core Complex is a Debug block. The Debug block features a full speed USB MAC/PHY that can tunnel Wishbone packets and serve as an alternate Wishbone controller to the CPU. We use this to drive the debug interface on the CPU, thus allowing GDB to connect to Precursor over USB even when the CPU is halted. In fact, one could build Precursor with no RISC-V CPU and just tunnel Wishbone packets over USB for debug and driver development. The debug block also includes a small CSR peripheral called the “Messible”, which is a 64-entry by 8-bit wide FIFO, useful as a mailbox/scratchpad during debugging.</p>
+<p><img src="https://bunniefoo.com/precursor/soc-post/debug_complex.png"/></p>
+<p><b>Memory Mapped and CSR I/O</b></p>
+<p>The memory space of the RISC-V CPU is mapped onto various peripherals and memory blocks via a <a href="https://cdn.opencores.org/downloads/wbspec_b4.pdf">Wishbone bus</a>. For traditional SoC designers, Wishbone is kind of like AXI, but open source. Wishbone supports fancy features like multiple masters, pipelining, and block transfers. A portion of the Wishbone bus space is further mapped onto a bus called the <a href="https://github.com/enjoy-digital/litex/blob/master/litex/soc/interconnect/csr.py">Configuration and Status Register (CSR)</a> bus.</p>
+<p>While Wishbone is high-performance, it requires more interface logic and is happiest when the peripheral’s bit width matches the bus width. CSRs are area-efficient and gracefully accommodates registers of arbitrary bit-width from both a hardware and software API standpoint, but are lower performance. Thus CSRs are ideal for low-to-medium speed I/O tasks (such as the eponymous configuration and status registers), whereas Wishbone is ideal for memory-mapped I/O where improved bandwidth and latency are worth the area overhead.</p>
+<p><img src="https://bunniefoo.com/precursor/soc-post/csr_io.png"/></p>
+<p>From a design process, most peripherals start life mapped to CSR space, and are then upgraded to a memory-mapped implementation to meet performance demands. Thus, it’s no coincidence that most peripherals on Precursor are CSR-only devices. Here is a brief description of each CSR peripheral. As a reminder, you can always consult our <a href="https://ci.betrusted.io/betrusted-soc/doc/">reference manual</a> for more details.</p>
+<ul>
+<li>“COM SPI” is the SPI bus that connects to the Embedded Controller (EC) SoC. It’s a 20MHz SPI peripheral that has a fixed transfer width of 16-bits. This block is targeted for an upgrade to a memory mapped I/O block.</li>
+<li>“I2C” is an I2C bus controller. Currently, only a real time clock (RTC) chip and an audio CODEC chip are are connected to this I2C bus.</li>
+<li>“BtEvents” is a catch-all block for handling various external real-time interrupt sources. Currently it handles interrupts from the EC and RTC chips.</li>
+<li>“KeyScan” is the keyboard controller. It’s designed to scan a 9&#215;10 keyboard matrix for key hits, using a slow external 32kHz clock source. By decoupling the keyboard scanner from the system core clock, the system can go to a lower power state while waiting for keyboard presses, extending the number of days that Precursor can go between charges.</li>
+<li>“BtPower” is a set of GPIOs dedicated specifically to managing power. It can turn the audio and discrete TRNG on and off, override the EC’s power control commands, activate boost mode for the USB type C port (allowing operation as a DFP or “host”), and engage the self-destruct mechanism.</li>
+<li>“JTAG” is a set of GPIOs looped back to the FPGA’s JTAG pins. These are used in combination with our <a href="https://github.com/betrusted-io/betrusted-soc/tree/master/fw/efuse api">eFuse API drivers</a> to self-provision AES bitstream encryption fuses on the 7 Series FPGA.</li>
+<li>“XADC” is the interface for the 7-Series XADC block, which is a 12-bit, multi-channel ADC. This is primarily used for the self monitoring of system voltages. In the final production revision, at least one channel of the ADC will also be available as a configuration option on the GPIO internal header so that users have an easier path to integrating analog sensors into Precursor.</li>
+<li>“UART” is a simple 115200, 8-N-1 serial interface which is connected to the debug header for console I/O.</li>
+<li>“BtGpio” is a straight-forward digital I/O block for driving the pins on the GPIO internal header. Note that due to the nature of the FPGA’s implementation, it’s not possible to switch between a digital GPIO function and an analog GPIO function without updating the bitstream.</li>
+</ul>
+<p><img src="https://bunniefoo.com/precursor/soc-post/memory_mapped_io.png"/></p>
+<p>In addition to the CSR I/Os, a few I/O devices are memory-mapped for high performance:</p>
+<ul>
+<li>“External SRAM” is a 32-bit wide, asynchronous interface that memory-maps 16 MiB of external SRAM. The SRAM is battery-backed so that it can retain state while the SoC is powered off. The intention is to optimize power by reducing sleep/wake overhead. However, this also means that the self-destruct procedure must first clear sensitive data from SRAM before activating the final blow that knocks out the SoC, as the self-destruct circuitry is also powered by the SRAM’s backup power supply. The External SRAM block also has a CSR interface to read out the configuration mode of the SRAM.</li>
+<li>“Audio” is an I2S interface to an external audio CODEC. In addition to a CSR block that configures the I2S interface, it also includes a pair of 256&#215;16 entry memory-mapped sample FIFOs.</li>
+<li>“SPI OPI” is a high-speed SPI-like interface to external FLASH storage that memory-maps 12 8MiB of non-volatile storage. The “O” in OPI stands for octal – it’s an 8-bit bus that runs at 100MHz DDR speeds. It also includes a pre-fetcher that can hold several cache line’s worth of code, optimizing the case of straight-line code execution. High performance on this bus is essential, since the intention is for the CPU to run most code as XIP out of FLASH. It also features a CSR interface to control operations like block erase and page programming.</li>
+<li>“MemLCD” is the frame buffer for the LCD. The Sharp Memory LCD contains its own internal memory, which allows it to retain an image even when the host is powered off. The MemLCD frame buffer is thus a cache for the LCD itself. It manages which lines of the LCD are dirty and will flush only the dirty lines to the LCD upon requests made via the CSR. This improves the perceived update rate of the LCD, which is limited to 10 Hz if the entire screen is being updated, but improves inversely proportional to the fraction of the screen that is static.</li>
+</ul>
+<p><b>Cryptography Complex</b></p>
+<p>All the features described thus far consume about 20% of the FPGA’s logic; the majority of the logic in Precursor’s FPGA is dedicated to the Cryptography Complex.</p>
+<p><a href="https://bunniefoo.com/precursor/soc-post/soc-utilization.png"><img src="https://bunniefoo.com/precursor/soc-post/soc-utilization_sm.png"/></a></p>
+<p>Above is an amoeba plot that visualizes the relative size of various functions within the Precursor SoC design. Some blocks, such as the semi-redundant SHA-512 and SHA-2 accelerators, are currently included simply because we could fit both of them in the FPGA, and not because we strictly needed both of them. Fortunately, removing the SHA-2 block is as easy as commenting out <a href="https://github.com/betrusted-io/betrusted-soc/blob/da09e92f219d6bb39c499300347634a51b863d36/betrusted-soc.py#L1622-L1625">four lines of code</a>, saving about 2800 SLICE LUTs or about 9% of the device’s resources. LiteX and the svd2rust scripts take care of everything else!</p>
+<p><img src="https://bunniefoo.com/precursor/soc-post/cryptography_complex.png"/></p>
+<p>Here’s a quick run-down of the blocks inside the Cryptography Complex:</p>
+<ul>
+<li>“Engine25519” is an arithmetic accelerator for operations in the prime field 2^255-19. It’s a microcoded, 256-bit arithmetic engine capable of computing a 256-bit multiply plus normalization in about one microsecond, about a 30x speedup over running the equivalent code on the RISC-V CPU. It consumes a huge amount of resources, but was deemed essential because the Betrusted secure communications application is built around the Double-Ratchet Algorithm, which relies heavily on this type of math. The <a href="https://ci.betrusted.io/betrusted-soc/doc/engine.html">CI documentation</a> is probably the best starting point to understand more about the Engine25519 implementation. The block is big enough that later on it will get an entire post dedicated to explaining its function.</li>
+<li>“SHA-512” and “SHA-2” are hardware-accelerated SHA hash blocks. They are derived from <a href="https://github.com/betrusted-io/opentitan">Google’s OpenTitan</a> SystemVerilog source code. The SHA-2 block is directly from OpenTitan and included mostly because it was easy to integrate. The SHA-512 block is our own adaptation of the SHA-2 block. This is the historical reason for why we have both in the current build of Precursor, even though most applications will only need one hash or the other to be hardware accelerated.</li>
+<li>“AES” is an AES accelerator also lifted directly from the Google OpenTitan project. It is capable of doing AES 128, 192, and 256, and supports encryption and decryption in ECB, CBC, and CTR modes.</li>
+<li>“KeyROM” is a 256&#215;32 ROM implemented using fixed-location LUTs in the FPGA. Since the ROM’s location is fixed, we can use <a href="https://prjxray.readthedocs.io/en/latest/">PrjXray</a> to determine the location of the KeyROM bits in the FPGA’s bitstream. This allows us to edit the key ROMs directly into the FPGA bitstream, thus enabling a transfer of trust from the low-level eFuse AES key into the higher-level functions of the Precursor SoC. We will discuss more about some important, recently-discovered vulerabilities in the FPGA eFuse AES key in a post coming soon.</li>
+<li>“TRNG” is an on-chip, ring oscillator-based TRNG. It uses multiple small rings to collect entropy which are then merged into a single large ring for final measurement. The construction and validation of Precursor’s TRNGs will also get their own post at some point down the road.</li>
+<li>“ICAPE2” is an explicit tie-down for an unused internal debug port in the FPGA fabric. ICAPE2 is Xilinx’s way of allowing an FPGA to introspect and access internal configuration state. We explicitly tie it down so that no other functions can try to claim it. Also, since the ICAPE2 is at a well-known location in the bitstream, it is possible to write a tool that does post-compilation inspection of the bitstream to verify that the ICAPE2 block is in fact deactivated.</li>
+</ul>
+<p><b>Parting Thoughts</b></p>
+<p>That’s it for our whistle-stop tour of the Precursor SoC! We&#8217;ve sculpted in the parts that are essential to functionality and security and hope the development community will add more. By commenting out a few lines of code, you can clear out unnecessary blocks and make space for your own creations. Precursor’s code base is entirely open and available for inspection – no hidden test logic or microcode blobs and no NDA required to trace an unambiguous, cycle-accurate path from the release of reset to the execution of the first instruction. This lack of “dark matter” and total transparency of design adds yet another argument in the evidence-based case to trust Precursor’s hardware with your private matters.</p>
+<p><em>If you enjoyed this post, please check out <a href="https://www.crowdsupply.com/sutajio-kosagi/precursor">Precursor&#8217;s campaign page</a> for more details and <a href="https://www.crowdsupply.com/sutajio-kosagi/precursor/updates">project updates</a>!</em></p>
+
+								
+				<p class="postmetadata alt">
+					<small>
+												This entry was posted on Tuesday, November 10th, 2020 at 3:42 am and is filed under <a href="https://www.bunniestudios.com/blog/?cat=67" rel="category">open source</a>, <a href="https://www.bunniestudios.com/blog/?cat=71" rel="category">precursor</a>, <a href="https://www.bunniestudios.com/blog/?cat=1" rel="category">Uncategorized</a>.						You can follow any responses to this entry through the <a href='https://www.bunniestudios.com/blog/?feed=rss2&p=5971'>RSS 2.0</a> feed. 
+
+													You can <a href="#respond">leave a response</a>, or <a href="https://www.bunniestudios.com/wordpress/wp-trackback.php?p=5971" rel="trackback">trackback</a> from your own site.
+						
+					</small>
+				</p>
+
+			</div>
+		</div>
+
+	
+<!-- You can start editing here. -->
+
+	<h3 id="comments">5 Responses to &#8220;What is a System-on-Chip (SoC), and Why Do We Care if They are Open Source?&#8221;</h3>
+
+	<div class="navigation">
+		<div class="alignleft"></div>
+		<div class="alignright"></div>
+	</div>
+
+	<ol class="commentlist">
+			<li class="pingback even thread-even depth-1" id="comment-2492761">
+				<div id="div-comment-2492761" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn"><a href='https://gisttree.com/reviews/what-is-a-system-on-chip-soc-and-why-do-we-care-if-they-are-open-source/' rel='external nofollow ugc' class='url'>What is a System-on-Chip (SoC), and why do we care if they are open source? - GistTree</a></cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="https://www.bunniestudios.com/blog/?p=5971#comment-2492761">
+			November 10, 2020 at 4:41 am				</a>
+						</div>
+
+		<p>[&#8230;] Read More [&#8230;]</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://www.bunniestudios.com/blog/?p=5971&#038;replytocom=2492761#respond' data-commentid="2492761" data-postid="5971" data-belowelement="div-comment-2492761" data-respondelement="respond" aria-label='Reply to What is a System-on-Chip (SoC), and why do we care if they are open source? - GistTree'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2492879">
+				<div id="div-comment-2492879" class="comment-body">
+				<div class="comment-author vcard">
+			<img alt='' src='https://secure.gravatar.com/avatar/ea253bf661e03852f85c239440a7dede?s=32&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/ea253bf661e03852f85c239440a7dede?s=64&#038;d=mm&#038;r=g 2x' class='avatar avatar-32 photo' height='32' width='32' />			<cite class="fn"><a href='http://twit.tv/floss' rel='external nofollow ugc' class='url'>Doc Searls</a></cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="https://www.bunniestudios.com/blog/?p=5971#comment-2492879">
+			November 10, 2020 at 11:04 pm				</a>
+						</div>
+
+		<p>Want to come on my show and talk about this—or anything? </p>
+<p>Thanks!</p>
+<p>Doc</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://www.bunniestudios.com/blog/?p=5971&#038;replytocom=2492879#respond' data-commentid="2492879" data-postid="5971" data-belowelement="div-comment-2492879" data-respondelement="respond" aria-label='Reply to Doc Searls'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-2492891">
+				<div id="div-comment-2492891" class="comment-body">
+				<div class="comment-author vcard">
+			<img alt='' src='https://secure.gravatar.com/avatar/3127129767e760665be7de6b06f725f1?s=32&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/3127129767e760665be7de6b06f725f1?s=64&#038;d=mm&#038;r=g 2x' class='avatar avatar-32 photo' height='32' width='32' />			<cite class="fn">Misha Gusarov</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="https://www.bunniestudios.com/blog/?p=5971#comment-2492891">
+			November 11, 2020 at 12:39 am				</a>
+						</div>
+
+		<p>Are there any problems with &#8220;dark matter&#8221; on FPGAs themselves?</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://www.bunniestudios.com/blog/?p=5971&#038;replytocom=2492891#respond' data-commentid="2492891" data-postid="5971" data-belowelement="div-comment-2492891" data-respondelement="respond" aria-label='Reply to Misha Gusarov'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2492915">
+				<div id="div-comment-2492915" class="comment-body">
+				<div class="comment-author vcard">
+			<img alt='' src='https://secure.gravatar.com/avatar/335f4863ad3e7c521d63e242ab2886e0?s=32&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/335f4863ad3e7c521d63e242ab2886e0?s=64&#038;d=mm&#038;r=g 2x' class='avatar avatar-32 photo' height='32' width='32' />			<cite class="fn">Nathan Myers</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="https://www.bunniestudios.com/blog/?p=5971#comment-2492915">
+			November 11, 2020 at 5:43 am				</a>
+						</div>
+
+		<p>Can somebody please explain why the AES part is so huge? Is it unclocked flow-through logic doing all rounds simultaneously?</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://www.bunniestudios.com/blog/?p=5971&#038;replytocom=2492915#respond' data-commentid="2492915" data-postid="5971" data-belowelement="div-comment-2492915" data-respondelement="respond" aria-label='Reply to Nathan Myers'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-2492964">
+				<div id="div-comment-2492964" class="comment-body">
+				<div class="comment-author vcard">
+			<img alt='' src='https://secure.gravatar.com/avatar/335f4863ad3e7c521d63e242ab2886e0?s=32&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/335f4863ad3e7c521d63e242ab2886e0?s=64&#038;d=mm&#038;r=g 2x' class='avatar avatar-32 photo' height='32' width='32' />			<cite class="fn">Nathan Myers</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="https://www.bunniestudios.com/blog/?p=5971#comment-2492964">
+			November 11, 2020 at 1:18 pm				</a>
+						</div>
+
+		<p>I looked up Titan&#8217;s AES: it does its rounds serially. It seems to have a lot of logic to generate round keys on the fly from the regular key, on the assumption that keys used will change frequently. It seems like round key generation would be just as well done on the core, and retained for re-use. It is not immediately clear how many LUTs that would save.</p>
+<p>BTW I calculate 2800 LUTs as using 5.4%, not 9%, of the chip.</p>
+<p>It looks as if the Rust apparatus is meant to generate constant definitions locating hardware registers for use in Rust programs that meant to run on the RISC-V core. Am I guessing right? Seems like the same script could generate a C++ header&#8230;</p>
+<p>Something that would be very, very cool would be a facility to trigger, from software on the device, installing a different configuration bitstream. A RISC-V core would most likely be in each bitstream, but the other stuff could be mixed and matched as needed, lego-wise. It looks like it would take ~2 MB per bitstream image. I see that the chip has some sort of provision for multiple bitstream images, though I don&#8217;t see how you are supposed to choose.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://www.bunniestudios.com/blog/?p=5971&#038;replytocom=2492964#respond' data-commentid="2492964" data-postid="5971" data-belowelement="div-comment-2492964" data-respondelement="respond" aria-label='Reply to Nathan Myers'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+	</ol>
+
+	<div class="navigation">
+		<div class="alignleft"></div>
+		<div class="alignright"></div>
+	</div>
+ 
+
+
+<div id="respond">
+
+<h3>Leave a Reply</h3>
+
+<div id="cancel-comment-reply"> 
+	<small><a rel="nofollow" id="cancel-comment-reply-link" href="/blog/?p=5971#respond" style="display:none;">Click here to cancel reply.</a></small>
+</div> 
+
+
+<form action="https://www.bunniestudios.com/wordpress/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" aria-required='true' />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required='true' />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;s&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+
+<p><textarea name="comment" id="comment" cols="58" rows="10" tabindex="4"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment" />
+<input type='hidden' name='comment_post_ID' value='5971' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+ 
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="9db9b4e91a" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="212"/></p>
+</form>
+
+</div>
+
+
+	
+	</div>
+
+
+<hr />
+<div id="footer" role="contentinfo">
+<!-- If you'd like to support WordPress, having the "powered by" link somewhere on your blog is the best way; it's our only promotion or advertising. -->
+	<p>
+		bunnie&#039;s blog is proudly powered by <a href="http://wordpress.org/">WordPress</a>		<br /><a href="https://www.bunniestudios.com/blog/?feed=rss2">Entries (RSS)</a> and <a href="https://www.bunniestudios.com/blog/?feed=comments-rss2">Comments (RSS)</a>.		<!-- 19 queries. 0.340 seconds. -->
+	</p>
+</div>
+</div>
+
+<!-- Gorgeous design by Michael Heilemann - http://binarybonsai.com/kubrick/ -->
+
+		<script type='text/javascript' src='https://www.bunniestudios.com/wordpress/wp-includes/js/comment-reply.min.js?ver=5.3.2'></script>
+<script type='text/javascript' src='https://www.bunniestudios.com/wordpress/wp-includes/js/wp-embed.min.js?ver=5.3.2'></script>
+<script async="async" type='text/javascript' src='https://www.bunniestudios.com/wordpress/wp-content/plugins/akismet/_inc/form.js?ver=4.1.5'></script>
+</body>
+</html>
