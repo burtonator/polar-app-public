@@ -1,8 +1,8 @@
 import React from 'react';
 import {useCaptureContentContext} from "./CaptureApp";
-import {MUIBrowserLinks} from "polar-bookshelf/web/js/mui/MUIBrowserLinks";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
+import {MUIBrowserLinkStyle} from "polar-bookshelf/web/js/mui/MUIBrowserLinkStyle";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -28,7 +28,7 @@ export const PreviewContent = () => {
 
         <div className={classes.root}>
 
-            <MUIBrowserLinks>
+            <MUIBrowserLinkStyle>
 
                 <h1>{captureContentContext.title}</h1>
 
@@ -46,7 +46,7 @@ export const PreviewContent = () => {
 
                 <div dangerouslySetInnerHTML={{__html: captureContentContext.content}}></div>
 
-            </MUIBrowserLinks>
+            </MUIBrowserLinkStyle>
 
         </div>
     );

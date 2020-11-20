@@ -5,7 +5,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import {useCaptureContentContext} from './CaptureApp';
-import {ReadabilityCapture} from "../../capture/ReadabilityCapture";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {Theme} from '@material-ui/core/styles/createMuiTheme';
@@ -18,7 +17,6 @@ import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPU
 import {NavLogoImage} from "polar-bookshelf/apps/repository/js/nav/NavLogoImage";
 import {ExtensionContentCapture} from "../../capture/ExtensionContentCapture";
 import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
-import {MUIBrowserLinks} from "polar-bookshelf/web/js/mui/MUIBrowserLinks";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
