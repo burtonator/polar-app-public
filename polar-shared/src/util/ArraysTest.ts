@@ -35,4 +35,14 @@ describe('Arrays', function() {
 
     });
 
+    describe('siblings', function() {
+
+        it("basic", function () {
+            assert.isUndefined(Arrays.prevSibling('a', 0))
+            assert.equal(Arrays.prevSibling('ab', 1), 'a')
+        });
+
+    });
+
+
 });

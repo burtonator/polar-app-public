@@ -11,6 +11,11 @@ export type ToArrayLike<T> = ReadonlyArray<T> |
                             undefined |
                             null;
 
+interface IArrayLike<T> {
+    [key: number]: T,
+    readonly length: number;
+}
+
 interface GroupedDict<V> {
     [key: string]: ReadonlyArray<V>;
 }
@@ -295,6 +300,36 @@ export namespace Arrays {
         }
 
         return true;
+
+    }
+
+    /**
+     * Compute the prev sibling in the array without dealing with array index math and just return an undefined if it does not exist.
+     */
+    export function prevSibling<T>(arr: IArrayLike<T>, index: number): T | undefined {
+
+        const siblingIndex = index - 1;
+
+        if (siblingIndex < 0) {
+            return undefined;
+        }
+
+        return arr[siblingIndex];
+
+    }
+
+    /**
+     * Compute the next sibling in the array without dealing with array index math and just return an undefined if it does not exist.
+     */
+    export function nextSibling<T>(arr: IArrayLike<T>, index: number): T | undefined {
+
+        const siblingIndex = index + 1;
+
+        if (siblingIndex >= arr.length) {
+            return undefined;
+        }
+
+        return arr[siblingIndex];
 
     }
 
