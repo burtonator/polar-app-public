@@ -41,7 +41,23 @@ namespace AppListeners {
 
         app.on('second-instance', async (event, commandLine) => {
 
-            console.log("Someone opened a second instance.");
+            console.log("Someone opened a second instance with commandLine args: ", commandLine);
+
+            // TODO: do a postMessage
+            //
+            // I can call BrowserWindow and get the main window, then focus it, then send a
+            // message to to handle a file upload
+            //
+            // I have to call webContents.send() which is just like postMessgage but does
+            // IPC, then we have to have an IPC listener there to handle the file upload
+            // in a preload script that can read filesystem files
+            ///
+            // then from THERE we just read that into a blob, then give it over to the uploader
+            // directly...
+
+            // TODO: the LAST argument should be the path to the file
+            // TODO: check if it exists first
+            // TODO: how do we read a create a file object form a path
 
             event.preventDefault();
 

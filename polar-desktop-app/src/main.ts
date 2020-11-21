@@ -13,11 +13,6 @@ if (process.env.POLAR_DISABLE_HARDWARE_ACCELERATION === 'true') {
     app.disableHardwareAcceleration();
 }
 
-if (!hasSingleInstanceLock) {
-    console.error("Quiting.  App is single instance.");
-    app.quit();
-}
-
 // needed to disable site isolation because it doesn't actually allow us to
 // disable web security properly.
 app.commandLine.appendSwitch('disable-site-isolation-trials');
@@ -114,6 +109,15 @@ function handleError(err: Error) {
 }
 
 app.on('ready', async () => {
+
+    if (!hasSingleInstanceLock) {
+
+        const windows = BrowserWindow.getAllWindows();
+
+        console.error("Quiting.  App is single instance.");
+        app.quit();
+        return;
+    }
 
     allowAnkiSyncOrigin();
 
