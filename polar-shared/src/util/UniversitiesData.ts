@@ -1,5 +1,5 @@
-
-export const DATA: any = [
+import {UniversityTuple} from './Universities'
+export const DATA: ReadonlyArray<UniversityTuple> = [
     ["1 December University of Alba Iulia", ["uab.ro"], "RO", "Romania", "uab.ro", "12sN2uRLoS"],
     ["2nd Military Medical University", ["smmu.edu.cn"], "CN", "China", "smmu.edu.cn", "128cBvdb9P"],
     ["3rd Military Medical University", ["tmmu.edu.cn"], "CN", "China", "tmmu.edu.cn", "12AYDK3vxL"],
