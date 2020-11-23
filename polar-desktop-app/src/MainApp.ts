@@ -4,6 +4,7 @@ import {AppLauncher} from './AppLauncher';
 import process from "process";
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {Updates} from "./updates/Updates";
+import {MainAppMenus} from "./MainAppMenus";
 
 const log = Logger.create();
 
@@ -19,6 +20,7 @@ export namespace MainApp {
 
         const mainWindow = await AppLauncher.launchApp();
 
+        MainAppMenus.setup();
         Updates.start();
 
         registerAppListeners();
