@@ -55,6 +55,19 @@ export namespace Plans {
 
     }
 
+    export function max(plan0: Billing.V2Plan, plan1: Billing.V2Plan): V2Plan {
+
+        const planLevel0 = toInt(plan0);
+        const planLevel1 = toInt(plan1);
+
+        if (planLevel0 > planLevel1) {
+            return plan0;
+        } else {
+            return plan1;
+        }
+
+    }
+
     /**
      * Return true if the required plan level is ok vs the actual plan level.
      */
@@ -68,3 +81,4 @@ export namespace Plans {
     }
 
 }
+
