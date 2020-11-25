@@ -13,4 +13,8 @@ export namespace AutoFlashcards {
         readonly error: 'no-result';
     }
 
+    export interface AutoFlashCardLengthError {
+        readonly error: 'input-too-long';
+    }
+
 }
