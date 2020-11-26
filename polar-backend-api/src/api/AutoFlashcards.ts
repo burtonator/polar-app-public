@@ -13,4 +13,8 @@ export namespace AutoFlashcards {
         readonly error: 'no-result';
     }
 
+    export function isError(response: AutoFlashcardResponse | AutoFlashcardError): response is AutoFlashcardError {
+        return (response as any).error !== undefined;
+    }
+
 }
