@@ -7,6 +7,9 @@ import {ISODateTimeString, ISODateTimeStrings} from "../metadata/ISODateTimeStri
  *
  * This is a bit more invasive but we have the ability to record errors recorded
  * by the browser this way.
+ *
+ * TODO: this would be better implemented with a ring buffer to avoid memory
+ * issues but if we're getting that many errors something is wrong.
  */
 export namespace ConsoleRecorder {
 
@@ -39,19 +42,21 @@ export namespace ConsoleRecorder {
             readonly stack?: string;
         }
 
+        function toIError(err: Error): IError {
+            return {
+                name: err.name,
+                message: err.message,
+                stack: err.stack
+            };
+        }
+
         /**
          *
          */
         function visitObject(obj: any): any {
 
             if (obj instanceof Error) {
-
-                return {
-                    name: obj.name,
-                    message: obj.message,
-                    stack: obj.stack
-                };
-
+                return toIError(obj);
             }
 
             return obj;

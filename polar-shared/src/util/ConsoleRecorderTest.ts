@@ -48,7 +48,6 @@ describe('ConsoleRecord', function() {
 
     });
 
-
     it('error', function() {
 
         console.error("Fake error", new Error('this is the error thrown'))
