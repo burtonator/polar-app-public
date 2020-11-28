@@ -1,5 +1,7 @@
 /* tslint:disable:no-console */
 
+import {ISODateTimeString, ISODateTimeStrings} from "../metadata/ISODateTimeStrings";
+
 /**
  * Record all messages written to the console.
  *
@@ -13,6 +15,7 @@ export namespace ConsoleRecorder {
     export let messages: IConsoleMessage[] = [];
 
     export interface IConsoleMessage {
+        readonly created: ISODateTimeString;
         readonly level: LogLevel;
         readonly message?: any;
         readonly params?: any;
@@ -30,8 +33,44 @@ export namespace ConsoleRecorder {
 
         messages = [];
 
+        interface IError {
+            readonly name: string;
+            readonly message: string;
+            readonly stack?: string;
+        }
+
+        /**
+         *
+         */
+        function visitObject(obj: any): any {
+
+            if (obj instanceof Error) {
+
+                return {
+                    name: obj.name,
+                    message: obj.message,
+                    stack: obj.stack
+                };
+
+            }
+
+            return obj;
+
+        }
+
         function recordMessage(level: LogLevel, message: any, ...optionalParams: any[]) {
-            messages.push({level, message, params: optionalParams});
+
+            const created = ISODateTimeStrings.create();
+
+            optionalParams = optionalParams.map(visitObject);
+
+            messages.push({
+                created,
+                level,
+                message,
+                params: optionalParams
+            });
+
         }
 
         console.debug = (message: any, ...optionalParams: any[]) => {
@@ -74,7 +113,7 @@ export namespace ConsoleRecorder {
     }
 
     export function clear() {
-        messages.slice();
+        messages.splice(0, messages.length);
     }
 
     export function snapshot(): ReadonlyArray<IConsoleMessage> {
