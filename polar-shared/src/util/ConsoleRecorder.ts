@@ -21,7 +21,7 @@ export namespace ConsoleRecorder {
         readonly created: ISODateTimeString;
         readonly level: LogLevel;
         readonly message?: any;
-        readonly params?: any;
+        readonly params: any[];
     }
 
     const delegates = {
