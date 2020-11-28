@@ -1,7 +1,7 @@
 import {ConsoleRecorder} from "./ConsoleRecorder";
 import {assertJSON} from "polar-test/src/test/Assertions";
 
-describe('ConsoleRecord', function() {
+xdescribe('ConsoleRecord', function() {
 
     it('log', function() {
         ConsoleRecorder.start();
