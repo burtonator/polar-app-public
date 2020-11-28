@@ -122,6 +122,7 @@ export namespace ConsoleRecorder {
     }
 
     export function snapshot(): ReadonlyArray<IConsoleMessage> {
+        // TODO: make a copy of the object via JSON
         return [...messages]
     }
 
