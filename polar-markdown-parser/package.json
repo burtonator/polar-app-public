@@ -1,0 +1,33 @@
+{
+  "name": "polar-markdown-parser",
+  "version": "2.0.85",
+  "description": "Provides support for parsing and working with markdown",
+  "scripts": {
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "4.2.11",
+    "@types/mocha": "=8.0.4",
+    "chai": "4.2.0",
+    "mocha": "=8.2.1",
+    "tslint": "6.1.2",
+    "typescript": "3.9.5"
+  },
+  "dependencies": {
+    "@types/marked": "=1.2.0",
+    "@types/turndown": "=5.0.0",
+    "marked": "=1.2.5",
+    "turndown": "=7.0.0",
+    "turndown-plugin-gfm": "=1.0.2"
+
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
+}
