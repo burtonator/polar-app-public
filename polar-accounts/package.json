@@ -1,6 +1,6 @@
 {
   "name": "polar-accounts",
-  "version": "2.0.85",
+  "version": "2.0.86",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "@types/mocha": "=8.0.4",
     "chai": "4.2.0",
     "mocha": "=8.2.1",
-    "polar-test": "^2.0.85",
+    "polar-test": "^2.0.86",
     "tslint": "6.1.2",
     "typescript": "3.9.5"
   }

@@ -1,6 +1,6 @@
 {
   "name": "polar-markdown-parser",
-  "version": "2.0.85",
+  "version": "2.0.86",
   "description": "Provides support for parsing and working with markdown",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
@@ -23,7 +23,6 @@
     "marked": "=1.2.5",
     "turndown": "=7.0.0",
     "turndown-plugin-gfm": "=1.0.2"
-
   },
   "files": [
     "**/*.js",
