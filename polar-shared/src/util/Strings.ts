@@ -223,6 +223,8 @@ export type PlainTextStr = string;
  */
 export type TextStr = string | PlainTextStr;
 
+export type MarkdownStr = string;
+
 export type HTMLStr = string;
 
 /**
