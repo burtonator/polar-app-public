@@ -58,7 +58,7 @@ export namespace HTMLToMarkdown {
         }
     }
 
-    const turndownService = new TurndownService( {
+    const turndownService = new MyTurndownService( {
         codeBlockStyle: 'fenced',
         hr: '---',
         headingStyle: 'atx'

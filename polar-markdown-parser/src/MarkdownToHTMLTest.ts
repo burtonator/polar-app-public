@@ -10,5 +10,4 @@ describe('MarkdownToHTML', function() {
 
     });
 
-
 });
