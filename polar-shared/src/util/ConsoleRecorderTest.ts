@@ -3,7 +3,7 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 import {assert} from 'chai';
 import {TestingTime} from "../test/TestingTime";
 
-describe('ConsoleRecord', function() {
+xdescribe('ConsoleRecord', function() {
 
     beforeEach(() => {
         TestingTime.freeze();
