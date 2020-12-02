@@ -10,7 +10,7 @@ export namespace AutoFlashcards {
     }
 
     export interface AutoFlashcardError {
-        readonly error: 'no-result';
+        readonly error: 'no-result' |  'input-too-long';
     }
 
     export function isError(response: AutoFlashcardResponse | AutoFlashcardError): response is AutoFlashcardError {
