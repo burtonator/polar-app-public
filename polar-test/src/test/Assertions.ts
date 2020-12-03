@@ -48,23 +48,35 @@ export function assertJSON(actual: any,
 
 }
 
+interface EqualsJSONOpts {
+    readonly message?: string;
+    readonly unsorted?: boolean;
+    readonly noError?: boolean;
+}
+
 /**
  * Testing function to compare two objects for equality.
  */
 export function equalsJSON(actual: any,
                            expected: any,
-                           message?: string,
-                           unsorted?: boolean): boolean {
+                           opts: EqualsJSONOpts = {}): boolean {
+
+    const {unsorted, noError} = opts;
 
     // first convert both to JSON if necessary.
     actual = toJSON(actual, {unsorted});
     expected = toJSON(expected, {unsorted});
 
-    if ( actual !== expected) {
-        console.error("BEGIN ACTUAL ==========");
-        console.error(actual);
-        console.error("END ACTUAL   ==========");
+    if (actual !== expected) {
+
+        if (! noError) {
+            console.error("BEGIN ACTUAL ==========");
+            console.error(actual);
+            console.error("END ACTUAL   ==========");
+        }
+
         return false;
+
     }
 
     return true;
