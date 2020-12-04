@@ -7,6 +7,21 @@ export class Devices {
             return 'desktop';
         }
 
+        if (typeof localStorage !== "undefined") {
+
+            const device = localStorage.getItem('device');
+
+            switch (device) {
+
+                case 'phone':
+                case 'tablet':
+                case 'desktop':
+                    return device
+
+            }
+
+        }
+
         if (window.screen.width <= 450) {
             // My Galaxy S8 is 412x846
             // it's not a desktop, so it must be a phone.
