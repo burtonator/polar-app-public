@@ -72,12 +72,12 @@ export interface HeartbeatsInit {
     readonly created: ISODateTimeString;
 
     /**
-     * The user UD that generated this heartbeat.
+     * The user ID that generated this heartbeat.
      */
     readonly uid: UserIDStr | undefined;
 
     /**
-     * The user's platform .
+     * The user's platform.
      */
     readonly platform: PlatformStr;
 
