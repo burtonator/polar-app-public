@@ -19,13 +19,14 @@ marked.use({
 
 export namespace MarkdownToHTML {
 
-    export function markdown2html(markdown: any) {
+    export function markdown2html(markdown: string) {
         return marked.parse( markdown, {
             gfm: true,
             breaks: true,
             // tables: true,
             xhtml: true,
-            headerIds: false
+            headerIds: false,
+            smartypants: false,
         });
     }
 
