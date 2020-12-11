@@ -2,16 +2,15 @@ import {toIdentifier} from "./Identifiers";
 
 export type OccupationType = 'academic' | 'business';
 export const academicOccupations = [
-    "Student",
+    "College Student",
+    "Grad Student",
     "Researcher",
     "Professor",
-    "Teacher",
-    "Lecturer",
-    "Librarian",
 ];
 export const businessOccupations = [
     "Software Engineer",
     "Mathematician",
+    "Data Scientist",
     "Web Designer",
 ];
 
