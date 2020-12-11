@@ -8,6 +8,7 @@ export const fieldsOfStudy = [
     "Chemical Engineering",
     "Chemistry",
     "Computer Science",
+    "Data Science",
     "Decision Sciences",
     "Design",
     "Earth and Planetary Sciences",
