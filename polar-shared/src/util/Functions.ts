@@ -119,10 +119,10 @@ export class Functions {
      */
     public static async waitFor(timeout: number) {
 
-        return new Promise(resolve => {
+        return new Promise<boolean>(resolve => {
 
             setTimeout(() => {
-                resolve();
+                resolve(true);
             }, timeout);
 
         });

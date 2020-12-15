@@ -20,7 +20,7 @@ export namespace PHZMigrationHandler {
     function startPHZMigration(message: IStartPHZMigrationMessage) {
 
         async function doAsync() {
-            console.log("Starting migration in origin: " + document.origin);
+            console.log("Starting migration in origin: " + document.location.origin);
             PHZActiveMigrations.set(message);
             await Tabs.loadLinkInActiveTab(message.url);
         }

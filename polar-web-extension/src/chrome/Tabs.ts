@@ -2,7 +2,7 @@ export namespace Tabs {
 
     export function activeTab(): Promise<chrome.tabs.Tab | undefined> {
 
-        return new Promise<chrome.tabs.Tab>(((resolve, reject) => {
+        return new Promise<chrome.tabs.Tab | undefined>(((resolve, reject) => {
 
             chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
 
@@ -27,7 +27,7 @@ export namespace Tabs {
      */
     export function currentTab(): Promise<chrome.tabs.Tab | undefined> {
 
-        return new Promise<chrome.tabs.Tab>(((resolve, reject) => {
+        return new Promise<chrome.tabs.Tab | undefined>(((resolve, reject) => {
 
             chrome.tabs.getCurrent((tab) => {
 
@@ -84,7 +84,7 @@ export namespace Tabs {
 
     export function queryCurrentTabForLink() {
 
-        return new Promise<string>(resolve => {
+        return new Promise<string | undefined>(resolve => {
 
             chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
                 const link = tabs[0].url;
