@@ -1,6 +1,6 @@
 {
   "name": "polar-readability",
-  "version": "2.0.97",
+  "version": "2.0.98",
   "description": "",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
@@ -14,8 +14,8 @@
     "@types/mocha": "=8.0.4",
     "chai": "4.2.0",
     "mocha": "=8.2.1",
-    "polar-shared": "^2.0.97",
-    "polar-test": "^2.0.97",
+    "polar-shared": "^2.0.98",
+    "polar-test": "^2.0.98",
     "tslint": "6.1.2",
     "typescript": "4.1.3"
   },
