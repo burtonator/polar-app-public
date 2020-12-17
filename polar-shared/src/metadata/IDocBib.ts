@@ -39,7 +39,6 @@ export interface IDocBibMutable {
 
     isbn?: string;
 
-    // FIXME: array maps on't wokr
     editor?: string | ReadonlyArrayMap<string>;
 
     address?: string;

@@ -8,6 +8,8 @@ export namespace ExtensionContentCapture {
 
     import hasActiveTextSelection = Selections.hasActiveTextSelection;
 
+    // TODO ... Rong... pass the author
+
     export interface ICapturedEPUB extends PageMetadata {
         readonly content: HTMLStr;
         readonly text: PlainTextStr;

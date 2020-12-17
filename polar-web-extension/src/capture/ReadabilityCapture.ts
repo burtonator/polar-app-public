@@ -1,7 +1,6 @@
 import {HTMLSanitizer} from "polar-html/src/sanitize/HTMLSanitizer";
 import Readability from "readability";
-import {HTMLStr, PlainTextStr} from "polar-shared/src/util/Strings";
-import {getMetadata, PageMetadata} from "page-metadata-parser";
+import {getMetadata} from "page-metadata-parser";
 import {ExtensionContentCapture} from "./ExtensionContentCapture";
 
 export namespace ReadabilityCapture {

@@ -42,6 +42,7 @@ export namespace DatastoreWriter {
         const title = Optional.of(opts.title).getOrElse("Untitled");
         const description = Optional.of(opts.description).getOrElse("");
 
+        // TODO ... Rong... pass the author
         const docInfo: Partial<IDocInfo> = {
             title,
             description,

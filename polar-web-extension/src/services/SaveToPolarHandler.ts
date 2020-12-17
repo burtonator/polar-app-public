@@ -101,6 +101,8 @@ export namespace SaveToPolarHandler {
 
             const persistenceLayer = await ExtensionPersistenceLayers.create();
 
+            // TODO ... Rong... pass the author
+
             try {
 
                 const opts: IWriteOpts = {
