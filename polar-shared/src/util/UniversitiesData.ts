@@ -1,11 +1,11 @@
 import {UniversityTuple} from './Universities'
 export const DATA: ReadonlyArray<UniversityTuple> = [
-    ["1 December University of Alba Iulia", ["uab.ro"], "RO", "Romania", "uab.ro", "12sN2uRLoS"],
-    ["2nd Military Medical University", ["smmu.edu.cn"], "CN", "China", "smmu.edu.cn", "128cBvdb9P"],
-    ["3rd Military Medical University", ["tmmu.edu.cn"], "CN", "China", "tmmu.edu.cn", "12AYDK3vxL"],
-    ["42 FR", ["student.42.fr"], "FR", "France", "student.42.fr", "12SqdYnan4"],
-    ["42 US", ["student.42.us.org"], "US", "United States", "student.42.us.org", "1cS37arJKp"],
-    ["4th Military Medical University", ["fmmu.edu.cn"], "CN", "China", "fmmu.edu.cn", "1VGkk6fZ49"],
+    // ["1 December University of Alba Iulia", ["uab.ro"], "RO", "Romania", "uab.ro", "12sN2uRLoS"],
+    // ["2nd Military Medical University", ["smmu.edu.cn"], "CN", "China", "smmu.edu.cn", "128cBvdb9P"],
+    // ["3rd Military Medical University", ["tmmu.edu.cn"], "CN", "China", "tmmu.edu.cn", "12AYDK3vxL"],
+    // ["42 FR", ["student.42.fr"], "FR", "France", "student.42.fr", "12SqdYnan4"],
+    // ["42 US", ["student.42.us.org"], "US", "United States", "student.42.us.org", "1cS37arJKp"],
+    // ["4th Military Medical University", ["fmmu.edu.cn"], "CN", "China", "fmmu.edu.cn", "1VGkk6fZ49"],
     ["ABM University College", ["abm.ac.bw"], "BW", "Botswana", "abm.ac.bw", "12UDd2Dkod"],
     ["ABTI American University of Nigeria", ["aun.edu.ng"], "NG", "Nigeria", "aun.edu.ng", "1dgrAQUMTG"],
     ["AGH University of Science and Technology", ["agh.edu.pl"], "PL", "Poland", "agh.edu.pl", "126iUNYZg5"],
