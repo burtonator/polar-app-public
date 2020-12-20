@@ -22,4 +22,39 @@ export namespace Images {
         });
 
     }
+
+    interface Constraint {
+        readonly maxHeight: number;
+        readonly maxWidth: number;
+    }
+
+    export function constrain(dimensions: IDimensions, constraint: Constraint): IDimensions {
+        return constrainByWidth(constrainByHeight(dimensions, constraint.maxHeight), constraint.maxWidth);
+        // return constrainByHeight(dimensions, constraint.maxHeight);
+    }
+
+    export function constrainByHeight(dimensions: IDimensions, maxHeight: number): IDimensions {
+
+        const newHeight = Math.min(dimensions.height, maxHeight);
+        const newWidth = Math.floor((newHeight / dimensions.height) * dimensions.width);
+
+        return {
+            height: newHeight,
+            width: newWidth
+        };
+
+    }
+
+    export function constrainByWidth(dimensions: IDimensions, maxWidth: number): IDimensions {
+
+        const newWidth = Math.min(dimensions.width, maxWidth);
+        const newHeight = Math.floor((newWidth / dimensions.width) * dimensions.height);
+
+        return {
+            height: newHeight,
+            width: newWidth
+        };
+
+    }
+
 }
