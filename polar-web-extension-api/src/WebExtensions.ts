@@ -24,7 +24,11 @@ export namespace WebExtensions {
 
             // TODO use withPromise
             return new Promise<any>(resolve => {
-                chrome.runtime.sendMessage(extensionID, message, result => resolve(result));
+
+                if (chrome.runtime) {
+                    chrome.runtime.sendMessage(extensionID, message, result => resolve(result));
+                }
+
             });
 
         }

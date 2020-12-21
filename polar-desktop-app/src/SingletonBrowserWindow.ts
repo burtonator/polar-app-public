@@ -27,7 +27,9 @@ export class SingletonBrowserWindow {
             const id = existing[0];
 
             const browserWindow = BrowserWindow.fromId(id);
-            browserWindow.focus();
+            if (browserWindow) {
+                browserWindow.focus();
+            }
             return browserWindow;
 
         }

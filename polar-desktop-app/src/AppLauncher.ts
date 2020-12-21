@@ -15,7 +15,7 @@ export class AppLauncher {
     /**
      * Launch the repository app or focus it if it's already created.
      */
-    public static async launchApp(): Promise<BrowserWindow> {
+    public static async launchApp(): Promise<BrowserWindow | null> {
 
         const browserWindowTag = {name: 'app', value: 'repository'};
 
@@ -30,7 +30,9 @@ export class AppLauncher {
 
         });
 
-        browserWindow.focus();
+        if (browserWindow) {
+            browserWindow.focus();
+        }
 
         return browserWindow;
 

@@ -8,7 +8,6 @@ import {Version} from 'polar-shared/src/util/Version';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import { AppUpdate } from './AppUpdate';
 import {AppUpdates} from "./AppUpdates";
-import {Firestore} from "../../../../polar-bookshelf/web/js/firebase/Firestore";
 
 const ENABLE_AUTO_UPDATE = true;
 
@@ -33,7 +32,6 @@ log.info("Allowing pre-releases for auto-updates: " + autoUpdater.allowPrereleas
 
 export namespace Updates {
 
-    import init = Firestore.init;
     let updateRequestedManually: boolean = false;
 
     let performingUpdate: boolean = false;

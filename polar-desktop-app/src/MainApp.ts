@@ -124,6 +124,6 @@ namespace AppListeners {
 }
 
 export interface MainAppStarted {
-    mainWindow: BrowserWindow;
+    mainWindow: BrowserWindow | null;
 }
 

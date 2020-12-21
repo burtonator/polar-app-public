@@ -8,7 +8,8 @@
     "start": "electron .",
     "dist-linux": "npx webpack && electron-builder --config=electron-builder.yml --linux appimage deb tar.gz --publish always",
     "dist-macos": "npx webpack && electron-builder --config=electron-builder.yml --macos dmg zip --publish always",
-    "dist-win": "npx webpack && ./build/dist-win.sh"
+    "dist-win": "npx webpack && ./build/dist-win.sh",
+    "verify-electron-version": "./scripts/verify-electron-version"
   },
   "repository": "https://github.com/burtonator/polar-app-public",
   "keywords": [
@@ -37,8 +38,9 @@
   "license": "GPL-3.0-only",
   "devDependencies": {
     "cache-loader": "4.1.0",
-    "electron": "=8.4.0",
-    "electron-builder": "~22.9.1",
+    "electron": "=11.1.0",
+    "electron-builder": "=22.9.1",
+    "electron-updater": "=4.3.5",
     "electron-notarize": "1.0.0",
     "fork-ts-checker-webpack-plugin": "=5.2.0",
     "mocha": "=8.2.1",
