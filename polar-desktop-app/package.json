@@ -1,6 +1,6 @@
 {
   "name": "polar-desktop-app",
-  "version": "2.0.100",
+  "version": "2.0.101",
   "description": "Polar",
   "main": "./main-bundle.js",
   "private": true,
@@ -40,8 +40,8 @@
     "cache-loader": "4.1.0",
     "electron": "=11.1.0",
     "electron-builder": "=22.9.1",
-    "electron-updater": "=4.3.5",
     "electron-notarize": "1.0.0",
+    "electron-updater": "=4.3.5",
     "fork-ts-checker-webpack-plugin": "=5.2.0",
     "mocha": "=8.2.1",
     "null-loader": "=4.0.1",
@@ -54,8 +54,8 @@
     "webpack-cli": "=3.3.12"
   },
   "dependencies": {
-    "polar-bookshelf": "^2.0.100",
-    "polar-shared": "^2.0.100"
+    "polar-bookshelf": "^2.0.101",
+    "polar-shared": "^2.0.101"
   },
   "collective": {
     "type": "opencollective",
