@@ -8,10 +8,14 @@ export const academicOccupations = [
     "Professor",
 ];
 export const businessOccupations = [
+    "Corporate Researcher",
     "Software Engineer",
     "Mathematician",
     "Data Scientist",
     "Web Designer",
+    "Founder",
+    "Investor",
+    "Other"
 ];
 
 export interface AcademicOccupation {
