@@ -12,11 +12,11 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {SaveToPolarHandler} from "../../services/SaveToPolarHandler";
 import {SaveToPolarProgressListener} from './SaveToPolarProgressListener';
 import {deepMemo} from 'polar-bookshelf/web/js/react/ReactUtils';
-import {NavLogoText} from "polar-bookshelf/apps/repository/js/nav/NavLogoText";
 import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
-import {NavLogoImage} from "polar-bookshelf/apps/repository/js/nav/NavLogoImage";
 import {ExtensionContentCapture} from "../../capture/ExtensionContentCapture";
 import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
+import {PolarLogoImage} from "polar-bookshelf/apps/repository/js/nav/PolarLogoImage";
+import {PolarLogoText} from "polar-bookshelf/apps/repository/js/nav/PolarLogoText";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,8 +65,8 @@ export const CaptureRoot = deepMemo(() => {
                              flexGrow: 1,
                          }}>
 
-                        <NavLogoImage width={50} height={50}/>
-                        <NavLogoText/>
+                        <PolarLogoImage width={50} height={50}/>
+                        <PolarLogoText/>
 
                     </div>
 
