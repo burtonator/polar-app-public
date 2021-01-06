@@ -23,10 +23,18 @@ export namespace ReadabilityCapture {
 
         const readable = parseReadability();
         const metadata = parseMetadata();
+        var authors : string[] = []
+        for (const metaInfo of Array.from(document.querySelectorAll("meta[name='citation_author']"))) {
+            const author = metaInfo.getAttribute("content")
+            if (author !== null) {
+                authors.push(author)
+            }
+        }
         const sanitized = HTMLSanitizer.sanitizePortableDocument(readable.content);
 
         return {
             ...metadata,
+            authors,
             excerpt: readable.excerpt,
             text: readable.textContent,
             content: sanitized

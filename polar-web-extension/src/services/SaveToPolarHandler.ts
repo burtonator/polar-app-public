@@ -101,8 +101,6 @@ export namespace SaveToPolarHandler {
 
             const persistenceLayer = await ExtensionPersistenceLayers.create();
 
-            // TODO ... Rong... pass the author
-
             try {
 
                 const opts: IWriteOpts = {
@@ -110,6 +108,7 @@ export namespace SaveToPolarHandler {
                     doc,
                     type: 'epub',
                     title: capture.title,
+                    authors: capture.authors,
                     description: capture.description,
                     url: capture.url,
                     basename,

@@ -18,6 +18,7 @@ export namespace DatastoreWriter {
         readonly url: string;
         readonly basename: string;
         readonly title?: string;
+        readonly authors?: string[];
         readonly description?: string;
 
         readonly fingerprint?: string;
@@ -40,11 +41,12 @@ export namespace DatastoreWriter {
         const persistenceLayerProvider = () => persistenceLayer;
 
         const title = Optional.of(opts.title).getOrElse("Untitled");
+        const authors = Optional.of(opts.authors).getOrElse([]);
         const description = Optional.of(opts.description).getOrElse("");
 
-        // TODO ... Rong... pass the author
         const docInfo: Partial<IDocInfo> = {
             title,
+            authors,
             description,
             url: opts.url,
             bytes: opts.doc.size,

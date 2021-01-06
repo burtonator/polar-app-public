@@ -58,6 +58,11 @@ export interface IDocInfo extends IDocBibMutable {
     subtitle?: string;
 
     /**
+     * The authors for the document.
+     */
+    authors?: string[];
+
+    /**
      * The description for the document.
      */
     description?: string;

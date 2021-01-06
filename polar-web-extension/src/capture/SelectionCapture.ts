@@ -26,6 +26,13 @@ export namespace SelectionCapture {
         }
 
         const metadata = parseMetadata();
+        var authors : string[] = []
+        for (const metaInfo of Array.from(document.querySelectorAll("meta[name='citation_author']"))) {
+            const author = metaInfo.getAttribute("content")
+            if (author !== null) {
+                authors.push(author)
+            }
+        }
         const selection = extractSelection();
         const sanitized = HTMLSanitizer.sanitizePortableDocument(selection.outerHTML);
         const text = selection.innerText;
@@ -33,6 +40,7 @@ export namespace SelectionCapture {
 
         return {
             ...metadata,
+            authors,
             excerpt: metadata.description,
             text,
             content: sanitized
