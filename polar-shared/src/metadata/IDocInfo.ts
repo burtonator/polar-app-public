@@ -219,6 +219,12 @@ export interface IDocInfo extends IDocBibMutable {
      */
     webCapture?: boolean;
 
+    /**
+     * Specify the number of columns that this this document uses (1, 2, 3, etc).
+     *
+     */
+    columnLayout?: number;
+
 }
 
 /**
