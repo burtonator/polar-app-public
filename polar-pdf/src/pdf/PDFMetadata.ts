@@ -7,16 +7,41 @@ import {PDFProps} from "./PDFProps";
 import {StreamRangeFactory, Streams} from "polar-shared/src/util/Streams";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 import {PDFDocs} from "./PDFDocs";
+import { IDimensions } from 'polar-shared/src/util/IDimensions';
+import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 
-export class PDFMetadata {
+export namespace PDFMetadata {
+
+    export interface IPDFPageInfo {
+
+        /**
+         * The page number for this page.
+         */
+        readonly num: PageNumber;
+
+        /**
+         * The native viewport dimensions of this page.
+         */
+        readonly dimensions: IDimensions;
+
+    }
+
+    /**
+     * Index of the page number and the dimensions.
+     */
+    export type PDFPageInfoIndex = {[pageNum: number]: IPDFPageInfo};
+
+    export interface IPDFParsedDocMeta extends IParsedDocMeta {
+        readonly pageInfoIndex: Readonly<PDFPageInfoIndex>;
+    }
 
     /**
      * Return true if this is a PDF
      */
-    public static async isPDF(streamRangeFactory: StreamRangeFactory) {
+   export async function isPDF(streamRangeFactory: StreamRangeFactory) {
 
         // TODO: we could have the range reader computed from the passed
-        // datastructure type (file, URL, cloud storage, etc).
+        // data structure type (file, URL, cloud storage, etc).
 
         const stream = streamRangeFactory(0, 4);
         const buff = await Streams.toBuffer(stream);
@@ -32,7 +57,7 @@ export class PDFMetadata {
 
     }
 
-    public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<IParsedDocMeta> {
+    export async function getMetadata(docPathOrURL: PathOrURLStr): Promise<IPDFParsedDocMeta> {
 
         const isPath = ! URLs.isURL(docPathOrURL);
 
@@ -59,6 +84,34 @@ export class PDFMetadata {
 
         const pdfLoadingTask = PDFDocs.getDocument({url: docURL});
         const doc = await pdfLoadingTask.promise;
+
+        // FIXME: get the viewport for each page in the native viewport height
+        // and adjust it to the browser viewport/size
+
+        async function computePDFPageInfoIndex(): Promise<Readonly<PDFPageInfoIndex>> {
+
+            const result: PDFPageInfoIndex = {};
+
+            for (let pageNum = 1; pageNum <= doc.numPages; ++pageNum) {
+                const page = await doc.getPage(pageNum);
+                const viewport = page.getViewport({scale: 1});
+                const width = viewport.width;
+                const height = viewport.height;
+
+                const pageInfo: IPDFPageInfo = {
+                    num: pageNum,
+                    dimensions: {
+                        width, height
+                    }
+                }
+
+                result[pageNum] = pageInfo;
+
+            }
+
+            return result;
+
+        }
 
         const metaHolder = await doc.getMetadata();
 
@@ -103,6 +156,8 @@ export class PDFMetadata {
 
         }
 
+        const pageInfoIndex = await computePDFPageInfoIndex();
+
         return {
             fingerprint: doc.fingerprint,
             nrPages: doc.numPages,
@@ -110,7 +165,8 @@ export class PDFMetadata {
             description,
             props,
             doi,
-            creator
+            creator,
+            pageInfoIndex
         };
 
     }

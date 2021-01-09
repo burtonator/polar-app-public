@@ -7,6 +7,7 @@ import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {DOIs} from "./DOIs";
 import {Strings} from "polar-shared/src/util/Strings";
 import {SampledHitMap} from "polar-shared/src/util/HitMap";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('PDF Metadata', function() {
 
@@ -56,7 +57,127 @@ describe('PDF Metadata', function() {
 
         it("basic successful read", async function() {
             const path = FilePaths.join(__dirname, "../../tests/chubby.pdf");
-            await PDFMetadata.getMetadata(path);
+            const metadata = await PDFMetadata.getMetadata(path);
+
+            assertJSON(metadata, {
+                "fingerprint": "c29bc1717788b1602a3cf4ed28ddfbcd",
+                "nrPages": 16,
+                "pageInfoIndex": {
+                    "1": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 1
+                    },
+                    "2": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 2
+                    },
+                    "3": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 3
+                    },
+                    "4": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 4
+                    },
+                    "5": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 5
+                    },
+                    "6": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 6
+                    },
+                    "7": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 7
+                    },
+                    "8": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 8
+                    },
+                    "9": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 9
+                    },
+                    "10": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 10
+                    },
+                    "11": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 11
+                    },
+                    "12": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 12
+                    },
+                    "13": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 13
+                    },
+                    "14": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 14
+                    },
+                    "15": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 15
+                    },
+                    "16": {
+                        "dimensions": {
+                            "height": 792,
+                            "width": 612
+                        },
+                        "num": 16
+                    }
+                },
+                "props": {}
+            });
         });
 
     });
