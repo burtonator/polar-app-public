@@ -1,7 +1,37 @@
 export namespace SnapshotCache {
 
+    export interface IGetOptions {
+        readonly source?: 'default' | 'server' | 'cache';
+    }
+
+    export interface IDocumentSnapshot<V> {
+
+        /**
+         * Property of the `DocumentSnapshot` that signals whether or not the data
+         * exists. True if the document exists.
+         */
+        readonly exists: boolean;
+
+        /**
+         * Property of the `DocumentSnapshot` that provides the document's ID.
+         */
+        readonly id: string;
+
+
+        /**
+         */
+        data(): V | undefined;
+
+    }
+
+    export interface ICollectionReference {
+
+    }
+
+    export type SnapshotBacking = 'none' | 'localStorage';
+
     export interface Config {
-        readonly backing: 'none' | 'localStorage';
+        readonly backing: SnapshotBacking;
     }
 
     let config: Config = {
@@ -43,106 +73,5 @@ export namespace SnapshotCache {
         // noop for now
     }
 
-    interface SnapshotPersistenceProvider {
-
-        readonly purge: () => Promise<void>;
-
-        /**
-         * Return true if the cache contains teh given key.
-         */
-        readonly contains: (key: string) => Promise<boolean>;
-
-        /**
-         * Write to the cache.
-         */
-        readonly write: <V>(key: string, value: V) => Promise<void>;
-
-        readonly read: <V>(key: string) => Promise<V | undefined>;
-
-        /**
-         * Remove an item from the cache.
-         */
-        readonly remove: (key: string) => Promise<void>;
-
-    }
-
-    function createNullSnapshotPersistenceProvider(): SnapshotPersistenceProvider {
-
-        async function purge() {
-            // noop
-        }
-
-        async function contains(key: string): Promise<boolean> {
-            return false;
-        }
-
-        async function write<V>(key: string, value: V) {
-            // noop
-        }
-
-        async function remove(key: string) {
-            // noop
-        }
-
-        async function read<V>(key: string): Promise<V | undefined> {
-            return undefined;
-        }
-
-        return {purge, contains, write, remove, read};
-
-    }
-
-    function createLocalStorageSnapshotPersistenceProvider(): SnapshotPersistenceProvider {
-
-        const prefix = 'snapshot-cache:';
-
-        async function purge() {
-
-            function computeKeys() {
-                return Object.keys(localStorage).filter(current => current.startsWith(prefix));
-            }
-
-            for (const key of computeKeys()) {
-                localStorage.removeItem(key);
-            }
-
-        }
-
-        function createCacheKey(key: string) {
-            return prefix + key;
-        }
-
-        async function contains(key: string): Promise<boolean> {
-            const cacheKey = createCacheKey(key);
-            return localStorage.getItem(cacheKey) !== null;
-        }
-
-        async function write<V>(key: string, value: V) {
-            const cacheKey = createCacheKey(key);
-            localStorage.setItem(cacheKey, JSON.stringify(value));
-        }
-
-        async function remove(key: string) {
-            const cacheKey = createCacheKey(key);
-            localStorage.removeItem(cacheKey);
-        }
-
-
-        async function read<V>(key: string): Promise<V | undefined> {
-
-            const cacheKey = createCacheKey(key);
-            const item = localStorage.getItem(cacheKey);
-
-            if (item === null) {
-                return undefined;
-            }
-
-            return JSON.parse(item);
-
-        }
-
-        return {purge, contains, write, remove, read};
-
-    }
 
 }
