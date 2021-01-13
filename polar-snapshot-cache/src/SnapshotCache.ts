@@ -12,7 +12,7 @@ export namespace SnapshotCache {
      * Purge all data in the snapshot cache using the current configuration
      */
     export async function purge() {
-
+        // noop for now
     }
 
     /**
@@ -40,7 +40,7 @@ export namespace SnapshotCache {
      *
      */
     export function onSnapshot() {
-
+        // noop for now
     }
 
     interface SnapshotPersistenceProvider {
@@ -56,6 +56,8 @@ export namespace SnapshotCache {
          * Write to the cache.
          */
         readonly write: <V>(key: string, value: V) => Promise<void>;
+
+        readonly read: <V>(key: string) => Promise<V | undefined>;
 
         /**
          * Remove an item from the cache.
@@ -82,7 +84,64 @@ export namespace SnapshotCache {
             // noop
         }
 
-        return {purge, contains, write, remove};
+        async function read<V>(key: string): Promise<V | undefined> {
+            return undefined;
+        }
+
+        return {purge, contains, write, remove, read};
+
+    }
+
+    function createLocalStorageSnapshotPersistenceProvider(): SnapshotPersistenceProvider {
+
+        const prefix = 'snapshot-cache:';
+
+        async function purge() {
+
+            function computeKeys() {
+                return Object.keys(localStorage).filter(current => current.startsWith(prefix));
+            }
+
+            for (const key of computeKeys()) {
+                localStorage.removeItem(key);
+            }
+
+        }
+
+        function createCacheKey(key: string) {
+            return prefix + key;
+        }
+
+        async function contains(key: string): Promise<boolean> {
+            const cacheKey = createCacheKey(key);
+            return localStorage.getItem(cacheKey) !== null;
+        }
+
+        async function write<V>(key: string, value: V) {
+            const cacheKey = createCacheKey(key);
+            localStorage.setItem(cacheKey, JSON.stringify(value));
+        }
+
+        async function remove(key: string) {
+            const cacheKey = createCacheKey(key);
+            localStorage.removeItem(cacheKey);
+        }
+
+
+        async function read<V>(key: string): Promise<V | undefined> {
+
+            const cacheKey = createCacheKey(key);
+            const item = localStorage.getItem(cacheKey);
+
+            if (item === null) {
+                return undefined;
+            }
+
+            return JSON.parse(item);
+
+        }
+
+        return {purge, contains, write, remove, read};
 
     }
 
