@@ -23,3 +23,8 @@ including, none, localStorage, and idb.
 The idb library provides an Indexed DB API that we can use rather than localStorage 
 (which blocks) but initially I don't think we really need that since this will be much
 much faster than what we already have.
+
+
+FIXME: this design doesn't store NEGATIVE cache entries.. so if 'exists' is false we dont' store anything , just remove
+it.  We need to add support for that too by usign a 'holder' which would have an 'undefined' value.
+

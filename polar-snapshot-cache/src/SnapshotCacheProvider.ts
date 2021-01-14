@@ -1,18 +1,15 @@
+import { ISnapshotCacheEntry } from "./ISnapshotCacheEntry";
+
 export interface SnapshotCacheProvider {
 
     readonly purge: () => Promise<void>;
 
     /**
-     * Return true if the cache contains teh given key.
-     */
-    readonly contains: (key: string) => Promise<boolean>;
-
-    /**
      * Write to the cache.
      */
-    readonly write: <V>(key: string, value: V) => Promise<void>;
+    readonly write: <V>(key: string, value: ISnapshotCacheEntry<V>) => Promise<void>;
 
-    readonly read: <V>(key: string) => Promise<V | undefined>;
+    readonly read: <V>(key: string) => Promise<ISnapshotCacheEntry<V> | undefined>;
 
     /**
      * Remove an item from the cache.
