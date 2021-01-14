@@ -253,7 +253,7 @@ export namespace CachedStore {
                 return this;
             }
 
-            set<T>(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
+            set(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
                 this.ops.push({type: 'set', documentRef, data});
                 this._batch.set(documentRef, data);
                 return this;
@@ -271,7 +271,6 @@ export namespace CachedStore {
                         switch (op.type) {
 
                             // FIXME: this has to be implemented...
-
 
                             case "delete":
                                 break;

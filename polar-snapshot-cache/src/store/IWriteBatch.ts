@@ -8,7 +8,7 @@ export interface IWriteBatch {
      */
     delete(documentRef: IDocumentReference): IWriteBatch;
 
-    set<T>(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch;
+    set(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch;
 
     commit(): Promise<void>;
 
