@@ -25,20 +25,22 @@ export namespace MockStore {
     export function create(): IStore {
 
         function collection(collectionName: string): ICollectionReference {
+            //
+            // function doc(documentPath?: string): IDocumentReference {
+            //
+            //
+            //     return {
+            //         parent: collectionName,
+            //         id: documentPath
+            //     }
+            //
+            // }
+            //
+            // return {
+            //     id: collectionName
+            // }
 
-            function doc(documentPath?: string): IDocumentReference {
-
-
-                return {
-                    parent: collectionName,
-                    id: documentPath
-                }
-
-            }
-
-            return {
-                id: collectionName
-            }
+            return null!;
 
         }
 
@@ -68,7 +70,9 @@ export namespace MockStore {
             return new Batch();
         }
 
-        return {batch};
+        // return {batch};
+
+        return null!;
 
     }
 

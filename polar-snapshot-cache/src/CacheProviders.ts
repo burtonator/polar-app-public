@@ -61,21 +61,32 @@ export namespace CacheProviders {
         }
 
         async function write<V>(key: string, value: V) {
-            const cacheKey = createCacheKey(key);
-            localStorage.setItem(cacheKey, JSON.stringify(value));
+            try {
+                const cacheKey = createCacheKey(key);
+                localStorage.setItem(cacheKey, JSON.stringify(value));
+            } catch (e) {
+                console.error("Unable to write cache entry: ", e);
+            }
         }
 
 
         async function read<V>(key: string): Promise<V | undefined> {
 
-            const cacheKey = createCacheKey(key);
-            const item = localStorage.getItem(cacheKey);
+            try {
 
-            if (item === null) {
+                const cacheKey = createCacheKey(key);
+                const item = localStorage.getItem(cacheKey);
+
+                if (item === null) {
+                    return undefined;
+                }
+
+                return JSON.parse(item);
+
+            } catch (e) {
+                console.error("Unable to read cache entry: ", e);
                 return undefined;
             }
-
-            return JSON.parse(item);
 
         }
         async function writeDoc(key: string, value: ICachedDoc) {

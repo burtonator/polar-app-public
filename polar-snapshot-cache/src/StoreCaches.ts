@@ -4,6 +4,7 @@ import {IStore} from "./store/IStore";
 import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
 import { CacheKeyCalculators } from "./CacheKeyCalculators";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {CachedStore} from "./store/cached/CachedStore";
 
 /**
  * The general design here is that we have a snapshot interface that mimics
@@ -12,18 +13,14 @@ import {Preconditions} from "polar-shared/src/Preconditions";
  */
 export namespace StoreCaches {
 
-    export type StoreType = 'direct';
-
     export type SnapshotBacking = 'none' | 'localStorage';
 
     export interface SnapshotCacheConfig {
-        readonly type: StoreType;
         readonly backing: SnapshotBacking;
     }
 
     let config: SnapshotCacheConfig = {
-        type: 'direct',
-        backing: 'none'
+        backing: 'localStorage'
     };
 
     let cacheProvider: CacheProvider = CacheProviders.create('none');
@@ -61,10 +58,14 @@ export namespace StoreCaches {
 
             Preconditions.assertPresent(delegate, 'delegate');
 
-            switch (config.type) {
+            switch (config.backing) {
 
-                case "direct":
+                case "none":
                     return delegate;
+
+                case "localStorage":
+                    const localStorageCacheProvider = CacheProviders.create(config.backing)
+                    return CachedStore.create(delegate, localStorageCacheProvider, cacheKeyCalculator!);
 
             }
 

@@ -144,7 +144,7 @@ export namespace CachedStore {
     }
 
     export function create(delegate: IStore,
-                           snapshotCacheProvider: CacheProvider,
+                           cacheProvider: CacheProvider,
                            cacheKeyCalculator: ICacheKeyCalculator): IStore {
 
         function collection(collectionName: string): ICollectionReference {
@@ -159,7 +159,7 @@ export namespace CachedStore {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
 
-                    const cacheData: ICachedDoc | undefined = await snapshotCacheProvider.readDoc(cacheKey);
+                    const cacheData: ICachedDoc | undefined = await cacheProvider.readDoc(cacheKey);
 
                     if (cacheData) {
                         return {
@@ -180,7 +180,7 @@ export namespace CachedStore {
                 async function writeToCache(snapshot: IDocumentSnapshot) {
                     const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
 
-                    await snapshotCacheProvider.writeDoc(cacheKey, {
+                    await cacheProvider.writeDoc(cacheKey, {
                         exists: snapshot.exists,
                         data: snapshot.data()
                     });
@@ -268,7 +268,7 @@ export namespace CachedStore {
 
                     const cacheKey = cacheKeyCalculator.computeForQuery(this._collection.id);
 
-                    const cacheData = await snapshotCacheProvider.readQuery(cacheKey);
+                    const cacheData = await cacheProvider.readQuery(cacheKey);
 
                     if (cacheData) {
                         return CachedQueries.fromCache(cacheData);
@@ -280,7 +280,7 @@ export namespace CachedStore {
 
                 private async writeToCache(snapshot: IQuerySnapshot) {
                     const cacheKey = cacheKeyCalculator.computeForQuery(this._collection.id);
-                    await snapshotCacheProvider.writeQuery(cacheKey, CachedQueries.toCache(snapshot));
+                    await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache(snapshot));
                 }
 
 
@@ -370,7 +370,7 @@ export namespace CachedStore {
 
                             case "delete":
 
-                                await snapshotCacheProvider.writeDoc(cacheKey, {
+                                await cacheProvider.writeDoc(cacheKey, {
                                     exists: false,
                                     data: undefined
                                 });
@@ -379,7 +379,7 @@ export namespace CachedStore {
 
                             case "set":
 
-                                await snapshotCacheProvider.writeDoc(cacheKey, {
+                                await cacheProvider.writeDoc(cacheKey, {
                                     exists: true,
                                     data: op.data
                                 });
