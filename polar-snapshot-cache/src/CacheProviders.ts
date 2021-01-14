@@ -1,11 +1,11 @@
 import {CacheProvider} from "./CacheProvider";
-import {SnapshotCaches} from "./SnapshotCaches";
+import {StoreCaches} from "./StoreCaches";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQuery} from "./ICachedQuery";
 
 export namespace CacheProviders {
 
-    import SnapshotBacking = SnapshotCaches.SnapshotBacking;
+    import SnapshotBacking = StoreCaches.SnapshotBacking;
 
     export function create(backing: SnapshotBacking): CacheProvider {
 

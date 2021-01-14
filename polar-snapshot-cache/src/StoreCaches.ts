@@ -10,7 +10,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
  * Firestore and the main and high level usage pattern.
  *
  */
-export namespace SnapshotCaches {
+export namespace StoreCaches {
 
     export type StoreType = 'direct';
 
