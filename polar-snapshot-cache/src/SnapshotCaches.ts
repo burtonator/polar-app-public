@@ -1,7 +1,9 @@
 import {SnapshotCacheProviders} from "./SnapshotCacheProviders";
 import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
-import {ICollectionReference} from "./store/ICollectionReference";
 import {IStore} from "./store/IStore";
+import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
+import {DatastoreCollection} from "../../../polar-bookshelf/web/js/datastore/FirebaseDatastore";
+import { CacheKeyCalculators } from "./CacheKeyCalculators";
 
 /**
  * The general design here is that we have a snapshot interface that mimics
@@ -42,13 +44,34 @@ export namespace SnapshotCaches {
         cacheProvider = SnapshotCacheProviders.create(config.backing);
     }
 
-    export async function create(delegate: IStore): Promise<IStore> {
+    export interface IStoreBuilder {
+        readonly withGenericSnapshotCacheKey: (collectionName: string, snapshotCacheKey: string) => IStoreBuilder;
+        readonly build: (delegate: IStore) => Promise<IStore>;
+    }
 
-        switch (config.type) {
+    export function create(): IStoreBuilder {
 
-            case "direct":
-                return delegate;
+        let cacheKeyCalculator: ICacheKeyCalculator | undefined;
 
+        function withGenericSnapshotCacheKey(collectionName: string, snapshotCacheKey: string) {
+            cacheKeyCalculator = CacheKeyCalculators.createGeneric(DatastoreCollection.DOC_META, snapshotCacheKey)
+            return this;
+        }
+
+        async function build(delegate: IStore) {
+
+            switch (config.type) {
+
+                case "direct":
+                    return delegate;
+
+            }
+
+        }
+
+        return {
+            withGenericSnapshotCacheKey,
+            build
         }
 
     }
