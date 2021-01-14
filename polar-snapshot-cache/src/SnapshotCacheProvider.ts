@@ -1,4 +1,4 @@
-export interface SnapshotPersistenceProvider {
+export interface SnapshotCacheProvider {
 
     readonly purge: () => Promise<void>;
 

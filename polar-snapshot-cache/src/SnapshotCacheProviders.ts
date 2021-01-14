@@ -1,25 +1,24 @@
-import {SnapshotPersistenceProvider} from "./SnapshotPersistenceProvider";
+import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
 import {SnapshotCache} from "./SnapshotCache";
-import {showWarningOnce} from "tslint/lib/error";
 
-export namespace SnapshotPersistenceProviders {
+export namespace SnapshotCacheProviders {
 
     import SnapshotBacking = SnapshotCache.SnapshotBacking;
 
-    export function create(backing: SnapshotBacking): SnapshotPersistenceProvider {
+    export function create(backing: SnapshotBacking): SnapshotCacheProvider {
 
         switch (backing) {
 
             case "none":
-                return createNullSnapshotPersistenceProvider();
+                return createNullSnapshotCacheProvider();
             case "localStorage":
-                return createLocalStorageSnapshotPersistenceProvider();
+                return createLocalStorageSnapshotCacheProvider();
 
         }
 
     }
 
-    function createNullSnapshotPersistenceProvider(): SnapshotPersistenceProvider {
+    function createNullSnapshotCacheProvider(): SnapshotCacheProvider {
 
         async function purge() {
             // noop
@@ -45,7 +44,7 @@ export namespace SnapshotPersistenceProviders {
 
     }
 
-    function createLocalStorageSnapshotPersistenceProvider(): SnapshotPersistenceProvider {
+    function createLocalStorageSnapshotCacheProvider(): SnapshotCacheProvider {
 
         const prefix = 'snapshot-cache:';
 

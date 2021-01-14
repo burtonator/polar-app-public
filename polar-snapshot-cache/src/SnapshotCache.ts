@@ -1,42 +1,26 @@
+import {SnapshotCacheProviders} from "./SnapshotCacheProviders";
+import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
+import {ICollectionReference} from "./store/ICollectionReference";
+
+/**
+ * The general design here is that we have a snapshot interface that mimics
+ * Firestore and the main and high level usage pattern.
+ *
+ *
+ */
 export namespace SnapshotCache {
-
-    export interface IGetOptions {
-        readonly source?: 'default' | 'server' | 'cache';
-    }
-
-    export interface IDocumentSnapshot<V> {
-
-        /**
-         * Property of the `DocumentSnapshot` that signals whether or not the data
-         * exists. True if the document exists.
-         */
-        readonly exists: boolean;
-
-        /**
-         * Property of the `DocumentSnapshot` that provides the document's ID.
-         */
-        readonly id: string;
-
-
-        /**
-         */
-        data(): V | undefined;
-
-    }
-
-    export interface ICollectionReference {
-
-    }
 
     export type SnapshotBacking = 'none' | 'localStorage';
 
-    export interface Config {
+    export interface SnapshotCacheConfig {
         readonly backing: SnapshotBacking;
     }
 
-    let config: Config = {
+    let config: SnapshotCacheConfig = {
         backing: 'none'
-    }
+    };
+
+    let cacheProvider: SnapshotCacheProvider = SnapshotCacheProviders.create('none');
 
     /**
      * Purge all data in the snapshot cache using the current configuration
@@ -48,8 +32,9 @@ export namespace SnapshotCache {
     /**
      * Configure how the snapshot cache works, whether it's enabled, etc.
      */
-    export function configure(newConfig: Config) {
+    export function configure(newConfig: SnapshotCacheConfig) {
         config = newConfig;
+        cacheProvider = SnapshotCacheProviders.create(config.backing);
     }
 
     // FIXME: we need to CREATE a snapshotter , and it will internally have a
@@ -73,5 +58,10 @@ export namespace SnapshotCache {
         // noop for now
     }
 
+    /**
+     * Generic collection factory which can be used for the REAL underlying
+     * storage layer (Firestore) or a mock one for our testing.
+     */
+    export type CollectionFactory = (collectionPath: string) => ICollectionReference;
 
 }
