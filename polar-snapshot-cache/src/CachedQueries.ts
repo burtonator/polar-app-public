@@ -4,7 +4,7 @@ import {ISnapshotCacheQueryDocument} from "./ISnapshotCacheQueryDocument";
 import {IQueryDocumentSnapshot} from "./store/IQueryDocumentSnapshot";
 import {IDocumentChange} from "./store/IDocumentChange";
 
-export namespace SnapshotCachedQueries {
+export namespace CachedQueries {
 
     export function toCache(snapshot: IQuerySnapshot): ICachedQuery {
 

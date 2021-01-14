@@ -12,7 +12,7 @@ import {IFirestoreError} from "../IFirestoreError";
 import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
 import {IQuery, SnapshotUnsubscriber} from "../IQuery";
 import {IQuerySnapshot} from "../IQuerySnapshot";
-import {SnapshotCachedQueries} from "../../SnapshotCachedQueries";
+import {CachedQueries} from "../../CachedQueries";
 
 export namespace CachedStore {
 
@@ -271,7 +271,7 @@ export namespace CachedStore {
                     const cacheData = await snapshotCacheProvider.readQuery(cacheKey);
 
                     if (cacheData) {
-                        return SnapshotCachedQueries.fromCache(cacheData);
+                        return CachedQueries.fromCache(cacheData);
                     }
 
                     return undefined;
@@ -280,7 +280,7 @@ export namespace CachedStore {
 
                 private async writeToCache(snapshot: IQuerySnapshot) {
                     const cacheKey = cacheKeyCalculator.computeForQuery(this._collection.id);
-                    await snapshotCacheProvider.writeQuery(cacheKey, SnapshotCachedQueries.toCache(snapshot));
+                    await snapshotCacheProvider.writeQuery(cacheKey, CachedQueries.toCache(snapshot));
                 }
 
 
