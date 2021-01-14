@@ -20,7 +20,7 @@ export namespace CachedStore {
 
     function createGetHandler<V>(readFromCache: () => Promise<V | undefined>,
                                  writeToCache: (value: V) => Promise<void>,
-                                 delegate: (options?: IGetOptions) => Promise<V>): GetHandler<V> {
+                                 delegate: GetHandler<V>): GetHandler<V> {
 
         return async (options?: IGetOptions): Promise<V> => {
 
@@ -81,6 +81,67 @@ export namespace CachedStore {
 
     }
 
+    type SnapshotHandler<V> = (options: ISnapshotListenOptions,
+                               onNext: (snapshot: V) => void,
+                               onError?: (error: IFirestoreError) => void,
+                               onCompletion?: () => void) => SnapshotUnsubscriber;
+
+    function createSnapshotHandler<V>(readFromCache: () => Promise<V | undefined>,
+                                      writeToCache: (value: V) => Promise<void>,
+                                      delegate: SnapshotHandler<V>): SnapshotHandler<V> {
+
+        return (options, onNext, onError, onCompletion): SnapshotUnsubscriber => {
+
+            let hasServerSnapshot = false;
+
+            function handleReadCachedSnapshot(snapshot: V | undefined) {
+
+                if (hasServerSnapshot) {
+                    // we might receive the server snapshot first so
+                    // have to be careful there.
+                    return;
+                }
+
+                if (snapshot) {
+                    onNext(snapshot);
+                }
+
+            }
+
+            function handleCacheError(err: Error) {
+
+                if (onError) {
+
+                    onError({
+                        code: 'internal',
+                        message: err.message,
+                        name: err.name,
+                        stack: err.stack
+                    })
+
+                }
+            }
+
+            readFromCache()
+                .then(snapshot => handleReadCachedSnapshot(snapshot))
+                .catch(handleCacheError)
+
+            function handleNext(snapshot: V) {
+
+                hasServerSnapshot = true;
+
+                writeToCache(snapshot)
+                    .catch(handleCacheError);
+
+                onNext(snapshot);
+
+            }
+
+            return delegate(options, handleNext, onError, onCompletion);
+
+        }
+
+    }
 
     export function create(delegate: IStore,
                            snapshotCacheProvider: SnapshotCacheProvider,
@@ -127,6 +188,9 @@ export namespace CachedStore {
                 }
 
                 const getter = createGetHandler<IDocumentSnapshot>(readFromCache, writeToCache, (options) => _doc.get(options));
+                const snapshotter = createSnapshotHandler<IDocumentSnapshot>(readFromCache,
+                                                                             writeToCache,
+                                                                             (options, onNext, onError, onCompletion) => _doc.onSnapshot(options, onNext, onError, onCompletion));
 
                 async function get(options?: IGetOptions): Promise<IDocumentSnapshot> {
                     return getter(options);
@@ -137,54 +201,7 @@ export namespace CachedStore {
                                     onError?: (error: IFirestoreError) => void,
                                     onCompletion?: () => void): SnapshotUnsubscriber {
 
-                    // FIXME: we can have a createSnapshotHandler to share the logic here...
-
-                    let hasServerSnapshot = false;
-
-                    function handleReadCachedSnapshot(snapshot: IDocumentSnapshot | undefined) {
-
-                        if (hasServerSnapshot) {
-                            // we might receive the server snapshot first so
-                            // have to be careful there.
-                            return;
-                        }
-
-                        if (snapshot) {
-                            onNext(snapshot);
-                        }
-
-                    }
-
-                    function handleCacheError(err: Error) {
-
-                        if (onError) {
-
-                            onError({
-                                code: 'internal',
-                                message: err.message,
-                                name: err.name,
-                                stack: err.stack
-                            })
-
-                        }
-                    }
-
-                    readFromCache()
-                        .then(snapshot => handleReadCachedSnapshot(snapshot))
-                        .catch(handleCacheError)
-
-                    function handleNext(snapshot: IDocumentSnapshot) {
-
-                        hasServerSnapshot = true;
-
-                        writeToCache(snapshot)
-                            .catch(handleCacheError);
-
-                        onNext(snapshot);
-
-                    }
-
-                    return _doc.onSnapshot(options, handleNext, onError, onCompletion);
+                    return snapshotter(options, onNext, onError, onCompletion);
 
                 }
 
@@ -200,6 +217,7 @@ export namespace CachedStore {
             class Query implements IQuery {
 
                 private readonly getter: GetHandler<IQuerySnapshot>;
+                private readonly snapshotter: SnapshotHandler<IQuerySnapshot>;
 
                 constructor(private readonly _query: IQuery,
                             private readonly _collection: ICollectionReference) {
@@ -207,6 +225,10 @@ export namespace CachedStore {
                     this.getter = createGetHandler<IQuerySnapshot>(() => this.readFromCache(),
                                                                    value => this.writeToCache(value),
                                                                    (options) => this._query.get(options));
+
+                    this.snapshotter = createSnapshotHandler<IQuerySnapshot>(() => this.readFromCache(),
+                                                                             value => this.writeToCache(value),
+                                                                             (options, onNext, onError, onCompletion) => this._query.onSnapshot(options, onNext, onError, onCompletion));
 
                 }
 
@@ -239,54 +261,12 @@ export namespace CachedStore {
                     return this.getter(options);
                 }
 
-                onSnapshot(options: ISnapshotListenOptions, onNext: (snapshot: IQuerySnapshot) => void, onError?: (error: IFirestoreError) => void, onCompletion?: () => void): SnapshotUnsubscriber {
+                onSnapshot(options: ISnapshotListenOptions,
+                           onNext: (snapshot: IQuerySnapshot) => void,
+                           onError?: (error: IFirestoreError) => void,
+                           onCompletion?: () => void): SnapshotUnsubscriber {
 
-                    let hasServerSnapshot = false;
-
-                    const handleReadCachedSnapshot = (snapshot: IQuerySnapshot | undefined) => {
-
-                        if (hasServerSnapshot) {
-                            // we might receive the server snapshot first so
-                            // have to be careful there.
-                            return;
-                        }
-
-                        if (snapshot) {
-                            onNext(snapshot);
-                        }
-
-                    }
-
-                    this.readFromCache()
-                        .then(snapshot => handleReadCachedSnapshot(snapshot))
-                        .catch(handleCacheError)
-
-                    function handleCacheError(err: Error) {
-
-                        if (onError) {
-
-                            onError({
-                                code: 'internal',
-                                message: err.message,
-                                name: err.name,
-                                stack: err.stack
-                            })
-
-                        }
-                    }
-
-                    const handleNext = (snapshot: IQuerySnapshot) => {
-
-                        hasServerSnapshot = true;
-
-                        this.writeToCache(snapshot)
-                            .catch(handleCacheError);
-
-                        onNext(snapshot);
-
-                    }
-
-                    return this._query.onSnapshot(options, handleNext, onError, onCompletion);
+                    return this.snapshotter(options, onNext, onError, onCompletion);
 
                 }
 
