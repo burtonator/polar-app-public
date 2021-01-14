@@ -1,4 +1,4 @@
-import { ISnapshotCachedDoc } from "./ISnapshotCachedDoc";
+import { ICachedDoc } from "./ICachedDoc";
 import { ISnapshotCachedQuery } from "./ISnapshotCachedQuery";
 
 export interface SnapshotCacheProvider {
@@ -6,9 +6,9 @@ export interface SnapshotCacheProvider {
     /**
      * Write to the cache.
      */
-    readonly writeDoc: (key: string, value: ISnapshotCachedDoc) => Promise<void>;
+    readonly writeDoc: (key: string, value: ICachedDoc) => Promise<void>;
 
-    readonly readDoc: (key: string) => Promise<ISnapshotCachedDoc | undefined>;
+    readonly readDoc: (key: string) => Promise<ICachedDoc | undefined>;
 
     readonly writeQuery: (key: string, value: ISnapshotCachedQuery) => Promise<void>;
 

@@ -1,6 +1,6 @@
 import {TDocumentData} from "./store/TDocumentData";
 
-export interface ISnapshotCachedDoc {
+export interface ICachedDoc {
 
     /**
      * false if this value is cached as a negative entry.  This can be used to

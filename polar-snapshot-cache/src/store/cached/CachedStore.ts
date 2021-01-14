@@ -7,7 +7,7 @@ import {IDocumentReference} from "../IDocumentReference";
 import {IGetOptions} from "../IGetOptions";
 import {TDocumentData} from "../TDocumentData";
 import {IDocumentSnapshot} from "../IDocumentSnapshot";
-import {ISnapshotCachedDoc} from "../../ISnapshotCachedDoc";
+import {ICachedDoc} from "../../ICachedDoc";
 import {IFirestoreError} from "../IFirestoreError";
 import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
 import {IQuery, SnapshotUnsubscriber} from "../IQuery";
@@ -159,7 +159,7 @@ export namespace CachedStore {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
 
-                    const cacheData: ISnapshotCachedDoc | undefined = await snapshotCacheProvider.readDoc(cacheKey);
+                    const cacheData: ICachedDoc | undefined = await snapshotCacheProvider.readDoc(cacheKey);
 
                     if (cacheData) {
                         return {

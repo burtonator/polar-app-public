@@ -1,6 +1,6 @@
 import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
 import {SnapshotCaches} from "./SnapshotCaches";
-import {ISnapshotCachedDoc} from "./ISnapshotCachedDoc";
+import {ICachedDoc} from "./ICachedDoc";
 import {ISnapshotCachedQuery} from "./ISnapshotCachedQuery";
 
 export namespace SnapshotCacheProviders {
@@ -26,11 +26,11 @@ export namespace SnapshotCacheProviders {
             // noop
         }
 
-        async function writeDoc(key: string, value: ISnapshotCachedDoc) {
+        async function writeDoc(key: string, value: ICachedDoc) {
             // noop
         }
 
-        async function readDoc(key: string): Promise<ISnapshotCachedDoc | undefined> {
+        async function readDoc(key: string): Promise<ICachedDoc | undefined> {
             return undefined;
         }
 
@@ -78,11 +78,11 @@ export namespace SnapshotCacheProviders {
             return JSON.parse(item);
 
         }
-        async function writeDoc(key: string, value: ISnapshotCachedDoc) {
+        async function writeDoc(key: string, value: ICachedDoc) {
             await write(key, value);
         }
 
-        async function readDoc(key: string): Promise<ISnapshotCachedDoc | undefined> {
+        async function readDoc(key: string): Promise<ICachedDoc | undefined> {
             return await read(key);
         }
 
