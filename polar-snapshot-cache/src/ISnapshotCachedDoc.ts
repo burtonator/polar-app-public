@@ -6,6 +6,6 @@ export interface ISnapshotCachedDoc<V> {
      */
     readonly exists: boolean;
 
-    readonly value: V | undefined;
+    readonly doc: V | undefined;
 
 }

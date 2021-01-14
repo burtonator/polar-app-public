@@ -42,7 +42,7 @@ export namespace CachedStore {
                                 fromCache: true
                             },
                             exists: cacheData.exists,
-                            data: () => cacheData.value
+                            data: () => cacheData.doc
                         }
                     }
 
@@ -55,7 +55,7 @@ export namespace CachedStore {
 
                     await snapshotCacheProvider.writeDoc(cacheKey, {
                         exists: snapshot.exists,
-                        value: snapshot.data()
+                        doc: snapshot.data()
                     });
 
                 }
