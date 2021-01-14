@@ -1,5 +1,5 @@
 import {IStore} from "../IStore";
-import {SnapshotCacheProvider} from "../../SnapshotCacheProvider";
+import {CacheProvider} from "../../CacheProvider";
 import {ICacheKeyCalculator} from "../../ICacheKeyCalculator";
 import {ICollectionReference, TWhereFilterOp} from "../ICollectionReference";
 import {IWriteBatch} from "../IWriteBatch";
@@ -144,7 +144,7 @@ export namespace CachedStore {
     }
 
     export function create(delegate: IStore,
-                           snapshotCacheProvider: SnapshotCacheProvider,
+                           snapshotCacheProvider: CacheProvider,
                            cacheKeyCalculator: ICacheKeyCalculator): IStore {
 
         function collection(collectionName: string): ICollectionReference {

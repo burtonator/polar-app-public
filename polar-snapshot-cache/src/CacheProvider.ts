@@ -1,7 +1,7 @@
 import { ICachedDoc } from "./ICachedDoc";
 import { ISnapshotCachedQuery } from "./ISnapshotCachedQuery";
 
-export interface SnapshotCacheProvider {
+export interface CacheProvider {
 
     /**
      * Write to the cache.

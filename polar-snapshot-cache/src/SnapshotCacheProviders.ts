@@ -1,4 +1,4 @@
-import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
+import {CacheProvider} from "./CacheProvider";
 import {SnapshotCaches} from "./SnapshotCaches";
 import {ICachedDoc} from "./ICachedDoc";
 import {ISnapshotCachedQuery} from "./ISnapshotCachedQuery";
@@ -7,7 +7,7 @@ export namespace SnapshotCacheProviders {
 
     import SnapshotBacking = SnapshotCaches.SnapshotBacking;
 
-    export function create(backing: SnapshotBacking): SnapshotCacheProvider {
+    export function create(backing: SnapshotBacking): CacheProvider {
 
         switch (backing) {
 
@@ -20,7 +20,7 @@ export namespace SnapshotCacheProviders {
 
     }
 
-    function createNullSnapshotCacheProvider(): SnapshotCacheProvider {
+    function createNullSnapshotCacheProvider(): CacheProvider {
 
         async function purge() {
             // noop
@@ -52,7 +52,7 @@ export namespace SnapshotCacheProviders {
 
     }
 
-    function createLocalStorageSnapshotCacheProvider(): SnapshotCacheProvider {
+    function createLocalStorageSnapshotCacheProvider(): CacheProvider {
 
         const prefix = 'snapshot-cache:';
 

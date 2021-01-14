@@ -1,5 +1,5 @@
 import {SnapshotCacheProviders} from "./SnapshotCacheProviders";
-import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
+import {CacheProvider} from "./CacheProvider";
 import {IStore} from "./store/IStore";
 import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
 import { CacheKeyCalculators } from "./CacheKeyCalculators";
@@ -26,7 +26,7 @@ export namespace SnapshotCaches {
         backing: 'none'
     };
 
-    let cacheProvider: SnapshotCacheProvider = SnapshotCacheProviders.create('none');
+    let cacheProvider: CacheProvider = SnapshotCacheProviders.create('none');
 
     /**
      * Purge all data in the snapshot cache using the current configuration
