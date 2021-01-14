@@ -1,7 +1,7 @@
 import {CacheProvider} from "./CacheProvider";
 import {SnapshotCaches} from "./SnapshotCaches";
 import {ICachedDoc} from "./ICachedDoc";
-import {ISnapshotCachedQuery} from "./ISnapshotCachedQuery";
+import {ICachedQuery} from "./ICachedQuery";
 
 export namespace SnapshotCacheProviders {
 
@@ -34,11 +34,11 @@ export namespace SnapshotCacheProviders {
             return undefined;
         }
 
-        async function writeQuery(key: string, value: ISnapshotCachedQuery) {
+        async function writeQuery(key: string, value: ICachedQuery) {
             // noop
         }
 
-        async function readQuery(key: string): Promise<ISnapshotCachedQuery | undefined> {
+        async function readQuery(key: string): Promise<ICachedQuery | undefined> {
             return undefined;
         }
 
@@ -87,11 +87,11 @@ export namespace SnapshotCacheProviders {
         }
 
 
-        async function writeQuery(key: string, value: ISnapshotCachedQuery) {
+        async function writeQuery(key: string, value: ICachedQuery) {
             await write(key, value);
         }
 
-        async function readQuery(key: string): Promise<ISnapshotCachedQuery | undefined> {
+        async function readQuery(key: string): Promise<ICachedQuery | undefined> {
             return await read(key);
         }
 

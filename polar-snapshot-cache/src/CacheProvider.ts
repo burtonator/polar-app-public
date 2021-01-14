@@ -1,5 +1,5 @@
 import { ICachedDoc } from "./ICachedDoc";
-import { ISnapshotCachedQuery } from "./ISnapshotCachedQuery";
+import { ICachedQuery } from "./ICachedQuery";
 
 export interface CacheProvider {
 
@@ -10,9 +10,9 @@ export interface CacheProvider {
 
     readonly readDoc: (key: string) => Promise<ICachedDoc | undefined>;
 
-    readonly writeQuery: (key: string, value: ISnapshotCachedQuery) => Promise<void>;
+    readonly writeQuery: (key: string, value: ICachedQuery) => Promise<void>;
 
-    readonly readQuery: (key: string) => Promise<ISnapshotCachedQuery | undefined>;
+    readonly readQuery: (key: string) => Promise<ICachedQuery | undefined>;
 
     readonly purge: () => Promise<void>;
 

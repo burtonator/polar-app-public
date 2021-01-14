@@ -1,12 +1,12 @@
 import {IQuerySnapshot} from "./store/IQuerySnapshot";
-import {ISnapshotCachedQuery} from "./ISnapshotCachedQuery";
+import {ICachedQuery} from "./ICachedQuery";
 import {ISnapshotCacheQueryDocument} from "./ISnapshotCacheQueryDocument";
 import {IQueryDocumentSnapshot} from "./store/IQueryDocumentSnapshot";
 import {IDocumentChange} from "./store/IDocumentChange";
 
 export namespace SnapshotCachedQueries {
 
-    export function toCache(snapshot: IQuerySnapshot): ISnapshotCachedQuery {
+    export function toCache(snapshot: IQuerySnapshot): ICachedQuery {
 
         const docs = snapshot.docs;
 
@@ -28,7 +28,7 @@ export namespace SnapshotCachedQueries {
 
     }
 
-    export function fromCache(snapshot: ISnapshotCachedQuery): IQuerySnapshot {
+    export function fromCache(snapshot: ICachedQuery): IQuerySnapshot {
 
         function toDoc(doc: ISnapshotCacheQueryDocument): IQueryDocumentSnapshot {
             return {

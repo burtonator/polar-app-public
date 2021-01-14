@@ -1,7 +1,7 @@
 import {ISnapshotCacheQueryDocument} from "./ISnapshotCacheQueryDocument";
 import {ISnapshotMetadata} from "./store/ISnapshotMetadata";
 
-export interface ISnapshotCachedQuery {
+export interface ICachedQuery {
 
     readonly empty: boolean;
 
