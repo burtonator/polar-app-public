@@ -2,18 +2,19 @@ import {IGetOptions} from "./IGetOptions";
 import {IQuerySnapshot} from "./IQuerySnapshot";
 import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
 import {IFirestoreError} from "./IFirestoreError";
+import {TWhereFilterOp} from "./ICollectionReference";
 
 export type SnapshotUnsubscriber = () => void;
 
 export interface IQuery {
 
-    readonly where: () => IQuery;
+    where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery;
 
-    readonly get: (options?: IGetOptions) => Promise<IQuerySnapshot>;
+    get(options?: IGetOptions): Promise<IQuerySnapshot>;
 
-    readonly onSnapshot: (options: ISnapshotListenOptions,
-                         onNext: (snapshot: IQuerySnapshot) => void,
-                         onError?: (error: IFirestoreError) => void,
-                         onCompletion?: () => void) => SnapshotUnsubscriber;
+    onSnapshot(options: ISnapshotListenOptions,
+               onNext: (snapshot: IQuerySnapshot) => void,
+               onError?: (error: IFirestoreError) => void,
+               onCompletion?: () => void): SnapshotUnsubscriber;
 
 }

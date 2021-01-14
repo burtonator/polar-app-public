@@ -1,6 +1,6 @@
 import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
 import {SnapshotCaches} from "./SnapshotCaches";
-import {ISnapshotCacheEntry} from "./ISnapshotCacheEntry";
+import {ISnapshotCachedDoc} from "./ISnapshotCachedDoc";
 
 export namespace SnapshotCacheProviders {
 
@@ -25,7 +25,7 @@ export namespace SnapshotCacheProviders {
             // noop
         }
 
-        async function write<V>(key: string, value: ISnapshotCacheEntry<V>) {
+        async function write<V>(key: string, value: ISnapshotCachedDoc<V>) {
             // noop
         }
 
@@ -33,11 +33,11 @@ export namespace SnapshotCacheProviders {
             // noop
         }
 
-        async function read<V>(key: string): Promise<ISnapshotCacheEntry<V> | undefined> {
+        async function read<V>(key: string): Promise<ISnapshotCachedDoc<V> | undefined> {
             return undefined;
         }
 
-        return {purge, write, remove, read};
+        return {purge, writeDoc: write, remove, readDoc: read};
 
     }
 
@@ -61,7 +61,7 @@ export namespace SnapshotCacheProviders {
             return prefix + key;
         }
 
-        async function write<V>(key: string, value: ISnapshotCacheEntry<V>) {
+        async function write<V>(key: string, value: ISnapshotCachedDoc<V>) {
             const cacheKey = createCacheKey(key);
             localStorage.setItem(cacheKey, JSON.stringify(value));
         }
@@ -72,7 +72,7 @@ export namespace SnapshotCacheProviders {
         }
 
 
-        async function read<V>(key: string): Promise<ISnapshotCacheEntry<V> | undefined> {
+        async function read<V>(key: string): Promise<ISnapshotCachedDoc<V> | undefined> {
 
             const cacheKey = createCacheKey(key);
             const item = localStorage.getItem(cacheKey);
@@ -85,7 +85,7 @@ export namespace SnapshotCacheProviders {
 
         }
 
-        return {purge, write, remove, read};
+        return {purge, writeDoc: write, remove, readDoc: read};
 
     }
 

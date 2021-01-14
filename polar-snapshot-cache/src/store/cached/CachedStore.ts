@@ -1,15 +1,18 @@
 import {IStore} from "../IStore";
 import {SnapshotCacheProvider} from "../../SnapshotCacheProvider";
 import {ICacheKeyCalculator} from "../../ICacheKeyCalculator";
-import {ICollectionReference} from "../ICollectionReference";
+import {ICollectionReference, TWhereFilterOp} from "../ICollectionReference";
 import {IWriteBatch} from "../IWriteBatch";
 import {IDocumentReference} from "../IDocumentReference";
 import {IGetOptions} from "../IGetOptions";
 import {TDocumentData} from "../TDocumentData";
 import {IDocumentSnapshot} from "../IDocumentSnapshot";
-import {ISnapshotCacheEntry} from "../../ISnapshotCacheEntry";
+import {ISnapshotCachedDoc} from "../../ISnapshotCachedDoc";
 import {IFirestoreError} from "../IFirestoreError";
 import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
+import {IQuery, SnapshotUnsubscriber} from "../IQuery";
+import {IQuerySnapshot} from "../IQuerySnapshot";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export namespace CachedStore {
 
@@ -25,41 +28,41 @@ export namespace CachedStore {
 
                 const _doc = _collection.doc(documentPath);
 
+                async function readFromCache(): Promise<IDocumentSnapshot | undefined> {
+
+                    const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
+
+                    const cacheData: ISnapshotCachedDoc<TDocumentData> | undefined = await snapshotCacheProvider.readDoc(cacheKey);
+
+                    if (cacheData) {
+                        return {
+                            id: _doc.id,
+                            metadata: {
+                                hasPendingWrites: false,
+                                fromCache: true
+                            },
+                            exists: cacheData.exists,
+                            data: () => cacheData.value
+                        }
+                    }
+
+                    return undefined;
+
+                }
+
+                async function writeToCache(snapshot: IDocumentSnapshot) {
+                    const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
+
+                    await snapshotCacheProvider.writeDoc(cacheKey, {
+                        exists: snapshot.exists,
+                        value: snapshot.data()
+                    });
+
+                }
+
                 async function get(options?: IGetOptions): Promise<IDocumentSnapshot> {
 
                     const source = options?.source || 'default';
-
-                    async function getFromCache(): Promise<IDocumentSnapshot | undefined> {
-
-                        const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
-
-                        const cacheData: ISnapshotCacheEntry<TDocumentData> | undefined = await snapshotCacheProvider.read(cacheKey);
-
-                        if (cacheData) {
-                            return {
-                                id: _doc.id,
-                                metadata: {
-                                    hasPendingWrites: false,
-                                    fromCache: true
-                                },
-                                exists: cacheData.exists,
-                                data: () => cacheData.value
-                            }
-                        }
-
-                        return undefined;
-
-                    }
-
-                    async function writeToCache(snapshot: IDocumentSnapshot) {
-                        const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
-
-                        await snapshotCacheProvider.write(cacheKey, {
-                            exists: snapshot.exists,
-                            value: snapshot.data()
-                        });
-
-                    }
 
                     async function handleSourceServer(): Promise<IDocumentSnapshot> {
 
@@ -72,7 +75,7 @@ export namespace CachedStore {
 
                     async function handleSourceCache(): Promise<IDocumentSnapshot> {
 
-                        const snapshot = await getFromCache();
+                        const snapshot = await readFromCache();
 
                         if (snapshot) {
                             return snapshot;
@@ -101,7 +104,6 @@ export namespace CachedStore {
 
                     }
 
-
                     switch (source) {
 
                         case "default":
@@ -115,36 +117,178 @@ export namespace CachedStore {
 
                 }
 
-                async function onSnapshot(options: ISnapshotListenOptions,
-                                          onNext: (snapshot: IDocumentSnapshot) => void,
-                                          onError?: (error: IFirestoreError) => void,
-                                          onCompletion?: () => void) {
+                function onSnapshot(options: ISnapshotListenOptions,
+                                    onNext: (snapshot: IDocumentSnapshot) => void,
+                                    onError?: (error: IFirestoreError) => void,
+                                    onCompletion?: () => void): SnapshotUnsubscriber {
 
+                    let hasServerSnapshot = false;
+
+                    function handleReadCachedSnapshot(snapshot: IDocumentSnapshot | undefined) {
+
+                        if (hasServerSnapshot) {
+                            // we might receive the server snapshot first so
+                            // have to be careful there.
+                            return;
+                        }
+
+                        if (snapshot) {
+                            onNext(snapshot);
+                        }
+
+                    }
+
+                    function handleCacheError(err: Error) {
+
+                        if (onError) {
+
+                            onError({
+                                code: 'internal',
+                                message: err.message,
+                                name: err.name,
+                                stack: err.stack
+                            })
+
+                        }
+                    }
+
+                    readFromCache()
+                        .then(snapshot => handleReadCachedSnapshot(snapshot))
+                        .catch(handleCacheError)
+
+                    function handleNext(snapshot: IDocumentSnapshot) {
+
+                        hasServerSnapshot = true;
+
+                        writeToCache(snapshot)
+                            .catch(handleCacheError);
+
+                        onNext(snapshot);
+
+                    }
+
+                    return _doc.onSnapshot(options, handleNext, onError, onCompletion);
+
+                }
+
+                return {
+                    parent: _doc.parent,
+                    id: _doc.id,
+                    get,
+                    onSnapshot
+                }
+
+            }
+
+            class Query implements IQuery {
+
+                constructor(private readonly _query: IQuery) {
+                }
+
+                where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery {
+                    this._query.where(fieldPath, opStr, value);
+                    return this;
+                }
+
+                async get(options?: IGetOptions): Promise<IQuerySnapshot> {
+
+                    // FIXME: we need new cache primitives or queries
+
+                    // FIXME
+                    return null!;
 
 
                 }
 
-                // return {
-                //     parent: _doc.parent,
-                //     id: _doc.id,
-                //     get
-                // }
-
-                return null!;
+                onSnapshot(options: ISnapshotListenOptions, onNext: (snapshot: IQuerySnapshot) => void, onError?: (error: IFirestoreError) => void, onCompletion?: () => void): SnapshotUnsubscriber {
+                    // FIXME: we need new cache primitives or queries
+                    // FIXME
+                    return NULL_FUNCTION;
+                }
 
             }
 
-            // return {
-            //     id: _collection.id,
-            // }
 
-            return null!;
+            function where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery {
+                const _query = _collection.where(fieldPath, opStr, value);
+                const query = new Query(_query);
+                return query.where(fieldPath, opStr, value);
+            }
+
+            return {
+                id: _collection.id,
+                doc,
+                where
+            }
+
+        }
+
+        interface BatchDelete {
+            readonly type: 'delete';
+            readonly documentRef: IDocumentReference;
+        }
+
+        interface BatchSet {
+            readonly type: 'set';
+            readonly documentRef: IDocumentReference;
+            readonly data: TDocumentData;
+        }
+
+        type BatchOp = BatchDelete | BatchSet;
+
+        class Batch implements IWriteBatch {
+
+            private _batch = delegate.batch();
+
+            private ops: BatchOp[] = [];
+
+            delete(documentRef: IDocumentReference): IWriteBatch {
+                this.ops.push({type: 'delete', documentRef});
+                this._batch.delete(documentRef);
+                return this;
+            }
+
+            set<T>(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
+                this.ops.push({type: 'set', documentRef, data});
+                this._batch.set(documentRef, data);
+                return this;
+            }
+
+            async commit(): Promise<void> {
+
+                const handleCacheMutation = async () => {
+
+                    // TODO: when we migrate to idb do this as a transaction.
+
+                    // apply the operations in the order called by the user
+                    for (const op of this.ops) {
+
+                        switch (op.type) {
+
+                            // FIXME: this has to be implemented...
+
+
+                            case "delete":
+                                break;
+                            case "set":
+                                break;
+
+                        }
+
+                    }
+
+                }
+
+                await handleCacheMutation();
+
+                await this._batch.commit();
+
+            }
 
         }
 
         function batch(): IWriteBatch {
-
-            return null!;
+            return new Batch();
         }
 
         return {collection, batch};
