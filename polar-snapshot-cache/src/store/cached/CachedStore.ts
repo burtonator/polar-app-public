@@ -32,7 +32,7 @@ export namespace CachedStore {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
 
-                    const cacheData: ISnapshotCachedDoc<TDocumentData> | undefined = await snapshotCacheProvider.readDoc(cacheKey);
+                    const cacheData: ISnapshotCachedDoc | undefined = await snapshotCacheProvider.readDoc(cacheKey);
 
                     if (cacheData) {
                         return {
@@ -42,7 +42,7 @@ export namespace CachedStore {
                                 fromCache: true
                             },
                             exists: cacheData.exists,
-                            data: () => cacheData.doc
+                            data: () => cacheData.data
                         }
                     }
 
@@ -55,7 +55,7 @@ export namespace CachedStore {
 
                     await snapshotCacheProvider.writeDoc(cacheKey, {
                         exists: snapshot.exists,
-                        doc: snapshot.data()
+                        data: snapshot.data()
                     });
 
                 }

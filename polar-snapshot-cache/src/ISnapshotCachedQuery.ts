@@ -1,14 +1,14 @@
-import {IQueryDocumentSnapshot} from "./store/IQueryDocumentSnapshot";
+import {ISnapshotCacheQueryDocument} from "./ISnapshotCacheQueryDocument";
+import {ISnapshotMetadata} from "./store/ISnapshotMetadata";
 
-export interface ISnapshotCachedQuery<V> {
+export interface ISnapshotCachedQuery {
 
-    /**
-     * false if this value is cached as a negative entry.  This can be used to
-     * listen to snapshot values which don't exist.
-     */
-    readonly exists: boolean;
+    readonly empty: boolean;
 
-    // FIXME this is confusing because there are too many nested structures here...
-    readonly doc: ReadonlyArray<IQueryDocumentSnapshot> | undefined;
+    readonly size: number;
+
+    readonly metadata: ISnapshotMetadata;
+
+    readonly docs: ReadonlyArray<ISnapshotCacheQueryDocument>;
 
 }

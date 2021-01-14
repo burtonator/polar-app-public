@@ -1,4 +1,6 @@
-export interface ISnapshotCachedDoc<V> {
+import {TDocumentData} from "./store/TDocumentData";
+
+export interface ISnapshotCachedDoc {
 
     /**
      * false if this value is cached as a negative entry.  This can be used to
@@ -6,6 +8,6 @@ export interface ISnapshotCachedDoc<V> {
      */
     readonly exists: boolean;
 
-    readonly doc: V | undefined;
+    readonly data: TDocumentData | undefined;
 
 }
