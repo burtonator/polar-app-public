@@ -1,4 +1,5 @@
-import {IDocumentData} from "./IDocumentData";
+
+export type TDocumentData = { [field: string]: any };
 
 export interface IDocumentSnapshot {
 
@@ -16,7 +17,7 @@ export interface IDocumentSnapshot {
     /**
      * Read the data from this snapshot.
      */
-    readonly data: () => IDocumentData | undefined;
+    readonly data: () => TDocumentData | undefined;
 
 }
 
