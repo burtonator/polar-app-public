@@ -196,6 +196,36 @@ export namespace CachedStore {
                     return getter(options);
                 }
 
+                async function set(data: TDocumentData) {
+
+                    await writeToCache({
+                        exists: true,
+                        id: _doc.id,
+                        metadata: {
+                            hasPendingWrites: false,
+                            fromCache: true,
+                        },
+                        data: () => data
+                    });
+
+                    return _doc.set(data);
+
+                }
+
+                async function _delete() {
+
+                    await writeToCache({
+                        exists: false,
+                        id: _doc.id,
+                        metadata: {
+                            hasPendingWrites: false,
+                            fromCache: true,
+                        },
+                        data: () => undefined
+                    });
+
+                }
+
                 function onSnapshot(options: ISnapshotListenOptions,
                                     onNext: (snapshot: IDocumentSnapshot) => void,
                                     onError?: (error: IFirestoreError) => void,
@@ -209,6 +239,8 @@ export namespace CachedStore {
                     parent: _doc.parent,
                     id: _doc.id,
                     get,
+                    set,
+                    delete: _delete,
                     onSnapshot
                 }
 

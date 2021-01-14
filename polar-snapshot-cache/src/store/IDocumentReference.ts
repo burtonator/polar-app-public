@@ -4,6 +4,7 @@ import {ICollectionReference} from "./ICollectionReference";
 import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
 import {SnapshotUnsubscriber} from "./IQuery";
 import {IFirestoreError} from "./IFirestoreError";
+import {TDocumentData} from "./TDocumentData";
 
 /**
  * A `DocumentReference` refers to a document location in a Firestore database
@@ -20,7 +21,9 @@ export interface IDocumentReference {
 
     readonly id: string;
 
-    readonly get: (options?: IGetOptions) => Promise<IDocumentSnapshot>;
+    get(options?: IGetOptions): Promise<IDocumentSnapshot>;
+    set(data: TDocumentData): Promise<void>;
+    delete(): Promise<void>;
 
     onSnapshot(
         options: ISnapshotListenOptions,
