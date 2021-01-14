@@ -43,7 +43,7 @@ export namespace SnapshotCaches {
     }
 
     export interface IStoreBuilder {
-        readonly withGenericSnapshotCacheKey: (collectionName: string, snapshotCacheKey: string) => IStoreBuilder;
+        readonly withGenericSnapshotCacheKey: (snapshotCacheKey: string) => IStoreBuilder;
         readonly build: (delegate: IStore) => Promise<IStore>;
     }
 
@@ -51,8 +51,8 @@ export namespace SnapshotCaches {
 
         let cacheKeyCalculator: ICacheKeyCalculator | undefined;
 
-        function withGenericSnapshotCacheKey(collectionName: string, snapshotCacheKey: string) {
-            cacheKeyCalculator = CacheKeyCalculators.createGeneric(collectionName, snapshotCacheKey)
+        function withGenericSnapshotCacheKey(snapshotCacheKey: string) {
+            cacheKeyCalculator = CacheKeyCalculators.createGeneric(snapshotCacheKey)
             return this;
         }
 

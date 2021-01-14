@@ -10,14 +10,14 @@ export namespace CacheKeyCalculators {
      *
      * We should
      */
-    export function createGeneric(collectionName: string, snapshotCacheKey: string): ICacheKeyCalculator {
+    export function createGeneric(snapshotCacheKey: string): ICacheKeyCalculator {
 
-        function computeForDoc(documentSnapshot: IDocumentSnapshot): string {
+        function computeForDoc(collectionName: string, documentSnapshot: IDocumentSnapshot): string {
             return collectionName + ':' + documentSnapshot.id;
         }
 
-        function computeForSnapshot(): string {
-            return snapshotCacheKey;
+        function computeForSnapshot(collectionName: string): string {
+            return collectionName + ':' + snapshotCacheKey;
         }
 
         return {computeForDoc, computeForSnapshot};

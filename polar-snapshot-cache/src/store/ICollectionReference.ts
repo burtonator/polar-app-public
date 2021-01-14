@@ -16,6 +16,9 @@ export type TWhereFilterOp =
 
 export interface ICollectionReference {
 
+    /** The collection's identifier. */
+    readonly id: string;
+
     readonly doc: (documentPath?: string) => IDocumentReference;
 
     readonly where: (fieldPath: string, opStr: TWhereFilterOp, value: any) => IQuery;
