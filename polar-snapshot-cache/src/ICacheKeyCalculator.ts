@@ -13,6 +13,6 @@ export interface ICacheKeyCalculator {
      * snapshot key for each type of snapshot query so that they aren't
      * intermingled.
      */
-    readonly computeForSnapshot: (collectionName: string) => string;
+    readonly computeForQuery: (collectionName: string) => string;
 
 }

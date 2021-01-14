@@ -21,9 +21,8 @@ export namespace CacheKeyCalculators {
             return collectionName + ':' + snapshotCacheKey;
         }
 
-        return {computeForDoc, computeForSnapshot};
+        return {computeForDoc, computeForQuery: computeForSnapshot};
 
     }
-
 
 }
