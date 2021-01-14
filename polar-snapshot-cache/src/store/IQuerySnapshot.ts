@@ -4,9 +4,13 @@ import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
 import { IDocumentChange } from "./IDocumentChange";
 
 export interface IQuerySnapshot {
+
     readonly empty: boolean;
+
     readonly size: number;
+
     readonly metadata: ISnapshotMetadata;
+
     readonly docs: ReadonlyArray<IQueryDocumentSnapshot>;
 
     /**
