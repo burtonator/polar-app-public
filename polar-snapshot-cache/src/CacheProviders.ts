@@ -3,7 +3,7 @@ import {SnapshotCaches} from "./SnapshotCaches";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQuery} from "./ICachedQuery";
 
-export namespace SnapshotCacheProviders {
+export namespace CacheProviders {
 
     import SnapshotBacking = SnapshotCaches.SnapshotBacking;
 

@@ -1,4 +1,4 @@
-import {SnapshotCacheProviders} from "./SnapshotCacheProviders";
+import {CacheProviders} from "./CacheProviders";
 import {CacheProvider} from "./CacheProvider";
 import {IStore} from "./store/IStore";
 import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
@@ -26,7 +26,7 @@ export namespace SnapshotCaches {
         backing: 'none'
     };
 
-    let cacheProvider: CacheProvider = SnapshotCacheProviders.create('none');
+    let cacheProvider: CacheProvider = CacheProviders.create('none');
 
     /**
      * Purge all data in the snapshot cache using the current configuration
@@ -40,7 +40,7 @@ export namespace SnapshotCaches {
      */
     export function configure(newConfig: SnapshotCacheConfig) {
         config = newConfig;
-        cacheProvider = SnapshotCacheProviders.create(config.backing);
+        cacheProvider = CacheProviders.create(config.backing);
     }
 
     export interface IStoreBuilder {
