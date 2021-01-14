@@ -210,6 +210,11 @@ export namespace CachedStore {
 
 
             function where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery {
+
+                // FIXME: we can use the where clause and the collection to
+                // build a cache key so it doesn't need to be specified which
+                // would then make firestore a more general cache for us.
+
                 const _query = _collection.where(fieldPath, opStr, value);
                 const query = new Query(_query);
                 return query.where(fieldPath, opStr, value);
