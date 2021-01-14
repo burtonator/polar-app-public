@@ -27,7 +27,7 @@ export interface IDocumentReference {
         onNext: (snapshot: IDocumentSnapshot) => void,
         onError?: (error: IFirestoreError) => void,
         onCompletion?: () => void
-    ): () => void;
+    ): SnapshotUnsubscriber;
 
     // onSnapshot(observer: {
     //     next?: (snapshot: IDocumentSnapshot) => void;

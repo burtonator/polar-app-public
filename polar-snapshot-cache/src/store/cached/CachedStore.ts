@@ -9,6 +9,7 @@ import {TDocumentData} from "../TDocumentData";
 import {IDocumentSnapshot} from "../IDocumentSnapshot";
 import {ISnapshotCacheEntry} from "../../ISnapshotCacheEntry";
 import {IFirestoreError} from "../IFirestoreError";
+import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
 
 export namespace CachedStore {
 
@@ -111,6 +112,15 @@ export namespace CachedStore {
                             return await handleSourceCache();
 
                     }
+
+                }
+
+                async function onSnapshot(options: ISnapshotListenOptions,
+                                          onNext: (snapshot: IDocumentSnapshot) => void,
+                                          onError?: (error: IFirestoreError) => void,
+                                          onCompletion?: () => void) {
+
+
 
                 }
 
