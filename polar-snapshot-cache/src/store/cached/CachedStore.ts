@@ -268,14 +268,26 @@ export namespace CachedStore {
                     // apply the operations in the order called by the user
                     for (const op of this.ops) {
 
+                        const cacheKey = cacheKeyCalculator.computeForDoc(op.documentRef.parent.id, op.documentRef);
+
                         switch (op.type) {
 
-                            // FIXME: this has to be implemented...
-
                             case "delete":
+
+                                await snapshotCacheProvider.writeDoc(cacheKey, {
+                                    exists: false,
+                                    data: undefined
+                                });
+
                                 break;
 
                             case "set":
+
+                                await snapshotCacheProvider.writeDoc(cacheKey, {
+                                    exists: true,
+                                    data: op.data
+                                });
+
                                 break;
 
                         }
