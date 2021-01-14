@@ -12,7 +12,7 @@ import {IFirestoreError} from "../IFirestoreError";
 import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
 import {IQuery, SnapshotUnsubscriber} from "../IQuery";
 import {IQuerySnapshot} from "../IQuerySnapshot";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {SnapshotCachedQueries} from "../../SnapshotCachedQueries";
 
 export namespace CachedStore {
 
@@ -182,8 +182,29 @@ export namespace CachedStore {
 
             class Query implements IQuery {
 
-                constructor(private readonly _query: IQuery) {
+                constructor(private readonly _query: IQuery,
+                            private readonly _collection: ICollectionReference) {
                 }
+
+                private async readFromCache(): Promise<IQuerySnapshot | undefined> {
+
+                    const cacheKey = cacheKeyCalculator.computeForQuery(this._collection.id);
+
+                    const cacheData = await snapshotCacheProvider.readQuery(cacheKey);
+
+                    if (cacheData) {
+                        return SnapshotCachedQueries.fromCache(cacheData);
+                    }
+
+                    return undefined;
+
+                }
+
+                private async writeToCache(snapshot: IQuerySnapshot) {
+                    const cacheKey = cacheKeyCalculator.computeForQuery(this._collection.id);
+                    await snapshotCacheProvider.writeQuery(cacheKey, SnapshotCachedQueries.toCache(snapshot));
+                }
+
 
                 where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery {
                     this._query.where(fieldPath, opStr, value);
@@ -201,9 +222,54 @@ export namespace CachedStore {
                 }
 
                 onSnapshot(options: ISnapshotListenOptions, onNext: (snapshot: IQuerySnapshot) => void, onError?: (error: IFirestoreError) => void, onCompletion?: () => void): SnapshotUnsubscriber {
-                    // FIXME: we need new cache primitives or queries
-                    // FIXME
-                    return NULL_FUNCTION;
+
+                    let hasServerSnapshot = false;
+
+                    const handleReadCachedSnapshot = (snapshot: IQuerySnapshot | undefined) => {
+
+                        if (hasServerSnapshot) {
+                            // we might receive the server snapshot first so
+                            // have to be careful there.
+                            return;
+                        }
+
+                        if (snapshot) {
+                            onNext(snapshot);
+                        }
+
+                    }
+
+                    this.readFromCache()
+                        .then(snapshot => handleReadCachedSnapshot(snapshot))
+                        .catch(handleCacheError)
+
+                    function handleCacheError(err: Error) {
+
+                        if (onError) {
+
+                            onError({
+                                code: 'internal',
+                                message: err.message,
+                                name: err.name,
+                                stack: err.stack
+                            })
+
+                        }
+                    }
+
+                    const handleNext = (snapshot: IQuerySnapshot) => {
+
+                        hasServerSnapshot = true;
+
+                        this.writeToCache(snapshot)
+                            .catch(handleCacheError);
+
+                        onNext(snapshot);
+
+                    }
+
+                    return this._query.onSnapshot(options, handleNext, onError, onCompletion);
+
                 }
 
             }
@@ -216,7 +282,7 @@ export namespace CachedStore {
                 // would then make firestore a more general cache for us.
 
                 const _query = _collection.where(fieldPath, opStr, value);
-                const query = new Query(_query);
+                const query = new Query(_query, _collection);
                 return query.where(fieldPath, opStr, value);
             }
 
