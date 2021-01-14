@@ -1,7 +1,7 @@
 import {ISnapshotMetadata} from "./store/ISnapshotMetadata";
 import {TDocumentData} from "./store/TDocumentData";
 
-export interface ISnapshotCacheQueryDocument {
+export interface ICacheQueryDocument {
 
 
     /**

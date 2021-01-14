@@ -1,4 +1,4 @@
-import {ISnapshotCacheQueryDocument} from "./ISnapshotCacheQueryDocument";
+import {ICacheQueryDocument} from "./ICacheQueryDocument";
 import {ISnapshotMetadata} from "./store/ISnapshotMetadata";
 
 export interface ICachedQuery {
@@ -9,6 +9,6 @@ export interface ICachedQuery {
 
     readonly metadata: ISnapshotMetadata;
 
-    readonly docs: ReadonlyArray<ISnapshotCacheQueryDocument>;
+    readonly docs: ReadonlyArray<ICacheQueryDocument>;
 
 }
