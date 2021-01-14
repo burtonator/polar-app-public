@@ -16,6 +16,72 @@ import {SnapshotCachedQueries} from "../../SnapshotCachedQueries";
 
 export namespace CachedStore {
 
+    type GetHandler<V> = (options?: IGetOptions) => Promise<V>;
+
+    function createGetHandler<V>(readFromCache: () => Promise<V | undefined>,
+                                 writeToCache: (value: V) => Promise<void>,
+                                 delegate: (options?: IGetOptions) => Promise<V>): GetHandler<V> {
+
+        return async (options?: IGetOptions): Promise<V> => {
+
+            const source = options?.source || 'default';
+
+            async function handleSourceServer(): Promise<V> {
+
+                const result = await delegate(options);
+                await writeToCache(result);
+
+                return result;
+
+            }
+
+            async function handleSourceCache(): Promise<V> {
+
+                const snapshot = await readFromCache();
+
+                if (snapshot) {
+                    return snapshot;
+                }
+
+                const err = new Error();
+
+                const error: IFirestoreError = {
+                    code: 'not-found',
+                    message: "Document not found in cache",
+                    name: err.name,
+                    stack: err.stack
+                }
+
+                throw error;
+
+            }
+
+            async function handleSourceDefault(): Promise<V> {
+
+                try {
+                    return await handleSourceServer();
+                } catch (e) {
+                    return await handleSourceCache();
+                }
+
+            }
+
+            switch (source) {
+
+                case "default":
+                    return await handleSourceDefault();
+                case "server":
+                    return await handleSourceServer();
+                case "cache":
+                    return await handleSourceCache();
+
+            }
+
+        }
+
+    }
+
+
     export function create(delegate: IStore,
                            snapshotCacheProvider: SnapshotCacheProvider,
                            cacheKeyCalculator: ICacheKeyCalculator): IStore {
@@ -60,67 +126,18 @@ export namespace CachedStore {
 
                 }
 
+                const getter = createGetHandler<IDocumentSnapshot>(readFromCache, writeToCache, (options) => _doc.get(options));
+
                 async function get(options?: IGetOptions): Promise<IDocumentSnapshot> {
-
-                    const source = options?.source || 'default';
-
-                    async function handleSourceServer(): Promise<IDocumentSnapshot> {
-
-                        const result = await _doc.get(options);
-                        await writeToCache(result);
-
-                        return result;
-
-                    }
-
-                    async function handleSourceCache(): Promise<IDocumentSnapshot> {
-
-                        const snapshot = await readFromCache();
-
-                        if (snapshot) {
-                            return snapshot;
-                        }
-
-                        const err = new Error();
-
-                        const error: IFirestoreError = {
-                            code: 'not-found',
-                            message: "Document not found in cache",
-                            name: err.name,
-                            stack: err.stack
-                        }
-
-                        throw error;
-
-                    }
-
-                    async function handleSourceDefault(): Promise<IDocumentSnapshot> {
-
-                        try {
-                            return await handleSourceServer();
-                        } catch (e) {
-                            return await handleSourceCache();
-                        }
-
-                    }
-
-                    switch (source) {
-
-                        case "default":
-                            return await handleSourceDefault();
-                        case "server":
-                            return await handleSourceServer();
-                        case "cache":
-                            return await handleSourceCache();
-
-                    }
-
+                    return getter(options);
                 }
 
                 function onSnapshot(options: ISnapshotListenOptions,
                                     onNext: (snapshot: IDocumentSnapshot) => void,
                                     onError?: (error: IFirestoreError) => void,
                                     onCompletion?: () => void): SnapshotUnsubscriber {
+
+                    // FIXME: we can have a createSnapshotHandler to share the logic here...
 
                     let hasServerSnapshot = false;
 
@@ -182,8 +199,15 @@ export namespace CachedStore {
 
             class Query implements IQuery {
 
+                private readonly getter: GetHandler<IQuerySnapshot>;
+
                 constructor(private readonly _query: IQuery,
                             private readonly _collection: ICollectionReference) {
+
+                    this.getter = createGetHandler<IQuerySnapshot>(() => this.readFromCache(),
+                                                                   value => this.writeToCache(value),
+                                                                   (options) => this._query.get(options));
+
                 }
 
                 private async readFromCache(): Promise<IQuerySnapshot | undefined> {
@@ -212,13 +236,7 @@ export namespace CachedStore {
                 }
 
                 async get(options?: IGetOptions): Promise<IQuerySnapshot> {
-
-                    // FIXME: we need new cache primitives or queries
-
-                    // FIXME
-                    return null!;
-
-
+                    return this.getter(options);
                 }
 
                 onSnapshot(options: ISnapshotListenOptions, onNext: (snapshot: IQuerySnapshot) => void, onError?: (error: IFirestoreError) => void, onCompletion?: () => void): SnapshotUnsubscriber {
