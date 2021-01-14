@@ -144,7 +144,7 @@ export namespace SaveToPolarHandler {
 
     export function register() {
 
-        chrome.runtime.onMessage.addListener((message, sender) => {
+        chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
             if (! message.type) {
                 console.warn("No message type: ", message)

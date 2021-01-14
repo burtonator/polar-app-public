@@ -1,6 +1,5 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ReadabilityCapture} from "../../capture/ReadabilityCapture";
 import {CaptureRoot} from "./CaptureRoot";
 import {MUIAppRoot} from 'polar-bookshelf/web/js/mui/MUIAppRoot';
 import ICapturedContent = ExtensionContentCapture.ICapturedEPUB;
