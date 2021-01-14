@@ -1,5 +1,4 @@
-
-export type TDocumentData = { [field: string]: any };
+import { TDocumentData } from "./TDocumentData";
 
 export interface IDocumentSnapshot {
 
