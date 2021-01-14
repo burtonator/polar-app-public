@@ -274,6 +274,7 @@ export namespace CachedStore {
 
                             case "delete":
                                 break;
+
                             case "set":
                                 break;
 

@@ -1,5 +1,6 @@
 import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
 import {IDocumentSnapshot} from "./store/IDocumentSnapshot";
+import {IDocumentReference} from "./store/IDocumentReference";
 
 export namespace CacheKeyCalculators {
 
@@ -12,7 +13,7 @@ export namespace CacheKeyCalculators {
      */
     export function createGeneric(snapshotCacheKey: string): ICacheKeyCalculator {
 
-        function computeForDoc(collectionName: string, documentSnapshot: IDocumentSnapshot): string {
+        function computeForDoc(collectionName: string, documentSnapshot: IDocumentSnapshot | IDocumentReference): string {
             return collectionName + ':' + documentSnapshot.id;
         }
 

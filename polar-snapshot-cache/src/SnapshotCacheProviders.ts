@@ -1,6 +1,7 @@
 import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
 import {SnapshotCaches} from "./SnapshotCaches";
 import {ISnapshotCachedDoc} from "./ISnapshotCachedDoc";
+import {ISnapshotCachedQuery} from "./ISnapshotCachedQuery";
 
 export namespace SnapshotCacheProviders {
 
@@ -25,25 +26,79 @@ export namespace SnapshotCacheProviders {
             // noop
         }
 
-        async function write<V>(key: string, value: ISnapshotCachedDoc<V>) {
+        async function writeDoc(key: string, value: ISnapshotCachedDoc) {
             // noop
         }
+
+        async function readDoc(key: string): Promise<ISnapshotCachedDoc | undefined> {
+            return undefined;
+        }
+
+        async function writeQuery(key: string, value: ISnapshotCachedQuery) {
+            // noop
+        }
+
+        async function readQuery(key: string): Promise<ISnapshotCachedQuery | undefined> {
+            return undefined;
+        }
+
 
         async function remove(key: string) {
             // noop
         }
 
-        async function read<V>(key: string): Promise<ISnapshotCachedDoc<V> | undefined> {
-            return undefined;
-        }
 
-        return {purge, writeDoc: write, remove, readDoc: read};
+        return {purge, writeDoc, remove, readDoc, writeQuery, readQuery};
 
     }
 
     function createLocalStorageSnapshotCacheProvider(): SnapshotCacheProvider {
 
         const prefix = 'snapshot-cache:';
+
+        function createCacheKey(key: string) {
+            return prefix + key;
+        }
+
+        async function write<V>(key: string, value: V) {
+            const cacheKey = createCacheKey(key);
+            localStorage.setItem(cacheKey, JSON.stringify(value));
+        }
+
+
+        async function read<V>(key: string): Promise<V | undefined> {
+
+            const cacheKey = createCacheKey(key);
+            const item = localStorage.getItem(cacheKey);
+
+            if (item === null) {
+                return undefined;
+            }
+
+            return JSON.parse(item);
+
+        }
+        async function writeDoc(key: string, value: ISnapshotCachedDoc) {
+            await write(key, value);
+        }
+
+        async function readDoc(key: string): Promise<ISnapshotCachedDoc | undefined> {
+            return await read(key);
+        }
+
+
+        async function writeQuery(key: string, value: ISnapshotCachedQuery) {
+            await write(key, value);
+        }
+
+        async function readQuery(key: string): Promise<ISnapshotCachedQuery | undefined> {
+            return await read(key);
+        }
+
+        async function remove(key: string) {
+            const cacheKey = createCacheKey(key);
+            localStorage.removeItem(cacheKey);
+        }
 
         async function purge() {
 
@@ -57,35 +112,7 @@ export namespace SnapshotCacheProviders {
 
         }
 
-        function createCacheKey(key: string) {
-            return prefix + key;
-        }
-
-        async function write<V>(key: string, value: ISnapshotCachedDoc<V>) {
-            const cacheKey = createCacheKey(key);
-            localStorage.setItem(cacheKey, JSON.stringify(value));
-        }
-
-        async function remove(key: string) {
-            const cacheKey = createCacheKey(key);
-            localStorage.removeItem(cacheKey);
-        }
-
-
-        async function read<V>(key: string): Promise<ISnapshotCachedDoc<V> | undefined> {
-
-            const cacheKey = createCacheKey(key);
-            const item = localStorage.getItem(cacheKey);
-
-            if (item === null) {
-                return undefined;
-            }
-
-            return JSON.parse(item);
-
-        }
-
-        return {purge, writeDoc: write, remove, readDoc: read};
+        return {purge, writeDoc, remove, readDoc, writeQuery, readQuery};
 
     }
 

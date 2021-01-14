@@ -1,8 +1,7 @@
 import { ISnapshotCachedDoc } from "./ISnapshotCachedDoc";
+import { ISnapshotCachedQuery } from "./ISnapshotCachedQuery";
 
 export interface SnapshotCacheProvider {
-
-    readonly purge: () => Promise<void>;
 
     /**
      * Write to the cache.
@@ -10,6 +9,12 @@ export interface SnapshotCacheProvider {
     readonly writeDoc: (key: string, value: ISnapshotCachedDoc) => Promise<void>;
 
     readonly readDoc: (key: string) => Promise<ISnapshotCachedDoc | undefined>;
+
+    readonly writeQuery: (key: string, value: ISnapshotCachedQuery) => Promise<void>;
+
+    readonly readQuery: (key: string) => Promise<ISnapshotCachedQuery | undefined>;
+
+    readonly purge: () => Promise<void>;
 
     /**
      * Remove an item from the cache.
