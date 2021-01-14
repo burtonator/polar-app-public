@@ -3,6 +3,7 @@ import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
 import {IStore} from "./store/IStore";
 import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
 import { CacheKeyCalculators } from "./CacheKeyCalculators";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 /**
  * The general design here is that we have a snapshot interface that mimics
@@ -57,6 +58,8 @@ export namespace SnapshotCaches {
         }
 
         async function build(delegate: IStore) {
+
+            Preconditions.assertPresent(delegate, 'delegate');
 
             switch (config.type) {
 

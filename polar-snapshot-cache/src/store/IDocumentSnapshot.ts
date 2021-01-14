@@ -1,3 +1,4 @@
+import { ISnapshotMetadata } from "./ISnapshotMetadata";
 import { TDocumentData } from "./TDocumentData";
 
 export interface IDocumentSnapshot {
@@ -12,6 +13,8 @@ export interface IDocumentSnapshot {
      * Property of the `DocumentSnapshot` that provides the document's ID.
      */
     readonly id: string;
+
+    readonly metadata: ISnapshotMetadata;
 
     /**
      * Read the data from this snapshot.
