@@ -1,6 +1,7 @@
 import {SnapshotCacheProviders} from "./SnapshotCacheProviders";
 import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
 import {ICollectionReference} from "./store/ICollectionReference";
+import {IStore} from "./store/IStore";
 
 /**
  * The general design here is that we have a snapshot interface that mimics
@@ -8,15 +9,19 @@ import {ICollectionReference} from "./store/ICollectionReference";
  *
  *
  */
-export namespace SnapshotCache {
+export namespace SnapshotCaches {
+
+    export type StoreType = 'direct';
 
     export type SnapshotBacking = 'none' | 'localStorage';
 
     export interface SnapshotCacheConfig {
+        readonly type: StoreType;
         readonly backing: SnapshotBacking;
     }
 
     let config: SnapshotCacheConfig = {
+        type: 'direct',
         backing: 'none'
     };
 
@@ -37,31 +42,15 @@ export namespace SnapshotCache {
         cacheProvider = SnapshotCacheProviders.create(config.backing);
     }
 
-    // FIXME: we need to CREATE a snapshotter , and it will internally have a
-    // key factory
+    export async function create(delegate: IStore): Promise<IStore> {
 
-    /**
-     * TODO:
-     *
-     * - we need a snapshot key factory that computes a snapshot for the ENTIRE
-     *   result set and one for each item
-     *
-     *  - use localStorage for a quick implementation and then IndexDB once we have
-     *    the general design working.
-     *
-     *  - audit the Firestore code to see which operations would use the key.
-     *
-     *      - I think they are just onSnapshot and doc().get()
-     *
-     */
-    export function onSnapshot() {
-        // noop for now
+        switch (config.type) {
+
+            case "direct":
+                return delegate;
+
+        }
+
     }
-
-    /**
-     * Generic collection factory which can be used for the REAL underlying
-     * storage layer (Firestore) or a mock one for our testing.
-     */
-    export type CollectionFactory = (collectionPath: string) => ICollectionReference;
 
 }

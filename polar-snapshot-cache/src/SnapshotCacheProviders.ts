@@ -1,9 +1,9 @@
 import {SnapshotCacheProvider} from "./SnapshotCacheProvider";
-import {SnapshotCache} from "./SnapshotCache";
+import {SnapshotCaches} from "./SnapshotCaches";
 
 export namespace SnapshotCacheProviders {
 
-    import SnapshotBacking = SnapshotCache.SnapshotBacking;
+    import SnapshotBacking = SnapshotCaches.SnapshotBacking;
 
     export function create(backing: SnapshotBacking): SnapshotCacheProvider {
 
