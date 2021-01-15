@@ -13,14 +13,14 @@ import {CachedStore} from "./store/cached/CachedStore";
  */
 export namespace StoreCaches {
 
-    export type SnapshotBacking = 'none' | 'localStorage';
+    export type SnapshotBacking = 'none' | 'localStorage' | 'IndexedDB';
 
     export interface SnapshotCacheConfig {
         readonly backing: SnapshotBacking;
     }
 
     let config: SnapshotCacheConfig = {
-        backing: 'localStorage'
+        backing: 'IndexedDB'
     };
 
     let cacheProvider: CacheProvider = CacheProviders.create('none');
@@ -64,8 +64,10 @@ export namespace StoreCaches {
                     return delegate;
 
                 case "localStorage":
-                    const localStorageCacheProvider = CacheProviders.create(config.backing)
-                    return CachedStore.create(delegate, localStorageCacheProvider, cacheKeyCalculator!);
+                    return CachedStore.create(delegate, CacheProviders.create(config.backing), cacheKeyCalculator!);
+
+                case "IndexedDB":
+                    return CachedStore.create(delegate, CacheProviders.create(config.backing), cacheKeyCalculator!);
 
             }
 

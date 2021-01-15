@@ -2,6 +2,7 @@ import {CacheProvider} from "./CacheProvider";
 import {StoreCaches} from "./StoreCaches";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQuery} from "./ICachedQuery";
+import { get, set, del, clear } from 'idb-keyval';
 
 export namespace CacheProviders {
 
@@ -12,15 +13,19 @@ export namespace CacheProviders {
         switch (backing) {
 
             case "none":
-                return createNullSnapshotCacheProvider();
+                return createNullCacheProvider();
+
             case "localStorage":
-                return createLocalStorageSnapshotCacheProvider();
+                return createLocalStorageCacheProvider();
+
+            case "IndexedDB":
+                return createIndexedDBCacheProvider();
 
         }
 
     }
 
-    function createNullSnapshotCacheProvider(): CacheProvider {
+    function createNullCacheProvider(): CacheProvider {
 
         async function purge() {
             // noop
@@ -52,7 +57,67 @@ export namespace CacheProviders {
 
     }
 
-    function createLocalStorageSnapshotCacheProvider(): CacheProvider {
+
+    function createIndexedDBCacheProvider(): CacheProvider {
+
+        async function write<V>(key: string, value: V) {
+
+            try {
+                await set(key, value);
+            } catch (e) {
+                console.error("Unable to write cache entry: ", e);
+            }
+
+        }
+
+        async function read<V>(key: string): Promise<V | undefined> {
+
+            try {
+
+                const item = await get(key);
+
+                if (item === null) {
+                    return undefined;
+                }
+
+                return item;
+
+            } catch (e) {
+                console.error("Unable to read cache entry: ", e);
+                return undefined;
+            }
+
+        }
+        async function writeDoc(key: string, value: ICachedDoc) {
+            await write(key, value);
+        }
+
+        async function readDoc(key: string): Promise<ICachedDoc | undefined> {
+            return await read(key);
+        }
+
+        async function writeQuery(key: string, value: ICachedQuery) {
+            await write(key, value);
+        }
+
+        async function readQuery(key: string): Promise<ICachedQuery | undefined> {
+            return await read(key);
+        }
+
+        async function remove(key: string) {
+            await del(key);
+        }
+
+        async function purge() {
+            await clear();
+        }
+
+        return {purge, writeDoc, remove, readDoc, writeQuery, readQuery};
+
+    }
+
+
+    function createLocalStorageCacheProvider(): CacheProvider {
 
         const prefix = 'snapshot-cache:';
 
@@ -68,7 +133,6 @@ export namespace CacheProviders {
                 console.error("Unable to write cache entry: ", e);
             }
         }
-
 
         async function read<V>(key: string): Promise<V | undefined> {
 
