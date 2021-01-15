@@ -1,0 +1,3 @@
+- for query snapshots, we have to write a record for each document so that we can fetch them faster.
+- TODO:
+    - maybe query snapshots aren't actually materialized... 

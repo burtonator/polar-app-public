@@ -1,8 +1,8 @@
-import {CacheProvider} from "./CacheProvider";
+import {CacheProvider, TCacheDocTupleWithID} from "./CacheProvider";
 import {StoreCaches} from "./StoreCaches";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQuery} from "./ICachedQuery";
-import { get, set, del, clear } from 'idb-keyval';
+import { get, set, del, clear, setMany} from 'idb-keyval';
 
 export namespace CacheProviders {
 
@@ -35,6 +35,10 @@ export namespace CacheProviders {
             // noop
         }
 
+        async function writeDocs(docs: ReadonlyArray<TCacheDocTupleWithID>) {
+
+        }
+
         async function readDoc(key: string): Promise<ICachedDoc | undefined> {
             return undefined;
         }
@@ -53,7 +57,7 @@ export namespace CacheProviders {
         }
 
 
-        return {purge, writeDoc, remove, readDoc, writeQuery, readQuery};
+        return {purge, writeDoc, writeDocs, remove, readDoc, writeQuery, readQuery};
 
     }
 
@@ -92,6 +96,20 @@ export namespace CacheProviders {
             await write(key, value);
         }
 
+        async function writeDocs(docs: ReadonlyArray<TCacheDocTupleWithID>) {
+
+            console.log("FIXME: writeDocs");
+
+            try {
+                await setMany([...docs]);
+            } catch (e) {
+                console.error("Unable to write cache entry: ", e);
+            }
+
+            console.log("FIXME: writeDocs");
+
+        }
+
         async function readDoc(key: string): Promise<ICachedDoc | undefined> {
             return await read(key);
         }
@@ -112,7 +130,7 @@ export namespace CacheProviders {
             await clear();
         }
 
-        return {purge, writeDoc, remove, readDoc, writeQuery, readQuery};
+        return {purge, writeDoc, writeDocs, remove, readDoc, writeQuery, readQuery};
 
     }
 
@@ -157,10 +175,13 @@ export namespace CacheProviders {
             await write(key, value);
         }
 
+        async function writeDocs(docs: ReadonlyArray<TCacheDocTupleWithID>) {
+
+        }
+
         async function readDoc(key: string): Promise<ICachedDoc | undefined> {
             return await read(key);
         }
-
 
         async function writeQuery(key: string, value: ICachedQuery) {
             await write(key, value);
@@ -187,7 +208,7 @@ export namespace CacheProviders {
 
         }
 
-        return {purge, writeDoc, remove, readDoc, writeQuery, readQuery};
+        return {purge, writeDoc, writeDocs, remove, readDoc, writeQuery, readQuery};
 
     }
 

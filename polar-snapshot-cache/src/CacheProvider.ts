@@ -1,12 +1,16 @@
 import { ICachedDoc } from "./ICachedDoc";
 import { ICachedQuery } from "./ICachedQuery";
 
+export type TCacheDocTupleWithID = [string, ICachedDoc];
+
 export interface CacheProvider {
 
     /**
      * Write to the cache.
      */
-    readonly writeDoc: (key: string, value: ICachedDoc) => Promise<void>;
+    readonly writeDoc: (key: string, doc: ICachedDoc) => Promise<void>;
+
+    readonly writeDocs: (docs: ReadonlyArray<TCacheDocTupleWithID>) => Promise<void>;
 
     readonly readDoc: (key: string) => Promise<ICachedDoc | undefined>;
 

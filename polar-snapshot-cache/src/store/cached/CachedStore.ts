@@ -1,5 +1,5 @@
 import {IStore} from "../IStore";
-import {CacheProvider} from "../../CacheProvider";
+import {CacheProvider, TCacheDocTupleWithID} from "../../CacheProvider";
 import {ICacheKeyCalculator} from "../../ICacheKeyCalculator";
 import {ICollectionReference, TWhereFilterOp} from "../ICollectionReference";
 import {IWriteBatch} from "../IWriteBatch";
@@ -7,12 +7,13 @@ import {IDocumentReference} from "../IDocumentReference";
 import {IGetOptions} from "../IGetOptions";
 import {TDocumentData} from "../TDocumentData";
 import {IDocumentSnapshot} from "../IDocumentSnapshot";
-import {ICachedDoc} from "../../ICachedDoc";
 import {IFirestoreError} from "../IFirestoreError";
 import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
 import {IQuery, SnapshotUnsubscriber} from "../IQuery";
 import {IQuerySnapshot} from "../IQuerySnapshot";
 import {CachedQueries} from "../../CachedQueries";
+import {ICachedDoc} from "../../ICachedDoc";
+import {IDocumentChange} from "../IDocumentChange";
 
 export namespace CachedStore {
 
@@ -159,7 +160,7 @@ export namespace CachedStore {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
 
-                    const cacheData: ICachedDoc | undefined = await cacheProvider.readDoc(cacheKey);
+                    const cacheData = await cacheProvider.readDoc(cacheKey);
 
                     if (cacheData) {
                         return {
@@ -279,10 +280,43 @@ export namespace CachedStore {
                 }
 
                 private async writeToCache(snapshot: IQuerySnapshot) {
+
                     const cacheKey = cacheKeyCalculator.computeForQuery(this._collection.id);
                     await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache(snapshot));
-                }
 
+                    const docChanges = snapshot.docChanges();
+
+                    console.log("FIXME working with N docChanges: ", docChanges.length);
+
+                    function toCacheEntry(docChange: IDocumentChange): TCacheDocTupleWithID {
+
+                        switch (docChange.type) {
+
+                            case "added":
+                            case "modified":
+                                return [
+                                    docChange.doc.id,
+                                    {
+                                        exists: true,
+                                        data: docChange.doc.data()
+                                    }
+                                ]
+                            case "removed":
+                                return [
+                                    docChange.doc.id,
+                                    {
+                                        exists: false,
+                                        data: undefined
+                                    }
+                                ];
+
+                        }
+
+                    }
+
+                    await cacheProvider.writeDocs(docChanges.map(toCacheEntry))
+
+                }
 
                 where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery {
                     this._query.where(fieldPath, opStr, value);

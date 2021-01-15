@@ -42,6 +42,7 @@ export namespace CachedQueries {
 
         function toDocChange(doc: IQueryDocumentSnapshot): IDocumentChange {
             return {
+                id: doc.id,
                 type: 'added',
                 doc
             }
