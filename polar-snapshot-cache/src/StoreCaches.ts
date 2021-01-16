@@ -20,7 +20,7 @@ export namespace StoreCaches {
     }
 
     let config: SnapshotCacheConfig = {
-        backing: 'IndexedDB'
+        backing: 'none'
     };
 
     let cacheProvider: CacheProvider = CacheProviders.create('none');
