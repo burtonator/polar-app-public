@@ -1,6 +1,6 @@
 export namespace IFrames {
 
-    export async function waitForContentDocument(iframe: HTMLIFrameElement): Promise<Document> {
+    export async function waitForLoad(iframe: HTMLIFrameElement): Promise<Document> {
 
         return new Promise<Document>((resolve) => {
 
@@ -14,7 +14,7 @@ export namespace IFrames {
 
                 resolved = true;
 
-                if (iframe.contentDocument) {
+                if (iframe.contentDocument && iframe.contentWindow) {
                     resolve(iframe.contentDocument);
                 }
 
