@@ -12,7 +12,7 @@ export const businessOccupations = [
     "Software Engineer",
     "Mathematician",
     "Data Scientist",
-    "Web Designer",
+    // "Web Designer",
     "Founder",
     "Investor",
     "Other"
