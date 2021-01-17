@@ -12,8 +12,8 @@ export const DEFAULT_URL = IS_DEV ? 'http://localhost:8050' : 'https://app.getpo
 
 console.log(`Using ${DEFAULT_URL} - to use localhost export ELECTRON_ENV=development`)
 
-const WIDTH = 900 * 1.2; // 1300 is like 80% of users
-const HEIGHT = 1100 * 1.2;
+const WIDTH = 1100 * 1.2; // 1300 is like 80% of users
+const HEIGHT = 900 * 1.2;
 
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
@@ -102,6 +102,7 @@ export namespace MainAppBrowserWindowFactory {
 
         // compute the userAgent that we should be using for the renderer
         const userAgent = ElectronUserAgents.computeUserAgentFromWebContents(browserWindow.webContents);
+        // const userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) polar-desktop-app/2.0.53 Chrome/80.0.3987.165 Safari/537.36";
 
         registerWindowNavigationHandler(browserWindow);
 
