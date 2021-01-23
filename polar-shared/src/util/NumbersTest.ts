@@ -25,4 +25,10 @@ describe('Numbers', function() {
 
     });
 
+    describe("format", () => {
+
+
+
+    });
+
 });

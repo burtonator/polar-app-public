@@ -93,16 +93,15 @@ export namespace Numbers {
 
 
     export function format(bytes: number): string {
-
         if (bytes < 1000) {
             return bytes +  "";
-        } else if (bytes < 100000) {
+        } else if (bytes < 1000000) {
             return Math.floor(bytes / 1000) + " K";
-        } else if (bytes < 100000000) {
+        } else if (bytes < 1000000000) {
             return Math.floor(bytes / 1000000) + " M";
-        } else if (bytes < 100000000000) {
+        } else if (bytes < 1000000000000) {
             return Math.floor(bytes / 1000000000) + " B";
-        } else if (bytes < 100000000000000) {
+        } else if (bytes < 1000000000000000) {
             return Math.floor(bytes / 1000000000000) + " T";
         }
 
