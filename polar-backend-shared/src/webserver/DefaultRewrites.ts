@@ -20,6 +20,8 @@ export class DefaultRewrites {
                     "/whats-new",
                     "/logout",
                     "/login",
+                    "/sign-in",
+                    "/create-account",
                     "/login.html",
                     "/logs",
                     "/configured",
