@@ -103,7 +103,7 @@ export namespace MainAppBrowserWindowFactory {
         // compute the userAgent that we should be using for the renderer
         const userAgent = ElectronUserAgents.computeUserAgentFromWebContents(browserWindow.webContents);
         // const userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) polar-desktop-app/2.0.53 Chrome/80.0.3987.165 Safari/537.36";
-
+        // const userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) polar-desktop-app/2.0.108 Chrome/87.0.4280.141 Safari/537.36"
         registerWindowNavigationHandler(browserWindow);
 
         log.info("Loading URL: " + url);
