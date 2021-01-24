@@ -1,7 +1,7 @@
 productName: Polar
 # TODO: unfortunately this needs to be set.  Not sure why but it reverted to
 # using nightly versions when not set.  It should use package.json
-electronVersion: 11.1.0
+electronVersion: 11.2.1
 appId: io.inputneuron/polar
 compression: maximum
 npmRebuild: false
