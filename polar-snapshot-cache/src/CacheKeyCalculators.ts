@@ -14,22 +14,17 @@ export namespace CacheKeyCalculators {
      *
      * We should
      */
-    export function createGeneric(snapshotCacheKey: string): ICacheKeyCalculator {
+    export function createGeneric(): ICacheKeyCalculator {
 
         function computeForDoc(collectionName: string, documentSnapshot: IDocumentSnapshot | IDocumentReference | IDocumentChange): string {
             return collectionName + ':' + documentSnapshot.id;
-        }
-
-        function computeForSnapshot(collectionName: string): string {
-            return collectionName + ':' + snapshotCacheKey;
         }
 
         function computeForQueryWithClauses(collectionName: string, clauses: ReadonlyArray<IWhereClause>): string {
             return Hashcodes.create(collectionName + ':' + JSON.stringify(clauses));
         }
 
-
-        return {computeForDoc, computeForQuery: computeForSnapshot, computeForQueryWithClauses};
+        return {computeForDoc, computeForQueryWithClauses};
 
     }
 

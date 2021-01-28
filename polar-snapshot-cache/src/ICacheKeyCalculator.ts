@@ -10,13 +10,6 @@ export interface ICacheKeyCalculator {
      */
     readonly computeForDoc: (collectionName: string, documentSnapshot: IDocumentSnapshot | IDocumentReference | IDocumentChange) => string;
 
-    /**
-     * Compute the cache key for an entire snapshot.  We need to use a unique
-     * snapshot key for each type of snapshot query so that they aren't
-     * intermingled.
-     */
-    readonly computeForQuery: (collectionName: string) => string;
-
     readonly computeForQueryWithClauses: (collectionName: string, clauses: ReadonlyArray<IWhereClause>) => string;
 
 }

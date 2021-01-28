@@ -41,18 +41,12 @@ export namespace StoreCaches {
     }
 
     export interface IStoreBuilder {
-        readonly withGenericSnapshotCacheKey: (snapshotCacheKey: string) => IStoreBuilder;
         readonly build: (delegate: IStore) => Promise<IStore>;
     }
 
     export function create(): IStoreBuilder {
 
         let cacheKeyCalculator: ICacheKeyCalculator | undefined;
-
-        function withGenericSnapshotCacheKey(snapshotCacheKey: string) {
-            cacheKeyCalculator = CacheKeyCalculators.createGeneric(snapshotCacheKey)
-            return this;
-        }
 
         async function build(delegate: IStore) {
 
@@ -71,7 +65,6 @@ export namespace StoreCaches {
         }
 
         return {
-            withGenericSnapshotCacheKey,
             build
         }
 

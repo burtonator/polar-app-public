@@ -276,7 +276,7 @@ export namespace CachedStore {
 
                 private async readFromCache(): Promise<IQuerySnapshot | undefined> {
 
-                    const cacheKey = cacheKeyCalculator.computeForQuery(this._collection.id);
+                    const cacheKey = cacheKeyCalculator.computeForQueryWithClauses(this._collection.id, this.clauses);
 
                     const cacheData = await cacheProvider.readQuery(cacheKey);
 
