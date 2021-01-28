@@ -15,6 +15,12 @@ export type TWhereFilterOp =
 
 export type TWhereValue = number | string;
 
+export interface IWhereClause {
+    readonly fieldPath: string,
+    readonly opStr: TWhereFilterOp;
+    readonly value: TWhereValue;
+}
+
 export interface ICollectionReference {
 
     /** The collection's identifier. */

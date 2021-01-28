@@ -1,8 +1,9 @@
-import {CacheProvider, TCacheDocTupleWithID} from "./CacheProvider";
+import {CacheKey, CacheProvider, TCacheDocTupleWithID} from "./CacheProvider";
 import {StoreCaches} from "./StoreCaches";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQuery} from "./ICachedQuery";
-import { get, set, del, clear, setMany} from 'idb-keyval';
+import { get, set, del, clear, setMany, getMany} from 'idb-keyval';
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace CacheProviders {
 
@@ -14,9 +15,6 @@ export namespace CacheProviders {
 
             case "none":
                 return createNullCacheProvider();
-
-            case "localStorage":
-                return createLocalStorageCacheProvider();
 
             case "IndexedDB":
                 return createIndexedDBCacheProvider();
@@ -31,23 +29,27 @@ export namespace CacheProviders {
             // noop
         }
 
-        async function writeDoc(key: string, value: ICachedDoc) {
+        async function writeDoc(key: CacheKey, value: ICachedDoc) {
             // noop
         }
 
         async function writeDocs(docs: ReadonlyArray<TCacheDocTupleWithID>) {
-
-        }
-
-        async function readDoc(key: string): Promise<ICachedDoc | undefined> {
-            return undefined;
-        }
-
-        async function writeQuery(key: string, value: ICachedQuery) {
             // noop
         }
 
-        async function readQuery(key: string): Promise<ICachedQuery | undefined> {
+        async function readDoc(key: CacheKey): Promise<ICachedDoc | undefined> {
+            return undefined;
+        }
+
+        async function readDocs(keys: ReadonlyArray<CacheKey>): Promise<ReadonlyArray<ICachedDoc>> {
+            return [];
+        }
+
+        async function writeQuery(key: CacheKey, value: ICachedQuery) {
+            // noop
+        }
+
+        async function readQuery(key: CacheKey): Promise<ICachedQuery | undefined> {
             return undefined;
         }
 
@@ -57,7 +59,7 @@ export namespace CacheProviders {
         }
 
 
-        return {purge, writeDoc, writeDocs, remove, readDoc, writeQuery, readQuery};
+        return {purge, writeDoc, writeDocs, remove, readDoc, writeQuery, readQuery, readDocs};
 
     }
 
@@ -65,8 +67,9 @@ export namespace CacheProviders {
     function createIndexedDBCacheProvider(): CacheProvider {
 
         let hits: number = 0;
+        let misses: number = 0;
 
-        async function write<V>(key: string, value: V) {
+        async function write<V>(key: CacheKey, value: V) {
 
             try {
                 await set(key, value);
@@ -76,7 +79,7 @@ export namespace CacheProviders {
 
         }
 
-        async function read<V>(key: string): Promise<V | undefined> {
+        async function read<V>(key: CacheKey): Promise<V | undefined> {
 
             try {
 
@@ -94,7 +97,7 @@ export namespace CacheProviders {
             }
 
         }
-        async function writeDoc(key: string, value: ICachedDoc) {
+        async function writeDoc(key: CacheKey, value: ICachedDoc) {
             await write(key, value);
         }
 
@@ -112,19 +115,40 @@ export namespace CacheProviders {
 
         }
 
-        async function readDoc(key: string): Promise<ICachedDoc | undefined> {
+        async function readDoc(key: CacheKey): Promise<ICachedDoc | undefined> {
             return await read(key);
         }
 
-        async function writeQuery(key: string, value: ICachedQuery) {
+        async function readDocs(keys: ReadonlyArray<CacheKey>): Promise<ReadonlyArray<ICachedDoc>> {
+
+            try {
+
+                const docs: ReadonlyArray<ICachedDoc> = await getMany([...keys]);
+
+                // convert this to a map and then reconstruct by ID...
+
+                const index = arrayStream(docs).toMap(current => current.id);
+
+                hits += docs.length;
+                misses += (keys.length - docs.length)
+
+                return keys.map(key => index[key]);
+
+            } catch (e) {
+                console.error("Unable to read docs from cache: ", e);
+                return [];
+            }
+        }
+
+        async function writeQuery(key: CacheKey, value: ICachedQuery) {
             await write(key, value);
         }
 
-        async function readQuery(key: string): Promise<ICachedQuery | undefined> {
+        async function readQuery(key: CacheKey): Promise<ICachedQuery | undefined> {
             return await read(key);
         }
 
-        async function remove(key: string) {
+        async function remove(key: CacheKey) {
             await del(key);
         }
 
@@ -132,85 +156,7 @@ export namespace CacheProviders {
             await clear();
         }
 
-        return {purge, writeDoc, writeDocs, remove, readDoc, writeQuery, readQuery};
-
-    }
-
-
-    function createLocalStorageCacheProvider(): CacheProvider {
-
-        const prefix = 'snapshot-cache:';
-
-        function createCacheKey(key: string) {
-            return prefix + key;
-        }
-
-        async function write<V>(key: string, value: V) {
-            try {
-                const cacheKey = createCacheKey(key);
-                localStorage.setItem(cacheKey, JSON.stringify(value));
-            } catch (e) {
-                console.error("Unable to write cache entry: ", e);
-            }
-        }
-
-        async function read<V>(key: string): Promise<V | undefined> {
-
-            try {
-
-                const cacheKey = createCacheKey(key);
-                const item = localStorage.getItem(cacheKey);
-
-                if (item === null) {
-                    return undefined;
-                }
-
-                return JSON.parse(item);
-
-            } catch (e) {
-                console.error("Unable to read cache entry: ", e);
-                return undefined;
-            }
-
-        }
-        async function writeDoc(key: string, value: ICachedDoc) {
-            await write(key, value);
-        }
-
-        async function writeDocs(docs: ReadonlyArray<TCacheDocTupleWithID>) {
-
-        }
-
-        async function readDoc(key: string): Promise<ICachedDoc | undefined> {
-            return await read(key);
-        }
-
-        async function writeQuery(key: string, value: ICachedQuery) {
-            await write(key, value);
-        }
-
-        async function readQuery(key: string): Promise<ICachedQuery | undefined> {
-            return await read(key);
-        }
-
-        async function remove(key: string) {
-            const cacheKey = createCacheKey(key);
-            localStorage.removeItem(cacheKey);
-        }
-
-        async function purge() {
-
-            function computeKeys() {
-                return Object.keys(localStorage).filter(current => current.startsWith(prefix));
-            }
-
-            for (const key of computeKeys()) {
-                localStorage.removeItem(key);
-            }
-
-        }
-
-        return {purge, writeDoc, writeDocs, remove, readDoc, writeQuery, readQuery};
+        return {purge, writeDoc, writeDocs, remove, readDoc, readDocs, writeQuery, readQuery};
 
     }
 

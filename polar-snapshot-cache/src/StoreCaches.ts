@@ -13,7 +13,7 @@ import {CachedStore} from "./store/cached/CachedStore";
  */
 export namespace StoreCaches {
 
-    export type SnapshotBacking = 'none' | 'localStorage' | 'IndexedDB';
+    export type SnapshotBacking = 'none' | 'IndexedDB';
 
     export interface SnapshotCacheConfig {
         readonly backing: SnapshotBacking;
@@ -62,9 +62,6 @@ export namespace StoreCaches {
 
                 case "none":
                     return delegate;
-
-                case "localStorage":
-                    return CachedStore.create(delegate, CacheProviders.create(config.backing), cacheKeyCalculator!);
 
                 case "IndexedDB":
                     return CachedStore.create(delegate, CacheProviders.create(config.backing), cacheKeyCalculator!);

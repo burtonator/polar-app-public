@@ -1,7 +1,7 @@
 import {IStore} from "../IStore";
 import {CacheProvider, TCacheDocTupleWithID} from "../../CacheProvider";
 import {ICacheKeyCalculator} from "../../ICacheKeyCalculator";
-import {ICollectionReference, TWhereFilterOp, TWhereValue} from "../ICollectionReference";
+import {ICollectionReference, IWhereClause, TWhereFilterOp, TWhereValue} from "../ICollectionReference";
 import {IWriteBatch} from "../IWriteBatch";
 import {IDocumentReference} from "../IDocumentReference";
 import {IGetOptions} from "../IGetOptions";
@@ -182,6 +182,7 @@ export namespace CachedStore {
                     const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
 
                     await cacheProvider.writeDoc(cacheKey, {
+                        id: snapshot.id,
                         exists: snapshot.exists,
                         data: snapshot.data()
                     });
@@ -247,12 +248,6 @@ export namespace CachedStore {
 
             }
 
-            interface IWhereClause {
-                readonly fieldPath: string,
-                readonly opStr: TWhereFilterOp;
-                readonly value: TWhereValue;
-            }
-
             class Query implements IQuery {
 
                 private readonly getter: GetHandler<IQuerySnapshot>;
@@ -267,8 +262,7 @@ export namespace CachedStore {
                  * @param clause The initial clause for this query.
                  */
                 constructor(private readonly _query: IQuery,
-                            private readonly _collection: ICollectionReference,
-                            clause: IWhereClause) {
+                            private readonly _collection: ICollectionReference) {
 
                     this.getter = createGetHandler<IQuerySnapshot>(() => this.readFromCache(),
                                                                    value => this.writeToCache(value),
@@ -277,8 +271,6 @@ export namespace CachedStore {
                     this.snapshotter = createSnapshotHandler<IQuerySnapshot>(() => this.readFromCache(),
                                                                              value => this.writeToCache(value),
                                                                              (options, onNext, onError, onCompletion) => this._query.onSnapshot(options, onNext, onError, onCompletion));
-
-                    this.clauses.push(clause);
 
                 }
 
@@ -298,12 +290,18 @@ export namespace CachedStore {
 
                 private async writeToCache(snapshot: IQuerySnapshot) {
 
-                    const cacheKey = cacheKeyCalculator.computeForQuery(this._collection.id);
+                    const cacheKey = cacheKeyCalculator.computeForQueryWithClauses(this._collection.id, this.clauses);
+
+                    // FIXME: we have to write this data as a secondary index by
+                    // reading the current value , then writing out the new
+                    // value by applying the doc changes...
+
+                    // FIXME: what about the order? if we're using the
+                    // docChanages how does that impact the order?
+
                     await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache(snapshot));
 
                     const docChanges = snapshot.docChanges();
-
-                    console.log("FIXME working with N docChanges: ", docChanges.length);
 
                     function toCacheEntry(docChange: IDocumentChange): TCacheDocTupleWithID {
 
@@ -314,6 +312,7 @@ export namespace CachedStore {
                                 return [
                                     docChange.doc.id,
                                     {
+                                        id: docChange.doc.id,
                                         exists: true,
                                         data: docChange.doc.data()
                                     }
@@ -322,6 +321,7 @@ export namespace CachedStore {
                                 return [
                                     docChange.doc.id,
                                     {
+                                        id: docChange.doc.id,
                                         exists: false,
                                         data: undefined
                                     }
@@ -336,6 +336,7 @@ export namespace CachedStore {
                 }
 
                 where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
+                    this.clauses.push({fieldPath, opStr, value});
                     this._query.where(fieldPath, opStr, value);
                     return this;
                 }
@@ -363,7 +364,7 @@ export namespace CachedStore {
                 // would then make firestore a more general cache for us.
 
                 const _query = _collection.where(fieldPath, opStr, value);
-                const query = new Query(_query, _collection, {fieldPath, opStr, value});
+                const query = new Query(_query, _collection);
                 return query.where(fieldPath, opStr, value);
             }
 
@@ -376,11 +377,22 @@ export namespace CachedStore {
         }
 
         interface BatchDelete {
+            /**
+             * Document ID.
+             */
+            readonly id: string;
+
             readonly type: 'delete';
+
             readonly documentRef: IDocumentReference;
         }
 
         interface BatchSet {
+            /**
+             * Document ID.
+             */
+            readonly id: string;
+
             readonly type: 'set';
             readonly documentRef: IDocumentReference;
             readonly data: TDocumentData;
@@ -395,13 +407,13 @@ export namespace CachedStore {
             private ops: BatchOp[] = [];
 
             delete(documentRef: IDocumentReference): IWriteBatch {
-                this.ops.push({type: 'delete', documentRef});
+                this.ops.push({id: documentRef.id, type: 'delete', documentRef});
                 this._batch.delete(documentRef);
                 return this;
             }
 
             set(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
-                this.ops.push({type: 'set', documentRef, data});
+                this.ops.push({id: documentRef.id, type: 'set', documentRef, data});
                 this._batch.set(documentRef, data);
                 return this;
             }
@@ -423,6 +435,7 @@ export namespace CachedStore {
                             case "delete":
 
                                 await cacheProvider.writeDoc(cacheKey, {
+                                    id: op.id,
                                     exists: false,
                                     data: undefined
                                 });
@@ -432,6 +445,7 @@ export namespace CachedStore {
                             case "set":
 
                                 await cacheProvider.writeDoc(cacheKey, {
+                                    id: op.id,
                                     exists: true,
                                     data: op.data
                                 });

@@ -1,6 +1,7 @@
 import { IDocumentSnapshot } from "./store/IDocumentSnapshot";
 import {IDocumentReference} from "./store/IDocumentReference";
 import {IDocumentChange} from "./store/IDocumentChange";
+import {IWhereClause} from "./store/ICollectionReference";
 
 export interface ICacheKeyCalculator {
 
@@ -15,5 +16,7 @@ export interface ICacheKeyCalculator {
      * intermingled.
      */
     readonly computeForQuery: (collectionName: string) => string;
+
+    readonly computeForQueryWithClauses: (collectionName: string, clauses: ReadonlyArray<IWhereClause>) => string;
 
 }

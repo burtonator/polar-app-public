@@ -1,22 +1,26 @@
 import { ICachedDoc } from "./ICachedDoc";
 import { ICachedQuery } from "./ICachedQuery";
 
-export type TCacheDocTupleWithID = [string, ICachedDoc];
+export type CacheKey = string;
+
+export type TCacheDocTupleWithID = [CacheKey, ICachedDoc];
 
 export interface CacheProvider {
 
     /**
      * Write to the cache.
      */
-    readonly writeDoc: (key: string, doc: ICachedDoc) => Promise<void>;
+    readonly writeDoc: (key: CacheKey, doc: ICachedDoc) => Promise<void>;
 
     readonly writeDocs: (docs: ReadonlyArray<TCacheDocTupleWithID>) => Promise<void>;
 
-    readonly readDoc: (key: string) => Promise<ICachedDoc | undefined>;
+    readonly readDoc: (key: CacheKey) => Promise<ICachedDoc | undefined>;
 
-    readonly writeQuery: (key: string, value: ICachedQuery) => Promise<void>;
+    readonly readDocs: (keys: ReadonlyArray<CacheKey>) => Promise<ReadonlyArray<ICachedDoc>>;
 
-    readonly readQuery: (key: string) => Promise<ICachedQuery | undefined>;
+    readonly writeQuery: (key: CacheKey, value: ICachedQuery) => Promise<void>;
+
+    readonly readQuery: (key: CacheKey) => Promise<ICachedQuery | undefined>;
 
     readonly purge: () => Promise<void>;
 
