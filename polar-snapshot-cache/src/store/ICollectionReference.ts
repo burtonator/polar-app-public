@@ -13,6 +13,7 @@ export type TWhereFilterOp =
     | 'array-contains-any'
     | 'not-in';
 
+export type TWhereValue = number | string;
 
 export interface ICollectionReference {
 

@@ -25,6 +25,7 @@ The idb library provides an Indexed DB API that we can use rather than localStor
 much faster than what we already have.
 
 
-FIXME: this design doesn't store NEGATIVE cache entries.. so if 'exists' is false we dont' store anything , just remove
-it.  We need to add support for that too by usign a 'holder' which would have an 'undefined' value.
+FIXME: this design doesn't store NEGATIVE cache entries.. so if 'exists' is
+false we dont' store anything , just remove it.  We need to add support for that
+too by usign a 'holder' which would have an 'undefined' value.
 

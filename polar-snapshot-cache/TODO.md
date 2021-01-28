@@ -1,6 +1,7 @@
 - for query snapshots, we have to write a record for each document so that we can fetch them faster.
 - TODO:
-    - maybe query snapshots aren't actually materialized... 
+    - maybe query snapshots aren't actually materialized but we store them as as
+      document pointers ... and commit out the results.
     
 - TODO, we can avoid cache set issues by comparing the objects and only writing
   to the cache once we know they have changed. setMulti is slow and indexes have
@@ -13,3 +14,6 @@
       
       
     - 
+
+- TODO: add a timing systme for all async operations in Firestore so that we can
+  wrap the driver to know what's slow and what is fast.

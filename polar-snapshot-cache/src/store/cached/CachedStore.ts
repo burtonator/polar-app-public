@@ -1,7 +1,7 @@
 import {IStore} from "../IStore";
 import {CacheProvider, TCacheDocTupleWithID} from "../../CacheProvider";
 import {ICacheKeyCalculator} from "../../ICacheKeyCalculator";
-import {ICollectionReference, TWhereFilterOp} from "../ICollectionReference";
+import {ICollectionReference, TWhereFilterOp, TWhereValue} from "../ICollectionReference";
 import {IWriteBatch} from "../IWriteBatch";
 import {IDocumentReference} from "../IDocumentReference";
 import {IGetOptions} from "../IGetOptions";
@@ -247,13 +247,28 @@ export namespace CachedStore {
 
             }
 
+            interface IWhereClause {
+                readonly fieldPath: string,
+                readonly opStr: TWhereFilterOp;
+                readonly value: TWhereValue;
+            }
+
             class Query implements IQuery {
 
                 private readonly getter: GetHandler<IQuerySnapshot>;
                 private readonly snapshotter: SnapshotHandler<IQuerySnapshot>;
 
+                private readonly clauses: IWhereClause[] = [];
+
+                /**
+                 *
+                 * @param _query The underlying query delegate.
+                 * @param _collection The collection we're querying
+                 * @param clause The initial clause for this query.
+                 */
                 constructor(private readonly _query: IQuery,
-                            private readonly _collection: ICollectionReference) {
+                            private readonly _collection: ICollectionReference,
+                            clause: IWhereClause) {
 
                     this.getter = createGetHandler<IQuerySnapshot>(() => this.readFromCache(),
                                                                    value => this.writeToCache(value),
@@ -262,6 +277,8 @@ export namespace CachedStore {
                     this.snapshotter = createSnapshotHandler<IQuerySnapshot>(() => this.readFromCache(),
                                                                              value => this.writeToCache(value),
                                                                              (options, onNext, onError, onCompletion) => this._query.onSnapshot(options, onNext, onError, onCompletion));
+
+                    this.clauses.push(clause);
 
                 }
 
@@ -318,7 +335,7 @@ export namespace CachedStore {
 
                 }
 
-                where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery {
+                where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
                     this._query.where(fieldPath, opStr, value);
                     return this;
                 }
@@ -339,14 +356,14 @@ export namespace CachedStore {
             }
 
 
-            function where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery {
+            function where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
 
                 // TODO: we can use the where clause and the collection to
                 // build a cache key so it doesn't need to be specified which
                 // would then make firestore a more general cache for us.
 
                 const _query = _collection.where(fieldPath, opStr, value);
-                const query = new Query(_query, _collection);
+                const query = new Query(_query, _collection, {fieldPath, opStr, value});
                 return query.where(fieldPath, opStr, value);
             }
 
@@ -394,6 +411,7 @@ export namespace CachedStore {
                 const handleCacheMutation = async () => {
 
                     // TODO: when we migrate to idb do this as a transaction.
+                    // TODO: should do setMulti...
 
                     // apply the operations in the order called by the user
                     for (const op of this.ops) {
@@ -426,6 +444,8 @@ export namespace CachedStore {
 
                 }
 
+                // TODO: don't await this... do it in the background so that the
+                // cache latency isn't felt by the caller.
                 await handleCacheMutation();
 
                 await this._batch.commit();

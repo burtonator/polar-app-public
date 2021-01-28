@@ -64,6 +64,8 @@ export namespace CacheProviders {
 
     function createIndexedDBCacheProvider(): CacheProvider {
 
+        let hits: number = 0;
+
         async function write<V>(key: string, value: V) {
 
             try {
