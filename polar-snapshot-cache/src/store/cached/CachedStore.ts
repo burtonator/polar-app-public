@@ -14,6 +14,7 @@ import {IQuerySnapshot} from "../IQuerySnapshot";
 import {CachedQueries} from "../../CachedQueries";
 import {IDocumentChange} from "../IDocumentChange";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {ICachedDoc} from "../../ICachedDoc";
 
 export namespace CachedStore {
 
@@ -259,7 +260,6 @@ export namespace CachedStore {
                  *
                  * @param _query The underlying query delegate.
                  * @param _collection The collection we're querying
-                 * @param clause The initial clause for this query.
                  */
                 constructor(private readonly _query: IQuery,
                             private readonly _collection: ICollectionReference) {
@@ -358,10 +358,6 @@ export namespace CachedStore {
 
             function where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
 
-                // TODO: we can use the where clause and the collection to
-                // build a cache key so it doesn't need to be specified which
-                // would then make firestore a more general cache for us.
-
                 const _query = _collection.where(fieldPath, opStr, value);
                 const query = new Query(_query, _collection);
                 return query.where(fieldPath, opStr, value);
@@ -421,39 +417,37 @@ export namespace CachedStore {
 
                 const handleCacheMutation = async () => {
 
-                    // TODO: when we migrate to idb do this as a transaction.
-                    // TODO: should do setMulti...
-
-                    // apply the operations in the order called by the user
-                    for (const op of this.ops) {
-
-                        const cacheKey = cacheKeyCalculator.computeForDoc(op.documentRef.parent.id, op.documentRef);
+                    function toDoc(op: BatchOp): ICachedDoc {
 
                         switch (op.type) {
 
                             case "delete":
 
-                                await cacheProvider.writeDoc(cacheKey, {
+                                return {
                                     id: op.id,
                                     exists: false,
                                     data: undefined
-                                });
-
-                                break;
+                                };
 
                             case "set":
 
-                                await cacheProvider.writeDoc(cacheKey, {
+                                return {
                                     id: op.id,
                                     exists: true,
                                     data: op.data
-                                });
-
-                                break;
+                                }
 
                         }
 
                     }
+
+                    function toCacheDocTuple(op: BatchOp): TCacheDocTupleWithID {
+                        const cacheKey = cacheKeyCalculator.computeForDoc(op.documentRef.parent.id, op.documentRef);
+                        const doc = toDoc(op);
+                        return [cacheKey, doc];
+                    }
+
+                    await cacheProvider.writeDocs(this.ops.map(toCacheDocTuple))
 
                 }
 
