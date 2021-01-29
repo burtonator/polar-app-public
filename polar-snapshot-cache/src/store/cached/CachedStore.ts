@@ -150,7 +150,7 @@ export namespace CachedStore {
                            cacheProvider: CacheProvider,
                            cacheKeyCalculator: ICacheKeyCalculator): IStore {
 
-        Preconditions.assertPresent(cacheKeyCalculator, 'create:cacheKeyCalculator');
+        Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
         function collection(collectionName: string): ICollectionReference {
 
@@ -292,7 +292,7 @@ export namespace CachedStore {
 
                 private async readFromCache(): Promise<IQuerySnapshot | undefined> {
 
-                    Preconditions.assertPresent(cacheKeyCalculator, 'Query.readFromCache:cacheKeyCalculator');
+                    Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
                     const cacheKey = this.computeCacheKey();
 
@@ -314,7 +314,7 @@ export namespace CachedStore {
 
                 private async writeToCache(snapshot: IQuerySnapshot) {
 
-                    Preconditions.assertPresent(cacheKeyCalculator, 'Query.writeToCache:cacheKeyCalculator');
+                    Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
                     const cacheKey = this.computeCacheKey();
 
