@@ -1,9 +1,8 @@
-import {IStore} from "../IStore";
 import {CacheProvider, TCacheDocTupleWithID} from "../../CacheProvider";
 import {ICacheKeyCalculator} from "../../ICacheKeyCalculator";
 import {ICollectionReference, IWhereClause, TWhereFilterOp, TWhereValue} from "../ICollectionReference";
 import {IWriteBatch} from "../IWriteBatch";
-import {IDocumentReference} from "../IDocumentReference";
+import {IDocumentReference, IDocumentSnapshotObserver, isDocumentSnapshotObserver} from "../IDocumentReference";
 import {IGetOptions} from "../IGetOptions";
 import {TDocumentData} from "../TDocumentData";
 import {IDocumentSnapshot} from "../IDocumentSnapshot";
@@ -12,8 +11,8 @@ import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
 import {
     IQuery,
     IQueryOrderBy,
-    ISnapshotObserver,
-    isSnapshotObserver,
+    IQuerySnapshotObserver,
+    isQuerySnapshotObserver,
     SnapshotUnsubscriber,
     TOrderByDirection
 } from "../IQuery";
@@ -24,6 +23,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {ICachedDoc} from "../../ICachedDoc";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import { IFirestore } from "../IFirestore";
 
 export namespace CachedStore {
 
@@ -154,9 +154,9 @@ export namespace CachedStore {
 
     }
 
-    export function create(delegate: IStore,
+    export function create(delegate: IFirestore,
                            cacheProvider: CacheProvider,
-                           cacheKeyCalculator: ICacheKeyCalculator): IStore {
+                           cacheKeyCalculator: ICacheKeyCalculator): IFirestore {
 
         Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
@@ -164,19 +164,34 @@ export namespace CachedStore {
 
             const _collection = delegate.collection(collectionName);
 
-            function doc(documentPath?: string): IDocumentReference {
+            class DocumentReference implements IDocumentReference {
+                private getter: GetHandler<IDocumentSnapshot>;
+                private snapshotter: SnapshotHandler<IDocumentSnapshot>;
 
-                const _doc = _collection.doc(documentPath);
+                constructor(public readonly id: string,
+                            public readonly parent: ICollectionReference,
+                            private readonly doc: IDocumentReference) {
 
-                async function readFromCache(): Promise<IDocumentSnapshot | undefined> {
+                    this.getter = createGetHandler<IDocumentSnapshot>(() => this.readFromCache(),
+                                                                      value => this.writeToCache(value),
+                                                                      (options) => this.doc.get(options));
 
-                    const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
+                    this.snapshotter = createSnapshotHandler<IDocumentSnapshot>(() => this.readFromCache(),
+                                                                                value => this.writeToCache(value),
+                                                                                (options, onNext, onError, onCompletion) => this.doc.onSnapshot(options, onNext, onError, onCompletion));
+
+
+                }
+
+                private async readFromCache(): Promise<IDocumentSnapshot | undefined> {
+
+                    const cacheKey = cacheKeyCalculator.computeForDoc(this.doc.parent.id, this.doc);
 
                     const cacheData = await cacheProvider.readDoc(cacheKey);
 
                     if (cacheData) {
                         return {
-                            id: _doc.id,
+                            id: this.doc.id,
                             metadata: {
                                 hasPendingWrites: false,
                                 fromCache: true
@@ -190,8 +205,9 @@ export namespace CachedStore {
 
                 }
 
-                async function writeToCache(snapshot: IDocumentSnapshot) {
-                    const cacheKey = cacheKeyCalculator.computeForDoc(_doc.parent.id, _doc);
+                private async writeToCache(snapshot: IDocumentSnapshot) {
+
+                    const cacheKey = cacheKeyCalculator.computeForDoc(this.doc.parent.id, this.doc);
 
                     await cacheProvider.writeDoc(cacheKey, {
                         id: snapshot.id,
@@ -201,36 +217,11 @@ export namespace CachedStore {
 
                 }
 
-                const getter = createGetHandler<IDocumentSnapshot>(readFromCache, writeToCache, (options) => _doc.get(options));
-                const snapshotter = createSnapshotHandler<IDocumentSnapshot>(readFromCache,
-                                                                             writeToCache,
-                                                                             (options, onNext, onError, onCompletion) => _doc.onSnapshot(options, onNext, onError, onCompletion));
+                public async delete(): Promise<void> {
 
-                async function get(options?: IGetOptions): Promise<IDocumentSnapshot> {
-                    return getter(options);
-                }
-
-                async function set(data: TDocumentData) {
-
-                    await writeToCache({
-                        exists: true,
-                        id: _doc.id,
-                        metadata: {
-                            hasPendingWrites: false,
-                            fromCache: true,
-                        },
-                        data: () => data
-                    });
-
-                    return _doc.set(data);
-
-                }
-
-                async function _delete() {
-
-                    await writeToCache({
+                    await this.writeToCache({
                         exists: false,
-                        id: _doc.id,
+                        id: this.doc.id,
                         metadata: {
                             hasPendingWrites: false,
                             fromCache: true,
@@ -240,23 +231,102 @@ export namespace CachedStore {
 
                 }
 
-                function onSnapshot(options: ISnapshotListenOptions,
-                                    onNext: (snapshot: IDocumentSnapshot) => void,
-                                    onError?: (error: IFirestoreError) => void,
-                                    onCompletion?: () => void): SnapshotUnsubscriber {
+                public get(options?: IGetOptions): Promise<IDocumentSnapshot> {
+                    return this.getter(options);
+                }
 
-                    return snapshotter(options, onNext, onError, onCompletion);
+                public async set(data: TDocumentData): Promise<void> {
+
+                    await this.writeToCache({
+                        exists: true,
+                        id: this.doc.id,
+                        metadata: {
+                            hasPendingWrites: false,
+                            fromCache: true,
+                        },
+                        data: () => data
+                    });
+
+                    return this.doc.set(data);
 
                 }
 
-                return {
-                    parent: _doc.parent,
-                    id: _doc.id,
-                    get,
-                    set,
-                    delete: _delete,
-                    onSnapshot
+                private onSnapshotWithObserver(observer: IDocumentSnapshotObserver): SnapshotUnsubscriber {
+                    const onNext = observer.next || NULL_FUNCTION;
+                    return this.snapshotter({}, onNext, observer.error, observer.complete);
                 }
+
+                private onSnapshotWithOptionsAndObserver(options: ISnapshotListenOptions,
+                                                         observer: IDocumentSnapshotObserver): SnapshotUnsubscriber {
+                    const onNext = observer.next || NULL_FUNCTION;
+                    return this.snapshotter(options, onNext, observer.error, observer.complete);
+                }
+
+                private onSnapshotWithCallbacks(onNext: (snapshot: IDocumentSnapshot) => void,
+                                                onError?: (error: IFirestoreError) => void,
+                                                onCompletion?: () => void): SnapshotUnsubscriber {
+
+                    return this.snapshotter({}, onNext, onError, onCompletion);
+
+                }
+
+                private onSnapshotWithOptionsAndCallbacks(options: ISnapshotListenOptions,
+                                                          onNext: (snapshot: IDocumentSnapshot) => void,
+                                                          onError?: (error: IFirestoreError) => void,
+                                                          onCompletion?: () => void): SnapshotUnsubscriber {
+
+                    return this.snapshotter(options, onNext, onError, onCompletion);
+
+                }
+
+                public onSnapshot(observer: IDocumentSnapshotObserver): SnapshotUnsubscriber;
+                public onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver): SnapshotUnsubscriber;
+                public onSnapshot(onNext: (snapshot: IDocumentSnapshot) => void,
+                                  onError?: (error: IFirestoreError) => void,
+                                  onCompletion?: () => void): SnapshotUnsubscriber;
+                public onSnapshot(options: ISnapshotListenOptions,
+                                  onNext: (snapshot: IDocumentSnapshot) => void,
+                                  onError?: (error: IFirestoreError) => void,
+                                  onCompletion?: () => void): SnapshotUnsubscriber;
+
+                public onSnapshot(arg0: IDocumentSnapshotObserver | ISnapshotListenOptions | ((snapshot: IDocumentSnapshot) => void),
+                                  arg1?: IDocumentSnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IDocumentSnapshot) => void),
+                                  arg2?: (() => void) | ((error: IFirestoreError) => void),
+                                  arg3?: () => void): SnapshotUnsubscriber | (() => void) {
+
+                    if (isDocumentSnapshotObserver(arg0) && arg1 === undefined && arg2 === undefined && arg3 === undefined) {
+                        return this.onSnapshotWithObserver(arg0);
+                    }
+
+                    if (typeof arg0 === 'object' && isDocumentSnapshotObserver(arg1)) {
+                        return this.onSnapshotWithOptionsAndObserver(arg0 as ISnapshotListenOptions, arg1);
+                    }
+
+                    if (typeof arg0 === 'function' &&
+                        (typeof arg1 === 'function' || typeof arg1 === 'undefined' ) &&
+                        (typeof arg2 === 'function' || typeof arg2 === 'undefined' )) {
+                        return this.onSnapshotWithCallbacks(arg0, arg1 as any, arg2 as any);
+                    }
+
+                    if (typeof arg0 === 'object' &&
+                        (typeof arg1 === 'function' || typeof arg1 === 'undefined' ) &&
+                        (typeof arg2 === 'function' || typeof arg2 === 'undefined' ) &&
+                        (typeof arg3 === 'function' || typeof arg3 === 'undefined' )) {
+
+                        return this.onSnapshotWithOptionsAndCallbacks(arg0 as ISnapshotListenOptions, arg1 as any, arg2 as any, arg3 as any);
+
+                    }
+
+                    throw new Error("Invalid arguments");
+
+                }
+
+            }
+
+            function doc(documentPath?: string): IDocumentReference {
+
+                const _doc = _collection.doc(documentPath);
+                return new DocumentReference(_doc.id, _collection, _doc, )
 
             }
 
@@ -377,24 +447,13 @@ export namespace CachedStore {
                     return this.getter(options);
                 }
 
-                // public onSnapshot(observer: {
-                //                    next?: (snapshot: IQuerySnapshot) => void;
-                //                    error?: (error: IFirestoreError) => void;
-                //                    complete?: () => void;
-                //                   }): SnapshotUnsubscriber {
-                //
-                //     return this.snapshotter(options, onNext, onError, onCompletion);
-                //
-                // }
-                //
-
-                private onSnapshotWithObserver(observer: ISnapshotObserver): SnapshotUnsubscriber {
+                private onSnapshotWithObserver(observer: IQuerySnapshotObserver): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter({}, onNext, observer.error, observer.complete);
                 }
 
                 private onSnapshotWithOptionsAndObserver(options: ISnapshotListenOptions,
-                                                         observer: ISnapshotObserver): SnapshotUnsubscriber {
+                                                         observer: IQuerySnapshotObserver): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter(options, onNext, observer.error, observer.complete);
                 }
@@ -416,10 +475,10 @@ export namespace CachedStore {
 
                 }
 
-                public onSnapshot(observer: ISnapshotObserver): SnapshotUnsubscriber;
+                public onSnapshot(observer: IQuerySnapshotObserver): SnapshotUnsubscriber;
 
                 public onSnapshot(options: ISnapshotListenOptions,
-                                  observer: ISnapshotObserver): SnapshotUnsubscriber;
+                                  observer: IQuerySnapshotObserver): SnapshotUnsubscriber;
 
                 public onSnapshot(onNext: (snapshot: IQuerySnapshot) => void,
                                   onError?: (error: IFirestoreError) => void,
@@ -430,16 +489,16 @@ export namespace CachedStore {
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): SnapshotUnsubscriber;
 
-                public onSnapshot(arg0: ISnapshotObserver | ISnapshotListenOptions | ((snapshot: IQuerySnapshot) => void),
-                                  arg1?: ISnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IQuerySnapshot) => void),
+                public onSnapshot(arg0: IQuerySnapshotObserver | ISnapshotListenOptions | ((snapshot: IQuerySnapshot) => void),
+                                  arg1?: IQuerySnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IQuerySnapshot) => void),
                                   arg2?: (() => void) | ((error: IFirestoreError) => void),
                                   arg3?: () => void): SnapshotUnsubscriber | (() => void) {
 
-                    if (isSnapshotObserver(arg0) && arg1 === undefined && arg2 === undefined && arg3 === undefined) {
+                    if (isQuerySnapshotObserver(arg0) && arg1 === undefined && arg2 === undefined && arg3 === undefined) {
                         return this.onSnapshotWithObserver(arg0);
                     }
 
-                    if (typeof arg0 === 'object' && isSnapshotObserver(arg1)) {
+                    if (typeof arg0 === 'object' && isQuerySnapshotObserver(arg1)) {
                         return this.onSnapshotWithOptionsAndObserver(arg0 as ISnapshotListenOptions, arg1);
                     }
 
@@ -474,9 +533,7 @@ export namespace CachedStore {
 
             }
 
-
             function where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
-
                 const _query = _collection.where(fieldPath, opStr, value);
                 const query = new Query(_query, _collection);
                 return query.where(fieldPath, opStr, value);

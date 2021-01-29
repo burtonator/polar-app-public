@@ -1,8 +1,8 @@
-import {IStore} from "../IStore";
 import {TDocumentData} from "../TDocumentData";
 import {IWriteBatch} from "../IWriteBatch";
 import {IDocumentReference} from "../IDocumentReference";
 import {ICollectionReference} from "../ICollectionReference";
+import { IFirestore } from "../IFirestore";
 
 /**
  * This is a mock store that works just like Firestore but runs out of RAM so that
@@ -22,7 +22,7 @@ export namespace MockStore {
 
     }
 
-    export function create(): IStore {
+    export function create(): IFirestore {
 
         function collection(collectionName: string): ICollectionReference {
             //

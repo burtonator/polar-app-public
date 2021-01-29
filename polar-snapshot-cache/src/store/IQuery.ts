@@ -13,13 +13,13 @@ export interface IQueryOrderBy {
     readonly directionStr?: TOrderByDirection;
 }
 
-export interface ISnapshotObserver {
+export interface IQuerySnapshotObserver {
     readonly next?: (snapshot: IQuerySnapshot) => void;
     readonly error?: (error: IFirestoreError) => void;
     readonly complete?: () => void;
 }
 
-export function isSnapshotObserver(arg: any): arg is ISnapshotObserver {
+export function isQuerySnapshotObserver(arg: any): arg is IQuerySnapshotObserver {
     return arg.next !== undefined || arg.error !== undefined || arg.complete !== undefined;
 }
 
@@ -31,10 +31,10 @@ export interface IQuery {
 
     // TODO: we need these other onSnapshot methods.
 
-    onSnapshot(observer: ISnapshotObserver): SnapshotUnsubscriber;
+    onSnapshot(observer: IQuerySnapshotObserver): SnapshotUnsubscriber;
 
     onSnapshot(options: ISnapshotListenOptions,
-               observer: ISnapshotObserver): SnapshotUnsubscriber;
+               observer: IQuerySnapshotObserver): SnapshotUnsubscriber;
 
     onSnapshot(onNext: (snapshot: IQuerySnapshot) => void,
                onError?: (error: IFirestoreError) => void,

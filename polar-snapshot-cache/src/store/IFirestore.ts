@@ -1,7 +1,10 @@
 import {ICollectionReference} from "./ICollectionReference";
 import {IWriteBatch} from "./IWriteBatch";
 
-export interface IStore {
+/**
+ * Firestore mimic interface.
+ */
+export interface IFirestore {
 
     readonly collection: (collectionName: string) => ICollectionReference;
 
