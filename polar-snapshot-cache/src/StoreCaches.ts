@@ -20,16 +20,19 @@ export namespace StoreCaches {
     }
 
     let config: SnapshotCacheConfig = {
+        // backing: 'IndexedDB'
         backing: 'none'
     };
 
-    let cacheProvider: CacheProvider = CacheProviders.create('none');
+    console.log("Using StoreCache: " + config.backing);
+
+    let cacheProvider: CacheProvider = CacheProviders.create(config.backing);
 
     /**
      * Purge all data in the snapshot cache using the current configuration
      */
     export async function purge() {
-        // noop for now
+        await cacheProvider.purge();
     }
 
     /**
@@ -51,6 +54,8 @@ export namespace StoreCaches {
         async function build(delegate: IStore) {
 
             Preconditions.assertPresent(delegate, 'delegate');
+
+            cacheKeyCalculator = CacheKeyCalculators.createGeneric();
 
             switch (config.backing) {
 

@@ -15,6 +15,7 @@ import {CachedQueries} from "../../CachedQueries";
 import {IDocumentChange} from "../IDocumentChange";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {ICachedDoc} from "../../ICachedDoc";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export namespace CachedStore {
 
@@ -149,6 +150,8 @@ export namespace CachedStore {
                            cacheProvider: CacheProvider,
                            cacheKeyCalculator: ICacheKeyCalculator): IStore {
 
+        Preconditions.assertPresent(cacheKeyCalculator, 'create:cacheKeyCalculator');
+
         function collection(collectionName: string): ICollectionReference {
 
             const _collection = delegate.collection(collectionName);
@@ -276,6 +279,8 @@ export namespace CachedStore {
 
                 private async readFromCache(): Promise<IQuerySnapshot | undefined> {
 
+                    Preconditions.assertPresent(cacheKeyCalculator, 'Query.readFromCache:cacheKeyCalculator');
+
                     const cacheKey = cacheKeyCalculator.computeForQueryWithClauses(this._collection.id, this.clauses);
 
                     const cachedQuery = await cacheProvider.readQuery(cacheKey);
@@ -295,6 +300,8 @@ export namespace CachedStore {
                 }
 
                 private async writeToCache(snapshot: IQuerySnapshot) {
+
+                    Preconditions.assertPresent(cacheKeyCalculator, 'Query.writeToCache:cacheKeyCalculator');
 
                     const cacheKey = cacheKeyCalculator.computeForQueryWithClauses(this._collection.id, this.clauses);
 
