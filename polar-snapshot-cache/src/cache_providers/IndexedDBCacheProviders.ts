@@ -5,6 +5,7 @@ import { get, set, del, clear, setMany, getMany} from 'idb-keyval';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace IndexedDBCacheProviders {
+
     export function create() {
 
         let hits: number = 0;
