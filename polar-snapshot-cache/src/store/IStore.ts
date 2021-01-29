@@ -7,4 +7,8 @@ export interface IStore {
 
     readonly batch: () => IWriteBatch;
 
+    readonly terminate: () => Promise<void>;
+
+    readonly clearPersistence: () => Promise<void>;
+
 }

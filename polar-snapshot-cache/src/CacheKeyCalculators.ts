@@ -2,8 +2,8 @@ import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
 import {IDocumentSnapshot} from "./store/IDocumentSnapshot";
 import {IDocumentReference} from "./store/IDocumentReference";
 import {IDocumentChange} from "./store/IDocumentChange";
-import {IWhereClause} from "./store/ICollectionReference";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {ICachedQueryMetadata} from "./ICachedQueryMetadata";
 
 export namespace CacheKeyCalculators {
 
@@ -20,11 +20,11 @@ export namespace CacheKeyCalculators {
             return collectionName + ':' + documentSnapshot.id;
         }
 
-        function computeForQueryWithClauses(collectionName: string, clauses: ReadonlyArray<IWhereClause>): string {
-            return Hashcodes.create(collectionName + ':' + JSON.stringify(clauses));
+        function computeForQuery(metadata: ICachedQueryMetadata): string {
+            return Hashcodes.create(metadata);
         }
 
-        return {computeForDoc, computeForQueryWithClauses};
+        return {computeForDoc, computeForQuery};
 
     }
 

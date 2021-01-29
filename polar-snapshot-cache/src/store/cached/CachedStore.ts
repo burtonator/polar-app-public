@@ -257,7 +257,11 @@ export namespace CachedStore {
                 private readonly getter: GetHandler<IQuerySnapshot>;
                 private readonly snapshotter: SnapshotHandler<IQuerySnapshot>;
 
-                private readonly clauses: IWhereClause[] = [];
+                private readonly _clauses: IWhereClause[] = [];
+
+                private _limit: number | undefined = undefined;
+
+                private _orderBy: ReadonlyArray<string> | undefined = undefined;
 
                 /**
                  *
@@ -277,11 +281,20 @@ export namespace CachedStore {
 
                 }
 
+                private computeCacheKey(): string {
+                    return cacheKeyCalculator.computeForQuery({
+                        collection: this._collection.id,
+                        clauses: this._clauses,
+                        limit: this._limit,
+                        orderBy: this._orderBy
+                    });
+                }
+
                 private async readFromCache(): Promise<IQuerySnapshot | undefined> {
 
                     Preconditions.assertPresent(cacheKeyCalculator, 'Query.readFromCache:cacheKeyCalculator');
 
-                    const cacheKey = cacheKeyCalculator.computeForQueryWithClauses(this._collection.id, this.clauses);
+                    const cacheKey = this.computeCacheKey();
 
                     const cachedQuery = await cacheProvider.readQuery(cacheKey);
 
@@ -303,9 +316,9 @@ export namespace CachedStore {
 
                     Preconditions.assertPresent(cacheKeyCalculator, 'Query.writeToCache:cacheKeyCalculator');
 
-                    const cacheKey = cacheKeyCalculator.computeForQueryWithClauses(this._collection.id, this.clauses);
+                    const cacheKey = this.computeCacheKey();
 
-                    await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache(this._collection.id, this.clauses, snapshot));
+                    await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache(this._collection.id, this._clauses, snapshot));
 
                     const docChanges = snapshot.docChanges();
 
@@ -341,8 +354,8 @@ export namespace CachedStore {
 
                 }
 
-                where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
-                    this.clauses.push({fieldPath, opStr, value});
+                public where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
+                    this._clauses.push({fieldPath, opStr, value});
                     this._query.where(fieldPath, opStr, value);
                     return this;
                 }
@@ -358,6 +371,16 @@ export namespace CachedStore {
 
                     return this.snapshotter(options, onNext, onError, onCompletion);
 
+                }
+
+                public limit(count: number): IQuery {
+                    this._limit = count;
+                    return this;
+                }
+
+                public orderBy(colA: string, colB: string): IQuery {
+                    this._orderBy = [colA, colB];
+                    return this;
                 }
 
             }
@@ -472,7 +495,15 @@ export namespace CachedStore {
             return new Batch();
         }
 
-        return {collection, batch};
+        async function terminate() {
+            await delegate.terminate();
+        }
+
+        async function clearPersistence() {
+            await delegate.clearPersistence();
+        }
+
+        return {collection, batch, terminate, clearPersistence};
 
     }
 
