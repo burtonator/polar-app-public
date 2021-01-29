@@ -9,7 +9,7 @@ import {TDocumentData} from "../TDocumentData";
 import {IDocumentSnapshot} from "../IDocumentSnapshot";
 import {IFirestoreError} from "../IFirestoreError";
 import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
-import {IQuery, SnapshotUnsubscriber} from "../IQuery";
+import {IQuery, IQueryOrderBy, SnapshotUnsubscriber, TOrderByDirection} from "../IQuery";
 import {IQuerySnapshot} from "../IQuerySnapshot";
 import {CachedQueries} from "../../CachedQueries";
 import {IDocumentChange} from "../IDocumentChange";
@@ -261,7 +261,7 @@ export namespace CachedStore {
 
                 private _limit: number | undefined = undefined;
 
-                private _orderBy: ReadonlyArray<string> | undefined = undefined;
+                private _order: IQueryOrderBy[] = [];
 
                 /**
                  *
@@ -286,7 +286,7 @@ export namespace CachedStore {
                         collection: this._collection.id,
                         clauses: this._clauses,
                         limit: this._limit,
-                        orderBy: this._orderBy
+                        order: this._order
                     });
                 }
 
@@ -378,8 +378,8 @@ export namespace CachedStore {
                     return this;
                 }
 
-                public orderBy(colA: string, colB: string): IQuery {
-                    this._orderBy = [colA, colB];
+                public orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery {
+                    this._order.push({fieldPath, directionStr});
                     return this;
                 }
 

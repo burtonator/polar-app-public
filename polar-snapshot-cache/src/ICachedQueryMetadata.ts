@@ -1,4 +1,5 @@
 import {IWhereClause} from "./store/ICollectionReference";
+import { IQueryOrderBy } from "./store/IQuery";
 
 /**
  * The metadata for a cached query including the collection, clauses, limit, and
@@ -12,6 +13,6 @@ export interface ICachedQueryMetadata {
 
     readonly limit: number | undefined;
 
-    readonly orderBy: ReadonlyArray<string> | undefined;
+    readonly order: ReadonlyArray<IQueryOrderBy>;
 
 }

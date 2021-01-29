@@ -6,6 +6,13 @@ import {TWhereFilterOp} from "./ICollectionReference";
 
 export type SnapshotUnsubscriber = () => void;
 
+export type TOrderByDirection = 'desc' | 'asc';
+
+export interface IQueryOrderBy {
+    readonly fieldPath: string;
+    readonly directionStr?: TOrderByDirection;
+}
+
 export interface IQuery {
 
     where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery;
@@ -45,7 +52,10 @@ export interface IQuery {
      */
     limit(count: number): IQuery;
 
-    orderBy(colA: string, colB: string): IQuery;
+    // You can also order by multiple fields. For example, if you wanted to
+    // order by state, and within each state order by population in descending
+    // order:
+    orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery;
 
 }
 
