@@ -9,13 +9,21 @@ import {TDocumentData} from "../TDocumentData";
 import {IDocumentSnapshot} from "../IDocumentSnapshot";
 import {IFirestoreError} from "../IFirestoreError";
 import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
-import {IQuery, IQueryOrderBy, SnapshotUnsubscriber, TOrderByDirection} from "../IQuery";
+import {
+    IQuery,
+    IQueryOrderBy,
+    ISnapshotObserver,
+    isSnapshotObserver,
+    SnapshotUnsubscriber,
+    TOrderByDirection
+} from "../IQuery";
 import {IQuerySnapshot} from "../IQuerySnapshot";
 import {CachedQueries} from "../../CachedQueries";
 import {IDocumentChange} from "../IDocumentChange";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {ICachedDoc} from "../../ICachedDoc";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export namespace CachedStore {
 
@@ -369,12 +377,88 @@ export namespace CachedStore {
                     return this.getter(options);
                 }
 
-                onSnapshot(options: ISnapshotListenOptions,
-                           onNext: (snapshot: IQuerySnapshot) => void,
-                           onError?: (error: IFirestoreError) => void,
-                           onCompletion?: () => void): SnapshotUnsubscriber {
+                // public onSnapshot(observer: {
+                //                    next?: (snapshot: IQuerySnapshot) => void;
+                //                    error?: (error: IFirestoreError) => void;
+                //                    complete?: () => void;
+                //                   }): SnapshotUnsubscriber {
+                //
+                //     return this.snapshotter(options, onNext, onError, onCompletion);
+                //
+                // }
+                //
+
+                private onSnapshotWithObserver(observer: ISnapshotObserver): SnapshotUnsubscriber {
+                    const onNext = observer.next || NULL_FUNCTION;
+                    return this.snapshotter({}, onNext, observer.error, observer.complete);
+                }
+
+                private onSnapshotWithOptionsAndObserver(options: ISnapshotListenOptions,
+                                                         observer: ISnapshotObserver): SnapshotUnsubscriber {
+                    const onNext = observer.next || NULL_FUNCTION;
+                    return this.snapshotter(options, onNext, observer.error, observer.complete);
+                }
+
+                private onSnapshotWithCallbacks(onNext: (snapshot: IQuerySnapshot) => void,
+                                                onError?: (error: IFirestoreError) => void,
+                                                onCompletion?: () => void): SnapshotUnsubscriber {
+
+                    return this.snapshotter({}, onNext, onError, onCompletion);
+
+                }
+
+                private onSnapshotWithOptionsAndCallbacks(options: ISnapshotListenOptions,
+                                                          onNext: (snapshot: IQuerySnapshot) => void,
+                                                          onError?: (error: IFirestoreError) => void,
+                                                          onCompletion?: () => void): SnapshotUnsubscriber {
 
                     return this.snapshotter(options, onNext, onError, onCompletion);
+
+                }
+
+                public onSnapshot(observer: ISnapshotObserver): SnapshotUnsubscriber;
+
+                public onSnapshot(options: ISnapshotListenOptions,
+                                  observer: ISnapshotObserver): SnapshotUnsubscriber;
+
+                public onSnapshot(onNext: (snapshot: IQuerySnapshot) => void,
+                                  onError?: (error: IFirestoreError) => void,
+                                  onCompletion?: () => void): () => void;
+
+                public onSnapshot(options: ISnapshotListenOptions,
+                                  onNext: (snapshot: IQuerySnapshot) => void,
+                                  onError?: (error: IFirestoreError) => void,
+                                  onCompletion?: () => void): SnapshotUnsubscriber;
+
+                public onSnapshot(arg0: ISnapshotObserver | ISnapshotListenOptions | ((snapshot: IQuerySnapshot) => void),
+                                  arg1?: ISnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IQuerySnapshot) => void),
+                                  arg2?: (() => void) | ((error: IFirestoreError) => void),
+                                  arg3?: () => void): SnapshotUnsubscriber | (() => void) {
+
+                    if (isSnapshotObserver(arg0) && arg1 === undefined && arg2 === undefined && arg3 === undefined) {
+                        return this.onSnapshotWithObserver(arg0);
+                    }
+
+                    if (typeof arg0 === 'object' && isSnapshotObserver(arg1)) {
+                        return this.onSnapshotWithOptionsAndObserver(arg0 as ISnapshotListenOptions, arg1);
+                    }
+
+                    if (typeof arg0 === 'function' &&
+                        (typeof arg1 === 'function' || typeof arg1 === 'undefined' ) &&
+                        (typeof arg2 === 'function' || typeof arg2 === 'undefined' )) {
+                        return this.onSnapshotWithCallbacks(arg0, arg1 as any, arg2 as any);
+                    }
+
+                    if (typeof arg0 === 'object' &&
+                        (typeof arg1 === 'function' || typeof arg1 === 'undefined' ) &&
+                        (typeof arg2 === 'function' || typeof arg2 === 'undefined' ) &&
+                        (typeof arg3 === 'function' || typeof arg3 === 'undefined' )) {
+
+                        return this.onSnapshotWithOptionsAndCallbacks(arg0 as ISnapshotListenOptions, arg1 as any, arg2 as any, arg3 as any);
+
+                    }
+
+                    throw new Error("Invalid arguments");
 
                 }
 

@@ -13,6 +13,16 @@ export interface IQueryOrderBy {
     readonly directionStr?: TOrderByDirection;
 }
 
+export interface ISnapshotObserver {
+    readonly next?: (snapshot: IQuerySnapshot) => void;
+    readonly error?: (error: IFirestoreError) => void;
+    readonly complete?: () => void;
+}
+
+export function isSnapshotObserver(arg: any): arg is ISnapshotObserver {
+    return arg.next !== undefined || arg.error !== undefined || arg.complete !== undefined;
+}
+
 export interface IQuery {
 
     where(fieldPath: string, opStr: TWhereFilterOp, value: any): IQuery;
@@ -21,26 +31,14 @@ export interface IQuery {
 
     // TODO: we need these other onSnapshot methods.
 
-    // onSnapshot(observer: {
-    //     next?: (snapshot: QuerySnapshot<T>) => void;
-    //     error?: (error: FirestoreError) => void;
-    //     complete?: () => void;
-    // }): () => void;
+    onSnapshot(observer: ISnapshotObserver): SnapshotUnsubscriber;
 
-    // onSnapshot(
-    //     options: SnapshotListenOptions,
-    //     observer: {
-    //         next?: (snapshot: QuerySnapshot<T>) => void;
-    //         error?: (error: FirestoreError) => void;
-    //         complete?: () => void;
-    //     }
-    // ): () => void;
+    onSnapshot(options: ISnapshotListenOptions,
+               observer: ISnapshotObserver): SnapshotUnsubscriber;
 
-    // onSnapshot(
-    //     onNext: (snapshot: QuerySnapshot<T>) => void,
-    //     onError?: (error: FirestoreError) => void,
-    //     onCompletion?: () => void
-    // ): () => void;
+    onSnapshot(onNext: (snapshot: IQuerySnapshot) => void,
+               onError?: (error: IFirestoreError) => void,
+               onCompletion?: () => void): SnapshotUnsubscriber;
 
     onSnapshot(options: ISnapshotListenOptions,
                onNext: (snapshot: IQuerySnapshot) => void,
@@ -58,4 +56,3 @@ export interface IQuery {
     orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery;
 
 }
-
