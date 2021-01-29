@@ -318,7 +318,12 @@ export namespace CachedStore {
 
                     const cacheKey = this.computeCacheKey();
 
-                    await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache(this._collection.id, this._clauses, snapshot));
+                    await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache({
+                        collection: this._collection.id,
+                        clauses: [...this._clauses],
+                        limit: this._limit,
+                        order: [...this._order]
+                    }, snapshot));
 
                     const docChanges = snapshot.docChanges();
 

@@ -3,13 +3,12 @@ import {ICachedQuery} from "./ICachedQuery";
 import {ICacheQueryDocument} from "./ICacheQueryDocument";
 import {IQueryDocumentSnapshot} from "./store/IQueryDocumentSnapshot";
 import {IDocumentChange} from "./store/IDocumentChange";
-import {IWhereClause} from "./store/ICollectionReference";
 import {ICachedDoc} from "./ICachedDoc";
+import {ICachedQueryMetadata} from "./ICachedQueryMetadata";
 
 export namespace CachedQueries {
 
-    export function toCache(collection: string,
-                            clauses: ReadonlyArray<IWhereClause>,
+    export function toCache(metadata: ICachedQueryMetadata,
                             snapshot: IQuerySnapshot): ICachedQuery {
 
         const docs = snapshot.docs;
@@ -23,8 +22,7 @@ export namespace CachedQueries {
         }
 
         return {
-            collection,
-            clauses,
+            ...metadata,
             empty: snapshot.empty,
             size: snapshot.size,
             metadata: {...snapshot.metadata},
