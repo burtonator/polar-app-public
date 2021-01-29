@@ -67,6 +67,15 @@ describe('IndexedDBCacheProviders', function() {
         //
         // We would write the docs, plus the index.
 
+        // RAW benchmark output:
+        //
+        // 100 records
+        //
+        // individual writeDoc: 2500ms
+        // writeDocs: 37ms                   (67x faster)
+        // individual readDoc: 42ms
+        // readDocs: 5ms                     (8x faster)
+
         it("Individual writeDoc records ", async function() {
 
             console.log("Creating IndexedDB cache provider")
@@ -108,6 +117,57 @@ describe('IndexedDBCacheProviders', function() {
         });
 
 
+
+        it("Individual readDoc requests ", async function() {
+
+            console.log("Creating IndexedDB cache provider")
+            const cacheProvider = IndexedDBCacheProviders.create()
+
+            await cacheProvider.purge();
+
+            const records = createRecord(100);
+
+            console.log("Testing individual readDoc requests... ")
+
+            await cacheProvider.writeDocs(records.map(current => [current.id, current]));
+
+            await doBenchmark(async () => {
+
+                for (const record of records) {
+                    const result = await cacheProvider.readDoc(record.id);
+                    if (result === undefined) {
+                        throw new Error("Benchmark failed to read value");
+                    }
+                }
+
+            })
+
+        });
+
+
+        it("Individual readDoc requests ", async function() {
+
+            console.log("Creating IndexedDB cache provider")
+            const cacheProvider = IndexedDBCacheProviders.create()
+
+            await cacheProvider.purge();
+
+            const records = createRecord(100);
+
+            console.log("Testing readDocs... ")
+
+            await cacheProvider.writeDocs(records.map(current => [current.id, current]));
+
+            await doBenchmark(async () => {
+                const result = await cacheProvider.readDocs(records.map(current => current.id));
+
+                if (result.length !== records.length) {
+                    throw new Error("Unable to read all records");
+                }
+
+            })
+
+        });
     });
 
 });
