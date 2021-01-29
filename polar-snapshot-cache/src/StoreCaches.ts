@@ -19,9 +19,9 @@ export namespace StoreCaches {
         readonly backing: SnapshotBacking;
     }
 
-    let config: SnapshotCacheConfig = {
-        // backing: 'IndexedDB'
-        backing: 'none'
+    export let config: SnapshotCacheConfig = {
+        backing: 'IndexedDB'
+        // backing: 'none'
     };
 
     console.log("Using StoreCache: " + config.backing);
