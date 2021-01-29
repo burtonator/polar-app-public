@@ -3,10 +3,14 @@ import {ICachedQuery} from "./ICachedQuery";
 import {ICacheQueryDocument} from "./ICacheQueryDocument";
 import {IQueryDocumentSnapshot} from "./store/IQueryDocumentSnapshot";
 import {IDocumentChange} from "./store/IDocumentChange";
+import {IWhereClause} from "./store/ICollectionReference";
+import {ICachedDoc} from "./ICachedDoc";
 
 export namespace CachedQueries {
 
-    export function toCache(snapshot: IQuerySnapshot): ICachedQuery {
+    export function toCache(collection: string,
+                            clauses: ReadonlyArray<IWhereClause>,
+                            snapshot: IQuerySnapshot): ICachedQuery {
 
         const docs = snapshot.docs;
 
@@ -15,11 +19,12 @@ export namespace CachedQueries {
                 exists: doc.exists,
                 id: doc.id,
                 metadata: {...doc.metadata},
-                data: doc.data()
             };
         }
 
         return {
+            collection,
+            clauses,
             empty: snapshot.empty,
             size: snapshot.size,
             metadata: {...snapshot.metadata},
@@ -28,17 +33,21 @@ export namespace CachedQueries {
 
     }
 
-    export function fromCache(snapshot: ICachedQuery): IQuerySnapshot {
+    export function fromCache(snapshot: ICachedQuery, index: {[id: string]: ICachedDoc}): IQuerySnapshot {
+
+
 
         function toDoc(doc: ICacheQueryDocument): IQueryDocumentSnapshot {
+
+            const cacheEntry = index[doc.id];
+
             return {
                 exists: doc.exists,
                 id: doc.id,
                 metadata: {...doc.metadata},
-                data: () => doc.data
+                data: () => cacheEntry.data!
             };
         }
-
 
         function toDocChange(doc: IQueryDocumentSnapshot): IDocumentChange {
             return {

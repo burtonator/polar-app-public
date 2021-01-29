@@ -1,11 +1,18 @@
 import {ICacheQueryDocument} from "./ICacheQueryDocument";
 import {ISnapshotMetadata} from "./store/ISnapshotMetadata";
+import {IWhereClause} from "./store/ICollectionReference";
 
 export interface ICachedQuery {
 
-    // FIXME: also add the clauses for this so that we can know what the original was
+    /**
+     * The name of the collection that this query is caching.
+     */
+    readonly collection: string;
 
-    // FIXME String collection: the colleciton name...
+    /**
+     * The clauses for this query.
+     */
+    readonly clauses: ReadonlyArray<IWhereClause>;
 
     readonly empty: boolean;
 
@@ -13,7 +20,6 @@ export interface ICachedQuery {
 
     readonly metadata: ISnapshotMetadata;
 
-    // FIXME this should change to identifiers for the doc IDs that represent the query result.
     readonly docs: ReadonlyArray<ICacheQueryDocument>;
 
 }

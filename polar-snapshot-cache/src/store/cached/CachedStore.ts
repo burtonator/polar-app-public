@@ -12,8 +12,8 @@ import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
 import {IQuery, SnapshotUnsubscriber} from "../IQuery";
 import {IQuerySnapshot} from "../IQuerySnapshot";
 import {CachedQueries} from "../../CachedQueries";
-import {ICachedDoc} from "../../ICachedDoc";
 import {IDocumentChange} from "../IDocumentChange";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace CachedStore {
 
@@ -278,10 +278,16 @@ export namespace CachedStore {
 
                     const cacheKey = cacheKeyCalculator.computeForQueryWithClauses(this._collection.id, this.clauses);
 
-                    const cacheData = await cacheProvider.readQuery(cacheKey);
+                    const cachedQuery = await cacheProvider.readQuery(cacheKey);
 
-                    if (cacheData) {
-                        return CachedQueries.fromCache(cacheData);
+                    if (cachedQuery) {
+
+                        const keys = cachedQuery.docs.map(current => current.id);
+                        const docs = await cacheProvider.readDocs(keys);
+
+                        const index = arrayStream(docs).toMap(current => current.id);
+
+                        return CachedQueries.fromCache(cachedQuery, index);
                     }
 
                     return undefined;
@@ -292,14 +298,7 @@ export namespace CachedStore {
 
                     const cacheKey = cacheKeyCalculator.computeForQueryWithClauses(this._collection.id, this.clauses);
 
-                    // FIXME: we have to write this data as a secondary index by
-                    // reading the current value , then writing out the new
-                    // value by applying the doc changes...
-
-                    // FIXME: what about the order? if we're using the
-                    // docChanages how does that impact the order?
-
-                    await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache(snapshot));
+                    await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache(this._collection.id, this.clauses, snapshot));
 
                     const docChanges = snapshot.docChanges();
 

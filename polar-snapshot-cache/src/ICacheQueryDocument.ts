@@ -17,9 +17,4 @@ export interface ICacheQueryDocument {
 
     readonly metadata: ISnapshotMetadata;
 
-    /**
-     * Read the data from this snapshot.
-     */
-    readonly data: TDocumentData;
-
 }
