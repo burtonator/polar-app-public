@@ -67,7 +67,6 @@ describe('IndexedDBCacheProviders', function() {
         //
         // We would write the docs, plus the index.
 
-
         it("Individual writeDoc records ", async function() {
 
             console.log("Creating IndexedDB cache provider")

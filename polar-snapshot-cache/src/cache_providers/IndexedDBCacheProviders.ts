@@ -45,15 +45,11 @@ export namespace IndexedDBCacheProviders {
 
         async function writeDocs(docs: ReadonlyArray<TCacheDocTupleWithID>) {
 
-            console.log("FIXME: writeDocs");
-
             try {
                 await setMany([...docs]);
             } catch (e) {
                 console.error("Unable to write cache entry: ", e);
             }
-
-            console.log("FIXME: writeDocs");
 
         }
 
