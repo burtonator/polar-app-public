@@ -11,9 +11,13 @@
   "license": "ISC",
   "dependencies": {
     "karma": "=6.0.3",
-    "karma-chrome-launcher": "3.1.0",
-    "karma-mocha": "2.0.1",
+    "karma-chrome-launcher": "=3.1.0",
+    "karma-firefox-launcher": "=2.1.0",
+    "karma-safari-launcher": "=1.0.0",
+    "karma-mocha": "=2.0.1",
+    "karma-chai": "=0.1.0",
     "karma-sourcemap-loader": "=0.3.8",
-    "karma-webpack": "=4.0.2"
+    "karma-webpack": "=4.0.2",
+    "karma-typescript": "=5.2.0"
   }
 }
