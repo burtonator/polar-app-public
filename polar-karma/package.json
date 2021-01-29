@@ -18,6 +18,7 @@
     "karma-safari-launcher": "=1.0.0",
     "karma-sourcemap-loader": "=0.3.8",
     "karma-typescript": "=5.2.0",
-    "karma-webpack": "=4.0.2"
+    "karma-webpack": "=4.0.2",
+    "karma-typescript-es6-transform": "=5.2.0"
   }
 }
