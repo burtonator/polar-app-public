@@ -35,3 +35,66 @@
     
     - FIXME: I need the ablity to get updates from the cache when a writer writes to the cache and a reader 
       is listening.
+      
+    - FIXME 
+    
+        https://stackoverflow.com/questions/33237863/get-notified-when-indexeddb-entry-gets-changed-in-other-tab
+        
+        https://github.com/w3c/IndexedDB/issues/51
+        
+    - FIXME: shit... there is no way to synchronize/communicate between the two windows unless I impelment somthign 
+      custom
+
+
+    - FIXME: https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API
+    
+    
+    - https://caniuse.com/broadcastchannel
+    
+    - FIXME: I'm not sure what we're going to do about multiple readers/writers
+      to the same store and how they're going to coordinate listerns.
+
+    - FIXME: without a centralized coordinator, I'm going to be using 2x more data too!..
+
+
+    - FIXME: actually MEASURE the dureation of each snapshot... with teh cache being used.  
+
+        - FIXME: The indexedDB lock isn't held long... 
+
+    - I could go without coordinating the store... if I used something like serial numbers for the records.. 
+      
+
+- https://www.youtube.com/watch?v=oDvdAFP6OhQ
+
+    - Firestore writes all writes to a log, and applies all the writes to reads...
+    
+       https://youtu.be/oDvdAFP6OhQ?t=326
+
+    - Last writer always wins...  this is an easy strategy to implement.
+    
+        https://youtu.be/oDvdAFP6OhQ?t=375
+        
+    - if you includeMetadata changes Firestore can't de-duplicate the JSON and you get two events but it you
+      remove this you get fewer events but no ability to know where the data came from.
+    
+        https://youtu.be/oDvdAFP6OhQ?t=575
+        
+    - the BIGGEST issues are snapshots that don't fire because they don't see the cache being updated.
+    
+    - Transactions fail when we are offline???? 
+        - https://youtu.be/oDvdAFP6OhQ?t=741
+        - batch writes don't have this issue! 
+
+    - so the two main issues I have are:
+        
+        - I need to distribute metadata for cache writes to all open tabs via some type of channel
+        - 
+
+
+    - this is a polyfill for broadcast channel that might work
+    
+        https://github.com/arnellebalane/hermes
+        https://blog.arnellebalane.com/sending-data-across-different-browser-tabs-6225daac93ec
+        
+        https://www.npmjs.com/package/broadcast-channel
+        https://www.npmjs.com/package/broadcastchannel-polyfill

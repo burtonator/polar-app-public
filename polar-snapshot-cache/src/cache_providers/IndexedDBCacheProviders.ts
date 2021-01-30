@@ -1,4 +1,10 @@
-import {CacheKey, TCacheDocTupleWithID} from "../CacheProvider";
+import {
+    CacheKey,
+    CacheProvider,
+    ReadDocRequest, ReadDocsRequest, ReadQueryRequest, RemoveRequest,
+    WriteDocRequest,
+    WriteDocsRequest, WriteQueryRequest
+} from "../CacheProvider";
 import {ICachedDoc} from "../ICachedDoc";
 import {ICachedQuery} from "../ICachedQuery";
 import { get, set, del, clear, setMany, getMany} from 'idb-keyval';
@@ -6,7 +12,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace IndexedDBCacheProviders {
 
-    export function create() {
+    export function create(): CacheProvider {
 
         let hits: number = 0;
         let misses: number = 0;
@@ -39,25 +45,36 @@ export namespace IndexedDBCacheProviders {
             }
 
         }
-        async function writeDoc(key: CacheKey, value: ICachedDoc) {
-            await write(key, value);
+        async function writeDoc(request: WriteDocRequest) {
+            const {key, doc} = request;
+            await write(key, doc);
         }
 
-        async function writeDocs(docs: ReadonlyArray<TCacheDocTupleWithID>) {
+        async function writeDocs(request: WriteDocsRequest) {
+
+            if (request.docs.length === 0) {
+                return;
+            }
 
             try {
-                await setMany([...docs]);
+                await setMany([...request.docs]);
             } catch (e) {
                 console.error("Unable to write cache entry: ", e);
             }
 
         }
 
-        async function readDoc(key: CacheKey): Promise<ICachedDoc | undefined> {
-            return await read(key);
+        async function readDoc(request: ReadDocRequest): Promise<ICachedDoc | undefined> {
+            return await read(request.key);
         }
 
-        async function readDocs(keys: ReadonlyArray<CacheKey>): Promise<ReadonlyArray<ICachedDoc>> {
+        async function readDocs(request: ReadDocsRequest): Promise<ReadonlyArray<ICachedDoc>> {
+
+            const {keys} = request;
+
+            if (request.keys.length === 0) {
+                return [];
+            }
 
             try {
 
@@ -78,16 +95,17 @@ export namespace IndexedDBCacheProviders {
             }
         }
 
-        async function writeQuery(key: CacheKey, value: ICachedQuery) {
-            await write(key, value);
+        async function writeQuery(request: WriteQueryRequest) {
+            const {key, query} = request
+            await write(key, query);
         }
 
-        async function readQuery(key: CacheKey): Promise<ICachedQuery | undefined> {
-            return await read(key);
+        async function readQuery(request: ReadQueryRequest): Promise<ICachedQuery | undefined> {
+            return await read(request.key);
         }
 
-        async function remove(key: CacheKey) {
-            await del(key);
+        async function remove(request: RemoveRequest) {
+            await del(request.key);
         }
 
         async function purge() {

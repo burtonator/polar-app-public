@@ -187,7 +187,10 @@ export namespace CachedStore {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(this.doc.parent.id, this.doc);
 
-                    const cacheData = await cacheProvider.readDoc(cacheKey);
+                    const cacheData = await cacheProvider.readDoc({
+                        key: cacheKey,
+                        collection: this.doc.parent.id
+                    });
 
                     if (cacheData) {
                         return {
@@ -209,10 +212,14 @@ export namespace CachedStore {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(this.doc.parent.id, this.doc);
 
-                    await cacheProvider.writeDoc(cacheKey, {
-                        id: snapshot.id,
-                        exists: snapshot.exists,
-                        data: snapshot.data()
+                    await cacheProvider.writeDoc({
+                        key: cacheKey,
+                        doc: {
+                            collection: _collection.id,
+                            id: snapshot.id,
+                            exists: snapshot.exists,
+                            data: snapshot.data()
+                        }
                     });
 
                 }
@@ -370,16 +377,21 @@ export namespace CachedStore {
 
                 private async readFromCache(): Promise<IQuerySnapshot | undefined> {
 
+                    console.log("FIXME: readFromCAche: " + this._collection.id);
+
                     Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
                     const cacheKey = this.computeCacheKey();
 
-                    const cachedQuery = await cacheProvider.readQuery(cacheKey);
+                    const cachedQuery = await cacheProvider.readQuery({
+                        key: cacheKey,
+                        collection: this._collection.id
+                    });
 
                     if (cachedQuery) {
 
                         const keys = cachedQuery.docs.map(current => current.id);
-                        const docs = await cacheProvider.readDocs(keys);
+                        const docs = await cacheProvider.readDocs({keys, collection: this._collection.id});
 
                         const index = arrayStream(docs).toMap(current => current.id);
 
@@ -396,12 +408,15 @@ export namespace CachedStore {
 
                     const cacheKey = this.computeCacheKey();
 
-                    await cacheProvider.writeQuery(cacheKey, CachedQueries.toCache({
-                        collection: this._collection.id,
-                        clauses: [...this._clauses],
-                        limit: this._limit,
-                        order: [...this._order]
-                    }, snapshot));
+                    await cacheProvider.writeQuery({
+                        key: cacheKey,
+                        query: CachedQueries.toCache({
+                                   collection: this._collection.id,
+                                   clauses: [...this._clauses],
+                                   limit: this._limit,
+                                   order: [...this._order]
+                        }, snapshot)
+                    });
 
                     const docChanges = snapshot.docChanges();
 
@@ -414,6 +429,7 @@ export namespace CachedStore {
                                 return [
                                     docChange.doc.id,
                                     {
+                                        collection: _collection.id,
                                         id: docChange.doc.id,
                                         exists: true,
                                         data: docChange.doc.data()
@@ -423,6 +439,7 @@ export namespace CachedStore {
                                 return [
                                     docChange.doc.id,
                                     {
+                                        collection: _collection.id,
                                         id: docChange.doc.id,
                                         exists: false,
                                         data: undefined
@@ -433,7 +450,9 @@ export namespace CachedStore {
 
                     }
 
-                    await cacheProvider.writeDocs(docChanges.map(toCacheEntry))
+                    await cacheProvider.writeDocs({
+                        docs: docChanges.map(toCacheEntry)
+                    });
 
                 }
 
@@ -493,6 +512,8 @@ export namespace CachedStore {
                                   arg1?: IQuerySnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IQuerySnapshot) => void),
                                   arg2?: (() => void) | ((error: IFirestoreError) => void),
                                   arg3?: () => void): SnapshotUnsubscriber | (() => void) {
+
+                    console.log("FIXME: creating snapshot for query on collection: " + this._collection.id);
 
                     if (isQuerySnapshotObserver(arg0) && arg1 === undefined && arg2 === undefined && arg3 === undefined) {
                         return this.onSnapshotWithObserver(arg0);
@@ -600,6 +621,7 @@ export namespace CachedStore {
                             case "delete":
 
                                 return {
+                                    collection: op.documentRef.parent.id,
                                     id: op.id,
                                     exists: false,
                                     data: undefined
@@ -608,6 +630,7 @@ export namespace CachedStore {
                             case "set":
 
                                 return {
+                                    collection: op.documentRef.parent.id,
                                     id: op.id,
                                     exists: true,
                                     data: op.data
@@ -623,8 +646,9 @@ export namespace CachedStore {
                         return [cacheKey, doc];
                     }
 
-                    cacheProvider.writeDocs(this.ops.map(toCacheDocTuple))
-                        .catch(err => console.error("Unable to update cache: ", err));
+                    cacheProvider.writeDocs({
+                        docs: this.ops.map(toCacheDocTuple)
+                    }).catch(err => console.error("Unable to update cache: ", err));
 
                 }
 

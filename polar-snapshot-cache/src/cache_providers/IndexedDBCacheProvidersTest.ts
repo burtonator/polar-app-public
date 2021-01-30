@@ -11,11 +11,15 @@ describe('IndexedDBCacheProviders', function() {
         console.log("Creating IndexedDB cache provider")
         const cacheProvider = IndexedDBCacheProviders.create()
 
-        await cacheProvider.writeDoc('0x001', {
-            id: '0x001',
-            exists: true,
-            data: {
-                hello: true
+        await cacheProvider.writeDoc({
+            key: '0x001',
+            doc: {
+                collection: 'test',
+                id: '0x001',
+                exists: true,
+                data: {
+                    hello: true
+                }
             }
         });
 
@@ -29,6 +33,7 @@ describe('IndexedDBCacheProviders', function() {
             function toCachedDoc(idx: number): ICachedDoc {
 
                 return {
+                    collection: 'test',
                     id: `${idx}`,
                     exists: true,
                     data: {
@@ -90,7 +95,7 @@ describe('IndexedDBCacheProviders', function() {
             await doBenchmark(async () => {
 
                 for (const record of records) {
-                    await cacheProvider.writeDoc(record.id, record);
+                    await cacheProvider.writeDoc({key: record.id, doc: record});
                 }
 
             })
@@ -110,7 +115,7 @@ describe('IndexedDBCacheProviders', function() {
 
             await doBenchmark(async () => {
 
-                await cacheProvider.writeDocs(records.map(current => [current.id, current]));
+                await cacheProvider.writeDocs({docs: records.map(current => [current.id, current])});
 
             })
 
@@ -129,12 +134,12 @@ describe('IndexedDBCacheProviders', function() {
 
             console.log("Testing individual readDoc requests... ")
 
-            await cacheProvider.writeDocs(records.map(current => [current.id, current]));
+            await cacheProvider.writeDocs({docs: records.map(current => [current.id, current])});
 
             await doBenchmark(async () => {
 
                 for (const record of records) {
-                    const result = await cacheProvider.readDoc(record.id);
+                    const result = await cacheProvider.readDoc({key: record.id, collection: 'test'});
                     if (result === undefined) {
                         throw new Error("Benchmark failed to read value");
                     }
@@ -156,10 +161,10 @@ describe('IndexedDBCacheProviders', function() {
 
             console.log("Testing readDocs... ")
 
-            await cacheProvider.writeDocs(records.map(current => [current.id, current]));
+            await cacheProvider.writeDocs({docs: records.map(current => [current.id, current])});
 
             await doBenchmark(async () => {
-                const result = await cacheProvider.readDocs(records.map(current => current.id));
+                const result = await cacheProvider.readDocs({keys: records.map(current => current.id), collection: 'test'});
 
                 if (result.length !== records.length) {
                     throw new Error("Unable to read all records");

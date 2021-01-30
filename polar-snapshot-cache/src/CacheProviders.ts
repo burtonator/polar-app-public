@@ -1,4 +1,4 @@
-import {CacheKey, CacheProvider, TCacheDocTupleWithID} from "./CacheProvider";
+import {CacheKey, CacheProvider, TCacheDocTupleWithID, WriteDocRequest} from "./CacheProvider";
 import {StoreCaches} from "./StoreCaches";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQuery} from "./ICachedQuery";
@@ -35,32 +35,32 @@ export namespace CacheProviders {
             // noop
         }
 
-        async function writeDoc(key: CacheKey, value: ICachedDoc) {
+        async function writeDoc(request: WriteDocRequest) {
             // noop
         }
 
-        async function writeDocs(docs: ReadonlyArray<TCacheDocTupleWithID>) {
+        async function writeDocs() {
             // noop
         }
 
-        async function readDoc(key: CacheKey): Promise<ICachedDoc | undefined> {
+        async function readDoc() {
             return undefined;
         }
 
-        async function readDocs(keys: ReadonlyArray<CacheKey>): Promise<ReadonlyArray<ICachedDoc>> {
+        async function readDocs(): Promise<ReadonlyArray<ICachedDoc>> {
             return [];
         }
 
-        async function writeQuery(key: CacheKey, value: ICachedQuery) {
+        async function writeQuery() {
             // noop
         }
 
-        async function readQuery(key: CacheKey): Promise<ICachedQuery | undefined> {
+        async function readQuery(): Promise<ICachedQuery | undefined> {
             return undefined;
         }
 
 
-        async function remove(key: string) {
+        async function remove() {
             // noop
         }
 

@@ -1,6 +1,6 @@
 import {TDocumentData} from "./store/TDocumentData";
 
-export interface ICachedDoc {
+export interface ICachedDoc extends ICachedDocMetadata {
 
     readonly id: string;
 

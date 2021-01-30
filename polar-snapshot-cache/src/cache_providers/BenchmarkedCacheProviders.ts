@@ -1,4 +1,9 @@
-import {CacheKey, CacheProvider, TCacheDocTupleWithID} from "../CacheProvider";
+import {
+    CacheProvider,
+    ReadDocRequest, ReadDocsRequest, ReadQueryRequest, RemoveRequest,
+    WriteDocRequest,
+    WriteDocsRequest, WriteQueryRequest
+} from "../CacheProvider";
 import {ICachedDoc} from "../ICachedDoc";
 import {ICachedQuery} from "../ICachedQuery";
 
@@ -6,7 +11,7 @@ export namespace BenchmarkedCacheProviders {
 
     export function create(delegate: CacheProvider) {
 
-        async function withBenchmark<V>(op: string, delegate: () => Promise<V>) {
+        async function withBenchmark<V>(desc: string, delegate: () => Promise<V>) {
 
             const before = Date.now();
 
@@ -17,37 +22,39 @@ export namespace BenchmarkedCacheProviders {
             } finally {
                 const after = Date.now();
                 const duration = after - before;
-                console.log(`cache latency for ${op}: ${duration}ms`)
+                console.log(`cache latency for ${desc}: ${duration}ms`)
             }
 
         }
 
-        async function writeDoc(key: CacheKey, value: ICachedDoc) {
-            return await withBenchmark('writeDoc', async () => delegate.writeDoc(key, value))
+        async function writeDoc(request: WriteDocRequest) {
+            const {doc} = request;
+            return await withBenchmark('writeDoc:' + doc.collection , async () => delegate.writeDoc(request))
         }
 
-        async function writeDocs(docs: ReadonlyArray<TCacheDocTupleWithID>) {
-            return await withBenchmark('writeDocs', async () => delegate.writeDocs(docs))
+        async function writeDocs(request: WriteDocsRequest) {
+            return await withBenchmark('writeDocs: count=' + request.docs.length, async () => delegate.writeDocs(request))
         }
 
-        async function readDoc(key: CacheKey): Promise<ICachedDoc | undefined> {
-            return await withBenchmark('readDoc', async () => delegate.readDoc(key))
+        async function readDoc(request: ReadDocRequest): Promise<ICachedDoc | undefined> {
+            return await withBenchmark('readDoc:' + request.collection, async () => delegate.readDoc(request))
         }
 
-        async function readDocs(keys: ReadonlyArray<CacheKey>): Promise<ReadonlyArray<ICachedDoc>> {
-            return await withBenchmark('readDocs', async () => delegate.readDocs(keys))
+        async function readDocs(request: ReadDocsRequest): Promise<ReadonlyArray<ICachedDoc>> {
+            return await withBenchmark('readDocs: count=' + request.keys.length, async () => delegate.readDocs(request))
         }
 
-        async function writeQuery(key: CacheKey, value: ICachedQuery) {
-            return await withBenchmark('writeQuery', async () => delegate.writeQuery(key, value))
+        async function writeQuery(request: WriteQueryRequest) {
+            return await withBenchmark('writeQuery:' + request.query.collection, async () => delegate.writeQuery(request))
         }
 
-        async function readQuery(key: CacheKey): Promise<ICachedQuery | undefined> {
-            return await withBenchmark('readQuery', async () => delegate.readQuery(key))
+        async function readQuery(request: ReadQueryRequest): Promise<ICachedQuery | undefined> {
+            console.warn("FIXME: called here, ", new Error());
+            return await withBenchmark('readQuery: ' + request.collection, async () => delegate.readQuery(request))
         }
 
-        async function remove(key: CacheKey) {
-            return await withBenchmark('remove', async () => delegate.remove(key))
+        async function remove(request: RemoveRequest) {
+            return await withBenchmark('remove', async () => delegate.remove(request))
         }
 
         async function purge() {

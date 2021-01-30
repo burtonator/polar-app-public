@@ -5,28 +5,64 @@ export type CacheKey = string;
 
 export type TCacheDocTupleWithID = [CacheKey, ICachedDoc];
 
+export interface WriteDocRequest {
+    readonly key: CacheKey;
+    readonly doc: ICachedDoc;
+}
+
+export interface WriteDocsRequest {
+    // NOTE: WriteDocsRequest can not have a collection because
+    // batches can update docs in any collection
+    readonly docs: ReadonlyArray<TCacheDocTupleWithID>
+}
+
+export interface ReadDocRequest {
+    readonly key: CacheKey;
+    readonly collection: string;
+}
+
+export interface ReadDocsRequest {
+    readonly keys: ReadonlyArray<CacheKey>;
+    readonly collection: string;
+}
+
+export interface WriteQueryRequest {
+    readonly key: CacheKey;
+    readonly query: ICachedQuery;
+}
+
+export interface ReadQueryRequest {
+    readonly key: CacheKey;
+    readonly collection: string;
+}
+
+export interface RemoveRequest {
+    readonly key: CacheKey;
+    readonly collection: string;
+}
+
 export interface CacheProvider {
 
     /**
      * Write to the cache.
      */
-    readonly writeDoc: (key: CacheKey, doc: ICachedDoc) => Promise<void>;
+    readonly writeDoc: (request: WriteDocRequest) => Promise<void>;
 
-    readonly writeDocs: (docs: ReadonlyArray<TCacheDocTupleWithID>) => Promise<void>;
+    readonly writeDocs: (request: WriteDocsRequest) => Promise<void>;
 
-    readonly readDoc: (key: CacheKey) => Promise<ICachedDoc | undefined>;
+    readonly readDoc: (request: ReadDocRequest) => Promise<ICachedDoc | undefined>;
 
-    readonly readDocs: (keys: ReadonlyArray<CacheKey>) => Promise<ReadonlyArray<ICachedDoc>>;
+    readonly readDocs: (request: ReadDocsRequest) => Promise<ReadonlyArray<ICachedDoc>>;
 
-    readonly writeQuery: (key: CacheKey, value: ICachedQuery) => Promise<void>;
+    readonly writeQuery: (request: WriteQueryRequest) => Promise<void>;
 
-    readonly readQuery: (key: CacheKey) => Promise<ICachedQuery | undefined>;
+    readonly readQuery: (request: ReadQueryRequest) => Promise<ICachedQuery | undefined>;
 
     readonly purge: () => Promise<void>;
 
     /**
      * Remove an item from the cache.
      */
-    readonly remove: (key: string) => Promise<void>;
+    readonly remove: (request: RemoveRequest) => Promise<void>;
 
 }
