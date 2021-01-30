@@ -25,6 +25,7 @@ export namespace CacheProviders {
 
         }
 
+        // return createDelegate();
         return BenchmarkedCacheProviders.create(createDelegate());
 
     }

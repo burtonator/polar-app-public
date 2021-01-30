@@ -377,8 +377,6 @@ export namespace CachedStore {
 
                 private async readFromCache(): Promise<IQuerySnapshot | undefined> {
 
-                    console.log("FIXME: readFromCAche: " + this._collection.id);
-
                     Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
                     const cacheKey = this.computeCacheKey();
@@ -512,8 +510,6 @@ export namespace CachedStore {
                                   arg1?: IQuerySnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IQuerySnapshot) => void),
                                   arg2?: (() => void) | ((error: IFirestoreError) => void),
                                   arg3?: () => void): SnapshotUnsubscriber | (() => void) {
-
-                    console.log("FIXME: creating snapshot for query on collection: " + this._collection.id);
 
                     if (isQuerySnapshotObserver(arg0) && arg1 === undefined && arg2 === undefined && arg3 === undefined) {
                         return this.onSnapshotWithObserver(arg0);

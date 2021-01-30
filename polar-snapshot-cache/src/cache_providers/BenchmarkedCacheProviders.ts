@@ -49,7 +49,6 @@ export namespace BenchmarkedCacheProviders {
         }
 
         async function readQuery(request: ReadQueryRequest): Promise<ICachedQuery | undefined> {
-            console.warn("FIXME: called here, ", new Error());
             return await withBenchmark('readQuery: ' + request.collection, async () => delegate.readQuery(request))
         }
 
