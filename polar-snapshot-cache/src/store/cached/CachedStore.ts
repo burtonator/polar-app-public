@@ -219,7 +219,7 @@ export namespace CachedStore {
 
                 public async delete(): Promise<void> {
 
-                    await this.writeToCache({
+                    this.writeToCache({
                         exists: false,
                         id: this.doc.id,
                         metadata: {
@@ -227,7 +227,7 @@ export namespace CachedStore {
                             fromCache: true,
                         },
                         data: () => undefined
-                    });
+                    }).catch(err => console.error("Unable to update cache: ", err));
 
                 }
 
@@ -237,7 +237,7 @@ export namespace CachedStore {
 
                 public async set(data: TDocumentData): Promise<void> {
 
-                    await this.writeToCache({
+                    this.writeToCache({
                         exists: true,
                         id: this.doc.id,
                         metadata: {
@@ -245,7 +245,7 @@ export namespace CachedStore {
                             fromCache: true,
                         },
                         data: () => data
-                    });
+                    }).catch(err => console.error("Unable to update cache: ", err));
 
                     return this.doc.set(data);
 
@@ -623,7 +623,8 @@ export namespace CachedStore {
                         return [cacheKey, doc];
                     }
 
-                    await cacheProvider.writeDocs(this.ops.map(toCacheDocTuple))
+                    cacheProvider.writeDocs(this.ops.map(toCacheDocTuple))
+                        .catch(err => console.error("Unable to update cache: ", err));
 
                 }
 

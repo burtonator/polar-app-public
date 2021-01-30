@@ -3,6 +3,7 @@ import {StoreCaches} from "./StoreCaches";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQuery} from "./ICachedQuery";
 import {IndexedDBCacheProviders} from "./cache_providers/IndexedDBCacheProviders";
+import {BenchmarkedCacheProviders} from "./cache_providers/BenchmarkedCacheProviders";
 
 export namespace CacheProviders {
 
@@ -10,15 +11,21 @@ export namespace CacheProviders {
 
     export function create(backing: SnapshotBacking): CacheProvider {
 
-        switch (backing) {
+        function createDelegate() {
 
-            case "none":
-                return createNullCacheProvider();
+            switch (backing) {
 
-            case "IndexedDB":
-                return createIndexedDBCacheProvider();
+                case "none":
+                    return createNullCacheProvider();
+
+                case "IndexedDB":
+                    return createIndexedDBCacheProvider();
+
+            }
 
         }
+
+        return BenchmarkedCacheProviders.create(createDelegate());
 
     }
 
