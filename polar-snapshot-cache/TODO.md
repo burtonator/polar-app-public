@@ -98,3 +98,9 @@
         
         https://www.npmjs.com/package/broadcast-channel
         https://www.npmjs.com/package/broadcastchannel-polyfill
+
+
+@burtonator Firestore uses "last write wins" for its conflict resolution - but the winning write is the last write that is sent to the backend, not necessarily the last write that occurred on an (offline) device. Offline devices replay their edits when they gain back connectivity and can therefore replace edits that were made by other devices.
+
+Please take a look here for some mitigation strategies: https://stackoverflow.com/questions/51083190/firestore-what-happens-when-an-offline-device-goes-online
+
