@@ -9,112 +9,10 @@ export type BlockIDStr = IDStr;
 
 export type NoteTargetStr = string;
 
-/**
- * Markdown data.
- */
-export interface IMarkdownData {
-    readonly type: 'markdown';
-    readonly value: string;
-}
 
-/**
- * Name data represents a node, by name, that has a restricted set of
- * characters for a named node reference.
- */
-export interface INameData {
-    readonly type: 'name';
-    readonly value: string;
-}
-
-export type ILatexData = string;
-
-/**
- * A note with markdown content.
- */
-export interface INoteContent {
-
-    readonly data: IMarkdownData | INameData;
-
-    readonly type: 'note';
-
-    /**
-     * The linked wiki references to other notes.
-     */
-    readonly links?: ReadonlyArray<NoteTargetStr>;
-
-}
-
-/**
- * A reference to another block rather than duplicating content.
- */
-export interface IBlockReferenceContent {
-
-    readonly type: 'reference';
-
-    /**
-     * The ID that this reference is linked to...
-     */
-    readonly id: BlockIDStr;
-
-}
-
-/**
- * Reference to a polar annotation.  We directly extend ITextHighlight and
- * IAnnotationHighlight here and reference the rest as inline metadata.
- */
-interface IAnnotationContent<T, D> {
-
-    readonly type: T;
-
-    readonly id: IDStr;
-
-    /**
-     * The document ID for this highlight.
-     */
-    readonly docID: IDStr;
-
-    /**
-     * The page number to which this document is attached.
-     */
-    readonly pageNum: number;
-
-    readonly data: D
-
-}
-
-export interface ITextHighlightAnnotationContent extends IAnnotationContent<'annotation-text-highlight', ITextHighlight> {
-
-}
-
-export interface IAreaHighlightAnnotationContent extends IAnnotationContent<'annotation-area-highlight', IAreaHighlight> {
-
-}
-
-export interface ICommentAnnotationContent extends IAnnotationContent<'annotation-comment', IComment> {
-
-}
-
-export interface IFlashcardAnnotationContent extends IAnnotationContent<'annotation-flashcard', IComment> {
-
-}
-
-
-export interface ILatexContent {
-    readonly type: 'latex';
-    readonly data: ILatexData;
-}
-
-export interface ICodeData {
-    readonly lang: 'typescript' | 'javascript' | 'markdown' | string;
-    readonly value: string;
-}
-
-export interface ICodeContent {
-    readonly type: 'code';
-    readonly data: ICodeData;
-}
 
 // FIXME: would this support embed types  ?
+
 
 /**
  * Blocks are a container object for content.
@@ -129,6 +27,8 @@ export interface ICodeContent {
 export interface IBlock {
 
     readonly id: BlockIDStr;
+
+    readonly parent: NoteIDStr | undefined;
 
     /**
      * The owner of this block.
@@ -152,12 +52,109 @@ export interface IBlock {
 
     readonly updated: ISODateTimeString;
 
-    readonly content: INoteContent |
-                      IBlockReferenceContent |
-                      ILatexContent |
-                      ICommentAnnotationContent |
-                      ITextHighlightAnnotationContent |
-                      IAreaHighlightAnnotationContent |
-                      IFlashcardAnnotationContent;
+}
+
+/**
+ * A regular note with markdown content.
+ */
+export interface IMarkdownNote extends IBlock {
+
+    readonly type: 'markdown';
+    readonly value: string;
+
+    /**
+     * Links to other notes based on the wiki links in the markdown content.
+     */
+    readonly links?: ReadonlyArray<NoteTargetStr>;
 
 }
+
+export interface INamedNote extends IBlock {
+    readonly type: 'name';
+    readonly value: string;
+}
+
+
+/**
+ * A reference to another block rather than duplicating content.
+ */
+export interface IBlockReferenceNote {
+
+    readonly type: 'ref';
+
+
+    /**
+     * The ID that this reference is linked to...
+     */
+    readonly ref: BlockIDStr;
+
+}
+
+export type LatexStr = string;
+
+export interface ILatexNote extends IBlock {
+    readonly type: 'latex';
+    readonly data: LatexStr;
+}
+
+export type CodeStr = string;
+
+export interface ICodeNote extends IBlock {
+    readonly type: 'code';
+    readonly lang: 'typescript' | 'javascript' | 'markdown' | 'java' | string;
+    readonly value: CodeStr;
+}
+
+
+/**
+ * Reference to a polar annotation.  We directly extend ITextHighlight and
+ * IAnnotationHighlight here and reference the rest as inline metadata.
+ */
+interface IAnnotationNote<T, V> extends IBlock {
+
+    readonly type: T;
+
+    /**
+     * The document ID for this highlight.
+     */
+    readonly docID: IDStr;
+
+    /**
+     * The page number to which this document is attached.
+     */
+    readonly pageNum: number;
+
+    /**
+     * The value of this note.
+     */
+    readonly value: V;
+
+}
+
+export interface ITextHighlightAnnotationNote extends IAnnotationNote<'annotation-text-highlight', ITextHighlight> {
+
+}
+
+export interface IAreaHighlightAnnotationNote extends IAnnotationNote<'annotation-area-highlight', IAreaHighlight> {
+
+}
+
+export interface ICommentAnnotationNote extends IAnnotationNote<'annotation-comment', IComment> {
+
+}
+
+export interface IFlashcardAnnotationNote extends IAnnotationNote<'annotation-flashcard', IComment> {
+
+}
+
+export type INote = IMarkdownNote |
+                    INamedNote |
+                    IBlockReferenceNote |
+                    ILatexNote |
+                    ICodeNote |
+                    ITextHighlightAnnotationNote |
+                    IAreaHighlightAnnotationNote |
+                    ICommentAnnotationNote |
+                    IFlashcardAnnotationNote
+                    ;
+
