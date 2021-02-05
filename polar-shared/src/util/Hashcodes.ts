@@ -112,7 +112,7 @@ export class Hashcodes {
      * @param obj {Object} The object to has to form the ID.
      * @param [len] The length of the hash you want to create.
      */
-    public static createID(obj: any, len = 10) {
+    public static createID(obj: any, len: number = 10) {
 
         const id = this.create(JSON.stringify(obj));
 
@@ -123,9 +123,41 @@ export class Hashcodes {
 
     /**
      * Create a random ID which is the the same format as createID() (opaque).
+     * @Deprecated this isn't as secure as v2 with createRandomID2
      */
-    public static createRandomID(len = 10) {
+    public static createRandomID(len: number = 10) {
+        // TODO: uuid v4 is random and only has 112 bits so this isn't as secure
+        // as a fully random 256 bit ID.
         return this.createID({uuid: uuid.v4()}, len);
     }
+
+    /**
+     * Create a random ID which is the the same format as createID() (opaque).
+     *
+     * The, when given, should be always a constant so that the hashcode output
+     * is namespaced.
+     */
+    public static createRandomID2(seed?: string | number[]) {
+
+        // provide more randomness to the secure ID generation.
+
+        const now = Date.now();
+        const n0 = Math.random();
+        const n1 = Math.random();
+        const n2 = Math.random();
+        const n3 = Math.random();
+
+        const hasher = keccak256.create();
+
+        if (seed !== undefined) {
+            hasher.update(seed);
+        }
+
+        hasher.update([now, n0, n1, n2, n3]);
+
+        return base58check.encode(hasher.hex());
+
+    }
+
 
 }
