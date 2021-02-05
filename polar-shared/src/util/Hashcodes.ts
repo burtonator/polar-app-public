@@ -4,6 +4,7 @@ import {InputSource} from './input/InputSource';
 import {InputData, InputSources} from './input/InputSources';
 import {Preconditions} from '../Preconditions';
 import {HashAlgorithm, Hashcode, HashEncoding} from "../metadata/Hashcode";
+import {BS58} from "./BS58";
 
 // TODO: migrate this to use types or build our own API for base58check direclty.
 const base58check = require("base58check");
@@ -142,10 +143,6 @@ export class Hashcodes {
         // provide more randomness to the secure ID generation.
 
         const now = Date.now();
-        const n0 = Math.random();
-        const n1 = Math.random();
-        const n2 = Math.random();
-        const n3 = Math.random();
 
         const hasher = keccak256.create();
 
@@ -153,11 +150,14 @@ export class Hashcodes {
             hasher.update(seed);
         }
 
-        hasher.update([now, n0, n1, n2, n3]);
+        const rand = new Uint8Array(32);
+        crypto.getRandomValues(rand);
 
-        return base58check.encode(hasher.hex());
+        hasher.update([now]);
+        hasher.update(rand);
+
+        return BS58.encode(hasher.array());
 
     }
-
 
 }

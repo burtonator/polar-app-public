@@ -41,7 +41,8 @@
     "stopword": "^0.3.4",
     "timekeeper": "2.2.0",
     "twitter-text": "^3.0.1",
-    "uuid": "3.3.3"
+    "uuid": "3.3.3",
+    "base-x": "=3.0.8"
   },
   "files": [
     "**/*.js",
