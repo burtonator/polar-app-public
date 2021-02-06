@@ -47,6 +47,9 @@ export interface IBlock {
 
     readonly updated: ISODateTimeString;
 
+    // readonly shares?:
+
 }
+
 
 
