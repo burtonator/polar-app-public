@@ -1,6 +1,6 @@
 {
   "name": "polar-page-metadata-parser",
-  "version": "2.0.114",
+  "version": "2.0.115",
   "description": "Parses metadata for pages from the DOM",
   "main": "index.js",
   "scripts": {
@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@types/node": "12.12.32",
-    "polar-shared": "^2.0.114",
-    "polar-test": "^2.0.114"
+    "polar-shared": "^2.0.115",
+    "polar-test": "^2.0.115"
   },
   "files": [
     "**/*.js",
