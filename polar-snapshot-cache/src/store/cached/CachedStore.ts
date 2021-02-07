@@ -344,6 +344,8 @@ export namespace CachedStore {
 
                 private readonly _clauses: IWhereClause[] = [];
 
+                private _startAfter: string | undefined = undefined;
+
                 private _limit: number | undefined = undefined;
 
                 private _order: IQueryOrderBy[] = [];
@@ -545,6 +547,11 @@ export namespace CachedStore {
 
                 public orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery {
                     this._order.push({fieldPath, directionStr});
+                    return this;
+                }
+
+                public startAfter(startAfter: string | undefined): IQuery {
+                    this._startAfter = startAfter;
                     return this;
                 }
 

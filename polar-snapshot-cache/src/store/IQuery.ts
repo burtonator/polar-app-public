@@ -55,4 +55,6 @@ export interface IQuery {
     // order:
     orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery;
 
+    startAfter(startAfter: string | undefined): IQuery;
+
 }

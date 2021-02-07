@@ -1,3 +1,4 @@
+import { ICachedDocMetadata } from "./ICachedDocMetadata";
 import {TDocumentData} from "./store/TDocumentData";
 
 export interface ICachedDoc extends ICachedDocMetadata {
