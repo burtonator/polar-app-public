@@ -3,11 +3,18 @@ import { IndexedDBCacheProviders } from './IndexedDBCacheProviders';
 import {ICachedDoc} from "../ICachedDoc";
 import {Numbers} from "polar-shared/src/util/Numbers";
 
+export function isBrowser() {
+    return typeof window !== 'undefined';
+}
+
 describe('IndexedDBCacheProviders', function() {
 
     this.timeout(10000);
 
     it("create", async function() {
+
+        if (! isBrowser()) return;
+
         console.log("Creating IndexedDB cache provider")
         const cacheProvider = IndexedDBCacheProviders.create()
 
@@ -26,7 +33,6 @@ describe('IndexedDBCacheProviders', function() {
     });
 
     describe('benchmarks', () => {
-
 
         function createRecord(count: number): ReadonlyArray<ICachedDoc> {
 
@@ -83,6 +89,8 @@ describe('IndexedDBCacheProviders', function() {
 
         it("Individual writeDoc records ", async function() {
 
+            if (! isBrowser()) return;
+
             console.log("Creating IndexedDB cache provider")
             const cacheProvider = IndexedDBCacheProviders.create()
 
@@ -104,6 +112,8 @@ describe('IndexedDBCacheProviders', function() {
 
         it("Multiple writeDoc records ", async function() {
 
+            if (! isBrowser()) return;
+
             console.log("Creating IndexedDB cache provider")
             const cacheProvider = IndexedDBCacheProviders.create()
 
@@ -124,6 +134,8 @@ describe('IndexedDBCacheProviders', function() {
 
 
         it("Individual readDoc requests ", async function() {
+
+            if (! isBrowser()) return;
 
             console.log("Creating IndexedDB cache provider")
             const cacheProvider = IndexedDBCacheProviders.create()
@@ -151,6 +163,8 @@ describe('IndexedDBCacheProviders', function() {
 
 
         it("Individual readDoc requests ", async function() {
+
+            if (! isBrowser()) return;
 
             console.log("Creating IndexedDB cache provider")
             const cacheProvider = IndexedDBCacheProviders.create()

@@ -4,6 +4,7 @@ import {InputSource} from './input/InputSource';
 import {InputData, InputSources} from './input/InputSources';
 import {Preconditions} from '../Preconditions';
 import {HashAlgorithm, Hashcode, HashEncoding} from "../metadata/Hashcode";
+import {BS58} from "./BS58";
 
 // TODO: migrate this to use types or build our own API for base58check direclty.
 const base58check = require("base58check");
@@ -112,7 +113,7 @@ export class Hashcodes {
      * @param obj {Object} The object to has to form the ID.
      * @param [len] The length of the hash you want to create.
      */
-    public static createID(obj: any, len = 10) {
+    public static createID(obj: any, len: number = 10) {
 
         const id = this.create(JSON.stringify(obj));
 
@@ -123,9 +124,40 @@ export class Hashcodes {
 
     /**
      * Create a random ID which is the the same format as createID() (opaque).
+     * @Deprecated this isn't as secure as v2 with createRandomID2
      */
-    public static createRandomID(len = 10) {
+    public static createRandomID(len: number = 10) {
+        // TODO: uuid v4 is random and only has 112 bits so this isn't as secure
+        // as a fully random 256 bit ID.
         return this.createID({uuid: uuid.v4()}, len);
+    }
+
+    /**
+     * Create a random ID which is the the same format as createID() (opaque).
+     *
+     * The, when given, should be always a constant so that the hashcode output
+     * is namespaced.
+     */
+    public static createRandomID2(seed?: string | number[]) {
+
+        // provide more randomness to the secure ID generation.
+
+        const now = Date.now();
+
+        const hasher = keccak256.create();
+
+        if (seed !== undefined) {
+            hasher.update(seed);
+        }
+
+        const rand = new Uint8Array(32);
+        crypto.getRandomValues(rand);
+
+        hasher.update([now]);
+        hasher.update(rand);
+
+        return BS58.encode(hasher.array());
+
     }
 
 }
