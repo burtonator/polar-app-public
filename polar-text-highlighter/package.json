@@ -1,6 +1,6 @@
 {
   "name": "polar-text-highlighter",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Provides a way to highlight text reliably/portably",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@types/node": "12.12.32",
-    "polar-shared": "^2.1.0",
-    "polar-test": "^2.1.0"
+    "polar-shared": "^2.1.1",
+    "polar-test": "^2.1.1"
   },
   "files": [
     "**/*.js",
