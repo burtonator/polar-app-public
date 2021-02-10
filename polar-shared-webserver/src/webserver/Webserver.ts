@@ -126,7 +126,7 @@ export class Webserver implements WebRequestHandler {
 
             const pagePath = FilePaths.join(dir, 'apps', 'repository', page);
 
-            app.use(`/${page}`, serveStatic(pagePath, {immutable: true}));
+            app.use(`/${page}`, serveStatic(pagePath, {immutable: true}) as any);
 
         }
 
