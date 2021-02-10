@@ -1,25 +1,25 @@
 import {ConstructorOptions, JSDOM} from "jsdom";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { Fetches } from "polar-shared/src/util/Fetch";
-import { ARXIVParser } from './ARXIVParser';
+import { PubmedParser } from './PubmedParser';
 import {assertJSON} from "polar-test/src/test/Assertions";
 
 async function readTestData(url: string): Promise<string> {
 
-    if (existsSync('test/arxiv1.html')) {
+    if (existsSync('test/pubmed1.html')) {
         console.log('The path exists.');
-        return readFileSync('test/arxiv1.html').toString()
+        return readFileSync('test/pubmed1.html').toString()
     } else {
         const response = await Fetches.fetch(url);
 
         const html = await response.text();
-        writeFileSync('test/arxiv1.html', html)
+        writeFileSync('test/pubmed1.html', html)
         return html;
     }
 
 }
 
-describe('ARXIVParser', function () {
+describe('PubmedParser', function () {
 
     function parseHTML(html: string, url: string) {
         const opts: ConstructorOptions = {url, contentType: 'text/html', resources: 'usable'};
@@ -43,11 +43,11 @@ describe('ARXIVParser', function () {
         // const parser = Parsers.get(url);
         //
 
-        const url = "https://arxiv.org/abs/2010.09039";
+        const url = "https://pubmed.ncbi.nlm.nih.gov/28003037/";
         const html = await readTestData(url);
 
         const doc = parseHTML(html, url);
-        const parser = new ARXIVParser();
+        const parser = new PubmedParser();
         const metadata = parser.parse(doc)
         console.log(metadata)
         /*assertJSON(metadata, {

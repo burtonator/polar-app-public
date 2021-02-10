@@ -7,7 +7,7 @@ export class ARXIVParser implements Parser {
 
         const title = doc.querySelector("meta[name='citation_title']")?.getAttribute("content") || undefined
 
-        const description = doc.querySelector("meta[property='og:description']")?.getAttribute("content") || undefined
+        const abstract = doc.querySelector("blockquote")?.textContent || undefined
 
         var authors : string[] = []
 
@@ -17,15 +17,24 @@ export class ARXIVParser implements Parser {
                 authors.push(author)
             }
         }
-        
+
         const pdfURL = doc.querySelector("meta[name='citation_pdf_url']")?.getAttribute("content") || undefined
 
+        const date = doc.querySelector("meta[name='citation_date']")?.getAttribute("content") || undefined
+
+        const description = doc.querySelector("meta[property='og:description']")?.getAttribute("content") || undefined
+
+        const publisher = "arXiv"
+        
         return {
-            url: doc.location.href,
             title,
-            description,
+            abstract,
             authors,
-            pdfURL
+            pdfURL,
+            url: doc.location.href,
+            date,
+            description,
+            publisher
         };
 
     }
