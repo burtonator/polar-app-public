@@ -44,12 +44,14 @@ export const PreviewContent = () => {
                     </div>
                 )}
 
-                {/*FIXME: this needs to get teh latest version of the text and updaete the content.*/}
+                {/*TODO: this needs to get teh latest version of the text and updaete the content.*/}
 
-                <div contentEditable={true}
-                     spellCheck={false}
-                     style={{outline: 'none'}}
-                     dangerouslySetInnerHTML={{__html: captureContentContext.content}}/>
+                <div dangerouslySetInnerHTML={{__html: captureContentContext.content}}></div>
+
+                {/*<div contentEditable={true}*/}
+                {/*     spellCheck={false}*/}
+                {/*     style={{outline: 'none'}}*/}
+                {/*     dangerouslySetInnerHTML={{__html: captureContentContext.content}}/>*/}
 
             </MUIBrowserLinkStyle>
 
