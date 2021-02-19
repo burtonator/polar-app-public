@@ -10,5 +10,8 @@ describe('HTMLToMarkdown', function() {
 
     });
 
+    it('<br/>', function() {
+        assert.equal(html2markdown('<br/>'), '');
+    });
 
 });
