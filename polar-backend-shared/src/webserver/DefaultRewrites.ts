@@ -22,6 +22,7 @@ export class DefaultRewrites {
                     "/login",
                     "/sign-in",
                     "/create-account",
+                    "/feature-requests",
                     "/login.html",
                     "/logs",
                     "/configured",
