@@ -14,6 +14,10 @@ export namespace RingBuffers {
         readonly value: T;
     }
 
+    /**
+     * RingBuffer that allows us to store a stream of entries but maintain a
+     * fixed memory/size cap.
+     */
     export function create<T>(maxLength: number): IRingBuffer<T> {
 
         let pointer = 0;
