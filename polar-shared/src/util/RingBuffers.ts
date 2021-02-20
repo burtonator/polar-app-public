@@ -1,9 +1,17 @@
 export namespace RingBuffers {
 
+    /**
+     * A delta over the interval [-∞, 0]
+     */
+    export type RingDelta = number;
+
     export interface IRingBuffer<T> {
         push: (value: T) => void;
+        fetch: (delta: RingDelta) => T | undefined;
         prev: () => T | undefined;
         peek: () => T | undefined;
+        size: () => number;
+        length: () => number;
     }
 
     /**
@@ -22,15 +30,17 @@ export namespace RingBuffers {
 
         let pointer = 0;
         const buffer: Holder<T>[] = [];
+        let _size: number = 0;
 
         function push(value: T){
             pointer = (pointer + 1) % maxLength;
             buffer[pointer] = {value};
+            _size = Math.min(_size + 1, maxLength)
         }
 
-        function prev(): T | undefined {
+        function fetch(delta: RingDelta): T | undefined {
 
-            const tmp = Math.abs((pointer - 1) % maxLength);
+            const tmp = Math.abs((pointer - delta) % maxLength);
 
             const holder = buffer[tmp];
 
@@ -42,18 +52,23 @@ export namespace RingBuffers {
 
         }
 
-        function peek(): T | undefined {
-
-            const holder = buffer[pointer];
-            if (holder !== undefined) {
-                return holder.value;
-            }
-
-            return undefined;
-
+        function prev(): T | undefined {
+            return fetch(-1);
         }
 
-        return {push, prev, peek}
+        function peek(): T | undefined {
+            return fetch(0);
+        }
+
+        function size(): number {
+            return _size;
+        }
+
+        function length(): number {
+            return maxLength;
+        }
+
+        return {push, fetch, prev, peek, size, length}
 
     }
 
