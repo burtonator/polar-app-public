@@ -91,5 +91,4 @@ export interface IPageMeta {
 
     readonly readingProgress: { [id: string]: ReadingProgress };
 
-
 }
