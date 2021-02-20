@@ -12,6 +12,7 @@ export namespace RingBuffers {
         peek: () => T | undefined;
         size: () => number;
         length: () => number;
+        toArray: () => ReadonlyArray<T>;
     }
 
     /**
@@ -68,7 +69,19 @@ export namespace RingBuffers {
             return maxLength;
         }
 
-        return {push, fetch, prev, peek, size, length}
+        function toArray(): ReadonlyArray<T> {
+
+            const result: T[] = [];
+
+            for (let delta = (_size - 1) * -1; delta <= 0; ++delta) {
+                result.push(fetch(delta)!);
+            }
+
+            return result;
+
+        }
+
+        return {push, fetch, prev, peek, size, length, toArray}
 
     }
 
