@@ -6,7 +6,7 @@ describe('MarkdownToHTML', function() {
 
     it('basic', function() {
 
-        assert.equal(markdown2html('**this is bold**'), '<p><strong>this is bold</strong></p>\n');
+        assert.equal(markdown2html('**this is bold**'), '<p><b>this is bold</b></p>\n');
 
     });
 

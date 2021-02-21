@@ -17,9 +17,22 @@ marked.use({
     // tokenizer: new MyTokenizer()
 });
 
+class MyRenderer extends marked.Renderer {
+
+    strong(text: string): string {
+        return '<b>' + text + '</b>';
+    }
+
+    em(text: string): string {
+        return '<i>' + text + '</i>';
+    }
+
+}
+
 export namespace MarkdownToHTML {
 
     export function markdown2html(markdown: string) {
+
         return marked.parse( markdown, {
             gfm: true,
             breaks: true,
@@ -27,6 +40,7 @@ export namespace MarkdownToHTML {
             xhtml: true,
             headerIds: false,
             smartypants: false,
+            renderer: new MyRenderer()
         });
     }
 

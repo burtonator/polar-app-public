@@ -1,6 +1,6 @@
 import {Arrays} from "./Arrays";
 
-export type ToKeyFunction<T> = (value: T) => string;
+export type ToKeyFunction<T> = (value: T, idx: number) => string;
 
 function defaultToKey(value: any): string {
 
@@ -135,10 +135,10 @@ export class ArrayStream<T> {
 
         const set: {[key: string]: T} = {};
 
-        for (const value of this.values) {
-            const key = toKey(value);
+        this.values.forEach((value, idx) => {
+            const key = toKey(value, idx);
             set[key] = value;
-        }
+        })
 
         return new ArrayStream(Object.values(set));
 
@@ -161,12 +161,12 @@ export class ArrayStream<T> {
 
         const map: {[key: string]: ReadonlyArray<T>} = {};
 
-        for (const value of this.values) {
-            const key = toKey(value);
+        this.values.forEach((value, idx) => {
+            const key = toKey(value, idx);
 
             const entry = map[key] || [];
             map[key] = [...entry, value];
-        }
+        })
 
         return new ArrayStream<ReadonlyArray<T>>(Object.values(map));
 
@@ -305,10 +305,25 @@ export class ArrayStream<T> {
 
         const map: TypedDictionary<T> = {};
 
-        for (const value of this.values) {
-            const key = toKey(value);
+        this.values.forEach((value, idx) => {
+            const key = toKey(value, idx);
             map[key] = value;
-        }
+        });
+
+        return map;
+
+    }
+
+    public toMap2<V>(toKey: (value: T, index: number) => string,
+                    toValue: (value: T, index: number) => V ): {[key: string]: V} {
+
+        const map: {[key: string]: V} = {};
+
+        this.values.forEach((current, idx) => {
+            const key = toKey(current, idx);
+            const value = toValue(current, idx);
+            map[key] = value;
+        });
 
         return map;
 
