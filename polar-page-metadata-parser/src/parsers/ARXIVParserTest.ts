@@ -49,22 +49,33 @@ describe('ARXIVParser', function () {
         const doc = parseHTML(html, url);
         const parser = new ARXIVParser();
         const metadata = parser.parse(doc)
-        console.log(metadata)
-        /*assertJSON(metadata, {
-            url: 'https://arxiv.org/abs/2010.09039',
+        //console.log(metadata)
+        assertJSON(metadata, {
             title: 'On licenses for [Open] Hardware',
-            description: 'This document explains the basic concepts related to software and hardware\n' +
-            'licenses, and it summarizes the most popular licenses that are currently used\n' +
-            'for hardware projects. Two case studies of hardware projects at different\n' +
-            'levels of abstraction are also presented, together with a discussion of license\n' +
-            'applicability, commercial issues, code protection, and related concerns. This\n' +
-            'paper intends to help the reader understand how to release open hardware with\n' +
-            'the most appropriate license, and to answer questions that are of current\n' +
-            'interest. We have been mainly motivated by the growing influence of the open\n' +
-            'RISC-V ISA, but trying to address a wider hardware point of view.',
+            abstract: 'Abstract:  This document explains the basic concepts related to software and hardware\n' +
+                'licenses, and it summarizes the most popular licenses that are currently used\n' +
+                'for hardware projects. Two case studies of hardware projects at different\n' +
+                'levels of abstraction are also presented, together with a discussion of license\n' +
+                'applicability, commercial issues, code protection, and related concerns. This\n' +
+                'paper intends to help the reader understand how to release open hardware with\n' +
+                'the most appropriate license, and to answer questions that are of current\n' +
+                'interest. We have been mainly motivated by the growing influence of the open\n' +
+                'RISC-V ISA, but trying to address a wider hardware point of view.',
             authors: [ 'Montón, Màrius', 'Salazar, Xavier' ],
-            pdfURL: 'https://arxiv.org/pdf/2010.09039'
-        });*/
+            pdfURL: 'https://arxiv.org/pdf/2010.09039',
+            url: 'https://arxiv.org/abs/2010.09039',
+            date: '2020/10/18',
+            description: 'This document explains the basic concepts related to software and hardware\n' +
+                'licenses, and it summarizes the most popular licenses that are currently used\n' +
+                'for hardware projects. Two case studies of hardware projects at different\n' +
+                'levels of abstraction are also presented, together with a discussion of license\n' +
+                'applicability, commercial issues, code protection, and related concerns. This\n' +
+                'paper intends to help the reader understand how to release open hardware with\n' +
+                'the most appropriate license, and to answer questions that are of current\n' +
+                'interest. We have been mainly motivated by the growing influence of the open\n' +
+                'RISC-V ISA, but trying to address a wider hardware point of view.',
+            publisher: 'arXiv'
+        });
     });
 
 });

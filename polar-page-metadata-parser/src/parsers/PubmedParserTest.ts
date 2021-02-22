@@ -43,28 +43,35 @@ describe('PubmedParser', function () {
         // const parser = Parsers.get(url);
         //
 
-        const url = "https://pubmed.ncbi.nlm.nih.gov/28003037/";
+        const url = "https://pubmed.ncbi.nlm.nih.gov/31527411/";
         const html = await readTestData(url);
 
         const doc = parseHTML(html, url);
         const parser = new PubmedParser();
         const metadata = parser.parse(doc)
-        console.log(metadata)
-        /*assertJSON(metadata, {
-            url: 'https://arxiv.org/abs/2010.09039',
-            title: 'On licenses for [Open] Hardware',
-            description: 'This document explains the basic concepts related to software and hardware\n' +
-            'licenses, and it summarizes the most popular licenses that are currently used\n' +
-            'for hardware projects. Two case studies of hardware projects at different\n' +
-            'levels of abstraction are also presented, together with a discussion of license\n' +
-            'applicability, commercial issues, code protection, and related concerns. This\n' +
-            'paper intends to help the reader understand how to release open hardware with\n' +
-            'the most appropriate license, and to answer questions that are of current\n' +
-            'interest. We have been mainly motivated by the growing influence of the open\n' +
-            'RISC-V ISA, but trying to address a wider hardware point of view.',
-            authors: [ 'Montón, Màrius', 'Salazar, Xavier' ],
-            pdfURL: 'https://arxiv.org/pdf/2010.09039'
-        });*/
+        //console.log(metadata)
+        assertJSON(metadata, {
+            title: 'Med Diet 4.0: the Mediterranean diet with four sustainable benefits',
+            doi: 'https://doi.org/10.1017/s1368980016003177',
+            pmid: 'https://pubmed.ncbi.nlm.nih.gov/28003037/',
+            abstract: 'By providing a broader understanding of the many sustainable benefits of the Mediterranean diet, the Med Diet 4.0 can contribute to the revitalization of the Mediterranean diet by improving its current perception not only as a healthy diet but also a sustainable lifestyle model, with country-specifi …',
+            authors: [
+                'Dernini S',           'Berry EM',
+                'Serra-Majem L',       'La Vecchia C',
+                'Capone R',            'Medina FX',
+                'Aranceta-Bartrina J', 'Belahsen R',
+                'Burlingame B',        'Calabrese G',
+                'Corella D',           'Donini LM',
+                'Lairon D',            'Meybeck A',
+                'Pekcan AG',           'Piscopo S',
+                'Yngve A',             'Trichopoulou A',
+                ''
+            ],
+            url: 'https://pubmed.ncbi.nlm.nih.gov/31527411/',
+            date: '2017 May',
+            description: 'By providing a broader understanding of the many sustainable benefits of the Mediterranean diet, the Med Diet 4.0 can contribute to the revitalization of the Mediterranean diet by improving its current perception not only as a healthy diet but also a sustainable lifestyle model, with country-specifi …',
+            publisher: 'pubmed'
+        });
     });
 
 });

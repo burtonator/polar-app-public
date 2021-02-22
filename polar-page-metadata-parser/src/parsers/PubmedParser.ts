@@ -11,12 +11,9 @@ export class PubmedParser implements Parser {
 
       const pmid = doc.querySelector("meta[name='citation_abstract_html_url']")?.getAttribute("content") || undefined
 
-      var abstract = ""
-      for (const paragraph of Array.from(doc.querySelectorAll("#abstract p"))) {
-          abstract += paragraph.textContent?.trim()
-      }
+      const abstract = doc.querySelector("meta[name='description']")?.getAttribute("content") || undefined
 
-      var authors = doc.querySelector("meta[name='citation_authors']")?.getAttribute("content")?.split(";")
+      let authors = doc.querySelector("meta[name='citation_authors']")?.getAttribute("content")?.split(";")
 
       const date = doc.querySelector("meta[name='citation_date']")?.getAttribute("content") || undefined
 

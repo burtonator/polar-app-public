@@ -7,9 +7,9 @@ export class ARXIVParser implements Parser {
 
         const title = doc.querySelector("meta[name='citation_title']")?.getAttribute("content") || undefined
 
-        const abstract = doc.querySelector("blockquote")?.textContent || undefined
+        const abstract = doc.querySelector("blockquote")?.textContent?.trim() || undefined
 
-        var authors : string[] = []
+        let authors : string[] = []
 
         for (const metaInfo of Array.from(doc.querySelectorAll("meta[name='citation_author']"))) {
             const author = metaInfo.getAttribute("content")
