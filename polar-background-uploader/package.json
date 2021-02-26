@@ -1,6 +1,6 @@
 {
   "name": "polar-background-uploader",
-  "version": "2.1.15",
+  "version": "2.1.16",
   "description": "Provides an API for searching 3rd party APIs",
   "main": "index.js",
   "scripts": {
@@ -14,11 +14,11 @@
   "devDependencies": {
     "@types/mocha": "=8.0.4",
     "mocha": "=8.2.1",
-    "polar-test": "^2.1.15",
+    "polar-test": "^2.1.16",
     "tslint": "6.1.2",
     "typescript": "4.1.3"
   },
   "dependencies": {
-    "polar-shared": "^2.1.15"
+    "polar-shared": "^2.1.16"
   }
 }
