@@ -58,11 +58,12 @@ export namespace HTMLToMarkdown {
         }
     }
 
-    const turndownService = new MyTurndownService( {
+    const turndownService = new MyTurndownService({
         codeBlockStyle: 'fenced',
         hr: '---',
-        headingStyle: 'atx'
-    } );
+        headingStyle: 'atx',
+        emDelimiter: "*"
+    });
 
     turndownService.use( [
         gfm,
@@ -73,7 +74,7 @@ export namespace HTMLToMarkdown {
      * Parses HTML to a markdown.
      */
     export function html2markdown( html: string ) {
-        return turndownService.turndown( html );
+        return turndownService.turndown(html);
     }
 
 }

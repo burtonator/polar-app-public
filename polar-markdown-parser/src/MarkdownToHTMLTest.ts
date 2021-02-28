@@ -8,6 +8,10 @@ describe('MarkdownToHTML', function() {
 
         assert.equal(markdown2html('**this is bold**'), '<p><b>this is bold</b></p>\n');
 
+        assert.equal(markdown2html('*this is italic*'), '<p><i>this is italic</i></p>\n');
+
+        assert.equal(markdown2html('_this is italic_'), '<p><i>this is italic</i></p>\n');
+
     });
 
 });
