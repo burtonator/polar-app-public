@@ -87,7 +87,10 @@ export class DefaultRewrites {
                 "source": "/logout.html",
                 "destination": "/apps/repository/logout.html"
             },
-
+            {
+                "source": "/apps/stories/**",
+                "destination": "/apps/stories/index.html"
+            },
             {
                 "source": "/pdfjsWorker-bundle.js",
                 "destination": "/web/dist/pdfjsWorker-bundle.js"
