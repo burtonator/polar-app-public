@@ -12,7 +12,7 @@ describe('MarkdownToHTML', function() {
 
         assert.equal(markdown2html('_this is italic_'), '<p><i>this is italic</i></p>\n');
 
-    });
+    }); 
 
     it('single quote', () => {
         assert.equal(markdown2html("hello 'world'"), '\n');
