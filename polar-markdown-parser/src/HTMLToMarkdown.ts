@@ -65,6 +65,30 @@ export namespace HTMLToMarkdown {
         emDelimiter: "*"
     });
 
+    turndownService.addRule('strikethrough', {
+        filter: ['del', 's', 'strike' as any],
+        // tslint:disable-next-line:object-literal-shorthand
+        replacement: function (content) {
+            return '~' + content + '~'
+        }
+    });
+
+    turndownService.addRule('subscript', {
+        filter: ['sub'],
+        // tslint:disable-next-line:object-literal-shorthand
+        replacement: function (content) {
+            return '<sub>' + content + '</sub>'
+        }
+    });
+
+    turndownService.addRule('superscript', {
+        filter: ['sup'],
+        // tslint:disable-next-line:object-literal-shorthand
+        replacement: function (content) {
+            return '<sup>' + content + '</sup>'
+        }
+    });
+
     turndownService.use( [
         gfm,
         // todoList

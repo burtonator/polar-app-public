@@ -4,18 +4,18 @@ import {assert} from 'chai';
 
 describe('MarkdownToHTML', function() {
 
-    it('basic', function() {
+    it('basic test of formatting', function() {
 
-        assert.equal(markdown2html('**this is bold**'), '<p><b>this is bold</b></p>\n');
+        assert.equal(markdown2html('**this is bold**'), '<p><b>this is bold</b></p>');
+        assert.equal(markdown2html('*this is italic*'), '<p><i>this is italic</i></p>');
+        assert.equal(markdown2html('~~hello~~'), '<p><del>hello</del></p>');
+        assert.equal(markdown2html('<sub>hello</sub>'), '<p><sub>hello</sub></p>');
+        assert.equal(markdown2html('<sup>hello</sup>'), '<p><sup>hello</sup></p>');
 
-        assert.equal(markdown2html('*this is italic*'), '<p><i>this is italic</i></p>\n');
-
-        assert.equal(markdown2html('_this is italic_'), '<p><i>this is italic</i></p>\n');
-
-    }); 
+    });
 
     it('single quote', () => {
-        assert.equal(markdown2html("hello 'world'"), '\n');
+        assert.equal(markdown2html("hello 'world'"), '<p>hello \'world\'</p>');
     });
 
     it('special chars', () => {
@@ -37,6 +37,5 @@ describe('MarkdownToHTML', function() {
         assert.equal(markdown2html("'"), `<p>'</p>`);
 
     });
-
 
 });
