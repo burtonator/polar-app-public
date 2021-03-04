@@ -41,7 +41,9 @@ export namespace MarkdownToHTML {
             headerIds: false,
             smartypants: false,
             renderer: new MyRenderer()
-        });
+        }).replace(/&#39;/g, "'")
+          .trim();
+
     }
 
 }
