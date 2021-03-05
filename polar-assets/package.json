@@ -1,6 +1,6 @@
 {
   "name": "polar-assets",
-  "version": "2.1.24",
+  "version": "2.1.25",
   "description": "",
   "scripts": {
     "test": "echo no tests",
