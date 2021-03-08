@@ -9,6 +9,8 @@ export type BlockIDStr = IDStr;
 
 export type NoteTargetStr = string;
 
+export type GraphIDStr = string;
+
 /**
  * Blocks are a container object for content.
  *
@@ -22,6 +24,17 @@ export type NoteTargetStr = string;
 export interface IBlock {
 
     readonly id: BlockIDStr;
+
+    /**
+     * The root node of this tree.  If this block is the root the root and the
+     * id are the same.
+     */
+    readonly root: NoteIDStr;
+
+    /**
+     * The graph to which this page belongs.
+     */
+    readonly graph: GraphIDStr;
 
     readonly parent: NoteIDStr | undefined;
 
