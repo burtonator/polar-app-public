@@ -1,15 +1,12 @@
 import {IDStr} from "../../util/Strings";
 import {ISODateTimeString} from "../ISODateTimeStrings";
-import {ITextHighlight} from "../ITextHighlight";
-import {IAreaHighlight} from "../IAreaHighlight";
-import {IComment} from "../IComment";
 
 export type NoteIDStr = IDStr;
 export type BlockIDStr = IDStr;
 
 export type NoteTargetStr = string;
 
-export type GraphIDStr = string;
+export type NSpaceIDStr = string;
 
 /**
  * Blocks are a container object for content.
@@ -34,7 +31,7 @@ export interface IBlock {
     /**
      * The graph to which this page belongs.
      */
-    readonly graph: GraphIDStr;
+    readonly nspace: NSpaceIDStr;
 
     readonly parent: NoteIDStr | undefined;
 
@@ -59,8 +56,6 @@ export interface IBlock {
     readonly created: ISODateTimeString;
 
     readonly updated: ISODateTimeString;
-
-    // readonly shares?:
 
 }
 

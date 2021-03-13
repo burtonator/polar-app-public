@@ -3,9 +3,9 @@ import {BlockIDStr} from "./IBlock";
 /**
  * A reference to another block rather than duplicating content.
  */
-export interface IBlockReferenceNote {
+export interface IBlockEmbedNote {
 
-    readonly type: 'ref';
+    readonly type: 'block-embed';
 
 
     /**
