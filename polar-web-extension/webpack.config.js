@@ -10,6 +10,7 @@ const mode = process.env.NODE_ENV || 'production';
 const isDev = process.env.NODE_ENV === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
 const devtool = isDev ? "inline-source-map" : "source-map";
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 const workers = require('os').cpus().length - 1;
 
@@ -126,7 +127,12 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ]
+        extensions: [ '.tsx', '.ts', '.js' ],
+        fallback: {
+            fs: false,
+            net: false,
+            tls: false,
+        }
     },
     devtool,
     output: {
@@ -134,13 +140,8 @@ module.exports = {
         filename: '[name]-bundle.js',
         // publicPath: '/web/js/apps'
     },
-    node: {
-        fs: 'empty',
-        net: 'empty',
-        tls: 'empty',
-        electron: 'empty',
-    },
     plugins: [
+        new NodePolyfillPlugin(),
         // new BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({}),
         new CopyPlugin({
@@ -159,7 +160,7 @@ module.exports = {
             // disable caching to:  node_modules/.cache/terser-webpack-plugin/
             // because intellij will index this data and lock up my machine
             // and generally waste space and CPU
-            cache: ".terser-webpack-plugin",
+            // cache: ".terser-webpack-plugin",
             terserOptions: {
                 output: { ascii_only: true },
             }})
