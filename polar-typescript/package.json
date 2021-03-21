@@ -1,6 +1,6 @@
 {
   "name": "polar-typescript",
-  "version": "2.1.29",
+  "version": "2.1.30",
   "description": "Typescript support and all dependent packages",
   "scripts": {
     "test": "echo",
@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/estree": "=0.0.46",
     "@typescript-eslint/eslint-plugin": "=4.18.0",
     "@typescript-eslint/parser": "=4.18.0",
     "eslint": "=7.22.0",
-    "@types/estree": "=0.0.46",
     "eslint-config-prettier": "=8.1.0",
     "eslint-plugin-import": "=2.22.1",
     "eslint-plugin-jsdoc": "=32.3.0",
