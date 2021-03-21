@@ -1,4 +1,4 @@
-import PDFJS from "pdfjs-dist";
+import * as PDFJS from "pdfjs-dist";
 import {Paths} from "polar-shared/src/util/Paths";
 
 export namespace PDFWorkers {

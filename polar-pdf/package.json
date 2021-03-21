@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@types/node": "12.12.32",
-    "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
+    "pdfjs-dist": "=2.8.250-polar.3",
     "polar-shared": "^2.1.29",
     "polar-test": "^2.1.29"
   },

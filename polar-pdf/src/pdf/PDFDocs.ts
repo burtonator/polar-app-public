@@ -1,4 +1,6 @@
-import PDFJS, {
+
+import * as PDFJS from 'pdfjs-dist';
+import {
     DocumentInitParameters,
     PDFDocumentLoadingTask
 } from "pdfjs-dist";
