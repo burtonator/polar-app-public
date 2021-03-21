@@ -1,10 +1,8 @@
-import {PDFDocumentProxy} from "pdfjs-dist";
-import {Strings} from "polar-shared/src/util/Strings";
 import {Whitespace} from "polar-shared/src/util/Whitespace";
+import PDFJS from "pdfjs-dist";
+import {PDFDocumentProxy, TextItem } from "pdfjs-dist/types/display/api";
 
 export namespace PDFTitleExtractor {
-
-    import TextItem = _pdfjs.TextItem;
 
     export async function extract(doc: PDFDocumentProxy): Promise<string | undefined> {
 

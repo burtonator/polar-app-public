@@ -1,12 +1,12 @@
 import {PathOrURLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
-import {TextContent} from "pdfjs-dist";
 import {PDFDocs} from "./PDFDocs";
+import { ITextContent } from "./Types";
 
 export class PDFText {
 
     public static async getText(docPathOrURL: PathOrURLStr,
-                                callback: (pageNum: number, textContent: TextContent) => void) {
+                                callback: (pageNum: number, textContent: ITextContent) => void) {
 
         const docURL = await URLs.toURL(docPathOrURL);
 

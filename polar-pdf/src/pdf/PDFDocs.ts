@@ -1,10 +1,9 @@
-import PDFJS, {
-    DocumentInitParameters,
-    PDFDocumentLoadingTask
-} from "pdfjs-dist";
+import PDFJS from "pdfjs-dist";
 import {PDFWorkers} from "./PDFWorkers";
 import {URLStr} from "polar-shared/src/util/Strings";
+import {IDocumentInitParameters} from "./Types";
 
+// FIXME: I think the pdfjs types are broken now...
 PDFJS.GlobalWorkerOptions.workerSrc = PDFWorkers.computeWorkerSrcPath();
 
 /**
@@ -94,9 +93,9 @@ export namespace PDFDocs {
      *   PDF.js (see `web/debugger.js`). The default value is `false`.
      * @param opts
      */
-    export function getDocument(opts: Opts): PDFDocumentLoadingTask {
+    export function getDocument(opts: Opts): PDFJS.PDFDocumentLoadingTask {
 
-        const init: DocumentInitParameters = {
+        const init: IDocumentInitParameters = {
             ...opts,
             cMapPacked: true,
             cMapUrl: '/pdfjs-dist/cmaps/',

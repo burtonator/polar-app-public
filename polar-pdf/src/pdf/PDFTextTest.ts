@@ -1,5 +1,6 @@
 import {PDFText} from "./PDFText";
-import {TextContent} from "pdfjs-dist";
+import PDFJS from 'pdfjs-dist';
+import {ITextContent} from "./Types";
 
 xdescribe('PDFText', function() {
 
@@ -7,7 +8,7 @@ xdescribe('PDFText', function() {
 
         // file:///home/burton/Downloads/manual_dsc_envoy.pdf
 
-        const dumpTextContent = (page: number, textContent: TextContent) => {
+        const dumpTextContent = (page: number, textContent: ITextContent) => {
             // const rawText = textContent.items.map(current => current.str).join(' ');
             // console.log(`${page}: ${rawText}: `);
             // const fonts = textContent.items.map(current => current.fontName).join(', ');

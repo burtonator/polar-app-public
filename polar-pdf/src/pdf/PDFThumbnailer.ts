@@ -1,4 +1,3 @@
-import {PageViewport} from "pdfjs-dist";
 import {PDFDocs} from "./PDFDocs";
 import {Canvases} from "polar-shared/src/util/Canvases";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
@@ -8,6 +7,8 @@ import {
     PDFPageViewOptions
 } from "pdfjs-dist/web/pdf_viewer";
 import {IThumbnail, ThumbnailerGenerateOpts, Thumbnailers} from "polar-shared/src/util/Thumbnailer";
+import PDFJS from "pdfjs-dist";
+import { PageViewport } from "pdfjs-dist/types/display/display_utils";
 
 export namespace PDFThumbnailer {
 

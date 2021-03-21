@@ -15,7 +15,6 @@
   "devDependencies": {
     "@types/chai": "4.2.11",
     "@types/mocha": "=8.0.4",
-    "@types/pdfjs-dist": "^2.1.29",
     "chai": "4.2.0",
     "mocha": "=8.2.1",
     "polar-karma": "^2.1.29",
@@ -25,7 +24,7 @@
   },
   "dependencies": {
     "@types/node": "12.12.32",
-    "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
+    "pdfjs-dist": "=2.8.250-polar.3",
     "polar-shared": "^2.1.29",
     "polar-test": "^2.1.29"
   },
