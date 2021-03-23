@@ -1,6 +1,6 @@
 {
   "name": "polar-exporters",
-  "version": "2.1.30",
+  "version": "2.1.31",
   "description": "Provides APIs and an implementation of exporters for Polar data",
   "main": "index.js",
   "scripts": {
@@ -14,11 +14,11 @@
   "devDependencies": {
     "@types/mocha": "=8.0.4",
     "mocha": "=8.2.1",
-    "polar-test": "^2.1.30",
+    "polar-test": "^2.1.31",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "polar-shared": "^2.1.30"
+    "polar-shared": "^2.1.31"
   }
 }
