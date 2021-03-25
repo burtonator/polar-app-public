@@ -682,7 +682,7 @@ export interface CreateDirResult {
 
 export interface WriteFileAsyncOptions {
 
-    readonly encoding?: string | null;
+    readonly encoding?: BufferEncoding | null;
 
     readonly mode?: number | string;
 
@@ -703,7 +703,7 @@ export interface WriteFileAsyncOptions {
 }
 
 export interface AppendFileOptions {
-    encoding?: string | null;
+    encoding?: BufferEncoding | null;
     mode: number;
     flag: string;
 }
@@ -718,7 +718,7 @@ export interface FileDeleted {
 
 export type CreateReadStreamOptions = string | {
     flags?: string;
-    encoding?: string;
+    encoding?: BufferEncoding;
     fd?: number;
     mode?: number;
     autoClose?: boolean;
@@ -728,13 +728,16 @@ export type CreateReadStreamOptions = string | {
 };
 
 export type CreateWriteStreamOptions = string | {
-    flags?: string;
-    encoding?: string;
-    fd?: number;
-    mode?: number;
-    autoClose?: boolean;
-    start?: number;
+    flags?: string | undefined;
+    encoding?: BufferEncoding | undefined;
+    fd?: number | undefined;
+    mode?: number | undefined;
+    autoClose?: boolean | undefined;
+    start?: number | undefined;
+    end?: number | undefined;
+    highWaterMark?: number | undefined;
 };
+
 
 /**
  * Reference to a local file.

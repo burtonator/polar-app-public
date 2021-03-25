@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@types/blueimp-md5": "^2.7.0",
-    "@types/node": "12.12.32",
+    "@types/node": "=14.14.35",
     "@types/node-fetch": "2.5.7",
     "@types/stopword": "^0.3.0",
     "@types/twitter-text": "^2.0.0",

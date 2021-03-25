@@ -17,7 +17,7 @@ const HEIGHT = 900 * 1.2;
 
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
-export const APP_ICON = FilePaths.resolve('build', 'icons', 'icon.ico');
+export const APP_ICON = FilePaths.resolve(__dirname, 'build', 'icons', 'icon.ico');
 
 export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = Object.freeze({
     backgroundColor: '#FFF',

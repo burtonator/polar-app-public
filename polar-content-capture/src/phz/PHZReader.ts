@@ -78,7 +78,7 @@ export class PHZReader implements CompressedReader {
             throw new Error("No buffer for path: " + path);
         }
 
-        cached = JSON.parse(buffer.toString("UTF-8"));
+        cached = JSON.parse(buffer.toString("utf-8"));
 
         this.cache[key] = cached;
 

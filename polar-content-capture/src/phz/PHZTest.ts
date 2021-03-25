@@ -125,14 +125,14 @@ describe('PHZTest', function() {
 
         const buffer = await phzReader.getResource(resourceEntry);
 
-        const content = buffer.toString("UTF-8");
+        const content = buffer.toString("utf-8");
 
         assert.equal(content, "<html></html>");
 
         const stream = await phzReader.getResourceAsStream(resourceEntry);
         assert.ok(stream);
 
-        assert.equal((await Streams.toBuffer(stream)).toString("UTF-8"), "<html></html>");
+        assert.equal((await Streams.toBuffer(stream)).toString("utf-8"), "<html></html>");
 
         // test getting the metadata (when there isn't any)
 
