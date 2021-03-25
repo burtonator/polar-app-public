@@ -21,6 +21,6 @@
     "@types/xmldom": "^0.1.29",
     "polar-search-api": "^2.1.31",
     "polar-shared": "^2.1.31",
-    "xmldom": "^0.1.27"
+    "xmldom": "^0.5.0"
   }
 }
