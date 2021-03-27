@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "compile": "npm run-script tsc && npm run-script generate-release-metadata",
-    "build": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/",
+    "_build": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/",
+    "build": "echo noop",
     "tsc": "tsc",
     "generate-release-metadata": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/ > src/release-metadata.json"
   },
