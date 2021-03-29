@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DEST=dist
+ZIP=../polar-web-extension.zip
 
 set -e
 
@@ -11,4 +12,6 @@ cp manifest.json ${DEST}
 
 ./bin/generate-manifest.js
 
-(cd dist && zip -r ../polar-web-extension.zip .)
+(cd dist && zip -r ${ZIP} .)
+
+echo wrote ${ZIP}

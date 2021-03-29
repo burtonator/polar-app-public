@@ -1,7 +1,7 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import {MUIAppRoot} from "polar-bookshelf/web/js/mui/MUIAppRoot";
-import {LoginScreen} from "polar-bookshelf/apps/repository/js/login/LoginScreen";
+import {SignInScreen} from "polar-bookshelf/apps/repository/js/login/SignInScreen";
 
 export class LoginApp {
 
@@ -18,7 +18,7 @@ export class LoginApp {
     public static start() {
         ReactDOM.render(
             <MUIAppRoot>
-                <LoginScreen signInFlow="popup"/>
+                <SignInScreen/>
             </MUIAppRoot>
             ,
             document.getElementById('root')!
