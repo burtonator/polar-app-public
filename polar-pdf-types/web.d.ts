@@ -111,8 +111,11 @@ declare namespace _pdfjs {
 
     /**
      * @param {string|Array} dest - The named, or explicit, PDF destination.
+     * @Deprecated use goToDesination
      */
     navigateTo(dest: Destination): void;
+
+    goToDestination(dest: Destination): void;
 
     /**
      * @param {string|Array} dest - The PDF destination object.
