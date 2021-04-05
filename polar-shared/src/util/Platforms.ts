@@ -17,12 +17,27 @@ export class Platforms {
     public static get(): Platform {
 
         return Optional.first<Platform>(() => this.getWithUserAgent(),
+                                        () => this.getWithNavigatorTouchPoints(),
                                         () => this.getWithProcessPlatform()).getOrElse(Platform.UNKNOWN);
 
     }
 
     private static currentUserAgent() {
         return typeof navigator !== 'undefined' ? navigator.userAgent : undefined;
+    }
+
+    public static getWithNavigatorTouchPoints(): Platform | undefined {
+
+        // this is a one-off hack for iPad OS on iPad PRO which lies about it's user agent.
+        //
+        // https://developer.apple.com/forums/thread/119186
+
+        if (navigator.userAgent.includes("Macintosh; Intel Mac OS X ") && navigator.maxTouchPoints === 5) {
+            return Platform.IOS;
+        }
+
+        return undefined;
+
     }
 
     /**
