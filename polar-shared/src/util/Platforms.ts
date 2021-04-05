@@ -28,6 +28,10 @@ export class Platforms {
 
     public static getWithNavigatorTouchPoints(): Platform | undefined {
 
+        if (typeof navigator === 'undefined') {
+            return undefined;
+        }
+
         // this is a one-off hack for iPad OS on iPad PRO which lies about it's user agent.
         //
         // https://developer.apple.com/forums/thread/119186
