@@ -22,7 +22,7 @@
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "idb-keyval": "=5.0.1",
+    "idb-keyval": "=5.0.4",
     "polar-shared": "^2.1.38"
   },
   "files": [
