@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import { IndexedDBCacheProviders } from './IndexedDBCacheProviders';
 import {ICachedDoc} from "../ICachedDoc";
 import {Numbers} from "polar-shared/src/util/Numbers";
