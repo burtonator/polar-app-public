@@ -1,6 +1,13 @@
 /**
  * Various functions and types around billing.
  */
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+
+export interface Trial {
+    readonly started: ISODateTimeString;
+    readonly expires: ISODateTimeString;
+}
+
 export namespace Billing {
 
     export type V1Plan = 'free' | 'bronze' | 'silver' | 'gold';
@@ -26,8 +33,17 @@ export namespace Billing {
      * know the duration of how often it's charged.
      */
     export interface Subscription {
+
         readonly plan: Plan;
+
         readonly interval: Interval;
+
+        /**
+         * When the user has started a trial we set this with the metadata for
+         * the trial.
+         */
+        readonly trial?: Trial;
+
     }
 
     export interface V2Subscription {
