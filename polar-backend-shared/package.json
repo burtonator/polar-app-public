@@ -1,6 +1,6 @@
 {
   "name": "polar-backend-shared",
-  "version": "2.1.40",
+  "version": "2.1.41",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "polar-shared-webserver": "^2.1.40",
+    "polar-shared-webserver": "^2.1.41",
     "tsconfig": "^7.0.0"
   }
 }
