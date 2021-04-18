@@ -86,15 +86,41 @@ describe('Paths', function() {
 
 
     describe('basename', function() {
+        it("Should work with empty strings", function () {
+            assert.equal(Paths.basename(""), "");
+        });
 
         it("basic", function () {
-            assert.equal(Paths.basename("hello"), 'hello');
+            assert.equal(Paths.basename("hello"), "hello");
         });
 
         it("basic", function () {
             assert.equal(Paths.basename("/files/0x000"), "0x000");
         });
 
+        it("trailing slash", function () {
+            assert.equal(Paths.basename("/files/0x000/"), "0x000");
+        });
+
     });
 
+    describe("dirname", () => {
+        it("Should work with empty strings", () => {
+            assert.equal(Paths.dirname("."), ".");
+        });
+
+        it("Should work with paths that only have one section", () => {
+            assert.equal(Paths.dirname("/foo"), "/");
+        });
+
+        it("Should work with 2 parts", () => {
+            assert.equal(Paths.dirname("/foo/world.foo"), "/foo");
+            assert.equal(Paths.dirname("/foo////world"), "/foo///");
+        });
+
+        it("Random", () => {
+            assert.equal(Paths.dirname("/foo/bar/baz/potato//"), "/foo/bar/baz");
+            assert.equal(Paths.dirname("/foo/bar/baz/potato///wot.txt"), "/foo/bar/baz/potato//");
+        });
+    });
 });
