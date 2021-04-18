@@ -45,17 +45,32 @@ export class Paths {
      * Return the last portion of the path.
      *
      */
-    public static basename(data: string) {
-
-        const end = data.lastIndexOf("/");
-
-        if (end <= -1) {
-            // TODO: might want to return an Optional here.
-            return data;
-        }
-
-        return data.substring(end + 1, data.length);
-
+    public static basename(data: string): string {
+        return this.splitPath(data)[2];
     }
 
+    /**
+     * Return the dirname part of a path
+     *
+     */
+    public static dirname(data: string): string {
+        const parts = Paths.splitPath(data);
+        const root = parts[0];
+        let dir = parts[1];
+
+        if (!root && !dir) {
+            return ".";
+        }
+
+        if (dir) {
+            dir = dir.substr(0, dir.length - 1);
+        }
+
+        return root + dir;
+    }
+
+    private static splitPath(a: string): string[] {
+        const pathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+        return pathRe.exec(a)!.slice(1); // This will never be null
+    }
 }
