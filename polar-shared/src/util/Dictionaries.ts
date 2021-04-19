@@ -242,7 +242,7 @@ export namespace Dictionaries {
         }
 
         if (typeof dict !== 'object') {
-            // if we're not a dictionary we're just return the default dictionary.
+            // if we're not a dictionary we're just return the current value.
             return dict;
         }
 
