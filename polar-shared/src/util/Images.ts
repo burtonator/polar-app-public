@@ -8,7 +8,6 @@ export namespace Images {
         return new Promise<IDimensions>((resolve, reject) => {
 
             const img = new Image();
-
             img.onload = () => {
                 resolve({width: img.width, height: img.height});
             }
