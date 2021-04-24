@@ -1,0 +1,46 @@
+{
+    "compilerOptions": {
+
+        "declaration": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noImplicitThis": false,
+        "alwaysStrict": true,
+        "listEmittedFiles": false,
+        "noImplicitReturns": true,
+        "removeComments": true,
+        "strictFunctionTypes": true,
+        "inlineSourceMap": true,
+        "inlineSources": true,
+        "target": "ES2015",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowJs": false,
+        "stripInternal": true,
+        "checkJs": false,
+        "jsx": "react",
+        "esModuleInterop": true,
+
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+
+        "forceConsistentCasingInFileNames": true,
+
+        "allowSyntheticDefaultImports": true,
+
+        "baseUrl": ".",
+        "paths": {
+            "*": ["node_modules/*"]
+        },
+        "lib": ["es2019", "dom"]
+
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+    ]
+}
