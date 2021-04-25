@@ -6,6 +6,12 @@ export namespace Asserts {
         }
     }
 
+    export function assertNotNull<T>(val: T | null): asserts val is T {
+        if (val === null) {
+            throw new Error("val is null");
+        }
+    }
+
     export function assertPresent<T>(val: T | null | undefined): asserts val is T {
 
         if (val === null) {

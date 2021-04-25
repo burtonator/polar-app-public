@@ -28,6 +28,18 @@ describe('ArrayStreams', function() {
 
     });
 
+    it("filterPresent", function() {
+
+        // make sure types compile right...
+        const values: ReadonlyArray<number>
+            = arrayStream([1, 2, 3, null, undefined])
+                .filterPresent()
+                .collect();
+
+        assertJSON(values, [1, 2, 3])
+
+    });
+
     it("flatMap typed", function() {
 
         interface Animal {

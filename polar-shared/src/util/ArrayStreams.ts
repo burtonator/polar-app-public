@@ -116,6 +116,15 @@ export class ArrayStream<T> {
         return new ArrayStream<T>(values);
     }
 
+    /**
+     * Like filter but we only return present items (not undefined and not null).
+     */
+    public filterPresent(): ArrayStream<Exclude<T, undefined | null>> {
+        const values = this.values.filter((record, index) => record !== undefined && record !== null);
+        return new ArrayStream<Exclude<T, undefined | null>>(values as any);
+
+    }
+
     public head(limit: number): ArrayStream<T> {
         const values = Arrays.head(this.values, limit);
         return new ArrayStream<T>(values);
