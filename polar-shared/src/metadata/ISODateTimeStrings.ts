@@ -4,10 +4,9 @@ import {DurationStr, TimeDurations} from '../util/TimeDurations';
 // TODO: these should all be Str not String
 
 /**
- * An ISO Date with a Time
+ * An ISO Date with a Time with millisecond resolution
  */
 export type ISODateTimeString = string;
-
 
 /**
  * An ISO date with just year
