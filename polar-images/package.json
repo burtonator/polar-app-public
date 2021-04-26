@@ -1,6 +1,6 @@
 {
   "name": "polar-images",
-  "version": "2.1.45",
+  "version": "2.1.47",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,15 +12,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/blueimp-load-image": "=5.14.2",
     "@types/chai": "4.2.11",
     "@types/mocha": "=8.0.4",
-    "chai": "4.2.0",
-    "mocha": "=8.2.1",
-    "polar-test": "^2.1.45",
-    "tslint": "6.1.2",
-    "typescript": "=4.2.3",
-    "@types/blueimp-load-image": "=5.14.2",
     "blueimp-load-image": "=5.14.0",
-    "exif-js": "=2.3.0"
+    "chai": "4.2.0",
+    "exif-js": "=2.3.0",
+    "mocha": "=8.2.1",
+    "polar-test": "^2.1.47",
+    "tslint": "6.1.2",
+    "typescript": "=4.2.3"
   }
 }
