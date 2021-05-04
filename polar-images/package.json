@@ -1,6 +1,6 @@
 {
   "name": "polar-images",
-  "version": "2.1.48",
+  "version": "2.1.49",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "chai": "4.2.0",
     "exif-js": "=2.3.0",
     "mocha": "=8.2.1",
-    "polar-test": "^2.1.48",
+    "polar-test": "^2.1.49",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   }
