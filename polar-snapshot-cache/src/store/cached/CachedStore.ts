@@ -613,6 +613,12 @@ export namespace CachedStore {
                 return this;
             }
 
+            update(documentRef: IDocumentReference, path: string, data: TDocumentData): IWriteBatch {
+                throw new Error("Not implemented");
+                // this._batch.update(documentRef, path, data)
+                // return this;
+            }
+
             async commit(): Promise<void> {
 
                 const handleCacheMutation = async () => {

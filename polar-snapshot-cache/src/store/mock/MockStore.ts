@@ -60,6 +60,10 @@ export namespace MockStore {
                 return this;
             }
 
+            update(documentRef: IDocumentReference, path: string, data: TDocumentData): IWriteBatch {
+                throw new Error("Not implemented");
+            }
+
             async commit(): Promise<void> {
 
             }

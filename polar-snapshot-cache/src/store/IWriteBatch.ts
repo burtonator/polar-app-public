@@ -10,6 +10,8 @@ export interface IWriteBatch {
 
     set(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch;
 
+    update(documentRef: IDocumentReference, path: string, data: TDocumentData): IWriteBatch;
+
     commit(): Promise<void>;
 
 }
