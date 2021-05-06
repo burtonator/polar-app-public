@@ -1,5 +1,4 @@
 import {IMarkdownNote} from "./IMarkdownNote";
-import {IBlockEmbedNote} from "./IBlockEmbedNote";
 import {ICodeNote} from "./ICodeNote";
 import {INamedNote} from "./INamedNote";
 import {ILatexNote} from "./ILatexNote";
@@ -12,7 +11,6 @@ import {
 
 export type INote = IMarkdownNote |
                     INamedNote |
-                    IBlockEmbedNote |
                     ILatexNote |
                     ICodeNote |
                     ITextHighlightAnnotationNote |
