@@ -10,15 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "karma": "=6.0.3",
+    "karma": "=6.3.1",
     "karma-chai": "=0.1.0",
     "karma-chrome-launcher": "=3.1.0",
     "karma-firefox-launcher": "=2.1.0",
     "karma-mocha": "=2.0.1",
     "karma-safari-launcher": "=1.0.0",
     "karma-sourcemap-loader": "=0.3.8",
-    "karma-typescript": "=5.2.0",
-    "karma-typescript-es6-transform": "=5.2.0",
-    "karma-webpack": "=4.0.2"
+    "karma-typescript": "=5.5.1",
+    "karma-typescript-es6-transform": "=5.5.1",
+    "karma-webpack": "=5.0.0"
   }
 }
