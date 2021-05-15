@@ -3,6 +3,7 @@ import {IWriteBatch} from "../IWriteBatch";
 import {IDocumentReference} from "../IDocumentReference";
 import {ICollectionReference} from "../ICollectionReference";
 import { IFirestore } from "../IFirestore";
+import {TUpdateData} from "../TUpdateData";
 
 /**
  * This is a mock store that works just like Firestore but runs out of RAM so that
@@ -60,12 +61,17 @@ export namespace MockStore {
                 return this;
             }
 
-            update(documentRef: IDocumentReference, path: string, data: TDocumentData): IWriteBatch {
+            // update(documentRef: IDocumentReference, data: TUpdateData): IWriteBatch {
+            //     throw new Error("Not implemented");
+            // }
+
+            update(documentRef: IDocumentReference, path: string, value: any): IWriteBatch {
                 throw new Error("Not implemented");
             }
 
-            async commit(): Promise<void> {
 
+            async commit(): Promise<void> {
+                // noop
             }
 
         }

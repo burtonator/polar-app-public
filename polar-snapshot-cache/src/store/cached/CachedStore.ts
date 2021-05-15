@@ -24,6 +24,7 @@ import {ICachedDoc} from "../../ICachedDoc";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import { IFirestore } from "../IFirestore";
+import {TUpdateData} from "../TUpdateData";
 
 export namespace CachedStore {
 
@@ -613,7 +614,7 @@ export namespace CachedStore {
                 return this;
             }
 
-            update(documentRef: IDocumentReference, path: string, data: TDocumentData): IWriteBatch {
+            update(documentRef: IDocumentReference, path: string, value: any): IWriteBatch {
                 throw new Error("Not implemented");
                 // this._batch.update(documentRef, path, data)
                 // return this;

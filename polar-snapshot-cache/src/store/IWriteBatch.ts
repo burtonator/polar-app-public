@@ -1,5 +1,6 @@
 import {IDocumentReference} from "./IDocumentReference";
 import {TDocumentData} from "./TDocumentData";
+import {TUpdateData} from "./TUpdateData";
 
 export interface IWriteBatch {
 
@@ -10,7 +11,16 @@ export interface IWriteBatch {
 
     set(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch;
 
-    update(documentRef: IDocumentReference, path: string, data: TDocumentData): IWriteBatch;
+    // update(documentRef: IDocumentReference, data: TUpdateData): IWriteBatch;
+
+    update(documentRef: IDocumentReference, field: string, value: any): IWriteBatch;
+
+    // update(
+    //     documentRef: DocumentReference<any>,
+    //     field: string | FieldPath,
+    //     value: any,
+    //     ...moreFieldsAndValues: any[]
+    // ): WriteBatch;
 
     commit(): Promise<void>;
 

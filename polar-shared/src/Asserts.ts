@@ -24,5 +24,30 @@ export namespace Asserts {
 
     }
 
+    export function assertNumber<T>(val: any): asserts val is number {
+
+        if (typeof val !== 'number') {
+            throw new Error("val is not a number: " + (typeof val));
+        }
+
+    }
+
+    export function assertString<T>(val: any): asserts val is string {
+
+        if (typeof val !== 'string') {
+            throw new Error("val is not a string: " + (typeof val));
+        }
+
+    }
+
+    export function assertObject<T>(val: any): asserts val is object {
+
+        if (typeof val !== 'object') {
+            throw new Error("val is not a object: " + (typeof val));
+        }
+
+    }
+
+
 }
 
