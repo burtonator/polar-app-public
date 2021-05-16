@@ -15,6 +15,10 @@ module.exports = (config) => {
 
         reporters: ["dots", "karma-typescript"],
 
-        singleRun: true
+        singleRun: true,
+        karmaTypescriptConfig: {
+            tsconfig: "./tsconfig.json"
+        },
+
     });
 };
