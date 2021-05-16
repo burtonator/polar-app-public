@@ -2,31 +2,19 @@ module.exports = (config) => {
     config.set({
         // browsers: ['Chrome'],
         browsers: ['ChromeHeadless'],
-        frameworks: ['mocha'],
+        frameworks: ['mocha', 'karma-typescript'],
         files: [
             // all files ending in "_test"
-            { pattern: 'src/*Test.ts', watched: false },
-            { pattern: 'src/**/*Test.ts', watched: false },
+            { pattern: 'src/*Karma.ts', watched: false },
             // each file acts as entry point for the webpack configuration
         ],
 
         preprocessors: {
-            // add webpack as preprocessor
-            'src/*Test.ts': ['webpack'],
-            'src/**/*Test.ts': ['webpack'],
+            'src/**/*.ts': ['karma-typescript'],
         },
 
-        webpack: {
-            // karma watches the test entry points
-            // (you don't need to specify the entry option)
-            // webpack watches dependencies
-            // webpack configuration
-        },
+        reporters: ["dots", "karma-typescript"],
 
-        webpackMiddleware: {
-            // webpack-dev-middleware configuration
-            // i. e.
-            stats: 'errors-only',
-        },
+        singleRun: true
     });
 };
