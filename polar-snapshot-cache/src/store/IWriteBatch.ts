@@ -1,6 +1,7 @@
 import {IDocumentReference} from "./IDocumentReference";
 import {TDocumentData} from "./TDocumentData";
-import {TUpdateData} from "./TUpdateData";
+
+export type TFieldPath = any;
 
 export interface IWriteBatch {
 
@@ -13,7 +14,7 @@ export interface IWriteBatch {
 
     // update(documentRef: IDocumentReference, data: TUpdateData): IWriteBatch;
 
-    update(documentRef: IDocumentReference, field: string, value: any): IWriteBatch;
+    update(documentRef: IDocumentReference, field: string | TFieldPath, value: any): IWriteBatch;
 
     // update(
     //     documentRef: DocumentReference<any>,
