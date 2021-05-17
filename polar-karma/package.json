@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "karma": "=6.3.1",
+    "karma": "=6.3.2",
     "karma-chai": "=0.1.0",
     "karma-chrome-launcher": "=3.1.0",
     "karma-firefox-launcher": "=2.1.0",
